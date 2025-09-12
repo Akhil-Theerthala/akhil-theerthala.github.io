@@ -1,0 +1,11 @@
+ACCURATE HUGGINGFACE DOWNLOAD STATS
+===================================
+
+MODELS:
+
+DATASETS:
+
+TOTALS:
+  Total Downloads: 0
+  Model Downloads: 0
+  Dataset Downloads: 0

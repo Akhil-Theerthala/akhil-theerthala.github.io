@@ -1,0 +1,54 @@
+{
+  "profile": {
+    "followers": 33,
+    "following": 31,
+    "models": 5,
+    "datasets": 8,
+    "spaces": 1,
+    "tflops": 4.6
+  },
+  "models": {
+    "Kuvera-8B-qwen3-v0.2.1": {
+      "likes": 39,
+      "downloads": 6
+    },
+    "Kuvera-4B-unsloth-gemma3": {
+      "downloads": 12
+    },
+    "kuvera-12B-v0.2.0-unsloth-gemma3": {
+      "downloads": 10
+    },
+    "Kuvera-8B-v0.1.0": {
+      "likes": 9,
+      "downloads": 31
+    },
+    "Kuvera-14B-v0.1.0": {
+      "downloads": 10,
+      "likes": 4
+    }
+  },
+  "datasets": {
+    "WikiFinance": {
+      "samples": "42k",
+      "likes": 88
+    },
+    "Kuvera-PersonalFinance-V2.1": {
+      "samples": "18.8k", 
+      "likes": 111,
+      "downloads": 2
+    },
+    "PersonalFinance_v2": {
+      "samples": "7.04k",
+      "likes": 88,
+      "downloads": 23
+    }
+  },
+  "totals": {
+    "total_model_downloads": 69,
+    "total_dataset_downloads": 25,
+    "total_downloads": 94,
+    "total_model_likes": 52,
+    "total_dataset_likes": 287,
+    "total_likes": 339
+  }
+}
