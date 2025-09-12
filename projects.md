@@ -56,7 +56,7 @@ description: AI research projects, open source contributions, and production ML 
                                 <div class="text-sm text-gray-500">Likes</div>
                             </div>
                             <div class="text-center">
-                                <div class="text-2xl font-bold text-blue-500">23</div>
+                                <div class="text-2xl font-bold text-blue-500">1,413</div>
                                 <div class="text-sm text-gray-500">Downloads</div>
                             </div>
                             <div class="text-center">
@@ -105,7 +105,7 @@ description: AI research projects, open source contributions, and production ML 
                     
                     <div class="grid grid-cols-2 gap-4 mb-6">
                         <div class="text-center">
-                            <div class="text-2xl font-bold text-blue-500">69</div>
+                            <div class="text-2xl font-bold text-blue-500">552</div>
                             <div class="text-sm text-gray-500">Total Downloads</div>
                         </div>
                         <div class="text-center">

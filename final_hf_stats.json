@@ -1,0 +1,34 @@
+{
+  "models": {
+    "Kuvera-14B-v0.1.0": {
+      "downloads": 89
+    },
+    "Kuvera-8B-v0.1.0": {
+      "downloads": 358
+    },
+    "Kuvera-4B-unsloth-gemma3": {
+      "downloads": 23
+    },
+    "kuvera-12B-v0.2.0-unsloth-gemma3": {
+      "downloads": 24
+    },
+    "Kuvera-8B-qwen3-v0.2.1": {
+      "downloads": 58
+    }
+  },
+  "totals": {
+    "total_model_downloads": 552,
+    "model_count": 5
+  },
+  "datasets": {
+    "PersonalFinance_v2": {
+      "downloads": 23,
+      "likes": 88
+    }
+  },
+  "profile": {
+    "followers": 33,
+    "models": 5,
+    "datasets": 8
+  }
+}
