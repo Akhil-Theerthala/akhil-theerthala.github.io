@@ -15,7 +15,8 @@ plugins:
 
 # Minimalist theme settings
 color-scheme: auto
-logo: 
+logo:
+email: akhiltvsn@gmail.com 
 
 # Author information
 author:

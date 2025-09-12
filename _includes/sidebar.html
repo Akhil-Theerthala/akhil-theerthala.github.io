@@ -1,0 +1,13 @@
+{% if site.sidebar %}
+<div class="link-wrapper">
+  <ul class="link">
+    {% for link in site.sidebar %}
+    <li>
+      <a href="{{ link.link }}"{% if link.link contains 'http' %} target="_blank" rel="noopener"{% endif %}>
+        {{ link.icon }} {{ link.name }}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
