@@ -1,9 +1,19 @@
-remote_theme: pages-themes/cayman@v0.2.0
 title: Akhil Theerthala
 description: Senior Data Scientist | AI Research | Financial ML | Open Source Contributor
 url: "https://akhil-theerthala.github.io"
+baseurl: ""
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: /:title/
+
 plugins:
-  - jekyll-remote-theme
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Author information
 author:
   name: Akhil Theerthala
   email: akhiltvsn@gmail.com
@@ -11,3 +21,17 @@ author:
   linkedin: akhil-theerthala
   medium: akhiltvsn
   huggingface: akhil-theerthala
+  location: "Bengaluru, India"
+  tagline: "Senior Data Scientist | AI Research | Financial ML"
+
+# Social links
+social:
+  github: https://github.com/akhil-theerthala
+  linkedin: https://linkedin.com/in/akhil-theerthala
+  medium: https://medium.com/@akhiltvsn
+  huggingface: https://huggingface.co/akhil-theerthala
+  email: mailto:akhiltvsn@gmail.com
+
+# SEO
+lang: en
+timezone: Asia/Kolkata
