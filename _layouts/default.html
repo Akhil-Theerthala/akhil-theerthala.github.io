@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: "en-US" }}">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% seo %}
+    <link rel="stylesheet" href="{{ "/assets/css/style.css?v=" | append: site.github.build_revision | relative_url }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      {% if site.title and site.title != page.title %}
+      <h1><a href="{{ "/" | absolute_url }}">{{ site.title }}</a></h1>
+      {% endif %}
+
+      <nav style="margin-bottom: 2rem;">
+        <a href="/" style="margin-right: 1rem; text-decoration: none; font-weight: 500;">🏠 Home</a>
+        <a href="/projects" style="margin-right: 1rem; text-decoration: none; font-weight: 500;">🚀 Projects</a>
+        <a href="/publications" style="margin-right: 1rem; text-decoration: none; font-weight: 500;">📚 Publications</a>
+        <a href="/blog" style="margin-right: 1rem; text-decoration: none; font-weight: 500;">✍️ Blog</a>
+      </nav>
+
+      {{ content }}
+
+      {% if site.github.private != true and site.github.source.branch == "master" %}
+      <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #e1e4e8; text-align: center; color: #586069; font-size: 0.9rem;">
+        <p>
+          © 2025 {{ site.author.name }}. 
+          <a href="https://github.com/{{ site.author.github }}" style="color: #586069;"><i class="fab fa-github"></i> GitHub</a> |
+          <a href="https://linkedin.com/in/{{ site.author.linkedin }}" style="color: #586069;"><i class="fab fa-linkedin"></i> LinkedIn</a> |
+          <a href="https://huggingface.co/{{ site.author.huggingface }}" style="color: #586069;">🤗 HuggingFace</a> |
+          <a href="https://medium.com/@{{ site.author.medium }}" style="color: #586069;"><i class="fab fa-medium"></i> Medium</a>
+        </p>
+      </div>
+      {% endif %}
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js"></script>
+    <script>anchors.add();</script>
+  </body>
+</html>
