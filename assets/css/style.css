@@ -369,16 +369,41 @@ section a[href^="http"]:after {
 /* Minimalist Timeline */
 .timeline-minimal {
   margin: 30px 0;
+  position: relative;
+  padding-left: 30px;
+}
+
+.timeline-minimal::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #e5e5e5;
 }
 
 .timeline-year {
   margin-bottom: 25px;
   padding-bottom: 20px;
-  border-bottom: 1px solid #e5e5e5;
+  position: relative;
 }
 
 .timeline-year:last-child {
-  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.timeline-year::before {
+  content: '';
+  position: absolute;
+  left: -26px;
+  top: 5px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #267CB9;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 2px #267CB9;
 }
 
 .timeline-year h3 {
@@ -411,6 +436,20 @@ section a[href^="http"]:after {
 }
 
 @media print, screen and (max-width: 720px) {
+  .timeline-minimal {
+    padding-left: 25px;
+  }
+
+  .timeline-minimal::before {
+    left: 6px;
+  }
+
+  .timeline-year::before {
+    left: -21px;
+    width: 6px;
+    height: 6px;
+  }
+  
   .timeline-year h3 {
     font-size: 16px;
   }

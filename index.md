@@ -11,9 +11,9 @@ With a background in **Aerospace Engineering from IIT Kharagpur** and deep exper
 
 <div class="timeline-minimal">
   <div class="timeline-year">
-    <h3>2019-2023</h3>
+    <h3>2019</h3>
     <div class="year-events">
-      <div class="event">B.Tech Aerospace Engineering, IIT Kharagpur</div>
+      <div class="event">Started B.Tech Aerospace Engineering at IIT Kharagpur</div>
     </div>
   </div>
 
@@ -37,6 +37,7 @@ With a background in **Aerospace Engineering from IIT Kharagpur** and deep exper
     <h3>2023</h3>
     <div class="year-events">
       <div class="event">Started online ML blogging</div>
+      <div class="event">Graduated from IIT Kharagpur</div>
       <div class="event">Applied Scientist-I at Perfios Software Solutions</div>
     </div>
   </div>
