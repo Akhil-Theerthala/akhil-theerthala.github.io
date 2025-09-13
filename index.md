@@ -59,10 +59,9 @@ Advanced ML/AI coursework including Graphical and Generative Modelling, Dependab
 ## Publications & Writing
 
 **Research Papers**
-- Paper accepted at FinNLP 2025 Workshop (EMNLP)
+- "Synthesizing Behaviorally-Grounded Reasoning Chains: A Data-Generation Framework for Personal Finance LLMs" - Accepted at FinNLP 2025 Workshop (EMNLP)
 
 **Technical Writing**
-- [NeuroNuts Blog](https://neuronuts.in) - Founder & primary author
 - [Medium](https://medium.com/@akhiltvsn) - 181 followers, published on Towards AI
 
 ## Technical Expertise

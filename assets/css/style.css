@@ -4,6 +4,7 @@ body {
   font: 15px/1.5 "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #727272;
   font-weight:400;
+  transition: all 0.2s ease;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -34,10 +35,13 @@ h3, h4, h5, h6 {
 a {
   color: #267CB9;
   text-decoration:none;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid transparent;
 }
 
 a:hover, a:focus {
   color: #069;
+  border-bottom: 1px solid #069;
 }
 
 a small {
@@ -294,4 +298,70 @@ footer {
     font-size:12pt;
     color:#444;
   }
+}
+
+/* Custom styling enhancements */
+h2 {
+  border-bottom: 2px solid #e5e5e5;
+  padding-bottom: 8px;
+  margin-top: 30px;
+}
+
+h3 {
+  margin-top: 25px;
+}
+
+ul.link a {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  border-bottom: none;
+}
+
+ul.link a:hover {
+  background-color: rgba(38, 124, 185, 0.1);
+  border-bottom: none;
+}
+
+ul.link svg {
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+/* Enhanced spacing and typography */
+section {
+  line-height: 1.6;
+}
+
+section p {
+  margin-bottom: 16px;
+}
+
+section h3 + p {
+  margin-top: -10px;
+  font-style: italic;
+  color: #666;
+  font-size: 14px;
+}
+
+/* Subtle shadows and borders */
+.sidebar {
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+}
+
+pre {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Improved link styling in content */
+section a {
+  font-weight: 500;
+}
+
+section a[href^="http"]:after {
+  content: " ↗";
+  font-size: 12px;
+  color: #999;
 }
