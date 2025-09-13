@@ -15,22 +15,22 @@ With a background in **Aerospace Engineering from IIT Kharagpur** and deep exper
 
 ## Impact & Statistics
 
-**4,369** Total HuggingFace Downloads  
-**552** Model Downloads across 5 specialized financial AI models  
-**3,817** Dataset Downloads across 9 curated datasets  
+**4,369** All-time downloads across HuggingFace  
+**552** All-time model downloads across 5 specialized financial AI models  
+**3,817** All-time dataset downloads across 9 curated datasets  
 **14** GitHub Repositories with noteworthy contributions
 
 ## Featured Work
 
 ### PersonalFinance_v2 Dataset
-*Competition Winner • 1,413 downloads • 88 likes*
+*Competition Winner • 1,413 all-time downloads • 88 likes*
 
 First prize winner in the Reasoning Dataset Creation Competition 2025. Features 7.04k high-quality financial reasoning examples with explicit chain-of-thought explanations.
 
 [View on HuggingFace →](https://huggingface.co/datasets/akhil-theerthala/PersonalFinance_v2)
 
 ### Kuvera Model Series
-*5 models • 552 total downloads • Financial AI*
+*5 models • 552 all-time downloads • Financial AI*
 
 Specialized language models (8B, 4B, 12B, 14B parameters) optimized for personal finance reasoning and single-GPU deployment in production environments.
 
@@ -41,15 +41,18 @@ Specialized language models (8B, 4B, 12B, 14B parameters) optimized for personal
 
 Research conducted under Dr. Swagato Chatterjee investigating the relationship between social media engagement and crowdfunding campaign success. Analyzed patterns in social media metrics and their correlation with funding outcomes.
 
-## Current Research
+## Professional Experience
 
-**Georgia Tech Financial Services Innovation Lab** *(Aug 2025 - Present)*  
+**Research Affiliate** - Georgia Tech Financial Services Innovation Lab *(Aug 2025 - Present)*  
 Research on generalized financial reasoning models with explicit chain-of-thought methodologies. Focus on US finance corpora curation and ablation studies across model scales.
 
-**Production ML at Perfios** *(June 2023 - Present)*  
-Leading AI strategy for fintech applications. Developing production-ready LLM systems serving enterprise clients. Previously optimized document processing latency and improved model performance for financial document analysis.
+**Senior Data Scientist** - Perfios Software Solutions *(Present)*  
+Leading AI strategy for fintech applications. Developing production-ready LLM systems serving enterprise clients. Spearheading advanced ML research initiatives and cross-functional AI implementation projects.
 
-## Education & Background
+**Data Scientist** - Perfios Software Solutions *(June 2023 - Previous)*  
+Optimized document processing latency and improved model performance for financial document analysis. Built and deployed machine learning models for automated financial data extraction and validation.
+
+## Education
 
 **B.Tech Aerospace Engineering** - IIT Kharagpur (2019-2023)  
 Advanced ML/AI coursework including Graphical and Generative Modelling, Dependable AI-ML, and Deep Learning Foundations.
