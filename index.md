@@ -7,11 +7,17 @@ I'm a **Senior Data Scientist at Perfios Software Solutions** and **Research Aff
 
 With a background in **Aerospace Engineering from IIT Kharagpur** and deep expertise in generative AI, I focus on building domain-specific reasoning models that operate efficiently in production environments.
 
-## Key Achievements
+## Key Milestones
 
-🏆 **First Place** - Reasoning Dataset Creation Competition 2025 (Bespoke Labs, HuggingFace & Together.AI)  
-🎓 **Research Affiliate** - Georgia Tech Financial Services Innovation Lab  
-💼 **Senior Data Scientist** - Perfios Software Solutions
+**2025** - Research Affiliate appointment at Georgia Tech Financial Services Innovation Lab  
+**2025** - First place winner in Reasoning Dataset Creation Competition (Bespoke Labs, HuggingFace & Together.AI)  
+**2025** - Paper accepted at FinNLP Workshop (EMNLP) on financial LLM reasoning frameworks  
+**2024** - Promoted to Senior Data Scientist at Perfios Software Solutions  
+**2024** - Released Kuvera model series: 5 specialized financial AI models with 552+ downloads  
+**2024** - Published PersonalFinance_v2 dataset with 1,413+ downloads and 88 likes  
+**2023** - Joined Perfios as Data Scientist, optimizing financial document processing systems  
+**2023** - Graduated from IIT Kharagpur with B.Tech in Aerospace Engineering  
+**2022** - Completed 9-month undergraduate research on social media impact on crowdfunding
 
 ## Impact & Statistics
 
@@ -74,6 +80,16 @@ Advanced ML/AI coursework including Graphical and Generative Modelling, Dependab
 **Specializations:** Financial AI, Chain-of-thought reasoning, Single-GPU optimization, Production ML systems, Dataset creation
 
 **Domains:** Personal finance models, Document processing, Enterprise AI deployment
+
+## Key Achievements
+
+🥇 **Competition Winner** - First Place in Reasoning Dataset Creation Competition 2025 (Bespoke Labs, HuggingFace & Together.AI)  
+📊 **High-Impact Research** - 4,369 all-time downloads across published models and datasets  
+🏆 **Academic Recognition** - Paper accepted at prestigious FinNLP Workshop (EMNLP)  
+🚀 **Open Source Impact** - 5 specialized AI models serving the financial ML community  
+📈 **Dataset Excellence** - PersonalFinance_v2 dataset with 88 community likes and 1,400+ downloads  
+🔬 **Research Leadership** - Research Affiliate at Georgia Tech's Financial Services Innovation Lab  
+💼 **Career Progression** - Promoted to Senior Data Scientist within 1 year at Perfios
 
 ---
 
