@@ -36,6 +36,11 @@ Specialized language models (8B, 4B, 12B, 14B parameters) optimized for personal
 
 [View Models →](https://huggingface.co/akhil-theerthala)
 
+### Social Media Impact on Crowdfunding
+*9-month undergraduate research project*
+
+Research conducted under Dr. Swagato Chatterjee investigating the relationship between social media engagement and crowdfunding campaign success. Analyzed patterns in social media metrics and their correlation with funding outcomes.
+
 ## Current Research
 
 **Georgia Tech Financial Services Innovation Lab** *(Aug 2025 - Present)*  
@@ -54,7 +59,7 @@ Advanced ML/AI coursework including Graphical and Generative Modelling, Dependab
 ## Publications & Writing
 
 **Research Papers**
-- Paper under review at FinNLP 2025 Workshop (EMNLP)
+- Paper accepted at FinNLP 2025 Workshop (EMNLP)
 
 **Technical Writing**
 - [NeuroNuts Blog](https://neuronuts.in) - Founder & primary author
