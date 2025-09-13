@@ -11,20 +11,6 @@ With a background in **Aerospace Engineering from IIT Kharagpur** and deep exper
 
 <div class="timeline-minimal">
   <div class="timeline-year">
-    <h3>2019</h3>
-    <div class="year-events">
-      <div class="event">Started B.Tech Aerospace Engineering at IIT Kharagpur</div>
-    </div>
-  </div>
-
-  <div class="timeline-year">
-    <h3>2021-2022</h3>
-    <div class="year-events">
-      <div class="event">Associate Member, Design Team - Entrepreneurship Cell, IIT Kharagpur</div>
-    </div>
-  </div>
-
-  <div class="timeline-year">
     <h3>2022</h3>
     <div class="year-events">
       <div class="event">Data Science Intern at Perfios Software Solutions</div>
@@ -56,9 +42,10 @@ With a background in **Aerospace Engineering from IIT Kharagpur** and deep exper
 
 ## Impact & Statistics
 
-**4,369** All-time downloads across HuggingFace  
-**552** All-time model downloads across 5 specialized financial AI models  
-**3,817** All-time dataset downloads across 9 curated datasets  
+**4,369** All-time downloads across HuggingFace
+**552** Direct model downloads from my profile across 5 specialized financial AI models
+**>21,500** Additional downloads through third-party quantized versions (bartowski, mradermacher)
+**3,817** All-time dataset downloads across 9 curated datasets
 **14** GitHub Repositories with noteworthy contributions
 
 ## Featured Work
