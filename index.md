@@ -9,112 +9,46 @@ With a background in **Aerospace Engineering from IIT Kharagpur** and deep exper
 
 ## Professional Timeline
 
-<div class="timeline">
-  <div class="timeline-item">
-    <div class="timeline-marker education"></div>
-    <div class="timeline-content">
-      <div class="timeline-date">2019-2023</div>
-      <div class="timeline-title">B.Tech Aerospace Engineering</div>
-      <div class="timeline-desc">IIT Kharagpur</div>
+<div class="timeline-minimal">
+  <div class="timeline-year">
+    <h3>2019-2023</h3>
+    <div class="year-events">
+      <div class="event">B.Tech Aerospace Engineering, IIT Kharagpur</div>
     </div>
   </div>
 
-  <div class="timeline-item">
-    <div class="timeline-marker extracurricular"></div>
-    <div class="timeline-content">
-      <div class="timeline-date">Jul 2021 - Jan 2022</div>
-      <div class="timeline-title">Associate Member, Design Team</div>
-      <div class="timeline-desc">Entrepreneurship Cell, IIT Kharagpur</div>
+  <div class="timeline-year">
+    <h3>2021-2022</h3>
+    <div class="year-events">
+      <div class="event">Associate Member, Design Team - Entrepreneurship Cell, IIT Kharagpur</div>
     </div>
   </div>
 
-  <div class="timeline-item">
-    <div class="timeline-marker work"></div>
-    <div class="timeline-content">
-      <div class="timeline-date">May - Jul 2022</div>
-      <div class="timeline-title">Data Science Intern</div>
-      <div class="timeline-desc">Perfios Software Solutions</div>
+  <div class="timeline-year">
+    <h3>2022</h3>
+    <div class="year-events">
+      <div class="event">Data Science Intern at Perfios Software Solutions</div>
+      <div class="event">Undergraduate Researcher at VGSOM under Dr. Swagato Chatterjee</div>
+      <div class="event">Udacity-AWS ML Scholarship (1st Cohort)</div>
     </div>
   </div>
 
-  <div class="timeline-item">
-    <div class="timeline-marker research"></div>
-    <div class="timeline-content">
-      <div class="timeline-date">Aug 2022 - Apr 2023</div>
-      <div class="timeline-title">Undergraduate Researcher</div>
-      <div class="timeline-desc">VGSOM, under Dr. Swagato Chatterjee</div>
+  <div class="timeline-year">
+    <h3>2023</h3>
+    <div class="year-events">
+      <div class="event">Started online ML blogging</div>
+      <div class="event">Applied Scientist-I at Perfios Software Solutions</div>
     </div>
   </div>
 
-  <div class="timeline-item">
-    <div class="timeline-marker achievement"></div>
-    <div class="timeline-content">
-      <div class="timeline-date">Sep 2022</div>
-      <div class="timeline-title">Udacity-AWS ML Scholarship</div>
-      <div class="timeline-desc">1st Cohort Recipient</div>
-    </div>
-  </div>
-
-  <div class="timeline-item">
-    <div class="timeline-marker milestone"></div>
-    <div class="timeline-content">
-      <div class="timeline-date">Feb 2023</div>
-      <div class="timeline-title">Started Online ML Blogging</div>
-      <div class="timeline-desc">Technical writing journey begins</div>
-    </div>
-  </div>
-
-  <div class="timeline-item">
-    <div class="timeline-marker work"></div>
-    <div class="timeline-content">
-      <div class="timeline-date">Jun 2023</div>
-      <div class="timeline-title">Applied Scientist-I</div>
-      <div class="timeline-desc">Perfios Software Solutions</div>
-    </div>
-  </div>
-
-  <div class="timeline-item">
-    <div class="timeline-marker achievement"></div>
-    <div class="timeline-content">
-      <div class="timeline-date">Feb 2025</div>
-      <div class="timeline-title">Perfios IdeaFest Finalist</div>
-      <div class="timeline-desc">Internal innovation competition</div>
-    </div>
-  </div>
-
-  <div class="timeline-item">
-    <div class="timeline-marker work"></div>
-    <div class="timeline-content">
-      <div class="timeline-date">Mar 2025 - Present</div>
-      <div class="timeline-title">Senior Data Scientist</div>
-      <div class="timeline-desc">Promoted at Perfios Software Solutions</div>
-    </div>
-  </div>
-
-  <div class="timeline-item">
-    <div class="timeline-marker achievement"></div>
-    <div class="timeline-content">
-      <div class="timeline-date">May 2025</div>
-      <div class="timeline-title">1st Place - Reasoning Dataset Competition</div>
-      <div class="timeline-desc">BespokeLabs, HuggingFace & Together.ai</div>
-    </div>
-  </div>
-
-  <div class="timeline-item">
-    <div class="timeline-marker research"></div>
-    <div class="timeline-content">
-      <div class="timeline-date">Aug 2025</div>
-      <div class="timeline-title">Research Affiliate</div>
-      <div class="timeline-desc">Georgia Tech Financial Services Innovation Lab</div>
-    </div>
-  </div>
-
-  <div class="timeline-item">
-    <div class="timeline-marker achievement"></div>
-    <div class="timeline-content">
-      <div class="timeline-date">Sep 2025</div>
-      <div class="timeline-title">First Research Paper Accepted</div>
-      <div class="timeline-desc">FinNLP Workshop, EMNLP 2025 (Solo Author)</div>
+  <div class="timeline-year">
+    <h3>2025</h3>
+    <div class="year-events">
+      <div class="event">Finalist in Perfios IdeaFest competition</div>
+      <div class="event">Promoted to Senior Data Scientist at Perfios</div>
+      <div class="event">1st Place - Reasoning Dataset Competition (BespokeLabs, HuggingFace & Together.ai)</div>
+      <div class="event">Research Affiliate at Georgia Tech Financial Services Innovation Lab</div>
+      <div class="event">First Research Paper (solo author) accepted at FinNLP Workshop, EMNLP 2025</div>
     </div>
   </div>
 </div>
