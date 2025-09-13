@@ -42,11 +42,11 @@ With a background in **Aerospace Engineering from IIT Kharagpur** and deep exper
 
 ## Impact & Statistics
 
-**4,369** All-time downloads across HuggingFace
-**552** Direct model downloads from my profile across 5 specialized financial AI models
-**>21,500** Additional downloads through third-party quantized versions (bartowski, mradermacher)
-**3,817** All-time dataset downloads across 9 curated datasets
-**14** GitHub Repositories with noteworthy contributions
+* **4,369** All-time downloads across HuggingFace
+* **552** Direct model downloads from my profile across 5 specialized financial AI models
+* **>21,500** Additional downloads through third-party quantized versions (bartowski, mradermacher)
+* **3,817** All-time dataset downloads across 9 curated datasets
+* **14** GitHub Repositories with noteworthy contributions
 
 ## Featured Work
 
