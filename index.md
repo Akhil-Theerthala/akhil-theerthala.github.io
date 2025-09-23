@@ -51,6 +51,7 @@ With a background in **Aerospace Engineering from IIT Kharagpur** and deep exper
 ## Featured Work
 
 ### PersonalFinance_v2 Dataset
+
 *Competition Winner • 1,413 all-time downloads • 88 likes*
 
 First prize winner in the Reasoning Dataset Creation Competition 2025. Features 7.04k high-quality financial reasoning examples with explicit chain-of-thought explanations.
@@ -58,6 +59,7 @@ First prize winner in the Reasoning Dataset Creation Competition 2025. Features 
 [View on HuggingFace →](https://huggingface.co/datasets/akhil-theerthala/PersonalFinance_v2)
 
 ### Kuvera Model Series
+
 *5 models • 552 all-time downloads • Financial AI*
 
 Specialized language models (8B, 4B, 12B, 14B parameters) optimized for personal finance reasoning and single-GPU deployment in production environments.
@@ -65,6 +67,7 @@ Specialized language models (8B, 4B, 12B, 14B parameters) optimized for personal
 [View Models →](https://huggingface.co/akhil-theerthala)
 
 ### Social Media Impact on Crowdfunding
+
 *9-month undergraduate research project*
 
 Research conducted under Dr. Swagato Chatterjee investigating the relationship between social media engagement and crowdfunding campaign success. Analyzed patterns in social media metrics and their correlation with funding outcomes.
@@ -80,6 +83,17 @@ Led AI strategy for fintech applications. Developed production-ready LLM systems
 **Data Science Intern** - Perfios Software Solutions *(May 2022 - Jul 2022)*  
 Gained foundational experience in financial data processing and machine learning model development in production environments.
 
+## Research Experience
+
+**Research Volunteer** - Georgia Tech Financial Services Innovation Lab *(Aug 2025- Present)*
+
+* Developing generalized financial reasoning models and validating their performance through rigorous ablation studies across multiple model scales and difficulty bands.
+
+**Research Intern** - VGSOM, IIT Kharagpur *(Aug 2022 - Apr 2023)*  
+**Project:** Impact of Social Media engagement on Crowdfunding Success
+
+* Conducted research under Dr. Swagato Chatterjee investigating the relationship between social media engagement and crowdfunding campaign success. Analyzed patterns in social media metrics and their correlation with funding outcomes.
+
 ## Education
 
 **B.Tech Aerospace Engineering** - IIT Kharagpur (2019-2023)  
@@ -93,10 +107,10 @@ Selected for prestigious machine learning scholarship program in collaboration w
 ## Publications & Writing
 
 **Research Papers**
-- "Synthesizing Behaviorally-Grounded Reasoning Chains: A Data-Generation Framework for Personal Finance LLMs" • *FinNLP, EMNLP 2025*
+* "Synthesizing Behaviorally-Grounded Reasoning Chains: A Data-Generation Framework for Personal Finance LLMs" • *FinNLP, EMNLP 2025*
 
 **Technical Writing**
-- [Medium](https://medium.com/@akhiltvsn) - 212 followers, published on Towards AI
+* [Medium](https://medium.com/@akhiltvsn) - 212 followers, published on Towards AI
 
 ## Technical Expertise
 
