@@ -96,7 +96,7 @@ Selected for prestigious machine learning scholarship program in collaboration w
 - "Synthesizing Behaviorally-Grounded Reasoning Chains: A Data-Generation Framework for Personal Finance LLMs" • *FinNLP, EMNLP 2025*
 
 **Technical Writing**
-- [Medium](https://medium.com/@akhiltvsn) - 242 followers, published on Towards AI
+- [Medium](https://medium.com/@akhiltvsn) - 212 followers, published on Towards AI
 
 ## Technical Expertise
 
