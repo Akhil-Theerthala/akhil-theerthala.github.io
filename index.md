@@ -3,7 +3,7 @@ layout: default
 title: Home
 ---
 
-I'm a **Senior Data Scientist at Perfios Software Solutions** and **Research Affiliate at Georgia Tech's Financial Services Innovation Lab**, specializing in financial reasoning models and production machine learning systems.
+I'm a **Senior Data Scientist at Perfios Software Solutions** specializing in reasoning models and production machine learning systems.
 
 With a background in **Aerospace Engineering from IIT Kharagpur** and deep expertise in generative AI, I focus on building domain-specific reasoning models that operate efficiently in production environments.
 
@@ -34,7 +34,7 @@ With a background in **Aerospace Engineering from IIT Kharagpur** and deep exper
       <div class="event">Finalist in Perfios IdeaFest competition</div>
       <div class="event">Promoted to Senior Data Scientist at Perfios</div>
       <div class="event">1st Place - Reasoning Dataset Competition (BespokeLabs, HuggingFace & Together.ai)</div>
-      <div class="event">Research Affiliate at Georgia Tech Financial Services Innovation Lab</div>
+      <div class="event"> Volunteer research work at Georgia Tech Financial Services Innovation Lab</div>
       <div class="event">First Research Paper (solo author) accepted at FinNLP Workshop, EMNLP 2025</div>
     </div>
   </div>
@@ -71,9 +71,6 @@ Research conducted under Dr. Swagato Chatterjee investigating the relationship b
 
 ## Professional Experience
 
-**Research Affiliate** - Georgia Tech Financial Services Innovation Lab *(Aug 2025 - Present)*  
-Research on generalized financial reasoning models with explicit chain-of-thought methodologies. Focus on US finance corpora curation and ablation studies across model scales.
-
 **Senior Data Scientist** - Perfios Software Solutions *(Mar 2025 - Present)*  
 Leading advanced AI research initiatives and cross-functional AI implementation projects. Spearheading strategic ML development for enterprise-scale financial applications.
 
@@ -82,9 +79,6 @@ Led AI strategy for fintech applications. Developed production-ready LLM systems
 
 **Data Science Intern** - Perfios Software Solutions *(May 2022 - Jul 2022)*  
 Gained foundational experience in financial data processing and machine learning model development in production environments.
-
-**Undergraduate Researcher** - VGSOM, IIT Kharagpur *(Aug 2022 - Apr 2023)*  
-Conducted research under Dr. Swagato Chatterjee investigating the relationship between social media engagement and crowdfunding campaign success. Analyzed patterns in social media metrics and their correlation with funding outcomes.
 
 ## Education
 
@@ -99,10 +93,10 @@ Selected for prestigious machine learning scholarship program in collaboration w
 ## Publications & Writing
 
 **Research Papers**
-- "Synthesizing Behaviorally-Grounded Reasoning Chains: A Data-Generation Framework for Personal Finance LLMs" - Accepted at FinNLP 2025 Workshop (EMNLP)
+- "Synthesizing Behaviorally-Grounded Reasoning Chains: A Data-Generation Framework for Personal Finance LLMs"; •FinNLP, EMNLP 2025°
 
 **Technical Writing**
-- [Medium](https://medium.com/@akhiltvsn) - 181 followers, published on Towards AI
+- [Medium](https://medium.com/@akhiltvsn) - 242 followers, published on Towards AI
 
 ## Technical Expertise
 
