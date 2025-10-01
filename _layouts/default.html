@@ -14,9 +14,20 @@
     <![endif]-->
     {% include head-custom.html %}
   </head>
-  <body>
+  <body data-theme="dark">
     <div class="wrapper">
       <div class="sidebar">
+        <!-- Theme Toggle -->
+        <div class="theme-toggle">
+          <label class="theme-switch">
+            <input type="checkbox" id="theme-toggle">
+            <span class="theme-slider">
+              <span class="theme-icon moon-icon">🌙</span>
+              <span class="theme-icon sun-icon">☀️</span>
+            </span>
+          </label>
+        </div>
+
         <header>
           {% if site.logo %}
             <img class="img-circle" src="{{site.logo | relative_url}}" alt="Logo">
@@ -54,5 +65,40 @@
       </footer>
     </div>
     <script src="{{ "/assets/js/scale.fix.js" | relative_url }}"></script>
+
+    <script>
+      // Apply theme immediately to prevent flash
+      (function() {
+        const theme = localStorage.getItem('theme') || 'dark';
+        document.body.setAttribute('data-theme', theme);
+      })();
+    </script>
+
+    <script>
+      // Theme Toggle Functionality
+      document.addEventListener('DOMContentLoaded', function() {
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        // Get stored theme preference or default to dark
+        const storedTheme = localStorage.getItem('theme') || 'dark';
+
+        // Set initial theme state
+        themeToggle.checked = storedTheme === 'light';
+
+        // Theme toggle event listener
+        themeToggle.addEventListener('change', function() {
+          const newTheme = this.checked ? 'light' : 'dark';
+          body.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+
+          // Add smooth transition effect
+          body.style.transition = 'all 0.3s ease';
+          setTimeout(() => {
+            body.style.transition = '';
+          }, 300);
+        });
+      });
+    </script>
   </body>
 </html>
