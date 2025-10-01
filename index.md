@@ -118,8 +118,6 @@ Selected for prestigious machine learning scholarship program in collaboration w
 
 **Specializations:** Financial AI, Chain-of-thought reasoning, Single-GPU optimization, Production ML systems, Dataset creation
 
-**Domains:** Personal finance models, Document processing, Enterprise AI deployment
+**Domains:** LLM Data Curation, Efficient Model training, Document processing, Enterprise AI deployment
 
 ---
-
-*Currently focused on building domain-specific reasoning models that operate efficiently in low-latency, cost-effective environments.*
