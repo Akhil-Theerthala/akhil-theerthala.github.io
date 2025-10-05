@@ -72,8 +72,6 @@ Specialized language models (8B, 4B, 12B, 14B parameters) optimized for personal
 
 Research conducted under Dr. Swagato Chatterjee investigating the relationship between social media engagement and crowdfunding campaign success. Analyzed patterns in social media metrics and their correlation with funding outcomes.
 
-[GitHub Repository →](https://github.com/Akhil-Theerthala/Crowdfunding-Social-Media-Drivers)
-
 ## Professional Experience
 
 **Senior Data Scientist** - Perfios Software Solutions *(Mar 2025 - Present)*  

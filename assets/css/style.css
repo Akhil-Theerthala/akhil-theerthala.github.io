@@ -521,12 +521,9 @@ header {
 .theme-toggle {
   position: absolute;
   top: 1.5rem;
-  right: 2rem;
+  right: 1.5rem;
   z-index: 10;
   animation: fadeInDown 0.8s ease-out;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 @keyframes fadeInDown {
@@ -567,17 +564,17 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 8px;
-  font-size: 13px;
+  padding: 0 6px;
+  font-size: 12px;
 }
 
 .theme-slider:before {
   position: absolute;
   content: "";
-  height: 22px;
-  width: 22px;
-  left: 2px;
-  top: 2px;
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 2px;
   background: var(--primary-color);
   transition: all 0.3s ease;
   border-radius: 50%;
@@ -590,18 +587,15 @@ input:checked + .theme-slider {
 }
 
 input:checked + .theme-slider:before {
-  transform: translateX(28px);
+  transform: translateX(26px);
   background: var(--primary-dark);
 }
 
 .theme-slider .theme-icon {
-  font-size: 12px;
+  font-size: 10px;
   color: var(--text-muted);
   transition: color 0.3s ease;
   z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 input:checked + .theme-slider .sun-icon {
