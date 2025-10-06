@@ -36,23 +36,24 @@ With a background in **Aerospace Engineering from IIT Kharagpur** and deep exper
       <div class="event">1st Place - Reasoning Dataset Competition (BespokeLabs, HuggingFace & Together.ai)</div>
       <div class="event"> Volunteer research work at Georgia Tech Financial Services Innovation Lab</div>
       <div class="event">First Research Paper (solo author) accepted at FinNLP Workshop, EMNLP 2025</div>
+      <div class="event">Started contributing to AI for Food Allergies project, HuggingScience, HuggingFace</div>
     </div>
   </div>
 </div>
 
 ## Impact & Statistics
 
-* **4,369** All-time downloads across HuggingFace
-* **552** Direct model downloads from my profile across 5 specialized financial AI models
-* **>21,500** Additional downloads through third-party quantized versions (bartowski, mradermacher)
-* **3,817** All-time dataset downloads across 9 curated datasets
-* **14** GitHub Repositories with noteworthy contributions
+* **5000+** All-time downloads across HuggingFace
+* **600+** Direct model downloads from my profile across 5 specialized financial AI models
+* **29000+** Additional downloads through third-party quantized versions (bartowski, mradermacher)
+* **4400+** All-time dataset downloads across 9 curated datasets
+<!-- * Open-source contributions to **AI for Food Allergies** project from HuggingFace -->
 
 ## Featured Work
 
 ### PersonalFinance_v2 Dataset
 
-*Competition Winner • 1,413 all-time downloads • 88 likes*
+*Competition Winner • 1600+ all-time downloads • 24 likes*
 
 First prize winner in the Reasoning Dataset Creation Competition 2025. Features 7.04k high-quality financial reasoning examples with explicit chain-of-thought explanations.
 
@@ -60,7 +61,7 @@ First prize winner in the Reasoning Dataset Creation Competition 2025. Features 
 
 ### Kuvera Model Series
 
-*5 models • 552 all-time downloads • Financial AI*
+*5 models • 600+ all-time downloads • Financial AI*
 
 Specialized language models (8B, 4B, 12B, 14B parameters) optimized for personal finance reasoning and single-GPU deployment in production environments.
 
