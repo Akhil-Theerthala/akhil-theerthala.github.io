@@ -36,7 +36,7 @@ With a background in **Aerospace Engineering from IIT Kharagpur** and deep exper
       <div class="event">1st Place - Reasoning Dataset Competition (BespokeLabs, HuggingFace & Together.ai)</div>
       <div class="event"> Volunteer research work at Georgia Tech Financial Services Innovation Lab</div>
       <div class="event">First Research Paper (solo author) accepted at FinNLP Workshop, EMNLP 2025</div>
-      <div class="event">Started contributing to AI for Food Allergies project, HuggingScience, HuggingFace</div>
+      <div class="event">Started contributing to AI to Food Allergies project, HuggingScience, HuggingFace</div>
     </div>
   </div>
 </div>
