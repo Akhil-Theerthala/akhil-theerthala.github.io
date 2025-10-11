@@ -20,18 +20,6 @@
     <div class="site-shell">
       <header class="site-header">
         <div class="container">
-          <a class="brand" href="{{ "/" | absolute_url }}">
-            {% if site.logo %}
-              <span class="brand-avatar">
-                <img src="{{ site.logo | relative_url }}" alt="{{ site.title }} logo">
-              </span>
-            {% endif %}
-            <span class="brand-text">
-              <span class="brand-name">{{ site.title | default: site.github.repository_name }}</span>
-              <span class="brand-role">{{ site.description }}</span>
-            </span>
-          </a>
-
           <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
             <span></span>
             <span></span>
