@@ -3,122 +3,176 @@ layout: default
 title: Home
 ---
 
-I'm a **Senior Data Scientist at Perfios Software Solutions** specializing in reasoning models and production machine learning systems.
+<section class="hero">
+  <div class="container">
+    <div class="hero-copy">
+      <p class="hero-eyebrow">Financial AI · Reasoning Systems · Human-first design</p>
+      <h1 class="hero-title">Hi, I'm Akhil Theerthala.</h1>
+      <p class="hero-description">
+        Senior Data Scientist at Perfios, where I build domain-specific reasoning models for finance.
+        I care about reliable datasets, single-GPU deployment, and making complex decisions feel approachable.
+      </p>
+      <div class="hero-actions">
+        <a class="button primary" href="{{ "/projects" | relative_url }}">See recent work</a>
+        <a class="button ghost" href="{{ "/contact" | relative_url }}">Let's collaborate</a>
+      </div>
+      <div class="pill-group">
+        <span class="pill">1st place — Reasoning Dataset Competition 2025</span>
+        <span class="pill">Solo author — FinNLP @ EMNLP 2025</span>
+        <span class="pill">Volunteer — Georgia Tech Financial Services Innovation Lab</span>
+      </div>
+    </div>
 
-With a background in **Aerospace Engineering from IIT Kharagpur** and deep expertise in generative AI, I focus on building domain-specific reasoning models that operate efficiently in production environments.
-
-## Professional Timeline
-
-<div class="timeline-minimal">
-  <div class="timeline-year">
-    <h3>2022</h3>
-    <div class="year-events">
-      <div class="event">Data Science Intern at Perfios Software Solutions</div>
-      <div class="event">Undergraduate Researcher at VGSOM under Dr. Swagato Chatterjee</div>
-      <div class="event">Udacity-AWS ML Scholarship (1st Cohort)</div>
+    <div class="hero-card">
+      <div class="hero-card-content">
+        <div class="stat-block">
+          <div>
+            <div class="stat-number">Perfios</div>
+            <div class="stat-label">Senior Data Scientist building production reasoning systems</div>
+          </div>
+        </div>
+        <div class="stat-block">
+          <div>
+            <div class="stat-number">1st</div>
+            <div class="stat-label">Bespoke Labs × HuggingFace × Together.ai dataset competition</div>
+          </div>
+        </div>
+        <div class="stat-block">
+          <div>
+            <div class="stat-number">FinNLP</div>
+            <div class="stat-label">EMNLP 2025 solo-author publication</div>
+          </div>
+        </div>
+        <p class="hero-description">
+          My projects span reasoning datasets, finance-focused model families, and knowledge sharing for the ML community.
+        </p>
+      </div>
     </div>
   </div>
+</section>
 
-  <div class="timeline-year">
-    <h3>2023</h3>
-    <div class="year-events">
-      <div class="event">Started online ML blogging</div>
-      <div class="event">Graduated from IIT Kharagpur</div>
-      <div class="event">Applied Scientist-I at Perfios Software Solutions</div>
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-eyebrow">What I focus on</span>
+      <h2 class="section-title">Pragmatic systems that stay trustworthy.</h2>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🤖</div>
+        <h3 class="card-title">Domain reasoning models</h3>
+        <p>Designing and deploying compact models tuned for personal finance conversations and decision support.</p>
+        <ul class="list list-check">
+          <li>Single-GPU friendly model families</li>
+          <li>Evaluation pipelines that balance accuracy with tone</li>
+          <li>Documentation that makes hand-offs painless</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <h3 class="card-title">Responsible financial AI</h3>
+        <p>Grounding models in curated datasets and transparent reasoning workflows.</p>
+        <ul class="list list-check">
+          <li>Competition-winning PersonalFinance_v2 dataset</li>
+          <li>Research into crowdfunding behaviour and financial NLP</li>
+          <li>Cross-functional collaboration with compliance and CX teams</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-icon">📝</div>
+        <h3 class="card-title">Sharing the journey</h3>
+        <p>Translating lessons into talks, internal playbooks, and the NeuroNuts blog.</p>
+        <ul class="list list-check">
+          <li>Workshops at Perfios and community AMAs</li>
+          <li>Writing about reasoning data and MLOps</li>
+          <li>Mentoring peers entering applied AI</li>
+        </ul>
+      </div>
     </div>
   </div>
+</section>
 
-  <div class="timeline-year">
-    <h3>2025</h3>
-    <div class="year-events">
-      <div class="event">Finalist in Perfios IdeaFest competition</div>
-      <div class="event">Promoted to Senior Data Scientist at Perfios</div>
-      <div class="event">1st Place - Reasoning Dataset Competition (BespokeLabs, HuggingFace & Together.ai)</div>
-      <div class="event"> Volunteer research work at Georgia Tech Financial Services Innovation Lab</div>
-      <div class="event">First Research Paper (solo author) accepted at FinNLP Workshop, EMNLP 2025</div>
-      <div class="event">Started contributing to AI to Food Allergies project, HuggingScience, HuggingFace</div>
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-eyebrow">Recent highlights</span>
+      <h2 class="section-title">A snapshot of work I'm proud of.</h2>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-meta">
+          <span class="tag">Dataset</span>
+          <span class="tag">Competition winner</span>
+        </div>
+        <h3 class="card-title">PersonalFinance_v2</h3>
+        <p>Open-source reasoning dataset with explicit chain-of-thought guidance for personal finance LLMs.</p>
+        <a href="https://huggingface.co/datasets/akhil-theerthala/PersonalFinance_v2" target="_blank" rel="noopener">View the dataset →</a>
+      </div>
+      <div class="card">
+        <div class="card-meta">
+          <span class="tag">Research</span>
+          <span class="tag">FinNLP 2025</span>
+        </div>
+        <h3 class="card-title">Synthesizing Behaviourally-Grounded Reasoning Chains</h3>
+        <p>Solo-author paper accepted to the FinNLP Workshop at EMNLP 2025, documenting my dataset methodology.</p>
+        <a href="{{ "/publications" | relative_url }}">Read the abstract →</a>
+      </div>
+      <div class="card">
+        <div class="card-meta">
+          <span class="tag">Product impact</span>
+        </div>
+        <h3 class="card-title">Perfios IdeaFest finalist</h3>
+        <p>Prototype storytelling interfaces that translate financial statements into conversations for CX teams.</p>
+        <a href="{{ "/projects" | relative_url }}">See the process →</a>
+      </div>
     </div>
   </div>
-</div>
+</section>
 
-## Impact & Statistics
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-eyebrow">Professional timeline</span>
+      <h2 class="section-title">Moments that shaped my path.</h2>
+    </div>
+    <div class="journey">
+      <div class="journey-year">
+        <h3>2025</h3>
+        <div class="journey-events">
+          <span>Promoted to Senior Data Scientist at Perfios, leading reasoning-first initiatives.</span>
+          <span>Volunteer researcher at the Georgia Tech Financial Services Innovation Lab.</span>
+          <span>Published my first solo-author paper at FinNLP, EMNLP 2025.</span>
+          <span>Won the Bespoke Labs × HuggingFace × Together.ai reasoning dataset competition.</span>
+        </div>
+      </div>
+      <div class="journey-year">
+        <h3>2023</h3>
+        <div class="journey-events">
+          <span>Graduated from IIT Kharagpur (B.Tech, Aerospace Engineering).</span>
+          <span>Joined Perfios as an Applied Scientist-I focused on production fintech models.</span>
+          <span>Began documenting ML learnings through writing and talks.</span>
+        </div>
+      </div>
+      <div class="journey-year">
+        <h3>2022</h3>
+        <div class="journey-events">
+          <span>Data Science Intern at Perfios — first experience shipping ML to real users.</span>
+          <span>Undergraduate researcher at VGSOM exploring crowdfunding analytics.</span>
+          <span>Recipient of the Udacity × AWS Machine Learning Scholarship.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-* **5000+** All-time downloads across HuggingFace
-* **600+** Direct model downloads from my profile across 5 specialized financial AI models
-* **29000+** Additional downloads through third-party quantized versions (bartowski, mradermacher)
-* **4400+** All-time dataset downloads across 9 curated datasets
-<!-- * Open-source contributions to **AI for Food Allergies** project from HuggingFace -->
-
-## Featured Work
-
-### PersonalFinance_v2 Dataset
-
-*Competition Winner • 1600+ all-time downloads • 24 likes*
-
-First prize winner in the Reasoning Dataset Creation Competition 2025. Features 7.04k high-quality financial reasoning examples with explicit chain-of-thought explanations.
-
-[View on HuggingFace →](https://huggingface.co/datasets/akhil-theerthala/PersonalFinance_v2)
-
-### Kuvera Model Series
-
-*5 models • 600+ all-time downloads • Financial AI*
-
-Specialized language models (8B, 4B, 12B, 14B parameters) optimized for personal finance reasoning and single-GPU deployment in production environments.
-
-[View Models →](https://huggingface.co/akhil-theerthala)
-
-### Social Media Impact on Crowdfunding
-
-*9-month undergraduate research project*
-
-Research conducted under Dr. Swagato Chatterjee investigating the relationship between social media engagement and crowdfunding campaign success. Analyzed patterns in social media metrics and their correlation with funding outcomes.
-
-## Professional Experience
-
-**Senior Data Scientist** - Perfios Software Solutions *(Mar 2025 - Present)*  
-Leading advanced AI research initiatives and cross-functional AI implementation projects. Spearheading strategic ML development for enterprise-scale financial applications.
-
-**Applied Scientist-I** - Perfios Software Solutions *(Jun 2023 - Mar 2025)*  
-Led AI strategy for fintech applications. Developed production-ready LLM systems serving enterprise clients. Optimized document processing latency and improved model performance for financial document analysis. Built and deployed machine learning models for automated financial data extraction and validation.
-
-**Data Science Intern** - Perfios Software Solutions *(May 2022 - Jul 2022)*  
-Gained foundational experience in financial data processing and machine learning model development in production environments.
-
-## Research Experience
-
-**Research Volunteer** - Georgia Tech Financial Services Innovation Lab *(Aug 2025- Present)*
-
-* Developing generalized financial reasoning models and validating their performance through rigorous ablation studies across multiple model scales and difficulty bands.
-
-**Research Intern** - VGSOM, IIT Kharagpur *(Aug 2022 - Apr 2023)*  
-**Project:** Impact of Social Media engagement on Crowdfunding Success
-
-* Conducted research under Dr. Swagato Chatterjee investigating the relationship between social media engagement and crowdfunding campaign success. Analyzed patterns in social media metrics and their correlation with funding outcomes.
-
-## Education
-
-**B.Tech Aerospace Engineering** - IIT Kharagpur (2019-2023)  
-Advanced ML/AI coursework including Graphical and Generative Modelling, Dependable AI-ML, and Deep Learning Foundations.
-
-**Udacity-AWS Machine Learning Scholarship** - 1st Cohort (Sep 2022)  
-Selected for prestigious machine learning scholarship program in collaboration with AWS.
-
-**Undergraduate Research** - Social media impact on crowdfunding campaigns (9 months under Dr. Swagato Chatterjee)
-
-## Publications & Writing
-
-**Research Papers**
-* "Synthesizing Behaviorally-Grounded Reasoning Chains: A Data-Generation Framework for Personal Finance LLMs" • *FinNLP, EMNLP 2025*
-
-**Technical Writing**
-* [Medium](https://medium.com/@akhiltvsn) - 212 followers, published on Towards AI
-
-## Technical Expertise
-
-**Core Technologies:** PyTorch, HuggingFace Transformers, TRL, TensorFlow, Docker, Git
-
-**Specializations:** Financial AI, Chain-of-thought reasoning, Single-GPU optimization, Production ML systems, Dataset creation
-
-**Domains:** LLM Data Curation, Efficient Model training, Document processing, Enterprise AI deployment
-
----
+<section class="section">
+  <div class="container">
+    <div class="cta">
+      <div class="cta-text">
+        <h3>Working on finance AI or reasoning data?</h3>
+        <p>I'm always happy to exchange notes, mentor teams, or explore collaborations.</p>
+      </div>
+      <a class="button primary" href="{{ "/contact" | relative_url }}">Get in touch</a>
+    </div>
+  </div>
+</section>

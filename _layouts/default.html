@@ -1,103 +1,117 @@
 <!DOCTYPE html>
-<html lang="{{ site.lang | default: "en-US" }}">
+<html lang="{{ site.lang | default: "en-US" }}" data-theme="dark">
   <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-{% seo %}
+    {% seo %}
     <link rel="stylesheet" href="{{ "/assets/css/style.css?v=" | append: site.github.build_revision | relative_url }}">
-
-    <link rel="preload" href="{{site.logo | relative_url}}" as="image">
-    <!--[if lt IE 9]>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <![endif]-->
-    {% include head-custom.html %}
-  </head>
-  <body data-theme="dark">
-    <div class="wrapper">
-      <div class="sidebar">
-        <!-- Theme Toggle -->
-        <div class="theme-toggle">
-          <label class="theme-switch">
-            <input type="checkbox" id="theme-toggle">
-            <span class="theme-slider">
-              <span class="theme-icon moon-icon">🌙</span>
-              <span class="theme-icon sun-icon">☀️</span>
-            </span>
-          </label>
-        </div>
-
-        <header>
-          {% if site.logo %}
-            <img class="img-circle" src="{{site.logo | relative_url}}" alt="Logo">
-          {% endif %}
-
-          {% if site.blank_title %}
-            <h1>{{ site.title | default: site.github.repository_name }}</h1>
-          {% else %}
-            <h1><a href="{{ "/" | absolute_url }}">{{ site.title | default: site.github.repository_name }}</a></h1>
-          {% endif %}
-
-          {% if site.email %}
-            <p class="addr"><i class="fa-regular fa-envelope"></i>&nbsp;{{ site.email }}</p>
-          {% endif %}
-
-          <p>{{ site.description | default: site.github.project_tagline }}</p>
-
-          {% include sidebar.html %}
-
-        </header>
-
-        {% include links-mobile.html %}
-
-        <div class="sidebar-footer">
-          {%- include footer.html -%}
-        </div>
-      </div>
-      <section>
-
-      {{ content }}
-
-      </section>
-      <footer>
-        {%- include footer.html -%}
-      </footer>
-    </div>
-    <script src="{{ "/assets/js/scale.fix.js" | relative_url }}"></script>
-
     <script>
-      // Apply theme immediately to prevent flash
       (function() {
-        const theme = localStorage.getItem('theme') || 'dark';
-        document.body.setAttribute('data-theme', theme);
+        const storedTheme = localStorage.getItem('theme');
+        if (storedTheme) {
+          document.documentElement.setAttribute('data-theme', storedTheme);
+        }
       })();
     </script>
+    {% include head-custom.html %}
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header">
+        <div class="container">
+          <a class="brand" href="{{ "/" | absolute_url }}">
+            {% if site.logo %}
+              <span class="brand-avatar">
+                <img src="{{ site.logo | relative_url }}" alt="{{ site.title }} logo">
+              </span>
+            {% endif %}
+            <span class="brand-text">
+              <span class="brand-name">{{ site.title | default: site.github.repository_name }}</span>
+              <span class="brand-role">{{ site.description }}</span>
+            </span>
+          </a>
+
+          <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+
+          <nav class="site-nav" aria-label="Primary">
+            <a href="{{ "/projects" | relative_url }}">Projects</a>
+            <a href="{{ "/research" | relative_url }}">Research</a>
+            <a href="{{ "/publications" | relative_url }}">Publications</a>
+            <a href="{{ "/blog" | relative_url }}">Writing</a>
+            <a href="{{ "/contact" | relative_url }}">Contact</a>
+          </nav>
+
+          <div class="header-actions">
+            <a class="button ghost" href="{{ "/contact" | relative_url }}">Contact</a>
+            <label class="theme-switch" for="theme-toggle">
+              <input type="checkbox" id="theme-toggle" aria-label="Toggle dark mode">
+              <span class="switch-track">
+                <span class="switch-icon moon">🌙</span>
+                <span class="switch-icon sun">☀️</span>
+              </span>
+            </label>
+          </div>
+        </div>
+      </header>
+
+      <main class="site-main">
+        {{ content }}
+      </main>
+
+      <footer class="site-footer">
+        <div class="container">
+          <div class="footer-meta">
+            <p>© {{ 'now' | date: "%Y" }} {{ site.title }} · Crafted with curiosity</p>
+            <p class="footer-tagline">Always exploring the playful side of serious AI.</p>
+          </div>
+          {% if site.sidebar %}
+            <ul class="footer-social">
+              {% for link in site.sidebar %}
+                <li>
+                  <a href="{{ link.link }}"{% if link.link contains 'http' %} target="_blank" rel="noopener"{% endif %}>
+                    {{ link.icon }}<span>{{ link.name }}</span>
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+      </footer>
+    </div>
 
     <script>
-      // Theme Toggle Functionality
       document.addEventListener('DOMContentLoaded', function() {
         const themeToggle = document.getElementById('theme-toggle');
-        const body = document.body;
-
-        // Get stored theme preference or default to dark
-        const storedTheme = localStorage.getItem('theme') || 'dark';
-
-        // Set initial theme state
+        const root = document.documentElement;
+        const storedTheme = localStorage.getItem('theme') || root.getAttribute('data-theme') || 'dark';
         themeToggle.checked = storedTheme === 'light';
+        root.setAttribute('data-theme', storedTheme);
 
-        // Theme toggle event listener
         themeToggle.addEventListener('change', function() {
           const newTheme = this.checked ? 'light' : 'dark';
-          body.setAttribute('data-theme', newTheme);
+          root.setAttribute('data-theme', newTheme);
           localStorage.setItem('theme', newTheme);
-
-          // Add smooth transition effect
-          body.style.transition = 'all 0.3s ease';
-          setTimeout(() => {
-            body.style.transition = '';
-          }, 300);
         });
+
+        const navToggle = document.querySelector('.nav-toggle');
+        const nav = document.querySelector('.site-nav');
+        if (navToggle && nav) {
+          navToggle.addEventListener('click', function() {
+            const isOpen = nav.classList.toggle('is-open');
+            navToggle.setAttribute('aria-expanded', isOpen);
+          });
+          nav.querySelectorAll('a').forEach(function(link) {
+            link.addEventListener('click', function() {
+              nav.classList.remove('is-open');
+              navToggle.setAttribute('aria-expanded', 'false');
+            });
+          });
+        }
       });
     </script>
   </body>
