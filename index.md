@@ -8,7 +8,7 @@ title: Home
     <div class="hero-intro">
       <div class="hero-header">
         <figure class="hero-photo">
-          <img src="{{ "/profile_photo.jpg" | relative_url }}" alt="Portrait of Akhil Theerthala">
+          <img src="{{ "/profile_photo.png" | relative_url }}" alt="Portrait of Akhil Theerthala">
         </figure>
         <h1 class="hero-name">Akhil Theerthala</h1>
       </div>
@@ -106,14 +106,14 @@ title: Home
     </div>
     <div class="open-source-summary">
       <div class="summary-card">
-        <span class="summary-label">Total self-hosted downloads</span>
+        <span class="summary-label">Total artefact downloads on HuggingFace</span>
         <span class="summary-value">5,047</span>
-        <span class="summary-sub">Across models & datasets</span>
+        <span class="summary-sub">Across various models & datasets</span>
       </div>
       <div class="summary-card">
-        <span class="summary-label">Total self-hosted likes</span>
+        <span class="summary-label">Total artefact likes on HuggingFace</span>
         <span class="summary-value">86</span>
-        <span class="summary-sub">Community love captured to date</span>
+        <span class="summary-sub">Across various models & datasets</span>
       </div>
     </div>
     <div class="open-source-grid">
@@ -139,8 +139,8 @@ title: Home
         <div class="card-meta">
           <span class="tag">Community GGUF</span>
         </div>
-        <h3 class="card-title">Finance Reasoning GGUF Ports</h3>
-        <p>Optimised community releases making single-device deployments effortless.</p>
+        <h3 class="card-title">Community GGUF Ports</h3>
+        <p>Optimised community releases making single-device deployments effortless. Developed by bartwoski, mradermacher</p>
         <dl class="stat-pairs">
           <div>
             <dt>Downloads</dt>
