@@ -3,176 +3,137 @@ layout: default
 title: Blog
 ---
 
-# ✍️ Blog & Writings
+<section class="hero">
+  <div class="container">
+    <div class="hero-copy">
+      <p class="hero-eyebrow">Writing playground</p>
+      <h1 class="hero-title">Documenting experiments, lessons, and playful wins.</h1>
+      <p class="hero-description">I write so other builders can skip the guesswork. Expect candid stories from research, production ML, and the fun side of learning in public.</p>
+      <div class="hero-actions">
+        <a class="button primary" href="https://neuronuts.in" target="_blank" rel="noopener">Visit NeuroNuts</a>
+        <a class="button secondary" href="https://medium.com/@akhiltvsn" target="_blank" rel="noopener">Follow on Medium</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-content">
+        <div class="stat-block">
+          <div>
+            <div class="stat-number">181</div>
+            <div class="stat-label">Medium followers</div>
+          </div>
+        </div>
+        <div class="stat-block">
+          <div>
+            <div class="stat-number">2</div>
+            <div class="stat-label">Platforms publishing my work</div>
+          </div>
+        </div>
+        <p class="hero-description">Writing is where I remix research into friendly stories, mini-guides, and reflective notes.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-## 🌟 NeuroNuts Blog
-**Founder & Primary Author | [neuronuts.in](https://neuronuts.in)**
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-eyebrow">NeuroNuts</span>
+      <h2 class="section-title">My home for playful ML storytelling.</h2>
+      <p class="section-description">NeuroNuts is the cozy corner of the internet where I document experiments, failures, and aha moments.</p>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🧠</div>
+        <h3 class="card-title">Why I built it</h3>
+        <p>Started as a side quest, evolved into a community project focused on making ML education welcoming.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🪄</div>
+        <h3 class="card-title">Content vibe</h3>
+        <p>Breakdowns of reasoning techniques, dataset diaries, and live experiments with new tools.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🧩</div>
+        <h3 class="card-title">Formats</h3>
+        <p>Newsletter-style digests, interactive notebooks, and guides that blend storytelling with code.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-*"Just a fun project that I started. But as I maintained it, I started seeing it as something more. This time, I want to do it right. Keep things simple. Just share what I learn."*
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-eyebrow">Medium features</span>
+      <h2 class="section-title">Articles that readers loved.</h2>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-meta">
+          <span class="tag">Top pick</span>
+        </div>
+        <h3 class="card-title">Machine Learning Roadmap — Part 1</h3>
+        <p>Personal journey tips for beginners looking to enter ML with clarity and intention.</p>
+      </div>
+      <div class="card">
+        <div class="card-meta">
+          <span class="tag">Competition insights</span>
+        </div>
+        <h3 class="card-title">Creating a Reasoning Dataset with No Budget</h3>
+        <p>Behind-the-scenes look at building the PersonalFinance_v2 dataset with minimal resources.</p>
+      </div>
+      <div class="card">
+        <div class="card-meta">
+          <span class="tag">Course notes</span>
+        </div>
+        <h3 class="card-title">MLOps Specialization Reviews</h3>
+        <p>Breakdowns of what matters in real deployments and how to evaluate upskilling programs.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-NeuroNuts is my personal technical blog where I share insights, practical tips, and learning experiences in machine learning and AI. The blog focuses on making complex concepts accessible and providing actionable guidance for ML practitioners at all levels.
-
-### 🎯 Blog Philosophy
-- **Keep things simple**: Complex concepts explained in understandable terms
-- **Share what I learn**: Real experiences from research and industry work  
-- **Practical focus**: Actionable insights over theoretical discussions
-- **Community-driven**: Content that helps others in their ML journey
-
----
-
-## 📝 Medium Publications
-**181 Followers | Contributing Writer on Towards AI**
-
-[![Medium](https://img.shields.io/badge/Medium-Follow-12100E?logo=medium)](https://medium.com/@akhiltvsn)
-
-### Featured Articles:
-
-#### 🗺️ "Machine Learning Roadmap — Part 1: Personal Recommendations for Beginners"
-*A comprehensive guide for ML beginners based on personal experience and industry insights*
-
-**Key Topics:**
-- Structured learning path for ML newcomers
-- Personal recommendations based on real-world experience
-- Practical advice on avoiding common pitfalls
-- Resource recommendations and learning strategies
-
-**Impact:** Community favorite for starting ML journey, shared across multiple platforms
-
----
-
-#### 💡 "Creating a Reasoning Dataset with No Budget"
-*Practical methodology for dataset creation based on competition-winning experience*
-
-**Key Topics:**
-- Cost-effective approaches to AI research
-- Step-by-step dataset creation methodology
-- Quality assurance for reasoning datasets
-- Lessons learned from winning the Reasoning Dataset Competition
-
-**Recognition:** Based on the PersonalFinance_v2 dataset that won first place in the Bespoke Labs/HuggingFace competition
-
----
-
-#### 📚 MLOps Specialization Course Reviews
-*In-depth technical analysis and practical insights from hands-on experience*
-
-**Series Includes:**
-- Detailed course breakdowns and learning outcomes
-- Practical applications in real-world scenarios
-- Comparison of different MLOps approaches
-- Recommendations for different career paths
-
-**Value:** Helping community make informed decisions about professional development
-
----
-
-## 🎙️ Content Themes
-
-### 🔬 Research & Development
-- Dataset creation methodologies
-- Model optimization techniques
-- Research insights from competitions and publications
-- Open source contributions and their impact
-
-### 🏭 Production Machine Learning
-- Deploying models at scale
-- Optimization strategies for resource-constrained environments
-- Real-world MLOps challenges and solutions
-- Performance monitoring and model maintenance
-
-### 📈 Career & Learning
-- Personal journey from aerospace engineering to AI
-- Transitioning between domains
-- Continuous learning strategies
-- Building a portfolio in AI/ML
-
-### 💰 Financial AI & FinTech
-- Domain-specific model development
-- Challenges in financial document processing
-- Regulatory considerations in AI for finance
-- Scaling AI solutions in enterprise environments
-
----
-
-## 📊 Content Impact
-
-### Reader Engagement:
-- **181 Medium followers** with growing engagement
-- **Published on Towards AI** - premier AI publication
-- **Cross-platform sharing** of educational content
-- **Community discussions** sparked by technical posts
-
-### Educational Value:
-- **Beginner-friendly roadmaps** helping newcomers navigate ML
-- **Practical tutorials** based on real-world experience
-- **Course reviews** saving time and money for learners
-- **Competition insights** sharing winning strategies
-
----
-
-## 🚀 Upcoming Content
-
-### In Development:
-- **"Building Your First Reasoning Dataset"** - Complete tutorial series
-- **"Single-GPU Deployment Strategies"** - Optimization techniques for resource-constrained environments
-- **"From Academic Research to Production"** - Bridging the gap between research and industry
-- **"Financial AI: Challenges and Opportunities"** - Domain-specific insights
-
-### Content Series Planning:
-- **Deep dive into transformer architecture** (complementing BYOT repository)
-- **MLOps best practices** from enterprise experience
-- **Competition strategies** for Kaggle and HuggingFace competitions
-- **Career transition stories** in AI/ML field
-
----
-
-## 💬 Community Engagement
-
-### Discussion Topics:
-- **AI Ethics in Financial Applications**: Responsible AI development
-- **Open Source vs. Proprietary**: Making strategic decisions in AI projects
-- **Academic vs. Industry**: Balancing research and practical implementation
-- **Resource Optimization**: Doing more with less in AI development
-
-### Speaking & Presentations:
-- **Technical workshops** on dataset creation
-- **Industry talks** on production ML at scale
-- **Educational sessions** on career transitions in tech
-
----
-
-## 📧 Newsletter & Updates
-
-Stay updated with my latest writings and insights:
-
-- **NeuroNuts Updates**: [Subscribe on the blog](https://neuronuts.in)
-- **Medium Stories**: [Follow @akhiltvsn](https://medium.com/@akhiltvsn)
-- **Professional Updates**: [Connect on LinkedIn](https://linkedin.com/in/akhil-theerthala)
-
----
-
-## 🤝 Collaboration & Guest Posts
-
-I'm open to:
-- **Guest posting** on relevant platforms
-- **Collaborative writing** on AI/ML topics
-- **Technical interviews** and discussions
-- **Workshop facilitation** on dataset creation and model optimization
-
-### Topics I'd Love to Explore:
-- Cross-domain applications of AI
-- Efficient AI for developing markets
-- Academic-industry collaboration models
-- Sustainable AI development practices
-
----
-
-*Have a topic you'd like me to write about? Interested in collaboration? Feel free to [reach out](mailto:akhiltvsn@gmail.com)!*
-
----
-
-## 📱 Follow My Writing Journey
-
-[![Medium](https://img.shields.io/badge/Medium-12100E?style=for-the-badge&logo=medium&logoColor=white)](https://medium.com/@akhiltvsn)
-[![NeuroNuts](https://img.shields.io/badge/NeuroNuts-Blog-orange?style=for-the-badge)](https://neuronuts.in)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/akhil-theerthala)
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-eyebrow">Content themes</span>
+      <h2 class="section-title">Expect curious, honest storytelling.</h2>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🔬</div>
+        <h3 class="card-title">Research & development</h3>
+        <ul class="list list-check">
+          <li>Dataset creation diaries</li>
+          <li>Reasoning evaluation walkthroughs</li>
+          <li>Open-source contribution notes</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏭</div>
+        <h3 class="card-title">Production machine learning</h3>
+        <ul class="list list-check">
+          <li>Latency tuning and deployment stories</li>
+          <li>Real-world MLOps lessons</li>
+          <li>Bridging research with product</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-icon">📈</div>
+        <h3 class="card-title">Career & learning</h3>
+        <ul class="list list-check">
+          <li>Transitioning from aerospace to AI</li>
+          <li>Scholarships and fellowships</li>
+          <li>Building a playful portfolio</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cta">
+      <div class="cta-text">
+        <h3>Have a topic request?</h3>
+        <p>I love writing with friends. Drop an idea and let's create something fun together.</p>
+      </div>
+      <a class="button primary" href="{{ "/contact" | relative_url }}">Suggest a topic</a>
+    </div>
+  </div>
+</section>
