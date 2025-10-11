@@ -27,8 +27,8 @@
               </span>
             {% endif %}
             <span class="brand-text">
-              <span class="brand-kicker">{{ site.description }}</span>
               <span class="brand-name">{{ site.title | default: site.github.repository_name }}</span>
+              <span class="brand-role">{{ site.description }}</span>
             </span>
           </a>
 
@@ -47,7 +47,7 @@
           </nav>
 
           <div class="header-actions">
-            <a class="button ghost" href="{{ "/contact" | relative_url }}">Say hi</a>
+            <a class="button ghost" href="{{ "/contact" | relative_url }}">Contact</a>
             <label class="theme-switch" for="theme-toggle">
               <input type="checkbox" id="theme-toggle" aria-label="Toggle dark mode">
               <span class="switch-track">

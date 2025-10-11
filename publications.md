@@ -6,25 +6,30 @@ title: Publications
 <section class="hero">
   <div class="container">
     <div class="hero-copy">
-      <p class="hero-eyebrow">Published work</p>
-      <h1 class="hero-title">Stories, studies, and papers that shaped my journey.</h1>
-      <p class="hero-description">From conference publications to long-form essays, I love translating technical insights into narratives that spark action.</p>
+      <p class="hero-eyebrow">Writing & speaking</p>
+      <h1 class="hero-title">Research papers, essays, and talks.</h1>
+      <p class="hero-description">
+        I document what I learn so teams can build responsibly. From peer-reviewed work to long-form guides,
+        my goal is to make reasoning-first AI approachable.
+      </p>
     </div>
     <div class="hero-card">
       <div class="hero-card-content">
         <div class="stat-block">
           <div>
-            <div class="stat-number">212+</div>
-            <div class="stat-label">Medium followers</div>
+            <div class="stat-number">FinNLP</div>
+            <div class="stat-label">EMNLP 2025 solo-author publication</div>
           </div>
         </div>
         <div class="stat-block">
           <div>
-            <div class="stat-number">FinNLP</div>
-            <div class="stat-label">EMNLP 2025</div>
+            <div class="stat-number">NeuroNuts</div>
+            <div class="stat-label">Personal blog focused on applied ML</div>
           </div>
         </div>
-        <p class="hero-description">A blend of academic rigor, industry perspective, and playful storytelling to make AI approachable.</p>
+        <p class="hero-description">
+          Expect a mix of practical walkthroughs, reflections from production work, and community-first storytelling.
+        </p>
       </div>
     </div>
   </div>
@@ -33,8 +38,8 @@ title: Publications
 <section class="section">
   <div class="container">
     <div class="section-header">
-      <span class="section-eyebrow">Research papers</span>
-      <h2 class="section-title">Peer-reviewed work.</h2>
+      <span class="section-eyebrow">Peer-reviewed</span>
+      <h2 class="section-title">Academic contributions.</h2>
     </div>
     <div class="research-grid">
       <div class="research-card">
@@ -42,9 +47,9 @@ title: Publications
           <span class="tag">FinNLP 2025</span>
           <span class="tag">Solo author</span>
         </div>
-        <h3 class="card-title">Synthesizing Behaviorally-Grounded Reasoning Chains</h3>
-        <p>Introduces a data-generation framework for building domain-specific reasoning datasets that retain behavioral nuance.</p>
-        <p class="card-text">Published at the FinNLP Workshop, EMNLP 2025.</p>
+        <h3 class="card-title">Synthesizing Behaviourally-Grounded Reasoning Chains</h3>
+        <p>Introduces a reproducible process for generating finance-specific chain-of-thought data inspired by real advisory sessions.</p>
+        <p class="card-text">Presented at the FinNLP Workshop, EMNLP 2025.</p>
       </div>
     </div>
   </div>
@@ -54,32 +59,32 @@ title: Publications
   <div class="container">
     <div class="section-header">
       <span class="section-eyebrow">Long-form writing</span>
-      <h2 class="section-title">Articles & series that readers keep bookmarked.</h2>
-      <p class="section-description">Writing across Medium and my NeuroNuts blog to share lessons from research, competitions, and production deployments.</p>
+      <h2 class="section-title">Guides and essays.</h2>
+      <p class="section-description">Selected pieces from my NeuroNuts blog and contributions to publications like Towards AI.</p>
     </div>
     <div class="card-grid">
       <div class="card">
         <div class="card-meta">
-          <span class="tag">🗺️ Roadmap</span>
+          <span class="tag">Roadmap</span>
         </div>
         <h3 class="card-title">Machine Learning Roadmap — Part 1</h3>
-        <p>Personal recommendations for new ML practitioners covering learning strategies, community resources, and staying motivated.</p>
+        <p>Personal recommendations for newcomers balancing theory, projects, and community learning.</p>
         <a href="https://medium.com/@akhiltvsn" target="_blank" rel="noopener">Read on Medium →</a>
       </div>
       <div class="card">
         <div class="card-meta">
-          <span class="tag">💡 Tutorial</span>
+          <span class="tag">Dataset craft</span>
         </div>
         <h3 class="card-title">Creating a Reasoning Dataset with No Budget</h3>
-        <p>A hands-on walkthrough of the methodology behind my competition-winning dataset and the quality gates I relied on.</p>
+        <p>Behind-the-scenes look at the research and quality checks that led to PersonalFinance_v2.</p>
         <a href="https://medium.com/@akhiltvsn" target="_blank" rel="noopener">Read the guide →</a>
       </div>
       <div class="card">
         <div class="card-meta">
-          <span class="tag">🎓 Course notes</span>
+          <span class="tag">Course notes</span>
         </div>
-        <h3 class="card-title">MLOps Specialization Reviews</h3>
-        <p>Detailed breakdowns of curriculum, what stuck in production, and how to choose the right upskilling path.</p>
+        <h3 class="card-title">MLOps Specialisation Reviews</h3>
+        <p>Practical takeaways from industry-focused programmes and how they influenced my day-to-day workflow.</p>
         <a href="https://medium.com/@akhiltvsn" target="_blank" rel="noopener">Browse the series →</a>
       </div>
     </div>
@@ -89,25 +94,25 @@ title: Publications
 <section class="section">
   <div class="container">
     <div class="section-header">
-      <span class="section-eyebrow">Talks & appearances</span>
-      <h2 class="section-title">Sharing the energy live.</h2>
+      <span class="section-eyebrow">Talks & sessions</span>
+      <h2 class="section-title">Sharing with communities.</h2>
     </div>
     <div class="card-grid">
       <div class="card">
         <div class="card-icon">🎙️</div>
         <h3 class="card-title">Community AMAs & panels</h3>
-        <p>Regularly join AI community events to talk about reasoning data design, evaluation, and playful experimentation.</p>
+        <p>Conversations on reasoning dataset design, evaluation, and early-career growth in applied AI.</p>
       </div>
       <div class="card">
         <div class="card-icon">🏢</div>
-        <h3 class="card-title">Perfios knowledge sessions</h3>
-        <p>Lead internal workshops on dataset hygiene, evaluation guardrails, and building a culture of curiosity.</p>
+        <h3 class="card-title">Perfios learning sessions</h3>
+        <p>Internal workshops on data quality, experimentation, and building empathy into financial AI experiences.</p>
       </div>
     </div>
     <div class="cta">
       <div class="cta-text">
         <h3>Want me to speak at your event?</h3>
-        <p>Let's design a session that mixes research insights with a little bit of fun.</p>
+        <p>Let's design a talk or workshop tailored to your audience.</p>
       </div>
       <a class="button primary" href="{{ "/contact" | relative_url }}">Book a session</a>
     </div>

@@ -1,30 +1,43 @@
 ---
 layout: default
 title: Research
+description: Research publications, competitions, and investigations led by Akhil Theerthala
 ---
 
 <section class="hero">
   <div class="container">
     <div class="hero-copy">
-      <p class="hero-eyebrow">Curiosity lab</p>
-      <h1 class="hero-title">Exploring how reasoning models learn, adapt, and delight.</h1>
-      <p class="hero-description">I chase research questions that make financial AI more transparent, safe, and playful for the people who trust it. Here's a look at the labs, collaborations, and studies I lead or support.</p>
+      <p class="hero-eyebrow">Research</p>
+      <h1 class="hero-title">Curiosity backed by evidence.</h1>
+      <p class="hero-description">
+        My research spans reasoning datasets, financial NLP, and how people interact with AI systems.
+        I enjoy turning messy questions into reproducible studies and practical recommendations.
+      </p>
+      <div class="hero-actions">
+        <a class="button primary" href="{{ "/publications" | relative_url }}">See publications</a>
+        <a class="button ghost" href="https://huggingface.co/datasets/akhil-theerthala" target="_blank" rel="noopener">Explore datasets</a>
+      </div>
     </div>
     <div class="hero-card">
       <div class="hero-card-content">
         <div class="stat-block">
           <div>
-            <div class="stat-number">FinNLP</div>
-            <div class="stat-label">EMNLP 2025 publication</div>
+            <div class="stat-number">1st place</div>
+            <div class="stat-label">Reasoning Dataset Competition 2025</div>
           </div>
         </div>
         <div class="stat-block">
           <div>
-            <div class="stat-number">Georgia Tech</div>
-            <div class="stat-label">Financial Services Innovation Lab</div>
+            <div class="stat-number">FinNLP</div>
+            <div class="stat-label">EMNLP 2025 solo-author paper</div>
           </div>
         </div>
-        <p class="hero-description">Research shaped by equal parts rigor and whimsy: from data generation to evaluation frameworks and academic collaborations.</p>
+        <div class="stat-block">
+          <div>
+            <div class="stat-number">FSIL</div>
+            <div class="stat-label">Volunteer researcher at Georgia Tech Financial Services Innovation Lab</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -33,32 +46,58 @@ title: Research
 <section class="section">
   <div class="container">
     <div class="section-header">
-      <span class="section-eyebrow">Active collaborations</span>
-      <h2 class="section-title">Where my research energy lives right now.</h2>
+      <span class="section-eyebrow">Competition recognition</span>
+      <h2 class="section-title">PersonalFinance_v2</h2>
+      <p class="section-description">Awarded first place in the Bespoke Labs × HuggingFace × Together.ai reasoning dataset competition.</p>
+    </div>
+    <div class="card">
+      <div class="card-meta">
+        <span class="tag">Dataset design</span>
+        <span class="tag">Chain-of-thought</span>
+      </div>
+      <p>
+        PersonalFinance_v2 captures 7k+ everyday finance conversations with explicit reasoning steps, grounded in behavioural research.
+        It balances empathetic tone with verifiable facts and has become the backbone for my production model work.
+      </p>
+      <ul class="list list-check">
+        <li>Scenario coverage for budgeting, credit, investing, and financial planning</li>
+        <li>Quality control rubric inspired by financial advisory training</li>
+        <li>Released under Apache-2.0 to encourage community use</li>
+      </ul>
+      <a class="button ghost" href="https://huggingface.co/datasets/akhil-theerthala/PersonalFinance_v2" target="_blank" rel="noopener">Review the dataset →</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-eyebrow">Active investigations</span>
+      <h2 class="section-title">Questions I'm exploring right now.</h2>
     </div>
     <div class="card-grid">
       <div class="card">
         <div class="card-meta">
-          <span class="tag">🤝 Volunteer researcher</span>
+          <span class="tag">Volunteer research</span>
         </div>
         <h3 class="card-title">Georgia Tech Financial Services Innovation Lab</h3>
-        <p>Building generalized reasoning models for finance by running ablation studies across model scales, datasets, and prompt strategies.</p>
+        <p>Collaborating on evaluation frameworks for trustworthy financial AI.</p>
         <ul class="list list-check">
-          <li>Designing evaluation frameworks for financial tasks</li>
-          <li>Studying domain adaptation for reasoning-heavy prompts</li>
-          <li>Collaborating on reproducible research pipelines</li>
+          <li>Designing data collection processes that reduce annotation fatigue</li>
+          <li>Studying how domain experts audit reasoning traces</li>
+          <li>Documenting best practices for interdisciplinary research teams</li>
         </ul>
       </div>
       <div class="card">
         <div class="card-meta">
-          <span class="tag">🏢 Perfios</span>
+          <span class="tag">Academic</span>
         </div>
-        <h3 class="card-title">Enterprise reasoning systems</h3>
-        <p>Leading AI research streams that blend generative models with document intelligence in production fintech products.</p>
+        <h3 class="card-title">FinNLP 2025</h3>
+        <p>Solo-author paper on synthesising behaviourally grounded reasoning chains for finance LLMs.</p>
         <ul class="list list-check">
-          <li>Designing low-latency reasoning loops for credit operations</li>
-          <li>Prototyping chain-of-thought moderation for compliance</li>
-          <li>Operationalizing evaluation dashboards for business stakeholders</li>
+          <li>Bridges qualitative interviews with synthetic data generation</li>
+          <li>Shares evaluation heuristics for tone, empathy, and accuracy</li>
+          <li>Includes ablation studies on prompt structure choices</li>
         </ul>
       </div>
     </div>
@@ -68,36 +107,25 @@ title: Research
 <section class="section">
   <div class="container">
     <div class="section-header">
-      <span class="section-eyebrow">Research highlights</span>
-      <h2 class="section-title">Selected work & publications.</h2>
+      <span class="section-eyebrow">Foundational work</span>
+      <h2 class="section-title">Where it started.</h2>
     </div>
-    <div class="research-grid">
-      <div class="research-card">
-        <div class="card-meta">
-          <span class="tag">📄 FinNLP 2025</span>
+    <div class="journey">
+      <div class="journey-year">
+        <h3>IIT Kharagpur</h3>
+        <div class="journey-events">
+          <span>Undergraduate researcher at Vinod Gupta School of Management with Dr. Swagato Chatterjee.</span>
+          <span>Studied how social media engagement reshapes crowdfunding success metrics.</span>
+          <span>Laid the groundwork for my focus on finance data quality.</span>
         </div>
-        <h3 class="card-title">Synthesizing behaviorally grounded reasoning chains</h3>
-        <p>Proposes a data-generation framework for personal finance LLMs, capturing realistic reasoning paths aligned with user intent.</p>
-        <a href="{{ "/publications" | relative_url }}">Read the abstract →</a>
       </div>
-      <div class="research-card">
-        <div class="card-meta">
-          <span class="tag">📘 Undergraduate research</span>
+      <div class="journey-year">
+        <h3>Perfios</h3>
+        <div class="journey-events">
+          <span>Applied the research to production credit and wealth workflows.</span>
+          <span>Built evaluation loops to keep reasoning transparent for business stakeholders.</span>
+          <span>Shared findings through internal workshops and documentation.</span>
         </div>
-        <h3 class="card-title">Social media impact on crowdfunding</h3>
-        <p>Nine-month study under Dr. Swagato Chatterjee exploring how engagement metrics correlate with funding outcomes.</p>
-        <ul class="list list-check">
-          <li>Analyzed campaign sentiment vs. backer confidence</li>
-          <li>Identified temporal patterns between social buzz and pledges</li>
-          <li>Produced actionable dashboards for campaign designers</li>
-        </ul>
-      </div>
-      <div class="research-card">
-        <div class="card-meta">
-          <span class="tag">📚 Scholarship</span>
-        </div>
-        <h3 class="card-title">Udacity × AWS ML Scholarship</h3>
-        <p>Selected for the inaugural cohort focused on dependable machine learning foundations and responsible AI practices.</p>
       </div>
     </div>
   </div>
@@ -105,33 +133,12 @@ title: Research
 
 <section class="section">
   <div class="container">
-    <div class="section-header">
-      <span class="section-eyebrow">Looking ahead</span>
-      <h2 class="section-title">Questions I'm excited to explore next.</h2>
-    </div>
-    <div class="card-grid">
-      <div class="card">
-        <div class="card-icon">🧪</div>
-        <h3 class="card-title">Playful evaluation</h3>
-        <p>Designing evaluation games that encourage analysts to stress test reasoning models with curiosity instead of fear.</p>
-      </div>
-      <div class="card">
-        <div class="card-icon">🛡️</div>
-        <h3 class="card-title">Trustworthy explanations</h3>
-        <p>Combining chain-of-thought distillation with attribution signals so users can trace every financial recommendation.</p>
-      </div>
-      <div class="card">
-        <div class="card-icon">🌍</div>
-        <h3 class="card-title">Responsible adaptation</h3>
-        <p>Studying how reasoning models adapt across cultures and financial regulations while keeping fairness at the forefront.</p>
-      </div>
-    </div>
     <div class="cta">
       <div class="cta-text">
-        <h3>Have a research idea?</h3>
-        <p>I'm always ready to jam on new experiments, co-author papers, or run bespoke evaluations.</p>
+        <h3>Have a research question in mind?</h3>
+        <p>I'm open to collaborations, peer reviews, and speaking about responsible reasoning systems.</p>
       </div>
-      <a class="button primary" href="{{ "/contact" | relative_url }}">Collaborate with me</a>
+      <a class="button primary" href="{{ "/contact" | relative_url }}">Reach out</a>
     </div>
   </div>
 </section>

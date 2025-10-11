@@ -129,21 +129,21 @@ html[data-theme="light"] .site-header {
 .brand-text {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
-}
-
-.brand-kicker {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--color-text-muted);
+  gap: 0.15rem;
 }
 
 .brand-name {
   font-family: 'Space Grotesk', 'Inter', sans-serif;
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 1.3rem;
+  font-weight: 700;
   letter-spacing: -0.01em;
+}
+
+.brand-role {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
 }
 
 .site-nav {

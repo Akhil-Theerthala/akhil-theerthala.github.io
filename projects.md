@@ -1,42 +1,40 @@
 ---
 layout: default
 title: Projects
-description: AI research projects, open source contributions, and production ML systems by Akhil Theerthala
+description: Financial reasoning projects, open-source releases, and production systems by Akhil Theerthala
 ---
 
 <section class="hero">
   <div class="container">
     <div class="hero-copy">
-      <p class="hero-eyebrow">Project playground</p>
-      <h1 class="hero-title">Reasoning-first AI builds for fintech teams.</h1>
+      <p class="hero-eyebrow">Projects</p>
+      <h1 class="hero-title">Reasoning-first work that ships.</h1>
       <p class="hero-description">
-        A curated set of competition wins, open-source releases, and production systems. Each project keeps things playful while delivering measurable business value.
+        A look at the datasets, model families, and internal tools I craft for finance teams.
+        Everything here has been shaped by real-world constraints and a bias for clarity.
       </p>
       <div class="hero-actions">
-        <a class="button primary" href="https://huggingface.co/akhil-theerthala" target="_blank" rel="noopener">Follow on HuggingFace</a>
-        <a class="button ghost" href="{{ "/contact" | relative_url }}">Partner with me</a>
+        <a class="button primary" href="https://huggingface.co/akhil-theerthala" target="_blank" rel="noopener">Hugging Face profile</a>
+        <a class="button ghost" href="{{ "/contact" | relative_url }}">Collaborate on a project</a>
       </div>
     </div>
     <div class="hero-card">
       <div class="hero-card-content">
         <div class="stat-block">
           <div>
-            <div class="stat-number">5000+</div>
-            <div class="stat-label">Downloads across all releases</div>
+            <div class="stat-number">Perfios</div>
+            <div class="stat-label">Reasoning systems in production for financial partners</div>
           </div>
         </div>
         <div class="stat-block">
           <div>
-            <div class="stat-number">5</div>
-            <div class="stat-label">Production-ready model families</div>
+            <div class="stat-number">Toolkit</div>
+            <div class="stat-label">Reusable evaluation + deployment playbooks</div>
           </div>
         </div>
-        <p class="hero-description">Projects are designed to feel friendly to adopt: fast start guides, documented evaluation, and community support baked in.</p>
-        <div class="pill-group">
-          <span class="pill">Single-GPU friendly</span>
-          <span class="pill">Transparent evaluation</span>
-          <span class="pill">Playful UI samples</span>
-        </div>
+        <p class="hero-description">
+          I prioritise transparent evaluation, thoughtful documentation, and developer experiences that feel friendly.
+        </p>
       </div>
     </div>
   </div>
@@ -46,50 +44,49 @@ description: AI research projects, open source contributions, and production ML 
   <div class="container">
     <div class="section-header">
       <span class="section-eyebrow">Flagship releases</span>
-      <h2 class="section-title">The hits that teams keep coming back to.</h2>
+      <h2 class="section-title">Open work you can explore today.</h2>
     </div>
     <div class="card-grid">
       <div class="card">
         <div class="card-meta">
-          <span class="tag">🏆 1st place</span>
           <span class="tag">Dataset</span>
+          <span class="tag">Competition winner</span>
         </div>
         <h3 class="card-title">PersonalFinance_v2</h3>
-        <p>Reasoning dataset featuring 7k+ conversations with explicit chain-of-thought annotations for consumer finance.</p>
+        <p>7k+ carefully curated conversations for personal finance reasoning with explicit chain-of-thought annotations.</p>
         <ul class="list list-check">
-          <li>Winner of the BespokeLabs × HuggingFace × Together.ai competition</li>
-          <li>Designed for truthfulness and explainability</li>
-          <li>Used to fine-tune Kuvera and partner models</li>
+          <li>Winner of the 2025 Bespoke Labs × HuggingFace × Together.ai competition</li>
+          <li>Behaviourally grounded prompts inspired by financial coaching</li>
+          <li>Apache-2.0 licensed for easy adoption</li>
         </ul>
-        <a href="https://huggingface.co/datasets/akhil-theerthala/PersonalFinance_v2" target="_blank" rel="noopener">Explore dataset →</a>
+        <a href="https://huggingface.co/datasets/akhil-theerthala/PersonalFinance_v2" target="_blank" rel="noopener">View the dataset →</a>
       </div>
       <div class="card">
         <div class="card-meta">
-          <span class="tag">🤖 Model family</span>
+          <span class="tag">Model family</span>
           <span class="tag">Production</span>
         </div>
-        <h3 class="card-title">Kuvera Series</h3>
-        <p>8B–14B parameter models tuned for financial dialogue, question answering, and reasoning with a latency-first mindset.</p>
+        <h3 class="card-title">Kuvera series</h3>
+        <p>Finetuned 4B–14B parameter models focused on personal finance dialogue, document summarisation, and reasoning.</p>
         <ul class="list list-check">
-          <li>600+ direct enterprise downloads</li>
-          <li>Quantized variants with 29k+ community uses</li>
-          <li>Comprehensive evaluation playbook included</li>
+          <li>Designed for single-GPU deployment with quantised variants</li>
+          <li>Evaluation harness covering factuality, tone, and compliance</li>
+          <li>Documentation to help fintech teams integrate quickly</li>
         </ul>
-        <a href="https://huggingface.co/akhil-theerthala" target="_blank" rel="noopener">View the models →</a>
+        <a href="https://huggingface.co/akhil-theerthala" target="_blank" rel="noopener">Browse the models →</a>
       </div>
       <div class="card">
         <div class="card-meta">
-          <span class="tag">🧠 Reasoning</span>
-          <span class="tag">Toolkit</span>
+          <span class="tag">Internal toolkit</span>
         </div>
-        <h3 class="card-title">Financial Reasoning Playbook</h3>
-        <p>Reusable prompts, evaluation rubrics, and automation scripts that help fintech teams benchmark LLM reasoning quickly.</p>
+        <h3 class="card-title">Financial reasoning playbook</h3>
+        <p>Workflow I use with product and compliance partners to evaluate reasoning behaviour before rollout.</p>
         <ul class="list list-check">
-          <li>Guided evaluation templates for CFO, advisor, and retail personas</li>
-          <li>Event-driven stress tests for hallucination control</li>
-          <li>Lightweight dashboards for monitoring improvements</li>
+          <li>Scenario banks for personal finance, SME lending, and wealth advisory</li>
+          <li>Guardrail prompts for hallucination and regulation awareness</li>
+          <li>Notion + dashboard templates for quick stakeholder updates</li>
         </ul>
-        <a href="{{ "/research" | relative_url }}">See how it's used →</a>
+        <a href="{{ "/research" | relative_url }}">Learn about the process →</a>
       </div>
     </div>
   </div>
@@ -98,30 +95,31 @@ description: AI research projects, open source contributions, and production ML 
 <section class="section">
   <div class="container">
     <div class="section-header">
-      <span class="section-eyebrow">Recent experiments</span>
-      <h2 class="section-title">Keeping things curious.</h2>
+      <span class="section-eyebrow">In the lab</span>
+      <h2 class="section-title">Experiments and collaborations.</h2>
+      <p class="section-description">Ongoing work that keeps me curious and sharp.</p>
     </div>
     <div class="card-grid">
       <div class="card">
         <div class="card-meta">
-          <span class="tag">⚡ Hackathon</span>
+          <span class="tag">Hackathon</span>
         </div>
         <h3 class="card-title">Perfios IdeaFest finalist</h3>
-        <p>Prototype that turns financial statements into conversational stories for CX teams, powered by reasoning-focused RAG.</p>
+        <p>Co-created a storytelling interface that reimagines financial statements as conversational narratives for CX teams.</p>
       </div>
       <div class="card">
         <div class="card-meta">
-          <span class="tag">🤗 Community</span>
+          <span class="tag">Research volunteering</span>
+        </div>
+        <h3 class="card-title">Georgia Tech Financial Services Innovation Lab</h3>
+        <p>Supporting investigations into trustworthy financial AI with data collection and evaluation design.</p>
+      </div>
+      <div class="card">
+        <div class="card-meta">
+          <span class="tag">Community</span>
         </div>
         <h3 class="card-title">AI for Food Allergies</h3>
-        <p>Contributing data augmentation recipes and evaluation harnesses to improve allergy-aware LLM responses.</p>
-      </div>
-      <div class="card">
-        <div class="card-meta">
-          <span class="tag">📚 Learning</span>
-        </div>
-        <h3 class="card-title">NeuroNuts code stories</h3>
-        <p>Mini-projects that translate complex ML concepts into playful notebooks and blog posts.</p>
+        <p>Contributing prompts and evaluation recipes to improve safety-aware responses in public datasets.</p>
       </div>
     </div>
   </div>
@@ -129,40 +127,12 @@ description: AI research projects, open source contributions, and production ML 
 
 <section class="section">
   <div class="container">
-    <div class="section-header">
-      <span class="section-eyebrow">How I ship</span>
-      <h2 class="section-title">A playful, transparent process.</h2>
-      <p class="section-description">Every project travels through a repeatable loop so partners know exactly what to expect.</p>
-    </div>
-    <div class="journey">
-      <div class="journey-year">
-        <h3>1. Discover & storyboard</h3>
-        <div class="journey-events">
-          <span>Goal alignment workshops and playful ideation sessions.</span>
-          <span>Rapid discovery sprints to identify real data constraints.</span>
-        </div>
-      </div>
-      <div class="journey-year">
-        <h3>2. Prototype & stress test</h3>
-        <div class="journey-events">
-          <span>Chain-of-thought experimentation with human feedback.</span>
-          <span>Latency benchmarking, safety evaluations, and bias audits.</span>
-        </div>
-      </div>
-      <div class="journey-year">
-        <h3>3. Ship & share</h3>
-        <div class="journey-events">
-          <span>Production-ready releases with docs, dashboards, and onboarding guides.</span>
-          <span>Community updates through blog posts, talks, or open-source drops.</span>
-        </div>
-      </div>
-    </div>
     <div class="cta">
       <div class="cta-text">
-        <h3>Have a project idea?</h3>
-        <p>Let's co-create something that makes financial AI welcoming for everyone.</p>
+        <h3>Need a reasoning partner?</h3>
+        <p>Whether it's a new dataset, model iteration, or evaluation loop, I'm ready to help.</p>
       </div>
-      <a class="button primary" href="{{ "/contact" | relative_url }}">Start a brief</a>
+      <a class="button primary" href="{{ "/contact" | relative_url }}">Start a conversation</a>
     </div>
   </div>
 </section>
