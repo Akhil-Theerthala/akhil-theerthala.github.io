@@ -4,12 +4,17 @@ title: Home
 ---
 
 <section class="hero">
-  <div class="container">
-    <div class="hero-copy">
+  <div class="container hero-container">
+    <div class="hero-intro">
+      <div class="hero-header">
+        <figure class="hero-photo">
+          <img src="{{ "/profile_photo.jpg" | relative_url }}" alt="Portrait of Akhil Theerthala">
+        </figure>
+        <h1 class="hero-name">Akhil Theerthala</h1>
+      </div>
       <p class="hero-eyebrow">Financial AI · Reasoning Systems · Human-first design</p>
-      <h1 class="hero-title">Hi, I'm Akhil Theerthala.</h1>
       <p class="hero-description">
-        Senior Data Scientist at Perfios, where I build domain-specific reasoning models for finance.
+        Senior Data Scientist at Perfios, building domain-specific reasoning models for finance.
         I care about reliable datasets, single-GPU deployment, and making complex decisions feel approachable.
       </p>
       <div class="hero-actions">
@@ -17,8 +22,8 @@ title: Home
         <a class="button ghost" href="{{ "/contact" | relative_url }}">Let's collaborate</a>
       </div>
       <div class="pill-group">
-        <span class="pill">1st place — Reasoning Dataset Competition 2025</span>
-        <span class="pill">Solo author — FinNLP @ EMNLP 2025</span>
+        <span class="pill">Reasoning Dataset Competition 2025 — 1st place</span>
+        <span class="pill">FinNLP @ EMNLP 2025 — Solo author</span>
         <span class="pill">Volunteer — Georgia Tech Financial Services Innovation Lab</span>
       </div>
     </div>
@@ -81,13 +86,99 @@ title: Home
       <div class="card">
         <div class="card-icon">📝</div>
         <h3 class="card-title">Sharing the journey</h3>
-        <p>Translating lessons into talks, internal playbooks, and the NeuroNuts blog.</p>
+        <p>Translating lessons into talks, internal playbooks, and practical resources for builders.</p>
         <ul class="list list-check">
           <li>Workshops at Perfios and community AMAs</li>
           <li>Writing about reasoning data and MLOps</li>
           <li>Mentoring peers entering applied AI</li>
         </ul>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-open-source">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-eyebrow">Open-source contributions</span>
+      <h2 class="section-title">Models and datasets others rely on.</h2>
+      <p class="section-description">Snapshots from Hugging Face showing how self-released work and community GGUF ports are being used.</p>
+    </div>
+    <div class="open-source-summary">
+      <div class="summary-card">
+        <span class="summary-label">Total self-hosted downloads</span>
+        <span class="summary-value">5,047</span>
+        <span class="summary-sub">Across models & datasets</span>
+      </div>
+      <div class="summary-card">
+        <span class="summary-label">Total self-hosted likes</span>
+        <span class="summary-value">86</span>
+        <span class="summary-sub">Community love captured to date</span>
+      </div>
+    </div>
+    <div class="open-source-grid">
+      <article class="card open-source-card">
+        <div class="card-meta">
+          <span class="tag">Self models</span>
+        </div>
+        <h3 class="card-title">Finance Reasoning Model Series</h3>
+        <p>Compact models tuned for personal finance conversations with grounded reasoning steps.</p>
+        <dl class="stat-pairs">
+          <div>
+            <dt>Downloads</dt>
+            <dd>604</dd>
+          </div>
+          <div>
+            <dt>Likes</dt>
+            <dd>41</dd>
+          </div>
+        </dl>
+        <a href="https://huggingface.co/akhil-theerthala" target="_blank" rel="noopener">Explore models →</a>
+      </article>
+      <article class="card open-source-card">
+        <div class="card-meta">
+          <span class="tag">Community GGUF</span>
+        </div>
+        <h3 class="card-title">Finance Reasoning GGUF Ports</h3>
+        <p>Optimised community releases making single-device deployments effortless.</p>
+        <dl class="stat-pairs">
+          <div>
+            <dt>Downloads</dt>
+            <dd>28,162</dd>
+          </div>
+          <div>
+            <dt>Likes</dt>
+            <dd>9</dd>
+          </div>
+        </dl>
+        <a href="https://huggingface.co/models?author=akhil-theerthala&search=gguf" target="_blank" rel="noopener">View GGUF builds →</a>
+      </article>
+      <article class="card open-source-card">
+        <div class="card-meta">
+          <span class="tag">Datasets</span>
+        </div>
+        <h3 class="card-title">PersonalFinance_v2 & more</h3>
+        <p>Reasoning-first datasets with annotated deliberation and evaluator splits.</p>
+        <dl class="stat-pairs">
+          <div>
+            <dt>Downloads</dt>
+            <dd>4,443</dd>
+          </div>
+          <div>
+            <dt>Likes</dt>
+            <dd>45</dd>
+          </div>
+        </dl>
+        <a href="https://huggingface.co/datasets/akhil-theerthala" target="_blank" rel="noopener">Browse datasets →</a>
+      </article>
+      <article class="card open-source-card">
+        <div class="card-meta">
+          <span class="tag">Applied research</span>
+        </div>
+        <h3 class="card-title">HuggingScience · AI for Food Allergies</h3>
+        <p>Project focused on monitoring allergens in food conversations and surfacing safe recommendations.</p>
+        <a href="https://huggingface.co/akhil-theerthala/HuggingScience-Ai-for-food-allergies" target="_blank" rel="noopener">Follow the project →</a>
+      </article>
     </div>
   </div>
 </section>

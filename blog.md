@@ -10,7 +10,7 @@ title: Blog
       <h1 class="hero-title">Notes from the learning loop.</h1>
       <p class="hero-description">
         I write to make sense of experiments, mistakes, and breakthroughs.
-        Here's how I share ideas across NeuroNuts and other communities.
+        Here's how I share ideas across open-source releases and partner communities.
       </p>
     </div>
     <div class="hero-card">
@@ -37,11 +37,11 @@ title: Blog
     <div class="card-grid">
       <div class="card">
         <div class="card-meta">
-          <span class="tag">NeuroNuts</span>
+          <span class="tag">Personal site</span>
         </div>
-        <h3 class="card-title">Personal technical blog</h3>
+        <h3 class="card-title">Technical notes hub</h3>
         <p>Home to deep dives, project retrospectives, and experiments explained with plenty of visuals.</p>
-        <a href="https://neuronuts.in" target="_blank" rel="noopener">Visit NeuroNuts →</a>
+        <a href="{{ "/projects" | relative_url }}">Browse recent builds →</a>
       </div>
       <div class="card">
         <div class="card-meta">

@@ -42,7 +42,7 @@ for dataset_name in datasets:
     info = dataset_info(dataset_name.id, expand = ["downloadsAllTime", "likes"])
     dataset_downloads += info.downloads_all_time
     dataset_likes += info.likes
-    print(f"Dataset: {dataset_name.id}, Downloads: {info.downloads_all_time}, likes: {info.likes}")
+    # print(f"Dataset: {dataset_name.id}, Downloads: {info.downloads_all_time}, likes: {info.likes}")
 
 
 print(f"Self Models: Downloads: {self_model_downloads}, Likes: {self_model_likes}")

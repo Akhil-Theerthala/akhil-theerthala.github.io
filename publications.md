@@ -23,8 +23,8 @@ title: Publications
         </div>
         <div class="stat-block">
           <div>
-            <div class="stat-number">NeuroNuts</div>
-            <div class="stat-label">Personal blog focused on applied ML</div>
+            <div class="stat-number">Hugging Face</div>
+            <div class="stat-label">Open releases documenting applied ML</div>
           </div>
         </div>
         <p class="hero-description">
@@ -60,7 +60,7 @@ title: Publications
     <div class="section-header">
       <span class="section-eyebrow">Long-form writing</span>
       <h2 class="section-title">Guides and essays.</h2>
-      <p class="section-description">Selected pieces from my NeuroNuts blog and contributions to publications like Towards AI.</p>
+      <p class="section-description">Selected pieces from my long-form writing and contributions to publications like Towards AI.</p>
     </div>
     <div class="card-grid">
       <div class="card">

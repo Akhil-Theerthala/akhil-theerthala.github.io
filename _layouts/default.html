@@ -42,18 +42,19 @@
             <a href="{{ "/projects" | relative_url }}">Projects</a>
             <a href="{{ "/research" | relative_url }}">Research</a>
             <a href="{{ "/publications" | relative_url }}">Publications</a>
-            <a href="{{ "/blog" | relative_url }}">Writing</a>
             <a href="{{ "/contact" | relative_url }}">Contact</a>
           </nav>
 
           <div class="header-actions">
             <a class="button ghost" href="{{ "/contact" | relative_url }}">Contact</a>
             <label class="theme-switch" for="theme-toggle">
-              <input type="checkbox" id="theme-toggle" aria-label="Toggle dark mode">
+              <input type="checkbox" id="theme-toggle" role="switch" aria-label="Switch to light theme" aria-checked="false">
               <span class="switch-track">
-                <span class="switch-icon moon">🌙</span>
-                <span class="switch-icon sun">☀️</span>
+                <span class="switch-icon moon" aria-hidden="true">🌙</span>
+                <span class="switch-icon sun" aria-hidden="true">☀️</span>
               </span>
+              <span class="switch-status" data-theme-status aria-hidden="true">Dark</span>
+              <span class="sr-only" data-theme-label>Dark theme active. Switch to light theme.</span>
             </label>
           </div>
         </div>
@@ -87,16 +88,40 @@
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         const themeToggle = document.getElementById('theme-toggle');
+        const themeStatus = document.querySelector('[data-theme-status]');
+        const themeLabel = document.querySelector('[data-theme-label]');
         const root = document.documentElement;
         const storedTheme = localStorage.getItem('theme') || root.getAttribute('data-theme') || 'dark';
-        themeToggle.checked = storedTheme === 'light';
-        root.setAttribute('data-theme', storedTheme);
 
-        themeToggle.addEventListener('change', function() {
-          const newTheme = this.checked ? 'light' : 'dark';
-          root.setAttribute('data-theme', newTheme);
-          localStorage.setItem('theme', newTheme);
-        });
+        const setTheme = function(theme, persist) {
+          const isLight = theme === 'light';
+          root.setAttribute('data-theme', theme);
+          if (persist) {
+            localStorage.setItem('theme', theme);
+          }
+          if (themeToggle) {
+            themeToggle.checked = isLight;
+            themeToggle.setAttribute('aria-checked', isLight ? 'true' : 'false');
+            themeToggle.setAttribute('aria-label', isLight ? 'Switch to dark theme' : 'Switch to light theme');
+          }
+          if (themeStatus) {
+            themeStatus.textContent = isLight ? 'Light' : 'Dark';
+          }
+          if (themeLabel) {
+            themeLabel.textContent = isLight
+              ? 'Light theme active. Switch to dark theme.'
+              : 'Dark theme active. Switch to light theme.';
+          }
+        };
+
+        setTheme(storedTheme, false);
+
+        if (themeToggle) {
+          themeToggle.addEventListener('change', function() {
+            const newTheme = this.checked ? 'light' : 'dark';
+            setTheme(newTheme, true);
+          });
+        }
 
         const navToggle = document.querySelector('.nav-toggle');
         const nav = document.querySelector('.site-nav');
