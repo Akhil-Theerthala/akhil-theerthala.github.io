@@ -256,12 +256,54 @@ title: Home
   </div>
 </section>
 
+<section class="section section-resource-directory">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-eyebrow">Explore the directory</span>
+      <h2 class="section-title">Every public artefact in one place.</h2>
+      <p class="section-description">Pulled straight from my working sheet so you can dive into code, datasets, models, or writing without hunting around.</p>
+    </div>
+    <div class="resource-panels">
+      {% for collection in site.data.external_resources.collections %}
+        <details class="resource-panel"{% if forloop.first %} open{% endif %}>
+          <summary>
+            <span class="resource-panel-title">{{ collection.title }}</span>
+            <span class="resource-panel-count">{{ collection.items | size }} items</span>
+          </summary>
+          {% if collection.blurb %}
+            <p class="resource-panel-blurb">{{ collection.blurb }}</p>
+          {% endif %}
+          <ul class="resource-list">
+            {% for item in collection.items %}
+              <li class="resource-list-item">
+                <div class="resource-item">
+                  <div class="resource-item-heading">
+                    <a href="{{ item.link }}" target="_blank" rel="noopener">
+                      {{ item.title }}
+                    </a>
+                    {% if item.meta %}
+                      <span class="resource-item-meta">{{ item.meta }}</span>
+                    {% endif %}
+                  </div>
+                  {% if item.description %}
+                    <p class="resource-item-description">{{ item.description }}</p>
+                  {% endif %}
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        </details>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
 <section class="section">
   <div class="container">
     <div class="cta">
       <div class="cta-text">
         <h3>Working on finance AI or reasoning data?</h3>
-        <p>I'm always happy to exchange notes, mentor teams, or explore collaborations.</p>
+        <p>I'm always happy to exchange notes or explore collaborations.</p>
       </div>
       <a class="button primary" href="{{ "/contact" | relative_url }}">Get in touch</a>
     </div>
