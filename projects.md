@@ -125,6 +125,84 @@ description: Financial reasoning projects, open-source releases, and production 
   </div>
 </section>
 
+{% assign github_projects = site.data.external_resources.collections | where: "key", "github_projects" | first %}
+{% assign huggingface_models = site.data.external_resources.collections | where: "key", "huggingface_models" | first %}
+
+{% if github_projects or huggingface_models %}
+  <section class="section section-resource-directory">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">Shipping log</span>
+        <h2 class="section-title">Recent builds pulled from my working sheet.</h2>
+        <p class="section-description">A living index of the repos and models I'm actively maintaining. Updates the moment I refresh my project tracker.</p>
+      </div>
+      <div class="resource-panels">
+        {% if github_projects %}
+          <details class="resource-panel" open>
+            <summary>
+              <span class="resource-panel-title">{{ github_projects.title }}</span>
+              <span class="resource-panel-count">{{ github_projects.items | size }} items</span>
+            </summary>
+            {% if github_projects.blurb %}
+              <p class="resource-panel-blurb">{{ github_projects.blurb }}</p>
+            {% endif %}
+            <ul class="resource-list">
+              {% for item in github_projects.items %}
+                <li class="resource-list-item">
+                  <div class="resource-item">
+                    <div class="resource-item-heading">
+                      <a href="{{ item.link }}" target="_blank" rel="noopener">
+                        {{ item.title }}
+                      </a>
+                      {% if item.meta %}
+                        <span class="resource-item-meta">{{ item.meta }}</span>
+                      {% endif %}
+                    </div>
+                    {% if item.description %}
+                      <p class="resource-item-description">{{ item.description }}</p>
+                    {% endif %}
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          </details>
+        {% endif %}
+
+        {% if huggingface_models %}
+          <details class="resource-panel">
+            <summary>
+              <span class="resource-panel-title">{{ huggingface_models.title }}</span>
+              <span class="resource-panel-count">{{ huggingface_models.items | size }} items</span>
+            </summary>
+            {% if huggingface_models.blurb %}
+              <p class="resource-panel-blurb">{{ huggingface_models.blurb }}</p>
+            {% endif %}
+            <ul class="resource-list">
+              {% for item in huggingface_models.items %}
+                <li class="resource-list-item">
+                  <div class="resource-item">
+                    <div class="resource-item-heading">
+                      <a href="{{ item.link }}" target="_blank" rel="noopener">
+                        {{ item.title }}
+                      </a>
+                      {% if item.meta %}
+                        <span class="resource-item-meta">{{ item.meta }}</span>
+                      {% endif %}
+                    </div>
+                    {% if item.description %}
+                      <p class="resource-item-description">{{ item.description }}</p>
+                    {% endif %}
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          </details>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+{% endif %}
+
 <section class="section">
   <div class="container">
     <div class="cta">

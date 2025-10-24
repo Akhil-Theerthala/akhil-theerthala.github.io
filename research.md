@@ -131,6 +131,81 @@ description: Research publications, competitions, and investigations led by Akhi
   </div>
 </section>
 
+{% assign huggingface_datasets = site.data.external_resources.collections | where: "key", "huggingface_datasets" | first %}
+{% assign medium_articles = site.data.external_resources.collections | where: "key", "medium_articles" | first %}
+
+{% if huggingface_datasets or medium_articles %}
+  <section class="section section-resource-directory">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">Primary sources</span>
+        <h2 class="section-title">The datasets and essays behind the work.</h2>
+        <p class="section-description">These listings stay in sync with my research tracker so you can reference the same artefacts I'm using day-to-day.</p>
+      </div>
+      <div class="resource-panels">
+        {% if huggingface_datasets %}
+          <details class="resource-panel" open>
+            <summary>
+              <span class="resource-panel-title">{{ huggingface_datasets.title }}</span>
+              <span class="resource-panel-count">{{ huggingface_datasets.items | size }} items</span>
+            </summary>
+            {% if huggingface_datasets.blurb %}
+              <p class="resource-panel-blurb">{{ huggingface_datasets.blurb }}</p>
+            {% endif %}
+            <ul class="resource-list">
+              {% for item in huggingface_datasets.items %}
+                <li class="resource-list-item">
+                  <div class="resource-item">
+                    <div class="resource-item-heading">
+                      <a href="{{ item.link }}" target="_blank" rel="noopener">
+                        {{ item.title }}
+                      </a>
+                      {% if item.meta %}
+                        <span class="resource-item-meta">{{ item.meta }}</span>
+                      {% endif %}
+                    </div>
+                    {% if item.description %}
+                      <p class="resource-item-description">{{ item.description }}</p>
+                    {% endif %}
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          </details>
+        {% endif %}
+
+        {% if medium_articles %}
+          <details class="resource-panel">
+            <summary>
+              <span class="resource-panel-title">{{ medium_articles.title }}</span>
+              <span class="resource-panel-count">{{ medium_articles.items | size }} items</span>
+            </summary>
+            {% if medium_articles.blurb %}
+              <p class="resource-panel-blurb">{{ medium_articles.blurb }}</p>
+            {% endif %}
+            <ul class="resource-list">
+              {% for item in medium_articles.items %}
+                <li class="resource-list-item">
+                  <div class="resource-item">
+                    <div class="resource-item-heading">
+                      <a href="{{ item.link }}" target="_blank" rel="noopener">
+                        {{ item.title }}
+                      </a>
+                    </div>
+                    {% if item.description %}
+                      <p class="resource-item-description">{{ item.description }}</p>
+                    {% endif %}
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          </details>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+{% endif %}
+
 <section class="section">
   <div class="container">
     <div class="cta">
