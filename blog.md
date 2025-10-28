@@ -9,14 +9,15 @@ title: Blog
       <p class="hero-eyebrow">Writing</p>
       <h1 class="hero-title">Notes from the learning loop.</h1>
       <p class="hero-description">
-        I write to make sense of experiments, mistakes, and breakthroughs.
-        Here's how I share ideas across open-source releases and partner communities.
+        I'm a Senior Data Scientist at Perfios and a reasoning dataset researcher.
+        I write to make sense of experiments, mistakes, and breakthroughs, and to share ideas across open-source releases and partner communities.
       </p>
     </div>
     <div class="hero-card">
       <div class="hero-card-content">
         <p class="hero-description">
-          Expect hands-on walkthroughs, honest retrospectives, and resources that helped me grow as an applied scientist.
+          Expect hands-on walkthroughs, honest retrospectives, and resources that helped me grow as an applied scientist,
+          including notes from the 2025 Bespoke Labs × HuggingFace × Together.ai dataset win.
         </p>
         <div class="pill-group">
           <span class="pill">Reasoning data craft</span>

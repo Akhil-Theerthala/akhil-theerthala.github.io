@@ -9,8 +9,8 @@ title: Publications
       <p class="hero-eyebrow">Writing & speaking</p>
       <h1 class="hero-title">Research papers, essays, and talks.</h1>
       <p class="hero-description">
-        I document what I learn so teams can build responsibly. From peer-reviewed work to long-form guides,
-        my goal is to make reasoning-first AI approachable.
+        I'm a Senior Data Scientist at Perfios and a FinNLP 2025 solo author. I document what I learn so teams can build responsibly.
+        From peer-reviewed work to long-form guides, my goal is to make reasoning-first AI approachable.
       </p>
     </div>
     <div class="hero-card">
@@ -25,6 +25,12 @@ title: Publications
           <div>
             <div class="stat-number">Hugging Face</div>
             <div class="stat-label">Open releases documenting applied ML</div>
+          </div>
+        </div>
+        <div class="stat-block">
+          <div>
+            <div class="stat-number">Dataset</div>
+            <div class="stat-label">Winner, Bespoke Labs × HuggingFace × Together.ai challenge</div>
           </div>
         </div>
         <p class="hero-description">

@@ -9,7 +9,7 @@ title: Contact
       <p class="hero-eyebrow">Contact</p>
       <h1 class="hero-title">Let's build something thoughtful.</h1>
       <p class="hero-description">
-        Whether you need help with a reasoning dataset, a production deployment, or a talk for your team,
+        I'm Akhil, a Senior Data Scientist at Perfios. Whether you need help with a reasoning dataset, a production deployment, or a talk for your team,
         I'm always glad to chat.
       </p>
     </div>
@@ -19,6 +19,7 @@ title: Contact
         <div class="pill-group">
           <span class="pill">Reasoning datasets</span>
           <span class="pill">Finance AI deployments</span>
+          <span class="pill">FinNLP 2025 solo author</span>
           <span class="pill">Workshops & mentorship</span>
         </div>
       </div>

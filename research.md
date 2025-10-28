@@ -10,8 +10,8 @@ description: Research publications, competitions, and investigations led by Akhi
       <p class="hero-eyebrow">Research</p>
       <h1 class="hero-title">Curiosity backed by evidence.</h1>
       <p class="hero-description">
-        My research spans reasoning datasets, financial NLP, and how people interact with AI systems.
-        I enjoy turning messy questions into reproducible studies and practical recommendations.
+        I'm a Senior Data Scientist at Perfios and a volunteer researcher with Georgia Tech's Financial Services Innovation Lab.
+        My investigations cover reasoning datasets, financial NLP, and the human experiences around applied AI.
       </p>
       <div class="hero-actions">
         <a class="button primary" href="{{ "/publications" | relative_url }}">See publications</a>

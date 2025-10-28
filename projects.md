@@ -10,8 +10,8 @@ description: Financial reasoning projects, open-source releases, and production 
       <p class="hero-eyebrow">Projects</p>
       <h1 class="hero-title">Reasoning-first work that ships.</h1>
       <p class="hero-description">
-        A look at the datasets, model families, and internal tools I craft for finance teams.
-        Everything here has been shaped by real-world constraints and a bias for clarity.
+        I'm a Senior Data Scientist at Perfios, designing finance-facing ML systems that teams can trust.
+        This is a cross-section of the datasets, model families, and internal tooling I've delivered with product, compliance, and CX partners.
       </p>
       <div class="hero-actions">
         <a class="button primary" href="https://huggingface.co/akhil-theerthala" target="_blank" rel="noopener">Hugging Face profile</a>
@@ -23,7 +23,7 @@ description: Financial reasoning projects, open-source releases, and production 
         <div class="stat-block">
           <div>
             <div class="stat-number">Perfios</div>
-            <div class="stat-label">Reasoning systems in production for financial partners</div>
+            <div class="stat-label">Reasoning systems in production for lending, wealth, and advisory teams</div>
           </div>
         </div>
         <div class="stat-block">
@@ -32,8 +32,14 @@ description: Financial reasoning projects, open-source releases, and production 
             <div class="stat-label">Reusable evaluation + deployment playbooks</div>
           </div>
         </div>
+        <div class="stat-block">
+          <div>
+            <div class="stat-number">Recognition</div>
+            <div class="stat-label">Winner, Bespoke Labs × HuggingFace × Together.ai dataset challenge</div>
+          </div>
+        </div>
         <p class="hero-description">
-          I prioritise transparent evaluation, thoughtful documentation, and developer experiences that feel friendly.
+          Transparent evaluation, thoughtful documentation, and developer-friendly tooling anchor every project here.
         </p>
       </div>
     </div>
