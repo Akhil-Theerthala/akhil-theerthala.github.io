@@ -198,19 +198,10 @@ title: Home
       </article>
       <article class="card open-source-card">
         <div class="card-meta">
-          <span class="tag">Product</span>
-          <span class="tag">Perfios</span>
+          <span class="tag">Model family</span>
         </div>
-        <h3 class="card-title">Statement review toolkit</h3>
-        <p>Collaborated with CX and compliance teams to translate financial statements into conversational insights for advisors.</p>
-        <a href="{{ "/projects" | relative_url }}">See the process →</a>
-      </article>
-      <article class="card open-source-card">
-        <div class="card-meta">
-          <span class="tag">Model ports</span>
-        </div>
-        <h3 class="card-title">Compact GGUF releases</h3>
-        <p>Maintaining lightweight ports and evaluation notes so smaller teams can reproduce finance-focused experiments.</p>
+        <h3 class="card-title">Kuvera models</h3>
+        <p>Finance-focused checkpoints and GGUF ports released on Hugging Face with notes for single-GPU teams.</p>
         <a href="https://huggingface.co/akhil-theerthala" target="_blank" rel="noopener">Browse the hub →</a>
       </article>
     </div>

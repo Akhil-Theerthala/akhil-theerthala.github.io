@@ -81,19 +81,6 @@ description: Financial reasoning projects, open-source releases, and production 
         </ul>
         <a href="https://huggingface.co/akhil-theerthala" target="_blank" rel="noopener">Browse the models →</a>
       </div>
-      <div class="card">
-        <div class="card-meta">
-          <span class="tag">Internal toolkit</span>
-        </div>
-        <h3 class="card-title">Financial reasoning playbook</h3>
-        <p>Workflow I use with product and compliance partners to evaluate reasoning behaviour before rollout.</p>
-        <ul class="list list-check">
-          <li>Scenario banks for personal finance, SME lending, and wealth advisory</li>
-          <li>Guardrail prompts for hallucination and regulation awareness</li>
-          <li>Notion + dashboard templates for quick stakeholder updates</li>
-        </ul>
-        <a href="{{ "/research" | relative_url }}">Learn about the process →</a>
-      </div>
     </div>
   </div>
 </section>
@@ -124,8 +111,9 @@ description: Financial reasoning projects, open-source releases, and production 
         <div class="card-meta">
           <span class="tag">Community</span>
         </div>
-        <h3 class="card-title">AI for Food Allergies</h3>
-        <p>Contributing prompts and evaluation recipes to improve safety-aware responses in public datasets.</p>
+        <h3 class="card-title">Open-source models & datasets</h3>
+        <p>Maintaining the Kuvera model family and PersonalFinance datasets on Hugging Face for community reuse.</p>
+        <a href="https://huggingface.co/akhil-theerthala" target="_blank" rel="noopener">See releases →</a>
       </div>
     </div>
   </div>
