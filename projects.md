@@ -6,41 +6,31 @@ description: Financial reasoning projects, open-source releases, and production 
 
 <section class="hero">
   <div class="container">
-    <div class="hero-copy">
-      <p class="hero-eyebrow">Projects</p>
+    <div class="hero-content">
+      <span class="hero-eyebrow">Projects</span>
       <h1 class="hero-title">Reasoning-first work that ships.</h1>
       <p class="hero-description">
         I'm a Senior Data Scientist at Perfios, designing finance-facing ML systems that teams can trust.
         This is a cross-section of the datasets, model families, and internal tooling I've delivered with product, compliance, and CX partners.
       </p>
       <div class="hero-actions">
-        <a class="button primary" href="https://huggingface.co/akhil-theerthala" target="_blank" rel="noopener">Hugging Face profile</a>
-        <a class="button ghost" href="{{ "/contact" | relative_url }}">Collaborate on a project</a>
+        <a class="btn btn-primary" href="https://huggingface.co/akhil-theerthala" target="_blank" rel="noopener">Hugging Face profile</a>
+        <a class="btn btn-ghost" href="{{ "/contact" | relative_url }}">Collaborate on a project</a>
       </div>
     </div>
-    <div class="hero-card">
-      <div class="hero-card-content">
-        <div class="stat-block">
-          <div>
-            <div class="stat-number">Perfios</div>
-            <div class="stat-label">Reasoning systems in production for lending, wealth, and advisory teams</div>
-          </div>
-        </div>
-        <div class="stat-block">
-          <div>
-            <div class="stat-number">Toolkit</div>
-            <div class="stat-label">Reusable evaluation + deployment playbooks</div>
-          </div>
-        </div>
-        <div class="stat-block">
-          <div>
-            <div class="stat-number">Recognition</div>
-            <div class="stat-label">Winner, Bespoke Labs × HuggingFace × Together.ai dataset challenge</div>
-          </div>
-        </div>
-        <p class="hero-description">
-          Transparent evaluation, thoughtful documentation, and developer-friendly tooling anchor every project here.
-        </p>
+    
+    <div class="stats-grid">
+      <div class="stat-item">
+        <span class="stat-value">Perfios</span>
+        <span class="stat-label">Reasoning systems in production</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">Toolkit</span>
+        <span class="stat-label">Reusable evaluation playbooks</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">Recognition</span>
+        <span class="stat-label">Winner, Bespoke Labs Challenge</span>
       </div>
     </div>
   </div>
@@ -48,10 +38,7 @@ description: Financial reasoning projects, open-source releases, and production 
 
 <section class="section">
   <div class="container">
-    <div class="section-header">
-      <span class="section-eyebrow">Flagship releases</span>
-      <h2 class="section-title">Open work you can explore today.</h2>
-    </div>
+    <h2 class="hero-title" style="font-size: 2.5rem; margin-bottom: var(--spacing-lg);">Flagship Releases</h2>
     <div class="card-grid">
       <div class="card">
         <div class="card-meta">
@@ -59,13 +46,8 @@ description: Financial reasoning projects, open-source releases, and production 
           <span class="tag">Competition winner</span>
         </div>
         <h3 class="card-title">PersonalFinance_v2</h3>
-        <p>7k+ carefully curated conversations for personal finance reasoning with explicit chain-of-thought annotations.</p>
-        <ul class="list list-check">
-          <li>Winner of the 2025 Bespoke Labs × HuggingFace × Together.ai competition</li>
-          <li>Behaviourally grounded prompts inspired by financial coaching</li>
-          <li>Apache-2.0 licensed for easy adoption</li>
-        </ul>
-        <a href="https://huggingface.co/datasets/akhil-theerthala/PersonalFinance_v2" target="_blank" rel="noopener">View the dataset →</a>
+        <p class="card-desc">7k+ carefully curated conversations for personal finance reasoning with explicit chain-of-thought annotations.</p>
+        <a href="https://huggingface.co/datasets/akhil-theerthala/PersonalFinance_v2" target="_blank" class="card-link">View the dataset →</a>
       </div>
       <div class="card">
         <div class="card-meta">
@@ -73,13 +55,8 @@ description: Financial reasoning projects, open-source releases, and production 
           <span class="tag">Production</span>
         </div>
         <h3 class="card-title">Kuvera series</h3>
-        <p>Finetuned 4B–14B parameter models focused on personal finance dialogue, document summarisation, and reasoning.</p>
-        <ul class="list list-check">
-          <li>Designed for single-GPU deployment with quantised variants</li>
-          <li>Evaluation harness covering factuality, tone, and compliance</li>
-          <li>Documentation to help fintech teams integrate quickly</li>
-        </ul>
-        <a href="https://huggingface.co/akhil-theerthala" target="_blank" rel="noopener">Browse the models →</a>
+        <p class="card-desc">Finetuned 4B–14B parameter models focused on personal finance dialogue, document summarisation, and reasoning.</p>
+        <a href="https://huggingface.co/akhil-theerthala" target="_blank" class="card-link">Browse the models →</a>
       </div>
     </div>
   </div>
@@ -87,33 +64,29 @@ description: Financial reasoning projects, open-source releases, and production 
 
 <section class="section">
   <div class="container">
-    <div class="section-header">
-      <span class="section-eyebrow">In the lab</span>
-      <h2 class="section-title">Experiments and collaborations.</h2>
-      <p class="section-description">Ongoing work that keeps me curious and sharp.</p>
-    </div>
+    <h2 class="hero-title" style="font-size: 2.5rem; margin-bottom: var(--spacing-lg);">In the Lab</h2>
     <div class="card-grid">
       <div class="card">
         <div class="card-meta">
           <span class="tag">Hackathon</span>
         </div>
         <h3 class="card-title">Perfios IdeaFest finalist</h3>
-        <p>Co-created a storytelling interface that reimagines financial statements as conversational narratives for CX teams.</p>
+        <p class="card-desc">Co-created a storytelling interface that reimagines financial statements as conversational narratives for CX teams.</p>
       </div>
       <div class="card">
         <div class="card-meta">
           <span class="tag">Research volunteering</span>
         </div>
-        <h3 class="card-title">Georgia Tech Financial Services Innovation Lab</h3>
-        <p>Supporting investigations into trustworthy financial AI with data collection and evaluation design.</p>
+        <h3 class="card-title">Georgia Tech FSIL</h3>
+        <p class="card-desc">Supporting investigations into trustworthy financial AI with data collection and evaluation design.</p>
       </div>
       <div class="card">
         <div class="card-meta">
           <span class="tag">Community</span>
         </div>
         <h3 class="card-title">Open-source models & datasets</h3>
-        <p>Maintaining the Kuvera model family and PersonalFinance datasets on Hugging Face for community reuse.</p>
-        <a href="https://huggingface.co/akhil-theerthala" target="_blank" rel="noopener">See releases →</a>
+        <p class="card-desc">Maintaining the Kuvera model family and PersonalFinance datasets on Hugging Face for community reuse.</p>
+        <a href="https://huggingface.co/akhil-theerthala" target="_blank" class="card-link">See releases →</a>
       </div>
     </div>
   </div>
@@ -123,88 +96,47 @@ description: Financial reasoning projects, open-source releases, and production 
 {% assign huggingface_models = site.data.external_resources.collections | where: "key", "huggingface_models" | first %}
 
 {% if github_projects or huggingface_models %}
-  <section class="section section-resource-directory">
+  <section class="section">
     <div class="container">
-      <div class="section-header">
-        <span class="section-eyebrow">Shipping log</span>
-        <h2 class="section-title">Recent builds pulled from my working sheet.</h2>
-        <p class="section-description">A living index of the repos and models I'm actively maintaining. Updates the moment I refresh my project tracker.</p>
-      </div>
-      <div class="resource-panels">
-        {% if github_projects %}
-          <details class="resource-panel" open>
-            <summary>
-              <span class="resource-panel-title">{{ github_projects.title }}</span>
-              <span class="resource-panel-count">{{ github_projects.items | size }} items</span>
-            </summary>
-            {% if github_projects.blurb %}
-              <p class="resource-panel-blurb">{{ github_projects.blurb }}</p>
-            {% endif %}
-            <ul class="resource-list">
-              {% for item in github_projects.items %}
-                <li class="resource-list-item">
-                  <div class="resource-item">
-                    <div class="resource-item-heading">
-                      <a href="{{ item.link }}" target="_blank" rel="noopener">
-                        {{ item.title }}
-                      </a>
-                      {% if item.meta %}
-                        <span class="resource-item-meta">{{ item.meta }}</span>
-                      {% endif %}
-                    </div>
-                    {% if item.description %}
-                      <p class="resource-item-description">{{ item.description }}</p>
-                    {% endif %}
-                  </div>
-                </li>
-              {% endfor %}
-            </ul>
-          </details>
-        {% endif %}
+      <h2 class="hero-title" style="font-size: 2.5rem; margin-bottom: var(--spacing-lg);">Shipping Log</h2>
+      
+      {% if github_projects %}
+        <h3 style="margin-bottom: 1rem; color: var(--accent-primary);">{{ github_projects.title }}</h3>
+        <div class="card-grid" style="margin-bottom: var(--spacing-lg);">
+          {% for item in github_projects.items %}
+            <div class="card">
+              <h3 class="card-title">{{ item.title }}</h3>
+              <p class="card-desc">{{ item.description }}</p>
+              <a href="{{ item.link }}" target="_blank" class="card-link">View Code →</a>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
 
-        {% if huggingface_models %}
-          <details class="resource-panel">
-            <summary>
-              <span class="resource-panel-title">{{ huggingface_models.title }}</span>
-              <span class="resource-panel-count">{{ huggingface_models.items | size }} items</span>
-            </summary>
-            {% if huggingface_models.blurb %}
-              <p class="resource-panel-blurb">{{ huggingface_models.blurb }}</p>
-            {% endif %}
-            <ul class="resource-list">
-              {% for item in huggingface_models.items %}
-                <li class="resource-list-item">
-                  <div class="resource-item">
-                    <div class="resource-item-heading">
-                      <a href="{{ item.link }}" target="_blank" rel="noopener">
-                        {{ item.title }}
-                      </a>
-                      {% if item.meta %}
-                        <span class="resource-item-meta">{{ item.meta }}</span>
-                      {% endif %}
-                    </div>
-                    {% if item.description %}
-                      <p class="resource-item-description">{{ item.description }}</p>
-                    {% endif %}
-                  </div>
-                </li>
-              {% endfor %}
-            </ul>
-          </details>
-        {% endif %}
-      </div>
+      {% if huggingface_models %}
+        <h3 style="margin-bottom: 1rem; color: var(--accent-primary);">{{ huggingface_models.title }}</h3>
+        <div class="card-grid">
+          {% for item in huggingface_models.items %}
+            <div class="card">
+              <h3 class="card-title">{{ item.title }}</h3>
+              <p class="card-desc">{{ item.description }}</p>
+              <a href="{{ item.link }}" target="_blank" class="card-link">View Model →</a>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
     </div>
   </section>
 {% endif %}
 
 <section class="section">
   <div class="container">
-    <div class="cta">
-      <div class="cta-text">
-        <h3>Need a reasoning partner?</h3>
-        <p>Whether it's a new dataset, model iteration, or evaluation loop, I'm ready to help.</p>
-      </div>
-      <a class="button primary" href="{{ "/contact" | relative_url }}">Start a conversation</a>
+    <div style="background: var(--bg-card); padding: var(--spacing-lg); border-radius: 16px; text-align: center; border: 1px solid var(--border-color);">
+      <h3 class="hero-title" style="font-size: 2rem;">Need a reasoning partner?</h3>
+      <p class="hero-description" style="margin: 0 auto var(--spacing-md); max-width: 500px;">
+        Whether it's a new dataset, model iteration, or evaluation loop, I'm ready to help.
+      </p>
+      <a class="btn btn-primary" href="{{ "/contact" | relative_url }}">Start a conversation</a>
     </div>
   </div>
 </section>

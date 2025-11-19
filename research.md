@@ -6,38 +6,31 @@ description: Research publications, competitions, and investigations led by Akhi
 
 <section class="hero">
   <div class="container">
-    <div class="hero-copy">
-      <p class="hero-eyebrow">Research</p>
+    <div class="hero-content">
+      <span class="hero-eyebrow">Research</span>
       <h1 class="hero-title">Curiosity backed by evidence.</h1>
       <p class="hero-description">
         I'm a Senior Data Scientist at Perfios and a volunteer researcher with Georgia Tech's Financial Services Innovation Lab.
         My investigations cover reasoning datasets, financial NLP, and the human experiences around applied AI.
       </p>
       <div class="hero-actions">
-        <a class="button primary" href="{{ "/publications" | relative_url }}">See publications</a>
-        <a class="button ghost" href="https://huggingface.co/datasets/akhil-theerthala" target="_blank" rel="noopener">Explore datasets</a>
+        <a class="btn btn-primary" href="{{ "/publications" | relative_url }}">See publications</a>
+        <a class="btn btn-ghost" href="https://huggingface.co/datasets/akhil-theerthala" target="_blank" rel="noopener">Explore datasets</a>
       </div>
     </div>
-    <div class="hero-card">
-      <div class="hero-card-content">
-        <div class="stat-block">
-          <div>
-            <div class="stat-number">1st place</div>
-            <div class="stat-label">Reasoning Dataset Competition 2025</div>
-          </div>
-        </div>
-        <div class="stat-block">
-          <div>
-            <div class="stat-number">FinNLP</div>
-            <div class="stat-label">EMNLP 2025 solo-author paper</div>
-          </div>
-        </div>
-        <div class="stat-block">
-          <div>
-            <div class="stat-number">FSIL</div>
-            <div class="stat-label">Volunteer researcher at Georgia Tech Financial Services Innovation Lab</div>
-          </div>
-        </div>
+    
+    <div class="stats-grid">
+      <div class="stat-item">
+        <span class="stat-value">1st</span>
+        <span class="stat-label">Reasoning Dataset Competition</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">FinNLP</span>
+        <span class="stat-label">EMNLP 2025 Solo Author</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">FSIL</span>
+        <span class="stat-label">Volunteer Researcher</span>
       </div>
     </div>
   </div>
@@ -45,60 +38,44 @@ description: Research publications, competitions, and investigations led by Akhi
 
 <section class="section">
   <div class="container">
-    <div class="section-header">
-      <span class="section-eyebrow">Competition recognition</span>
-      <h2 class="section-title">PersonalFinance_v2</h2>
-      <p class="section-description">Awarded first place in the Bespoke Labs × HuggingFace × Together.ai reasoning dataset competition.</p>
-    </div>
-    <div class="card">
+    <h2 class="hero-title" style="font-size: 2.5rem; margin-bottom: var(--spacing-lg);">Competition Recognition</h2>
+    <div class="card" style="border-color: var(--accent-primary);">
       <div class="card-meta">
-        <span class="tag">Dataset design</span>
-        <span class="tag">Chain-of-thought</span>
+        <span class="tag">Dataset Design</span>
+        <span class="tag">Chain-of-Thought</span>
       </div>
-      <p>
+      <h3 class="card-title">PersonalFinance_v2</h3>
+      <p class="card-desc">
         PersonalFinance_v2 captures 7k+ everyday finance conversations with explicit reasoning steps, grounded in behavioural research.
         It balances empathetic tone with verifiable facts and has become the backbone for my production model work.
       </p>
-      <ul class="list list-check">
-        <li>Scenario coverage for budgeting, credit, investing, and financial planning</li>
-        <li>Quality control rubric inspired by financial advisory training</li>
-        <li>Released under Apache-2.0 to encourage community use</li>
+      <ul style="margin-bottom: 1.5rem; color: var(--text-muted);">
+        <li>• Scenario coverage for budgeting, credit, investing, and financial planning</li>
+        <li>• Quality control rubric inspired by financial advisory training</li>
+        <li>• Released under Apache-2.0 to encourage community use</li>
       </ul>
-      <a class="button ghost" href="https://huggingface.co/datasets/akhil-theerthala/PersonalFinance_v2" target="_blank" rel="noopener">Review the dataset →</a>
+      <a class="btn btn-ghost" href="https://huggingface.co/datasets/akhil-theerthala/PersonalFinance_v2" target="_blank" rel="noopener">Review the dataset →</a>
     </div>
   </div>
 </section>
 
 <section class="section">
   <div class="container">
-    <div class="section-header">
-      <span class="section-eyebrow">Active investigations</span>
-      <h2 class="section-title">Questions I'm exploring right now.</h2>
-    </div>
+    <h2 class="hero-title" style="font-size: 2.5rem; margin-bottom: var(--spacing-lg);">Active Investigations</h2>
     <div class="card-grid">
       <div class="card">
         <div class="card-meta">
           <span class="tag">Volunteer research</span>
         </div>
-        <h3 class="card-title">Georgia Tech Financial Services Innovation Lab</h3>
-        <p>Collaborating on evaluation frameworks for trustworthy financial AI.</p>
-        <ul class="list list-check">
-          <li>Designing data collection processes that reduce annotation fatigue</li>
-          <li>Studying how domain experts audit reasoning traces</li>
-          <li>Documenting best practices for interdisciplinary research teams</li>
-        </ul>
+        <h3 class="card-title">Georgia Tech FSIL</h3>
+        <p class="card-desc">Collaborating on evaluation frameworks for trustworthy financial AI.</p>
       </div>
       <div class="card">
         <div class="card-meta">
           <span class="tag">Academic</span>
         </div>
         <h3 class="card-title">FinNLP 2025</h3>
-        <p>Solo-author paper on synthesising behaviourally grounded reasoning chains for finance LLMs.</p>
-        <ul class="list list-check">
-          <li>Bridges qualitative interviews with synthetic data generation</li>
-          <li>Shares evaluation heuristics for tone, empathy, and accuracy</li>
-          <li>Includes ablation studies on prompt structure choices</li>
-        </ul>
+        <p class="card-desc">Solo-author paper on synthesising behaviourally grounded reasoning chains for finance LLMs.</p>
       </div>
     </div>
   </div>
@@ -106,25 +83,20 @@ description: Research publications, competitions, and investigations led by Akhi
 
 <section class="section">
   <div class="container">
-    <div class="section-header">
-      <span class="section-eyebrow">Foundational work</span>
-      <h2 class="section-title">Where it started.</h2>
-    </div>
-    <div class="journey">
-      <div class="journey-year">
-        <h3>IIT Kharagpur</h3>
-        <div class="journey-events">
-          <span>Undergraduate researcher at Vinod Gupta School of Management with Dr. Swagato Chatterjee.</span>
-          <span>Studied how social media engagement reshapes crowdfunding success metrics.</span>
-          <span>Laid the groundwork for my focus on finance data quality.</span>
+    <h2 class="hero-title" style="font-size: 2.5rem; margin-bottom: var(--spacing-lg);">Foundational Work</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-year">IIT Kharagpur</div>
+        <div class="timeline-content">
+          <h3>Undergraduate Researcher</h3>
+          <p>Studied how social media engagement reshapes crowdfunding success metrics. Laid the groundwork for my focus on finance data quality.</p>
         </div>
       </div>
-      <div class="journey-year">
-        <h3>Perfios</h3>
-        <div class="journey-events">
-          <span>Applied the research to production credit and wealth workflows.</span>
-          <span>Built evaluation loops to keep reasoning transparent for business stakeholders.</span>
-          <span>Shared findings through internal workshops and documentation.</span>
+      <div class="timeline-item">
+        <div class="timeline-year">Perfios</div>
+        <div class="timeline-content">
+          <h3>Applied Scientist</h3>
+          <p>Applied the research to production credit and wealth workflows. Built evaluation loops to keep reasoning transparent for business stakeholders.</p>
         </div>
       </div>
     </div>
@@ -135,85 +107,46 @@ description: Research publications, competitions, and investigations led by Akhi
 {% assign medium_articles = site.data.external_resources.collections | where: "key", "medium_articles" | first %}
 
 {% if huggingface_datasets or medium_articles %}
-  <section class="section section-resource-directory">
+  <section class="section">
     <div class="container">
-      <div class="section-header">
-        <span class="section-eyebrow">Primary sources</span>
-        <h2 class="section-title">The datasets and essays behind the work.</h2>
-        <p class="section-description">These listings stay in sync with my research tracker so you can reference the same artefacts I'm using day-to-day.</p>
-      </div>
-      <div class="resource-panels">
-        {% if huggingface_datasets %}
-          <details class="resource-panel" open>
-            <summary>
-              <span class="resource-panel-title">{{ huggingface_datasets.title }}</span>
-              <span class="resource-panel-count">{{ huggingface_datasets.items | size }} items</span>
-            </summary>
-            {% if huggingface_datasets.blurb %}
-              <p class="resource-panel-blurb">{{ huggingface_datasets.blurb }}</p>
-            {% endif %}
-            <ul class="resource-list">
-              {% for item in huggingface_datasets.items %}
-                <li class="resource-list-item">
-                  <div class="resource-item">
-                    <div class="resource-item-heading">
-                      <a href="{{ item.link }}" target="_blank" rel="noopener">
-                        {{ item.title }}
-                      </a>
-                      {% if item.meta %}
-                        <span class="resource-item-meta">{{ item.meta }}</span>
-                      {% endif %}
-                    </div>
-                    {% if item.description %}
-                      <p class="resource-item-description">{{ item.description }}</p>
-                    {% endif %}
-                  </div>
-                </li>
-              {% endfor %}
-            </ul>
-          </details>
-        {% endif %}
+      <h2 class="hero-title" style="font-size: 2.5rem; margin-bottom: var(--spacing-lg);">Primary Sources</h2>
+      
+      {% if huggingface_datasets %}
+        <h3 style="margin-bottom: 1rem; color: var(--accent-primary);">{{ huggingface_datasets.title }}</h3>
+        <div class="card-grid" style="margin-bottom: var(--spacing-lg);">
+          {% for item in huggingface_datasets.items %}
+            <div class="card">
+              <h3 class="card-title">{{ item.title }}</h3>
+              <p class="card-desc">{{ item.description }}</p>
+              <a href="{{ item.link }}" target="_blank" class="card-link">View Dataset →</a>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
 
-        {% if medium_articles %}
-          <details class="resource-panel">
-            <summary>
-              <span class="resource-panel-title">{{ medium_articles.title }}</span>
-              <span class="resource-panel-count">{{ medium_articles.items | size }} items</span>
-            </summary>
-            {% if medium_articles.blurb %}
-              <p class="resource-panel-blurb">{{ medium_articles.blurb }}</p>
-            {% endif %}
-            <ul class="resource-list">
-              {% for item in medium_articles.items %}
-                <li class="resource-list-item">
-                  <div class="resource-item">
-                    <div class="resource-item-heading">
-                      <a href="{{ item.link }}" target="_blank" rel="noopener">
-                        {{ item.title }}
-                      </a>
-                    </div>
-                    {% if item.description %}
-                      <p class="resource-item-description">{{ item.description }}</p>
-                    {% endif %}
-                  </div>
-                </li>
-              {% endfor %}
-            </ul>
-          </details>
-        {% endif %}
-      </div>
+      {% if medium_articles %}
+        <h3 style="margin-bottom: 1rem; color: var(--accent-primary);">{{ medium_articles.title }}</h3>
+        <div class="card-grid">
+          {% for item in medium_articles.items %}
+            <div class="card">
+              <h3 class="card-title">{{ item.title }}</h3>
+              <a href="{{ item.link }}" target="_blank" class="card-link">Read Article →</a>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
     </div>
   </section>
 {% endif %}
 
 <section class="section">
   <div class="container">
-    <div class="cta">
-      <div class="cta-text">
-        <h3>Have a research question in mind?</h3>
-        <p>I'm open to collaborations, peer reviews, and speaking about responsible reasoning systems.</p>
-      </div>
-      <a class="button primary" href="{{ "/contact" | relative_url }}">Reach out</a>
+    <div style="background: var(--bg-card); padding: var(--spacing-lg); border-radius: 16px; text-align: center; border: 1px solid var(--border-color);">
+      <h3 class="hero-title" style="font-size: 2rem;">Have a research question?</h3>
+      <p class="hero-description" style="margin: 0 auto var(--spacing-md); max-width: 500px;">
+        I'm open to collaborations, peer reviews, and speaking about responsible reasoning systems.
+      </p>
+      <a class="btn btn-primary" href="{{ "/contact" | relative_url }}">Reach out</a>
     </div>
   </div>
 </section>
