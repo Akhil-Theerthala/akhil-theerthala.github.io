@@ -66,9 +66,107 @@
         <div class="container">
             <h2 class="section-title">About Me</h2>
             <div class="about-content">
-                <p>I specialize in <strong>Finance AI</strong>, <strong>Reasoning Systems</strong>, and <strong>Applied
-                        Research</strong>. My work involves training Large Language Models (LLMs) and creating datasets
-                    to solve complex problems in the financial domain.</p>
+                <p>I am a <strong>Senior Data Scientist</strong> with over 2 years of FinTech experience, specializing
+                    in data-centric methods for resource-efficient LLMs. My work focuses on developing generalized
+                    financial reasoning models and validating their performance through rigorous ablation studies.</p>
+                <p style="margin-top: 1.5rem;">I have a proven track record of community impact through open-source
+                    personal finance models, with community-adapted versions attracting over <strong>31k+
+                        downloads</strong>. In my professional roles, I've achieved significant business results,
+                    including a <strong>97.5% reduction</strong> in document processing time and a <strong>27.6%
+                        improvement</strong> in table detection performance.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience" class="section">
+        <div class="container">
+            <h2 class="section-title">Work Experience</h2>
+            <div class="timeline">
+                <!-- Georgia Tech -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">Aug 2025 - Present</div>
+                    <div class="timeline-content card">
+                        <h3>Research Volunteer</h3>
+                        <h4>Financial Services Innovation Lab, Georgia Tech</h4>
+                        <p>Developing generalized financial reasoning models and validating their performance through
+                            rigorous ablation studies across multiple model scales and difficulty bands.</p>
+                    </div>
+                </div>
+
+                <!-- Perfios - Senior Member DS -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">Apr 2025 - Present</div>
+                    <div class="timeline-content card">
+                        <h3>Senior Member Data Scientist</h3>
+                        <h4>Perfios Software Solutions</h4>
+                        <ul>
+                            <li>Benchmarked Vision Language Models for table structure recognition, yielding a
+                                <strong>0.85 TEDS score</strong> on bank statements.
+                            </li>
+                            <li>Engineered a document legibility framework that reduced analysis time for documents with
+                                unreadable text by <strong>20%</strong>.</li>
+                            <li>Designed and prototyped multiple agentic workflows for underwriting, establishing a
+                                proof-of-concept for new products.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Perfios - Member DS -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">Jun 2023 - Apr 2025</div>
+                    <div class="timeline-content card">
+                        <h3>Member Data Scientist</h3>
+                        <h4>Perfios Software Solutions</h4>
+                        <ul>
+                            <li>Reduced document processing time by <strong>97.5%</strong> (from 8s to 200ms) by
+                                implementing and optimizing a multimodal classifier.</li>
+                            <li>Boosted table detection performance by <strong>27.6%</strong> by engineering a new
+                                module and evaluating multiple model architectures.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="section">
+        <div class="container">
+            <h2 class="section-title">Skills</h2>
+            <div class="skills-grid">
+                <div class="card skill-card">
+                    <h3>ML & Deep Learning</h3>
+                    <div class="tags">
+                        <span class="tag">PyTorch</span>
+                        <span class="tag">HuggingFace (Transformers, TRL)</span>
+                        <span class="tag">TensorFlow</span>
+                        <span class="tag">Scikit-learn</span>
+                        <span class="tag">NLTK</span>
+                        <span class="tag">OpenCV</span>
+                    </div>
+                </div>
+                <div class="card skill-card">
+                    <h3>Data Science</h3>
+                    <div class="tags">
+                        <span class="tag">Pandas</span>
+                        <span class="tag">NumPy</span>
+                        <span class="tag">Matplotlib</span>
+                        <span class="tag">Seaborn</span>
+                        <span class="tag">Plotly</span>
+                        <span class="tag">Scrapy</span>
+                    </div>
+                </div>
+                <div class="card skill-card">
+                    <h3>Tools</h3>
+                    <div class="tags">
+                        <span class="tag">Docker</span>
+                        <span class="tag">Git</span>
+                        <span class="tag">Tensorboard</span>
+                        <span class="tag">Selenium</span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -77,16 +175,28 @@
         <div class="container">
             <h2 class="section-title">Featured Projects</h2>
             <div class="projects-grid">
-                <!-- Projects will be populated here -->
                 <div class="card project-card">
-                    <h3>Kuvera-8B-qwen3</h3>
-                    <p>A model trained in Personal Finance response series.</p>
+                    <h3>Kuvera: Personal Finance LLM</h3>
+                    <p>Engineered a cost-effective pipeline to generate a 20k-sample Personal Finance Chain-of-Thought
+                        (CoT) dataset. Fine-tuned 8B/14B parameter LLMs for efficient single-GPU deployment.</p>
                     <div class="tags">
-                        <span class="tag">LLM</span>
-                        <span class="tag">Finance</span>
+                        <span class="tag">1.4k+ Dataset Downloads</span>
+                        <span class="tag">500+ Model Downloads</span>
                     </div>
                     <a href="https://huggingface.co/Akhil-Theerthala/Kuvera-8B-qwen3-v0.2.1" target="_blank"
-                        class="link-arrow">View Model <i class="fa-solid fa-arrow-right"></i></a>
+                        class="link-arrow">View on HuggingFace <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <div class="card project-card">
+                    <h3>Crowdfunding Engagement Drivers</h3>
+                    <p>Engineered an NLP pipeline to extract features from Facebook posts. Achieved a <strong>0.82 F1
+                            score</strong> with an ensemble model in predicting engagement.</p>
+                    <div class="tags">
+                        <span class="tag">NLP</span>
+                        <span class="tag">Ensemble Learning</span>
+                    </div>
+                    <a href="https://github.com/Akhil-Theerthala/Crowdfunding-Social-Media-Drivers" target="_blank"
+                        class="link-arrow">View Code <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
 
                 <div class="card project-card">
@@ -99,21 +209,46 @@
                     <a href="https://github.com/Akhil-Theerthala/comic-genesis" target="_blank" class="link-arrow">View
                         Code <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
-
-                <div class="card project-card">
-                    <h3>Crowdfunding Drivers</h3>
-                    <p>Identifying Drivers of crowdfunding from Social Media.</p>
-                    <div class="tags">
-                        <span class="tag">Data Science</span>
-                        <span class="tag">Analysis</span>
-                    </div>
-                    <a href="https://github.com/Akhil-Theerthala/Crowdfunding-Social-Media-Drivers" target="_blank"
-                        class="link-arrow">View Code <i class="fa-solid fa-arrow-right"></i></a>
-                </div>
             </div>
             <div class="center-btn">
                 <a href="https://github.com/Akhil-Theerthala" target="_blank" class="btn btn-outline">View All on
                     GitHub</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="achievements" class="section">
+        <div class="container">
+            <h2 class="section-title">Achievements & Education</h2>
+            <div class="grid-2-col">
+                <div class="card">
+                    <h3><i class="fa-solid fa-trophy" style="color: var(--accent-primary); margin-right: 0.5rem;"></i>
+                        Achievements</h3>
+                    <ul class="list-items">
+                        <li><strong>1st Place</strong> in the Reasoning Dataset Creation Competition (HuggingFace,
+                            Together.ai, Bespoke Labs).</li>
+                        <li><strong>Finalist</strong> in the Perfios IdeaFest for pitching an AI-powered healthcare
+                            product.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3><i class="fa-solid fa-graduation-cap"
+                            style="color: var(--accent-secondary); margin-right: 0.5rem;"></i> Education</h3>
+                    <h4>Indian Institute of Technology, Kharagpur</h4>
+                    <p>B. Tech, Aerospace Engineering (2019 – 2023)</p>
+                    <p class="text-sm text-secondary" style="margin-top: 0.5rem;">Coursework: Graphical & Generative
+                        Modelling, Dependable AI-ML, DL Foundations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="publications" class="section">
+        <div class="container">
+            <h2 class="section-title">Publications</h2>
+            <div class="card">
+                <h3>A Data-Centric Framework for Training Behaviour-Aware Personal Finance Language Models</h3>
+                <p>Akhil Theerthala (2025) • <em>FinNLP Workshop at EMNLP</em></p>
             </div>
         </div>
     </section>

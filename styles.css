@@ -266,6 +266,78 @@ ul {
     object-fit: cover;
 }
 
+/* Timeline */
+.timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50px;
+    /* Adjust based on layout */
+    height: 100%;
+    width: 2px;
+    background: var(--glass-border);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 3rem;
+    padding-left: 80px;
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: 41px;
+    /* Center on line */
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--bg-primary);
+    border: 2px solid var(--accent-primary);
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    z-index: 1;
+}
+
+.timeline-date {
+    position: absolute;
+    left: -100px;
+    /* Move date to left if space allows, or keep inline */
+    top: 0;
+    font-weight: 600;
+    color: var(--accent-primary);
+    display: none;
+    /* Hidden by default, shown in larger screens if needed */
+}
+
+.timeline-content h3 {
+    font-size: 1.25rem;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.timeline-content h4 {
+    font-size: 1rem;
+    color: var(--accent-secondary);
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.timeline-content p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
 /* About Section */
 .about-content {
     max-width: 800px;
@@ -343,6 +415,48 @@ ul {
 
 .link-arrow:hover {
     gap: 0.75rem;
+}
+
+/* Skills Grid */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.skill-card h3 {
+    margin-bottom: 1rem;
+    color: var(--accent-primary);
+}
+
+/* Grid 2 Column */
+.grid-2-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+/* List Items */
+.list-items {
+    list-style: disc;
+    padding-left: 1.5rem;
+    color: var(--text-secondary);
+}
+
+.list-items li {
+    margin-bottom: 0.5rem;
+}
+
+.timeline-content ul {
+    list-style: disc;
+    padding-left: 1.5rem;
+    margin-top: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.timeline-content li {
+    margin-bottom: 0.5rem;
 }
 
 /* Articles Grid */
