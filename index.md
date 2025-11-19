@@ -4,6 +4,7 @@ title: Home
 ---
 
 <section class="hero">
+  <canvas id="hero-canvas"></canvas>
   <div class="container">
     <div class="hero-content">
       <span class="hero-eyebrow">Finance AI · Reasoning Systems · Applied Research</span>
@@ -22,16 +23,12 @@ title: Home
 
     <div class="stats-grid">
       <div class="stat-item">
-        <span class="stat-value">5k+</span>
+        <span class="stat-value">6k+</span>
         <span class="stat-label">HF Downloads</span>
       </div>
       <div class="stat-item">
         <span class="stat-value">80+</span>
         <span class="stat-label">Community Likes</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-value">15+</span>
-        <span class="stat-label">Open Projects</span>
       </div>
       <div class="stat-item">
         <span class="stat-value">1st</span>
