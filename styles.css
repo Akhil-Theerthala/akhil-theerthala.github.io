@@ -388,7 +388,8 @@ ul {
     position: relative;
     max-width: 800px;
     margin: 0 auto;
-    padding: 2rem 0;
+    padding: 2rem 0 2rem 140px;
+    /* Added left padding for dates */
 }
 
 .timeline::before {
@@ -399,7 +400,8 @@ ul {
 .timeline-line {
     position: absolute;
     top: 0;
-    left: 50px;
+    left: 190px;
+    /* Adjusted to align with dots after padding change (140px + 50px) */
     height: 100%;
     width: 2px;
     background: var(--glass-border);
@@ -448,13 +450,45 @@ ul {
 
 .timeline-date {
     position: absolute;
-    left: -100px;
-    /* Move date to left if space allows, or keep inline */
+    left: -140px;
     top: 0;
+    width: 120px;
+    text-align: right;
     font-weight: 600;
     color: var(--accent-primary);
-    display: none;
-    /* Hidden by default, shown in larger screens if needed */
+    display: block;
+    font-size: 0.95rem;
+    line-height: 1.5rem;
+    /* Align with h3 line-height roughly */
+    padding-top: 0.25rem;
+    /* Slight adjustment to align with title */
+}
+
+@media (max-width: 768px) {
+    .timeline {
+        padding-left: 0;
+    }
+
+    .timeline-line {
+        left: 20px;
+    }
+
+    .timeline-dot {
+        left: 11px;
+    }
+
+    .timeline-item {
+        padding-left: 50px;
+    }
+
+    .timeline-date {
+        position: relative;
+        left: 0;
+        width: auto;
+        text-align: left;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+    }
 }
 
 .timeline-content h3 {
