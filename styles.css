@@ -50,7 +50,7 @@ html {
 body {
     font-family: var(--font-sans);
     background-color: var(--bg-primary);
-    background-image: url('bg.png');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('bg.png');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -154,12 +154,12 @@ ul {
 .navbar {
     position: fixed;
     top: 0;
-    left: 0;
     width: 100%;
     z-index: 1000;
-    background: rgba(5, 5, 5, 0.8);
-    backdrop-filter: blur(10px);
-    border-bottom: var(--glass-border);
+    background: rgba(255, 255, 255, 0.01);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     padding: 1rem 0;
 }
 
@@ -284,8 +284,9 @@ ul {
 }
 
 .img-wrapper {
-    width: 400px;
-    height: 400px;
+    width: 100%;
+    max-width: 400px;
+    aspect-ratio: 1 / 1;
     /* Square for circle */
     border-radius: 50%;
     /* Circular frame */
@@ -294,6 +295,7 @@ ul {
     border: var(--glass-border);
     box-shadow: var(--shadow-lg);
     background: var(--bg-card);
+    margin: 0 auto;
 }
 
 .img-wrapper::after {
@@ -616,10 +618,13 @@ ul {
 
 /* Footer */
 footer {
-    padding: 4rem 0;
-    border-top: var(--glass-border);
-    margin-top: 0;
-    /* Removed margin, section padding handles it */
+    background: rgba(255, 255, 255, 0.01);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 4rem 0 2rem;
+    margin-top: 4rem;
+    text-align: center;
 }
 
 .footer-content {
