@@ -1,0 +1,10 @@
+## The “technical” difference between the two.
+The `torch.load()` (without map\_location) method tries to load the model into the device it was saved on, then ports it to a specified GPU or CPU using `to(device)`. It's a multi-step process. Whereas the \` `torch.load(model_path, map_location=device)` is a single-step process where the model parameters are directly loaded into the specified device. The following illustration might help us understand what is happening on a high level.
+![](https://miro.medium.com/v2/resize:fit:1072/0*nG0dlhnNF5Ewy0HP.png)
+### Why does this difference matter?
+Imagine if we removed the GPU when loading the model in the above image. Which of the two paths would fail? Then `.to("cpu")` would fail as there is no GPU to load the model into. Even when you have an additional GPU that can store the model, you reduce the computational load of transferring the model from one device to another when using the `map_location`.
+### How can this difference be utilized?
+There are multiple areas where we can make the most of this difference. For example, we can safely skip the CUDA version mismatch or the architecture mismatch issues with the help of `map_location`, While we can use `.to(device)` to dynamically choose model parts to be pushed into the device of choice.
+In the following table, I have tried to summarize all the major differences where one approach can be more useful than the other. This side-by-side comparison is presented in the table below.
+To avoid all these issues, one of the best and recommended approaches is to push the models to the CPU before saving them using `torch.save()` , as a system might not have a TPU or GPU, but it can't function without a CPU.
+I hope you enjoyed reading this article. Let’s meet again with more detailed articles. Till then, stay tuned! ✌️ P.S. In the meantime, you can check out my other articles where I discussed [RegEx](https://www.neuronuts.in/demystifying-regex/) or learn more about the different phases involved in a machine learning project lifecycle [here](https://www.neuronuts.in/tag/mlopsseries/).

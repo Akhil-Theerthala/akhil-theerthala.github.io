@@ -1,70 +1,47 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Timeline Scroll Animation
-    function updateTimeline() {
-        const timeline = document.querySelector('.timeline');
-        const progressLine = document.querySelector('.timeline-progress');
-        const timelineItems = document.querySelectorAll('.timeline-item');
-
-        if (!timeline || !progressLine) return;
-
-        const timelineRect = timeline.getBoundingClientRect();
-        const windowHeight = window.innerHeight;
-
-        // Calculate progress based on scroll position relative to timeline
-        const startOffset = windowHeight / 2;
-        const endOffset = windowHeight / 2;
-
-        let progress = 0;
-
-        if (timelineRect.top < startOffset) {
-            const totalHeight = timeline.offsetHeight;
-            const scrolled = startOffset - timelineRect.top;
-            progress = Math.min(totalHeight, Math.max(0, scrolled));
-            progressLine.style.height = `${progress}px`;
-        } else {
-            progressLine.style.height = '0px';
-        }
-
-        // Activate dots
-        timelineItems.forEach(item => {
-            const itemTop = item.getBoundingClientRect().top;
-            if (itemTop < windowHeight / 2) {
-                item.classList.add('active');
-            } else {
-                item.classList.remove('active');
-            }
-        });
-    }
-
-    window.addEventListener('scroll', updateTimeline);
-    window.addEventListener('resize', updateTimeline);
-
-    // Smooth scrolling for navigation links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
-    });
-
-    // Scroll Reveal Animation
+    // Reveal Animations using Intersection Observer
     const observerOptions = {
         threshold: 0.1,
-        rootMargin: "0px 0px -50px 0px"
+        rootMargin: '0px 0px -50px 0px'
     };
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('active');
-                observer.unobserve(entry.target);
             }
         });
     }, observerOptions);
 
     document.querySelectorAll('.reveal').forEach(el => {
         observer.observe(el);
+    });
+
+    // Navbar Scroll Effect (Handled in index.html too, but keeping here for consistency)
+    const handleScroll = () => {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const href = this.getAttribute('href');
+            if (href !== '#') {
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        });
     });
 });

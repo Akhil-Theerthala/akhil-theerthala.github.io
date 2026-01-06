@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Writings | Akhil Theerthala</title>
+    <meta name="description" content="Technical articles on AI, Machine Learning, and Data Science.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        .writings-hero {
+            padding: 160px 0 60px;
+            text-align: center;
+            background: radial-gradient(circle at 50% 100%, #f1f5f9 0%, transparent 50%);
+        }
+
+        .writings-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .writings-hero .hero-subtitle {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* List Layout */
+        .writings-container {
+            padding: 3rem 0 6rem;
+        }
+
+        .article-list-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .year-divider {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin: 3rem 0 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .year-divider:first-child {
+            margin-top: 0;
+        }
+
+        .article-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 0;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .article-list-item:hover {
+            padding-left: 1rem;
+            background: white;
+            margin: 0 -1rem;
+            padding-right: 1rem;
+            border-radius: var(--radius-sm);
+        }
+
+        .article-list-item h3 {
+            font-size: 1.0625rem;
+            font-weight: 600;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        .article-list-item .item-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-shrink: 0;
+            margin-left: 2rem;
+        }
+
+        .article-list-item .item-date {
+            font-size: 0.8125rem;
+            color: var(--text-light);
+            white-space: nowrap;
+        }
+
+        .article-list-item .item-category {
+            font-size: 0.7rem;
+            background: var(--bg-surface);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .article-list-item .arrow {
+            color: var(--text-light);
+            transition: var(--transition);
+        }
+
+        .article-list-item:hover .arrow {
+            color: var(--text-main);
+            transform: translateX(4px);
+        }
+
+        /* Reader View */
+        .reader-container {
+            display: none;
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 140px 1.5rem 100px;
+        }
+
+        .reader-container.active {
+            display: block;
+        }
+
+        .list-container.hidden,
+        .hero-section.hidden {
+            display: none;
+        }
+
+        .back-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            margin-bottom: 2.5rem;
+            transition: var(--transition);
+        }
+
+        .back-nav:hover {
+            color: var(--text-main);
+        }
+
+        .reader-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .reader-header h1 {
+            font-size: 2.5rem;
+            line-height: 1.25;
+            margin-bottom: 1rem;
+        }
+
+        .reader-header .meta {
+            font-size: 0.9375rem;
+            color: var(--text-light);
+        }
+
+        .reader-body {
+            font-size: 1.0625rem;
+            line-height: 1.8;
+            color: var(--text-muted);
+        }
+
+        .reader-body h2 {
+            font-size: 1.5rem;
+            color: var(--text-main);
+            margin: 2.5rem 0 1rem;
+        }
+
+        .reader-body h3 {
+            font-size: 1.25rem;
+            color: var(--text-main);
+            margin: 2rem 0 0.75rem;
+        }
+
+        .reader-body p {
+            margin-bottom: 1.25rem;
+        }
+
+        .reader-body img {
+            border-radius: var(--radius-md);
+            margin: 2rem 0;
+            max-width: 100%;
+        }
+
+        .reader-body code {
+            background: var(--bg-surface);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .reader-body pre {
+            background: var(--accent);
+            color: #f8fafc;
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            margin: 2rem 0;
+        }
+
+        .reader-body pre code {
+            background: none;
+            color: inherit;
+        }
+
+        .reader-body ul,
+        .reader-body ol {
+            margin: 1rem 0 1.5rem 1.5rem;
+        }
+
+        .reader-body li {
+            margin-bottom: 0.5rem;
+        }
+
+        .reader-body blockquote {
+            border-left: 3px solid var(--accent);
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar scrolled">
+        <div class="container nav-content">
+            <a href="index.html" class="logo">Akhil Theerthala</a>
+            <ul class="nav-links">
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#publications">Publications</a></li>
+                <li><a href="writings.html" class="active">Writings</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="writings-hero hero-section" id="hero-section">
+        <div class="container">
+            <span class="section-label">Technical Articles</span>
+            <h1>Writings</h1>
+            <p class="hero-subtitle">Exploring machine learning, reasoning systems, and applied AI research.</p>
+        </div>
+    </header>
+
+    <main class="writings-container list-container" id="list-container">
+        <div class="container">
+            <div class="article-list-container">
+                <p style="text-align: center; color: var(--text-light); margin-bottom: 2rem;">
+                    <span id="count">23</span> Articles
+                </p>
+                <div id="articles-list"></div>
+            </div>
+        </div>
+    </main>
+
+    <div class="reader-container" id="reader-container">
+        <div class="back-nav" onclick="showList()">
+            <i class="fa-solid fa-arrow-left"></i> Back to Articles
+        </div>
+        <article>
+            <header class="reader-header">
+                <h1 id="reader-title"></h1>
+                <div class="meta" id="reader-meta"></div>
+            </header>
+            <div class="reader-body" id="reader-body"></div>
+        </article>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-info">
+                    <a href="index.html" class="logo" style="margin-bottom: 1rem; display: block;">Akhil Theerthala</a>
+                    <p style="color: var(--text-muted); max-width: 300px;">Exploring AI one step at a time.</p>
+                </div>
+                <div class="social-links">
+                    <a href="https://github.com/Akhil-Theerthala" target="_blank"><i
+                            class="fa-brands fa-github"></i></a>
+                    <a href="https://huggingface.co/Akhil-Theerthala" target="_blank">HF</a>
+                    <a href="https://medium.com/@akhiltvsn" target="_blank"><i class="fa-brands fa-medium"></i></a>
+                    <a href="mailto:akhiltvsn@gmail.com"><i class="fa-solid fa-envelope"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const articles = [
+            { file: "Density-Vs-Diversity.md", title: "Density Vs Diversity in Data Selection", date: "Jan 2026", category: "AI/ML" },
+            { file: "Creating-a-Reasoning-Dataset-with.md", title: "Creating a Reasoning Dataset with No Budget", date: "Apr 7, 2025", category: "AI/ML" },
+            { file: "From-Training-Language-Models-to.md", title: "From Training Language Models to Training DeepSeek-R1", date: "Feb 17, 2025", category: "AI/ML" },
+            { file: "7-Practical-PyTorch-Tips-for.md", title: "7 Practical PyTorch Tips for Smoother Development", date: "Feb 10, 2025", category: "PyTorch" },
+            { file: "Arent-these-new-AI-features.md", title: "Aren't These New AI Features Just... Features?", date: "Aug 15, 2024", category: "Opinion" },
+            { file: "Building-Blocks-of-Transformers.md", title: "Building Blocks of Transformers", date: "Mar 28, 2024", category: "AI/ML" },
+            { file: "Making-Sense-of-PyTorch's-to-and.md", title: "Making Sense of PyTorch's .to() and Device Management", date: "Aug 26, 2023", category: "PyTorch" },
+            { file: "De-mystifying-Regular-Expressions.md", title: "De-mystifying Regular Expressions", date: "Aug 5, 2023", category: "Python" },
+            { file: "Machine-Learning-Roadmap-Community.md", title: "Machine Learning Roadmap - Community Edition", date: "Jul 14, 2023", category: "Career" },
+            { file: "Data-Lifecycle-in-Production.md", title: "Data Lifecycle in Production", date: "Jun 24, 2023", category: "MLOps" },
+            { file: "Machine-Learning-Roadmap-—-Part-1.md", title: "Machine Learning Roadmap — Part 1", date: "Jun 14, 2023", category: "Career" },
+            { file: "Generating-Adversaries-for-CNNs-My.md", title: "Generating Adversaries for CNNs - My Experiments", date: "Mar 13, 2023", category: "Deep Learning" },
+            { file: "How-to-Maximize-ML-Project-Success.md", title: "How to Maximize ML Project Success", date: "Feb 10, 2023", category: "AI/ML" },
+            { file: "Data-Processing-in-Production.md", title: "Data Processing in Production", date: "Feb 5, 2023", category: "MLOps" },
+            { file: "Data-centric-approach-for-Machine.md", title: "Data-centric Approach for Machine Learning", date: "Jan 21, 2023", category: "AI/ML" },
+            { file: "Error-Analysis-for-Machine-learning.md", title: "Error Analysis for Machine Learning", date: "Jan 14, 2023", category: "AI/ML" },
+            { file: "An-Overview-of-Modeling-for-ML.md", title: "An Overview of Modeling for ML", date: "Jan 7, 2023", category: "AI/ML" },
+            { file: "MLOps-Notes-2-Model-Deployment.md", title: "MLOps Notes 2: Model Deployment", date: "Jan 5, 2023", category: "MLOps" },
+            { file: "Convolutional-NNs-17-The.md", title: "Convolutional Neural Networks: The Complete Guide", date: "Jan 2, 2023", category: "Deep Learning" },
+            { file: "MLOps-Notes-1-The-Machine-Learning.md", title: "MLOps Notes 1: The Machine Learning Lifecycle", date: "Jan 1, 2023", category: "MLOps" },
+            { file: "Investigating-the-Seattle-Airbnb.md", title: "Investigating the Seattle Airbnb Dataset", date: "Jul 28, 2022", category: "Data Science" },
+            { file: "How-to-Start-Your-Data-Journey.md", title: "How to Start Your Data Journey", date: "2022", category: "Career" }
+        ];
+
+        function getYear(dateStr) {
+            const parts = dateStr.replace(',', '').split(' ');
+            return parts.length >= 3 ? parts[2] : parts[parts.length - 1];
+        }
+
+        function renderArticles() {
+            const listEl = document.getElementById('articles-list');
+            document.getElementById('count').textContent = articles.length;
+
+            const byYear = {};
+            articles.forEach((a, i) => {
+                const y = getYear(a.date);
+                if (!byYear[y]) byYear[y] = [];
+                byYear[y].push({ ...a, i });
+            });
+
+            const years = Object.keys(byYear).sort((a, b) => b - a);
+            let html = '';
+
+            years.forEach(y => {
+                html += `<div class="year-divider">${y}</div>`;
+                byYear[y].forEach(a => {
+                    html += `
+                        <div class="article-list-item" onclick="loadArticle(${a.i})">
+                            <h3>${a.title}</h3>
+                            <div class="item-meta">
+                                <span class="item-date">${a.date}</span>
+                                <span class="item-category">${a.category}</span>
+                                <i class="fa-solid fa-arrow-right arrow"></i>
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+
+            listEl.innerHTML = html;
+        }
+
+        async function loadArticle(index) {
+            const a = articles[index];
+            try {
+                const resp = await fetch(`My writings/${a.file}`);
+                if (!resp.ok) throw new Error('Failed to fetch');
+                const text = await resp.text();
+
+                document.getElementById('reader-title').textContent = a.title;
+                document.getElementById('reader-meta').textContent = `${a.date} • ${a.category}`;
+                document.getElementById('reader-body').innerHTML = marked.parse(text);
+
+                document.getElementById('list-container').classList.add('hidden');
+                document.getElementById('hero-section').classList.add('hidden');
+                document.getElementById('reader-container').classList.add('active');
+
+                history.pushState(null, '', `#${a.file.replace('.md', '')}`);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } catch (e) {
+                console.error(e);
+                alert('Could not load article. Please try again.');
+            }
+        }
+
+        function showList() {
+            document.getElementById('list-container').classList.remove('hidden');
+            document.getElementById('hero-section').classList.remove('hidden');
+            document.getElementById('reader-container').classList.remove('active');
+            history.pushState(null, '', 'writings.html');
+        }
+
+        function handleHash() {
+            const h = window.location.hash.slice(1);
+            if (h) {
+                const idx = articles.findIndex(a => a.file.replace('.md', '') === h);
+                if (idx !== -1) loadArticle(idx);
+            }
+        }
+
+        renderArticles();
+        handleHash();
+        window.onpopstate = () => window.location.hash ? handleHash() : showList();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,23 @@
+## Convolution operation:
+We use this operation to ensure **the spatial relationship between pixels by learning image features using small squares of input data**., i.e., we take a set of pixels, learn their relationship determined by the filter and store the output that indicates the spatial relationship between the pixels.
+## Now what is this ‘spatial relationship’?
+To understand this, consider a book placed on a table. _How do we determine that the book is different from the table?_ We humans can instinctively know that the book is different from the table as we can see the 3-Dimensions of the book, analyse it and process it i.e., We see the shadows cast by the book, the height of it and many other features.
+Similarly, in Computer vision, we first need to differentiate an object from its surroundings, that is done by comparing a pixel to its surroundings. In a standard NN, what we did was to study each pixel and tried to map the entire set of pixels to an output, by using a function. Now, in CNN, we study the differences between a pixel and it’s surroundings to extract features. This is nothing but the aforementioned “Spatial Relationship”.
+> 📢 The operation that we do is actually called **cross-correlation** in the mathematics. But in DL literature, we call it a convolution operation.
+To gain more clarity on the process of convolution, let us take a simple example of a 5x5 matrix (image in this case), and a 3x3 filter:
+A simple description of a convolution operation. Source: freecodecamp.com
+In the above GIF image, we can see that the entire 5x5 matrix is transformed into a 3x3 matrix with the help of a 3x3 filter. This 3x3 output contains the spatial relationship of the pixels in the middle of the 5x5 matrix \[i.e., starting from the value in the position (2,2) to (4,4)\]. Which makes us lose the information on the borders of the matrix. We will see the steps to tackle this loss of information later on when we discuss _padding_.
+## Example: Edge Detection
+Edge detection is the easiest application using convolution operation, as the pixel values differ greatly at the edges. When we observe the pixels on the edge or the boundary between 2 different objects, say a face and its background, the edge of the face will be surrounded by the face pixels which indicate skin colour on one side, and the colour of the background on the other side.
+![Become a member](https://miro.medium.com/v2/da:true/resize:fit:0/60026f4340686a391639ac58864da18070aa773cea45de6e55fa47fd56bfdb74)
+![Become a member](https://miro.medium.com/v2/da:true/resize:fit:0/c061bd6cb52734164bf0c66f2543a6bc2acbe24ae3985dc15c898b3ddb2e1940)
+](https://medium.com/plans?source=upgrade_membership---post_li_non_moc_upsell--e2a47be1d890---------------------------------------)
+We can also go back to the earlier book on the table example and see that the texture, colour of the book is different from the table on which it is placed.
+Now, let’s look at a far simpler example to understand the essence of what we have just read,
+![](https://miro.medium.com/v2/resize:fit:1400/1*p33s9p0TY0pcewUdw2IXow.png)
+In this example, you can see that the border is at the 3rd and 4th columns, where one side is bright, and the other side is dark. Which when passed through a filter, we get bright columns in the middle indicating that the edge is in the middle of the considered pixels. Now, if the input image is flipped horizontally, we get an opposite output as we can see below,
+![](https://miro.medium.com/v2/resize:fit:1400/1*MHyfs27Pk4Zrh4d-75wH2A.png)
+The -30s show that the transition from left to right is between _darker area_ in the image _to a brighter area_, whereas the +30s shows that transition is from _brighter area to darker area_ .
+One can notice that the filter we used is a vertical filter, which tries to detect the edges starting from the left of the screen. If we want a filter for horizontal edge detection, we can just take the transpose of the filter that we are using. The information that we get using the above filter is very minimal. To get more information, we use many complex filters. There are many pre-defined filters that are famous filters for edge detection, like the Sobel Filter or the Scharr Filter etc.,
+![](https://miro.medium.com/v2/resize:fit:1400/1*sS0PYr_zLZmCgE8GTJ9cSQ.png)
+Even though these filters work, there is a better way to do it. Which is to use back propagation to teach a filter what to detect. We’ll talk about this very soon in the series. So, stay tuned to my page and feel free to checkout my other articles in the meantime!
