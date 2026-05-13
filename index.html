@@ -1,260 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Akhil Theerthala | Applied Scientist</title>
-    <meta name="description"
-        content="Akhil Theerthala — Applied Scientist specializing in NLP and Vision-Language Models for document intelligence.">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Akhil Theerthala — Applied Scientist</title>
+  <meta name="description" content="Akhil Theerthala — Applied Scientist working on NLP and Vision-Language Models for document understanding.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Geist:wght@300;400;450;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="portfolio.css">
+
+  <!-- React + Babel -->
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <!-- Markdown for the article reader -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
-
 <body>
-    <nav class="navbar">
-        <div class="container nav-content">
-            <a href="#" class="logo">Akhil Theerthala</a>
-            <ul class="nav-links">
-                <li><a href="#about">About</a></li>
-                <li><a href="#publications">Publications</a></li>
-                <li><a href="writings.html">Writings</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </div>
-    </nav>
+  <div id="root"></div>
 
-    <!-- Hero Section -->
-    <header class="hero">
-        <div class="container hero-grid">
-            <div class="hero-content reveal">
-                <span class="section-label">Applied Scientist</span>
-                <h1>Building with <span class="gradient-text">AI</span>, One Step at a Time</h1>
-                <p class="hero-subtitle">Data Scientist and MS student at IIIT Hyderabad, focusing on NLP and Vision-Language Models for document understanding and reasoning.</p>
-                <div class="hero-actions">
-                    <a href="Akhil_Theerthala_Resume.pdf" class="btn btn-primary" target="_blank">Download Resume <i
-                            class="fa-solid fa-download"></i></a>
-                    <a href="writings.html" class="btn btn-outline">Read Articles</a>
-                </div>
-            </div>
-            <div class="hero-visual reveal">
-                <div class="profile-frame">
-                    <img src="profile_photo.png" alt="Akhil Theerthala" class="profile-img">
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- About & Experience Section -->
-    <section id="about" class="section profile-section">
-        <div class="container two-col-grid">
-            <div class="about-column reveal">
-                <span class="section-label">Background</span>
-                <div class="about-header">
-                    <h2>About Me</h2>
-                </div>
-                <div class="about-body">
-                    <p>I am a Data Scientist at Perfios Software Solutions and currently pursuing an MS in Data Science at IIIT Hyderabad. My work primarily involves using NLP and Vision-Language Models to help machines better understand documents.</p>
-                    <p>I enjoy working across the machine learning lifecycle, turning research ideas into practical applications. My open-source work on the Kuvera personal finance models has been downloaded over <strong>51,000 times</strong> on Hugging Face.</p>
-                </div>
-                <div class="stats-bar">
-                    <div class="stat-item">
-                        <span class="num">97.5%</span>
-                        <span class="label">Latency Reduction</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="num">27.6%</span>
-                        <span class="label">Accuracy Improvement</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="experience-column reveal">
-                <span class="section-label">Experience</span>
-                <div class="timeline-list">
-                    <div class="timeline-card">
-                        <div class="timeline-date">Apr 2025 – Present</div>
-                        <h3 class="timeline-title">Senior Member Data Scientist</h3>
-                        <p class="timeline-org">Perfios Software Solutions</p>
-                        <p class="timeline-desc">Experimenting with VLMs (like PaliGemma2) for financial data, building reasoning workflows, and developing algorithms for document readability.</p>
-                    </div>
-
-                    <div class="timeline-card">
-                        <div class="timeline-date">Jun 2023 – Apr 2025</div>
-                        <h3 class="timeline-title">Member Data Scientist</h3>
-                        <p class="timeline-org">Perfios Software Solutions</p>
-                        <p class="timeline-desc">Reduced inference latency 8s→200ms via distillation; improved table
-                            detection by 27.6%; enhanced TSR with semantic row-detection.</p>
-                    </div>
-
-                    <div class="timeline-card">
-                        <div class="timeline-date">Aug 2019 – May 2023</div>
-                        <h3 class="timeline-title">B.Tech in Aerospace Engineering</h3>
-                        <p class="timeline-org">IIT Kharagpur</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Publications Section -->
-    <section id="publications" class="section">
-        <div class="container reveal">
-            <h2 class="section-title">Publications</h2>
-            <div class="publications-list">
-                <a href="My Papers/FinForge AAAI 2026.pdf" target="_blank" class="publication-item card">
-                    <span class="pub-type">Agentic AI for Finance, AAAI 2026</span>
-                    <h3 class="pub-title">FinForge: A Semi-Synthetic Benchmark Generation Framework for Finance</h3>
-                    <p class="pub-authors">Matlin, G., Theerthala, A., et al.</p>
-                    <p class="pub-venue">Agentic AI in Financial Services, AAAI 2026</p>
-                </a>
-                <a href="My Papers/synthesizing behavioral reasoning chains.pdf" target="_blank"
-                    class="publication-item card">
-                    <span class="pub-type">FinNLP, EMNLP 2025</span>
-                    <h3 class="pub-title">A Data-Centric Framework for Training Behaviour-Aware Personal Finance
-                        Language Models</h3>
-                    <p class="pub-authors">Theerthala, A.</p>
-                    <p class="pub-venue">FinNLP, EMNLP 2025</p>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Articles Section - Card Based -->
-    <section id="articles" class="section" style="background: var(--bg-surface);">
-        <div class="container reveal">
-            <h2 class="section-title">Selected Writings</h2>
-            <p
-                style="text-align: center; color: var(--text-muted); margin-bottom: 3rem; max-width: 600px; margin-left: auto; margin-right: auto;">
-                Technical articles on machine learning, reasoning systems, and applied research.</p>
-            <div class="writings-grid">
-                <div class="writing-card" onclick="window.location.href='writings.html#Density-Vs-Diversity'">
-                    <span class="writing-date">Jan 2026</span>
-                    <h3>Density vs. Diversity in Data Selection</h3>
-                    <p>Analyzing dense vs diverse sampling strategies for VLM training on 15k-sample synthetic datasets.
-                    </p>
-                    <span class="read-more">Read More →</span>
-                </div>
-                <div class="writing-card"
-                    onclick="window.location.href='writings.html#Creating-a-Reasoning-Dataset-with'">
-                    <span class="writing-date">Apr 2025</span>
-                    <h3>Creating a Reasoning Dataset with No Budget</h3>
-                    <p>How I ranked 1st globally in the Reasoning Dataset Creation Challenge using synthetic data.</p>
-                    <span class="read-more">Read More →</span>
-                </div>
-                <div class="writing-card"
-                    onclick="window.location.href='writings.html#From-Training-Language-Models-to'">
-                    <span class="writing-date">Feb 2025</span>
-                    <h3>From Training Language Models to DeepSeek-R1</h3>
-                    <p>An overview of how training regimes evolved from classic approaches to modern reasoning models.
-                    </p>
-                    <span class="read-more">Read More →</span>
-                </div>
-                <div class="writing-card" onclick="window.location.href='writings.html#7-Practical-PyTorch-Tips-for'">
-                    <span class="writing-date">Feb 2025</span>
-                    <h3>7 Practical PyTorch Tips</h3>
-                    <p>Lessons learned from production PyTorch development covering best practices and optimization.</p>
-                    <span class="read-more">Read More →</span>
-                </div>
-            </div>
-            <div class="center-btn" style="margin-top: 3rem;">
-                <a href="writings.html" class="btn btn-outline">View All 22 Articles</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="section">
-        <div class="container reveal">
-            <h2 class="section-title">Notable Projects</h2>
-            <div class="grid-3">
-                <a href="https://huggingface.co/Akhil-Theerthala" target="_blank" class="card project-card">
-                    <div class="project-icon"><i class="fa-solid fa-trophy"></i></div>
-                    <h3 class="card-title">Reasoning Dataset Challenge – 1st Place</h3>
-                    <p>Ranked 1st globally among 150+ teams (Bespoke Labs, HuggingFace, Together.ai). Trained a 7B model that achieved strong reasoning capabilities.</p>
-                    <div class="card-tags">
-                        <span class="tag">Competition</span>
-                        <span class="tag">LLM</span>
-                    </div>
-                </a>
-                <a href="https://huggingface.co/datasets/Akhil-Theerthala/Kuvera-PersonalFinance-V2.1" target="_blank"
-                    class="card project-card">
-                    <div class="project-icon"><i class="fa-solid fa-coins"></i></div>
-                    <h3 class="card-title">Kuvera Personal Finance LLM</h3>
-                    <p>Instruction-tuning dataset for Indian financial context. Fine-tuned 8B/14B models with 51,000+ downloads.</p>
-                    <div class="card-tags">
-                        <span class="tag">Dataset</span>
-                        <span class="tag">HuggingFace</span>
-                    </div>
-                </a>
-                <a href="https://github.com/Akhil-Theerthala" target="_blank" class="card project-card">
-                    <div class="project-icon"><i class="fa-solid fa-file-lines"></i></div>
-                    <h3 class="card-title">PaperStack</h3>
-                    <p>An interactive tool for reading research papers, using a tiered approach to balance speed and depth when analyzing documents.</p>
-                    <div class="card-tags">
-                        <span class="tag">RAG</span>
-                        <span class="tag">Research</span>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Achievements Section -->
-    <section id="achievements" class="section" style="background: var(--bg-surface);">
-        <div class="container reveal">
-            <h2 class="section-title">Recognition & Certifications</h2>
-            <div class="grid-3">
-                <div class="card">
-                    <h3 class="card-title">Awards & Impact</h3>
-                    <p>Won the <strong>Circle of Excellence</strong> award at Perfios (2026). Creator of Kuvera datasets and models with 51,000+ downloads.</p>
-                </div>
-                <div class="card">
-                    <h3 class="card-title">Publications</h3>
-                    <p>AAAI 2026 Workshop (FinForge) and FinNLP @ EMNLP 2025 on behaviour-aware personal finance LLMs.
-                    </p>
-                </div>
-                <div class="card">
-                    <h3 class="card-title">Certifications</h3>
-                    <p>The Reasoning Course (HuggingFace), Generative AI with LLMs (DeepLearning.AI), ML in Production
-                        (Coursera).</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer id="contact">
-        <div class="container">
-            <div class="footer-grid reveal">
-                <div class="footer-info">
-                    <a href="#" class="logo" style="margin-bottom: 1rem; display: block;">Akhil Theerthala</a>
-                    <p style="color: var(--text-muted); max-width: 350px;">Exploring AI one step at a time — from data
-                        to deployment.</p>
-                </div>
-                <div class="social-links">
-                    <a href="https://github.com/Akhil-Theerthala" target="_blank" title="GitHub"><i
-                            class="fa-brands fa-github"></i></a>
-                    <a href="https://huggingface.co/Akhil-Theerthala" target="_blank" title="Hugging Face">HF</a>
-                    <a href="https://medium.com/@akhiltvsn" target="_blank" title="Medium"><i
-                            class="fa-brands fa-medium"></i></a>
-                    <a href="mailto:akhiltvsn@gmail.com" title="Email"><i class="fa-solid fa-envelope"></i></a>
-                </div>
-            </div>
-            <div
-                style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.875rem; color: var(--text-light);">
-                &copy; 2026 Akhil Theerthala.
-            </div>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
-    <script>
-        window.addEventListener('scroll', () => {
-            const navbar = document.querySelector('.navbar');
-            navbar.classList.toggle('scrolled', window.scrollY > 50);
-        });
-    </script>
+  <script src="portfolio-data.js"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" src="portfolio-sections.jsx"></script>
+  <script type="text/babel" src="portfolio-reader.jsx"></script>
+  <script type="text/babel" src="portfolio-app.jsx"></script>
 </body>
-
 </html>
