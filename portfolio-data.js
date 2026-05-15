@@ -8,40 +8,56 @@ window.PORTFOLIO_DATA = {
     "Applied Scientist building production AI at the intersection of NLP, Vision-Language Models, and FinTech.",
 
   longIntro: [
-    "Applied Scientist with 2.5+ years of hands-on experience building production AI systems at the intersection of NLP, Vision-Language Models, and FinTech. I translate cutting-edge research into scalable, real-world systems \u2014 from fine-tuning large multimodal models to architecting multi-stage agentic reasoning workflows.",
-    "At Perfios I currently lead efforts adapting open-weight VLMs (PaliGemma2 via LoRA) for complex financial document layouts, and building agentic pipelines (Google-ADK) for underwriting, claims, and retention risk. Beyond industry work I publish, contribute open-source, and volunteer with Georgia Tech's Financial Services Innovation Lab on financial LLM reasoning.",
+    "I work at the intersection of applied machine learning, financial data, and research-grade evaluation.",
+    "I’m an Applied Data Scientist building toward senior applied scientist and researcher roles.My work spans finance - specific data curation, validation frameworks, quality assessment models, and agentic systems for market intelligence and personalization.At Perfios, one of India’s leading B2B SaaS platforms for banks and financial institutions, I’ve contributed to ML systems designed for real - world reliability, domain precision, and measurable business value.",
+    "I also publish personal ML artifacts on Hugging Face, including personal finance datasets and Kuvera-focused advisory models, which have collectively crossed 50K+ downloads through direct usage and community GGUF adaptations.",
   ],
 
   stats: [],
 
-  experience: [
-    {
-      date: "Apr 2026 — Present",
-      title: "MSc, Data Science",
-      org: "International Institute of Information Technology, Hyderabad",
-      desc: "Online MSc pursued alongside the Senior Data Scientist role at Perfios. Focused on representation learning, reasoning, and applied ML for finance.",
-      tags: ["IIIT Hyderabad", "Online"],
-    },
+  workExperience: [
     {
       date: "Apr 2025 — Present",
       title: "Senior Data Scientist",
       org: "Perfios Software Solutions",
-      desc: "Experimenting with VLMs (PaliGemma2, Qwen2-VL) for financial-document reasoning. Building synthetic-data and evaluation pipelines for behaviour-aware finance LLMs.",
-      tags: ["VLM", "Reasoning", "Synthetic data"],
+      desc: [
+        "— Awarded Circle of Excellence for GenAI research in financial document intelligence.",
+        "— Fine-tuned PaliGemma2 via LoRA on domain-specific financial data, achieving TEDS 0.85 on internal document benchmarks.",
+        "— Built a reference-free ViT legibility scorer at 92% precision to gate low-fidelity inputs before inference, preventing downstream hallucination and reducing wasted compute.",
+        "— Designed and validated multi-stage agentic reasoning workflows (Google ADK) for underwriting, claims, and retention-risk tasks.",
+      ],
+    },
+    {
+      date: "Aug 2025 — Present",
+      title: "Research Volunteer",
+      org: "FSIL & HCAI Labs, Georgia Tech",
+      desc: [
+        "— Co-authored FinForge, a semi-synthetic benchmark generation pipeline for financial agentic systems, accepted at the AAAI 2026 Agentic AI in Financial Services Workshop.",
+        '— Contributed to "Stable Steering in Activation Space for LLMs", submitted to the Mechanistic Interpretability Workshop at ICML 2026.',
+      ],
     },
     {
       date: "Jun 2023 — Apr 2025",
       title: "Data Scientist",
       org: "Perfios Software Solutions",
-      desc: "Reduced inference latency 8s\u2009\u2192\u2009200ms via model distillation. Improved table detection by 27.6% and shipped a semantic row-detection algorithm for Table Structure Recognition.",
-      tags: ["Distillation", "OCR/TSR", "Production"],
+      desc: [
+        "— Reduced document classification latency by 97.5% (8s \u2192 200ms) via distillation and quantization, preserving F1 parity.",
+        "— Improved generalized table detection by 27.6% through semi-synthetic data curation and systematic evaluation of YOLOv8 variants.",
+        "— Integrated a fine-tuned semantic row-detection module into the production TSR pipeline at under 40ms overhead.",
+      ],
+    },
+  ],
+
+  education: [
+    {
+      date: "Apr 2026 — Present",
+      title: "MSc, Data Science",
+      org: "International Institute of Information Technology, Hyderabad",
     },
     {
       date: "Aug 2019 — May 2023",
       title: "B.Tech, Aerospace Engineering",
       org: "Indian Institute of Technology, Kharagpur",
-      desc: "Switched from rockets to representation learning along the way \u2014 stayed for the math.",
-      tags: ["IIT KGP"],
     },
   ],
 
@@ -51,7 +67,15 @@ window.PORTFOLIO_DATA = {
       venue: "Agentic AI in Financial Services Workshop, AAAI 2026",
       title:
         "FinForge: A Semi-Synthetic Benchmark Generation Framework for Finance",
-      authors: ["G. Matlin", "A. Theerthala", "S. Khare", "P. Kumar", "et al."],
+      authors: [
+        "Glenn Matlin",
+        "Akhil Theerthala",
+        "Anant Gupta",
+        "Anirudh JM",
+        "Rayan Castilla",
+        "Yi Mei Ng",
+        "Sudheer Chava",
+      ],
       abstract:
         "A framework for generating semi-synthetic, programmatically-grounded benchmarks for evaluating agentic finance systems on tasks that real-world deployments actually care about.",
       tags: ["Benchmarks", "Agentic AI", "Workshop"],
@@ -76,7 +100,7 @@ window.PORTFOLIO_DATA = {
       kicker: "Open source \u00b7 Hugging Face",
       desc: "An instruction-tuning dataset and fine-tuned 8B / 14B models for the Indian personal-finance context. 51,000+ cumulative downloads.",
       metric: "51K+ downloads",
-      year: "2024 \u2014 ongoing",
+      year: "2025",
       href: "https://huggingface.co/datasets/Akhil-Theerthala/Kuvera-PersonalFinance-V2.1",
       tags: ["Dataset", "Fine-tuning", "Finance"],
     },
@@ -90,13 +114,13 @@ window.PORTFOLIO_DATA = {
       tags: ["Competition", "Reasoning", "Synthetic data"],
     },
     {
-      title: "PaperStack",
-      kicker: "Research tool",
-      desc: "A tiered, retrieval-aware reader for research papers \u2014 trades off speed and depth depending on how much of the paper you actually want to engage with.",
-      metric: "Personal",
-      year: "2024",
-      href: "https://github.com/Akhil-Theerthala",
-      tags: ["RAG", "Tooling"],
+      title: "LazyInfer",
+      kicker: "Open source · Python framework",
+      desc: "A Python framework for YAML-driven multi-stage LLM pipelines over JSONL datasets, with async execution, retries, rate limiting, checkpointing, structured output validation, and optional Hugging Face dataset publishing.",
+      metric: "GitHub",
+      year: "2025",
+      href: "https://github.com/Akhil-Theerthala/LazyInfer",
+      tags: ["YAML", "AsyncIO", "Pydantic"],
     },
   ],
 
@@ -106,7 +130,7 @@ window.PORTFOLIO_DATA = {
       title: "Density vs. Diversity in Data Selection",
       date: "Jan 2026",
       year: "2026",
-      category: "AI/ML",
+      category: "Data & Evaluation",
       read: "12 min",
       featured: true,
       excerpt:
@@ -117,7 +141,7 @@ window.PORTFOLIO_DATA = {
       title: "Creating a Reasoning Dataset with No Budget",
       date: "Apr 2025",
       year: "2025",
-      category: "AI/ML",
+      category: "LLMs & Reasoning",
       read: "18 min",
       featured: true,
       excerpt:
@@ -128,7 +152,7 @@ window.PORTFOLIO_DATA = {
       title: "From Training Language Models to DeepSeek-R1",
       date: "Feb 2025",
       year: "2025",
-      category: "AI/ML",
+      category: "LLMs & Reasoning",
       read: "14 min",
       featured: true,
       excerpt:
@@ -139,17 +163,17 @@ window.PORTFOLIO_DATA = {
       title: "7 Practical PyTorch Tips",
       date: "Feb 2025",
       year: "2025",
-      category: "PyTorch",
+      category: "Systems & Production",
       read: "8 min",
       excerpt:
         "Quiet wins from production PyTorch \u2014 the kind of thing nobody puts in tutorials.",
     },
     {
       file: "Arent-these-new-AI-features.md",
-      title: "Aren't These New AI Features Just\u2026 Features?",
+      title: "Aren't These New AI Features Just… Features?",
       date: "Aug 2024",
       year: "2024",
-      category: "Opinion",
+      category: "Career & Practice",
       read: "6 min",
     },
     {
@@ -157,7 +181,7 @@ window.PORTFOLIO_DATA = {
       title: "Building Blocks of Transformers",
       date: "Mar 2024",
       year: "2024",
-      category: "AI/ML",
+      category: "Fundamentals",
       read: "11 min",
     },
     {
@@ -165,7 +189,7 @@ window.PORTFOLIO_DATA = {
       title: "Making Sense of PyTorch's .to() and Device Management",
       date: "Aug 2023",
       year: "2023",
-      category: "PyTorch",
+      category: "Systems & Production",
       read: "5 min",
     },
     {
@@ -173,15 +197,15 @@ window.PORTFOLIO_DATA = {
       title: "De-mystifying Regular Expressions",
       date: "Aug 2023",
       year: "2023",
-      category: "Python",
+      category: "Fundamentals",
       read: "15 min",
     },
     {
       file: "Machine-Learning-Roadmap-Community.md",
-      title: "Machine Learning Roadmap \u2014 Community Edition",
+      title: "Machine Learning Roadmap — Community Edition",
       date: "Jul 2023",
       year: "2023",
-      category: "Career",
+      category: "Career & Practice",
       read: "14 min",
     },
     {
@@ -189,15 +213,15 @@ window.PORTFOLIO_DATA = {
       title: "Data Lifecycle in Production",
       date: "Jun 2023",
       year: "2023",
-      category: "MLOps",
+      category: "Systems & Production",
       read: "12 min",
     },
     {
       file: "Machine-Learning-Roadmap-—-Part-1.md",
-      title: "Machine Learning Roadmap \u2014 Part 1",
+      title: "Machine Learning Roadmap — Part 1",
       date: "Jun 2023",
       year: "2023",
-      category: "Career",
+      category: "Career & Practice",
       read: "15 min",
     },
     {
@@ -205,7 +229,7 @@ window.PORTFOLIO_DATA = {
       title: "Generating Adversaries for CNNs",
       date: "Mar 2023",
       year: "2023",
-      category: "Deep Learning",
+      category: "Fundamentals",
       read: "9 min",
     },
     {
@@ -213,7 +237,7 @@ window.PORTFOLIO_DATA = {
       title: "How to Maximize ML Project Success",
       date: "Feb 2023",
       year: "2023",
-      category: "AI/ML",
+      category: "Career & Practice",
       read: "10 min",
     },
     {
@@ -221,7 +245,7 @@ window.PORTFOLIO_DATA = {
       title: "Data Processing in Production",
       date: "Feb 2023",
       year: "2023",
-      category: "MLOps",
+      category: "Systems & Production",
       read: "20 min",
     },
     {
@@ -229,7 +253,7 @@ window.PORTFOLIO_DATA = {
       title: "Data-centric Approach for Machine Learning",
       date: "Jan 2023",
       year: "2023",
-      category: "AI/ML",
+      category: "Data & Evaluation",
       read: "11 min",
     },
     {
@@ -237,7 +261,7 @@ window.PORTFOLIO_DATA = {
       title: "Error Analysis for Machine Learning",
       date: "Jan 2023",
       year: "2023",
-      category: "AI/ML",
+      category: "Data & Evaluation",
       read: "6 min",
     },
     {
@@ -245,7 +269,7 @@ window.PORTFOLIO_DATA = {
       title: "An Overview of Modeling for ML",
       date: "Jan 2023",
       year: "2023",
-      category: "AI/ML",
+      category: "Fundamentals",
       read: "12 min",
     },
     {
@@ -253,7 +277,7 @@ window.PORTFOLIO_DATA = {
       title: "MLOps Notes 2: Model Deployment",
       date: "Jan 2023",
       year: "2023",
-      category: "MLOps",
+      category: "Systems & Production",
       read: "10 min",
     },
     {
@@ -261,7 +285,7 @@ window.PORTFOLIO_DATA = {
       title: "Convolutional Neural Networks: The Complete Guide",
       date: "Jan 2023",
       year: "2023",
-      category: "Deep Learning",
+      category: "Fundamentals",
       read: "7 min",
     },
     {
@@ -269,7 +293,7 @@ window.PORTFOLIO_DATA = {
       title: "MLOps Notes 1: The Machine Learning Lifecycle",
       date: "Jan 2023",
       year: "2023",
-      category: "MLOps",
+      category: "Systems & Production",
       read: "10 min",
     },
     {
@@ -277,7 +301,7 @@ window.PORTFOLIO_DATA = {
       title: "Investigating the Seattle Airbnb Dataset",
       date: "Jul 2022",
       year: "2022",
-      category: "Data Science",
+      category: "Data & Evaluation",
       read: "9 min",
     },
     {
@@ -285,7 +309,7 @@ window.PORTFOLIO_DATA = {
       title: "How to Start Your Data Journey",
       date: "2022",
       year: "2022",
-      category: "Career",
+      category: "Career & Practice",
       read: "7 min",
     },
   ],

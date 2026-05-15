@@ -28,7 +28,6 @@ function App() {
     ? window.useTweaks(TWEAK_DEFAULTS)
     : [TWEAK_DEFAULTS, () => {}];
 
-  const [reader, setReader] = useState(null);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("top");
   const data = window.PORTFOLIO_DATA;
@@ -36,7 +35,25 @@ function App() {
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 40);
-      const sections = ["top", "cv", "research", "work", "writings", "contact"];
+
+      const nearPageBottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 120;
+
+      if (nearPageBottom) {
+        setActive("contact");
+        return;
+      }
+
+      const sections = [
+        "top",
+        "cv",
+        "education",
+        "research",
+        "work",
+        "writings",
+        "contact",
+      ];
       let cur = "top";
       for (const id of sections) {
         const el = document.getElementById(id);
@@ -82,8 +99,9 @@ function App() {
   const nav = [
     { id: "top", label: "About" },
     { id: "cv", label: "Experience" },
+    { id: "education", label: "Education" },
     { id: "research", label: "Publications" },
-    { id: "work", label: "Open Source" },
+    { id: "work", label: "Projects" },
     { id: "writings", label: "Writings" },
     { id: "contact", label: "Contact" },
   ];
@@ -127,20 +145,13 @@ function App() {
       <main>
         <Hero data={data} accent={tweaks.accent} />
         <Experience data={data} accent={tweaks.accent} />
+        <Education data={data} accent={tweaks.accent} />
         <Publications data={data} accent={tweaks.accent} />
         <Projects data={data} accent={tweaks.accent} />
-        <Writings data={data} accent={tweaks.accent} onOpen={setReader} />
+        <Writings data={data} accent={tweaks.accent} />
       </main>
 
       <FooterBlock data={data} accent={tweaks.accent} />
-
-      {reader && (
-        <ArticleReader
-          article={reader}
-          accent={tweaks.accent}
-          onClose={() => setReader(null)}
-        />
-      )}
 
       {window.TweaksPanel && (
         <window.TweaksPanel title="Tweaks">

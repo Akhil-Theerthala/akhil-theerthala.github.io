@@ -45,17 +45,6 @@ function Hero({ data, accent }) {
           </div>
         </div>
       </div>
-
-      <div className="hero-notes">
-        {data.now.map((item, i) => (
-          <div className="note-card" key={i}>
-            <div className="note-kicker" style={{ color: accent }}>
-              {item.label}
-            </div>
-            <div className="note-text">{item.text}</div>
-          </div>
-        ))}
-      </div>
     </section>
   );
 }
@@ -108,7 +97,7 @@ function Publications({ data, accent }) {
   return (
     <section className="section" id="research">
       <SectionHead
-        label="§ 02"
+        label="§ 03"
         title="Publications"
         sub="Research work done so far."
       />
@@ -128,7 +117,7 @@ function Publications({ data, accent }) {
                   <p className="pub-authors mono">
                     {p.authors.map((a, j) => (
                       <span key={j}>
-                        {a === "A. Theerthala" ? (
+                        {a === "A. Theerthala" || a === "Akhil Theerthala" ? (
                           <strong style={{ color: "var(--ink)" }}>{a}</strong>
                         ) : (
                           a
@@ -186,8 +175,8 @@ function Projects({ data, accent }) {
   return (
     <section className="section" id="work">
       <SectionHead
-        label="§ 03"
-        title="Open Source"
+        label="§ 04"
+        title="Projects"
         sub="Datasets, models, and small tools — built in the open."
       />
 
@@ -228,25 +217,25 @@ function Experience({ data, accent }) {
     <section className="section" id="cv">
       <SectionHead
         label="§ 01"
-        title="Experience"
-        sub="A short version. The long one is a PDF — top of the page."
+        title="Work Experience"
+        sub="Industry and research roles so far."
       />
+
       <div className="cv">
-        {data.experience.map((e, i) => (
+        {data.workExperience.map((e, i) => (
           <div className="cv-row" key={i}>
             <div className="cv-date mono dim">{e.date}</div>
             <div className="cv-body">
               <h3 className="cv-title">{e.title}</h3>
               <p className="cv-org">{e.org}</p>
-              <p className="cv-desc">{e.desc}</p>
-              {e.tags && (
-                <div className="tag-row" style={{ marginTop: "0.75rem" }}>
-                  {e.tags.map((t, j) => (
-                    <span className="tag" key={j}>
-                      {t}
-                    </span>
+              {Array.isArray(e.desc) ? (
+                <ul className="cv-desc-list">
+                  {e.desc.map((item, j) => (
+                    <li key={j}>{item}</li>
                   ))}
-                </div>
+                </ul>
+              ) : (
+                <p className="cv-desc">{e.desc}</p>
               )}
             </div>
             <div className="cv-marker" style={{ background: accent }}></div>
@@ -257,8 +246,37 @@ function Experience({ data, accent }) {
   );
 }
 
+// ───────── Education ─────────
+function Education({ data, accent }) {
+  return (
+    <section className="section" id="education">
+      <SectionHead
+        label="§ 02"
+        title="Education"
+        sub="Formal training, alongside the work."
+      />
+
+      <div className="cv cv--compact">
+        {data.education.map((e, i) => (
+          <div className="cv-row" key={i}>
+            <div className="cv-date">{e.date}</div>
+            <div className="cv-body">
+              <h3 className="cv-title">{e.title}</h3>
+              <p className="cv-org">{e.org}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 // ───────── Writings ─────────
-function Writings({ data, onOpen, accent }) {
+function getWritingHref(article) {
+  return `writing.html?file=${encodeURIComponent(article.file)}`;
+}
+
+function Writings({ data, accent }) {
   const [filter, setFilter] = useState("All");
   const cats = useMemo(() => {
     const set = new Set(data.writings.map((w) => w.category));
@@ -284,14 +302,14 @@ function Writings({ data, onOpen, accent }) {
   return (
     <section className="section" id="writings">
       <SectionHead
-        label="§ 04"
+        label="§ 05"
         title="Writings"
         sub={`${data.writings.length} essays on ML, reasoning, and the parts of the lifecycle nobody writes about.`}
       />
 
       <div className="featured">
         {featured.map((w, i) => (
-          <div className="feat" key={i} onClick={() => onOpen(w)}>
+          <a className="feat" key={i} href={getWritingHref(w)}>
             <div className="feat-head">
               <span className="mono dim">{w.date}</span>
               <span className="mono dim">{w.category}</span>
@@ -301,7 +319,7 @@ function Writings({ data, onOpen, accent }) {
             <span className="feat-link mono" style={{ color: accent }}>
               Read essay →
             </span>
-          </div>
+          </a>
         ))}
       </div>
 
@@ -331,7 +349,7 @@ function Writings({ data, onOpen, accent }) {
             <div className="year-label serif">{y}</div>
             <div className="year-list">
               {list.map((w, i) => (
-                <button className="item" key={i} onClick={() => onOpen(w)}>
+                <a className="item" key={i} href={getWritingHref(w)}>
                   <span className="item-num mono dim">
                     {String(i + 1).padStart(2, "0")}
                   </span>
@@ -339,7 +357,7 @@ function Writings({ data, onOpen, accent }) {
                   <span className="item-cat mono dim">{w.category}</span>
                   <span className="item-date mono dim">{w.date}</span>
                   <span className="item-arrow">→</span>
-                </button>
+                </a>
               ))}
             </div>
           </div>
@@ -354,7 +372,7 @@ function FooterBlock({ data, accent }) {
   return (
     <footer className="footer" id="contact">
       <div className="footer-head">
-        <p className="footer-eyebrow mono dim">§ 05 · Contact</p>
+        <p className="footer-eyebrow mono dim">§ 06 · Contact</p>
         <h2 className="footer-title serif">
           Always up for a good{" "}
           <span className="serif-italic" style={{ color: accent }}>
@@ -416,6 +434,7 @@ Object.assign(window, {
   Publications,
   Projects,
   Experience,
+  Education,
   Writings,
   FooterBlock,
   SectionHead,
