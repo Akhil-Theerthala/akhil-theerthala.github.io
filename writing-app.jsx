@@ -272,14 +272,13 @@ function WritingPage() {
               style={{ background: "var(--rule)", opacity: 1 }}
             ></div>
             <p className="reader-footer-text">
-              Thanks for reading. If something here was useful, sloppy, or wrong
-              —{" "}
+              For corrections, collaboration, or follow-up questions,{" "}
               <a
                 href="mailto:akhiltvsn@gmail.com"
                 className="reader-link"
                 style={{ color: ARTICLE_TWEAKS.accent }}
               >
-                say hi
+                email me
               </a>
               .
             </p>

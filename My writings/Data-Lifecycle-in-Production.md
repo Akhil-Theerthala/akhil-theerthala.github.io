@@ -30,12 +30,11 @@ These ethical guidelines differ slightly from company to company, but most have 
 -   The data should not incorporate any bias on people, especially towards sensitive characteristics like race, gender, nationality, political or religious beliefs, etc.
 -   The data collected should avoid incorporating sensitive personally identifiable information.
 -   The data collected should guarantee security regarding whatever sensitive information it contains.
-More detailed guidelines regarding the principles can be found in each company’s ethical guidelines. For example, you can check out Google’s AI principles [here](https://ai.google/responsibility/principles/?ref=neuronuts.in).
+More detailed guidelines regarding the principles can be found in each company’s ethical guidelines. For example, you can check out Google’s AI principles [here](https://ai.google/responsibility/principles/).
 You can start your data collection process based on the information given in this article. Generally, data collection is a very important aspect of any machine learning or data science project, as depending on the quality of the data collected, the speed remaining phases in the project lifecycle can be affected. Hence it is important to ensure that the data collected maintains its consistency regarding the format or units of the features and other basic principles.
 However, expecting a perfect outcome right after collecting the data is a dream. Hence, followed by data collection comes another critical phase of the data lifecycle, which is **Data Validation.** The data validation process will be described in detail, along with an example using the TFDV (Tensorflow data validation) framework in the following article of the **Data Lifecycle in Production series.**
-You could start reading from [here](https://www.neuronuts.in/mlops_beginner_1/) if you didn’t check out the Machine Learning project lifecycle series. Subscribe to Neuronuts if you want to stay updated on the upcoming articles in the series, or follow us on Instagram or LinkedIn for other information related to the articles! Thanks for reading till the end. ✌️.
 ## References
-1.  [User Needs and Defining Success, People + AI Guidebook, Google](https://pair.withgoogle.com/chapter/user-needs/?ref=neuronuts.in)
-2.  [Data Collection + Evaluation, People + AI Guidebook, Google](https://pair.withgoogle.com/chapter/data-collection/?ref=neuronuts.in)
-3.  [Best Practices for ML Engineering](https://developers.google.com/machine-learning/guides/rules-of-ml?ref=neuronuts.in#ml_phase_ii_feature_engineering)
-4.  [Inclusive Images Competition](https://ai.googleblog.com/2018/09/introducing-inclusive-images-competition.html?ref=neuronuts.in)
+1.  [User Needs and Defining Success, People + AI Guidebook, Google](https://pair.withgoogle.com/chapter/user-needs/)
+2.  [Data Collection + Evaluation, People + AI Guidebook, Google](https://pair.withgoogle.com/chapter/data-collection/)
+3.  [Best Practices for ML Engineering](https://developers.google.com/machine-learning/guides/rules-of-ml#ml_phase_ii_feature_engineering)
+4.  [Inclusive Images Competition](https://ai.googleblog.com/2018/09/introducing-inclusive-images-competition.html)

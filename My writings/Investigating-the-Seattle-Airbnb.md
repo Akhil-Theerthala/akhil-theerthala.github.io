@@ -15,9 +15,6 @@ The neighborhood values had a lot of processing needed, fortunately, the **‘ne
 For this, first, I wanted to know the actual distribution of the prices irrespective of the neighborhoods.
 ![](https://miro.medium.com/v2/resize:fit:572/1*ERzeANQSKpQQX90Ht6uTjQ.png)
 From the boxplot, we can see that most of the listings in Seattle have their prices in the range of $84 to $133. We can also observe some outliers, where the price per day is very high, for example, we have a listing with a price of $415 per day.
-![Become a member](https://miro.medium.com/v2/da:true/resize:fit:0/60026f4340686a391639ac58864da18070aa773cea45de6e55fa47fd56bfdb74)
-![Become a member](https://miro.medium.com/v2/da:true/resize:fit:0/c061bd6cb52734164bf0c66f2543a6bc2acbe24ae3985dc15c898b3ddb2e1940)
-](https://medium.com/plans?source=upgrade_membership---post_li_non_moc_upsell--dd564fa30ab8---------------------------------------)
 This provides useful information, but what I wanted was the neighborhood based price distributions. Which I obtained using the following boxplot.
 ![](https://miro.medium.com/v2/resize:fit:1400/1*nauJndNBp24OxzvGyQXNMQ.png)
 In that we can see that the prices were completely different depending on the neighborhood group a listing is in, with the overall prices of listings in **‘Magnolia’** higher than the rest of the groups. The entire distribution is added to an interactive chart using plotly.

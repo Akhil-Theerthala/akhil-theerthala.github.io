@@ -38,7 +38,7 @@ There are 3 major categories into which the metrics are classified generally.
 -   No. of times the user redoes the search
 -   No. of times that the user switches to a different mode of input to the system to obtain better results.
 -   Click-through rate (CTR)
-> ⚠️ **Note:
+> **Note:
 > 
 > \-** The input and output metrics are mostly application specific.
 > 
@@ -55,5 +55,3 @@ Similarly, in a more complex system, the input is passed through different modul
 For these kinds of different systems, we need metrics to evaluate the performance of these systems. These are also classified into the 3 categories mentioned above, i.e., software metrics, input metrics, and output metrics.
 **How quickly do these metrics change?**
 This question is application dependent. For example, in a face recognition pipeline, the faces of people change very gradually, so the metrics don’t change rapidly. However, in another instance of defect detection systems, the metrics change quickly depending on the lighting conditions, time of the day, etc.
-This concludes the overview of the deployment portion of the system. Next, we will take one more step back and get an overview of the challenges in developing a model for production. Since I found that the articles are becoming longer, from the next one, I decided to make a single note into meaningful parts so that reading them becomes more straightforward. So stay tuned to the upcoming articles!
-In the meantime, if you want to read my notes on CNN, you can read them [here](https://akhiltvsn.medium.com/cnn-notes-1-the-convolution-operation-e2a47be1d890), or if you still haven’t read the first part of MLOps notes, you can find it [here](https://akhiltvsn.medium.com/mlops-notes-1-the-machine-learning-lifecycle-6719a25004a8). You can also look into one of my old data analytics projects on my [medium page](https://akhiltvsn.medium.com/). Follow me for constant updates on new articles.

@@ -29,7 +29,7 @@ function App() {
     : [TWEAK_DEFAULTS, () => {}];
 
   const [scrolled, setScrolled] = useState(false);
-  const [active, setActive] = useState("top");
+  const [active, setActive] = useState("about");
   const data = window.PORTFOLIO_DATA;
 
   useEffect(() => {
@@ -46,15 +46,15 @@ function App() {
       }
 
       const sections = [
-        "top",
+        "about",
+        "research",
         "cv",
         "education",
-        "research",
         "work",
         "writings",
         "contact",
       ];
-      let cur = "top";
+      let cur = "about";
       for (const id of sections) {
         const el = document.getElementById(id);
         if (el && el.getBoundingClientRect().top < 220) cur = id;
@@ -97,11 +97,11 @@ function App() {
   }, [tweaks]);
 
   const nav = [
-    { id: "top", label: "About" },
+    { id: "about", label: "About" },
+    { id: "research", label: "Publications" },
     { id: "cv", label: "Experience" },
     { id: "education", label: "Education" },
-    { id: "research", label: "Publications" },
-    { id: "work", label: "Projects" },
+    { id: "work", label: "Artifacts" },
     { id: "writings", label: "Writings" },
     { id: "contact", label: "Contact" },
   ];
@@ -144,9 +144,10 @@ function App() {
 
       <main>
         <Hero data={data} accent={tweaks.accent} />
+        <About data={data} accent={tweaks.accent} />
+        <Publications data={data} accent={tweaks.accent} />
         <Experience data={data} accent={tweaks.accent} />
         <Education data={data} accent={tweaks.accent} />
-        <Publications data={data} accent={tweaks.accent} />
         <Projects data={data} accent={tweaks.accent} />
         <Writings data={data} accent={tweaks.accent} />
       </main>

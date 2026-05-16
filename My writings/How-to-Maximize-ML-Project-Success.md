@@ -39,7 +39,6 @@ Like all other fields, scoping ML projects have many community recommended outli
 -   In the value Assessment, we look at different Business metrics that affect the AI feasible projects. The business metrics include the metrics like User engagement, quality of the model compared to the market, possible revenue that can be generated from the model, etc.,
 -   In practical situations, the ML and Business teams compromise to some degree to find feasible and valuable projects.
 ### Step-5: Draw out a plan.
--   Determining the milestones generally involves determining the ML and software metrics of the projects. Some of such metrics were previously discussed in articles [2](https://www.neuronuts.in/mlops2-model-deployment/) and [3.1](https://www.neuronuts.in/mlops-3-1/).
 -   However, here, we also try to determine the Business metrics and resources needed for the project like estimating the possible revenue, data required, the personnel that is allocated, etc.,
 -   Finally, after all the things are done. You now have a problem, a possible AI solution, and the metrics to evaluate the situation. But your job doesn’t end here. You need to give the company a timeline within which you will complete the project. (Yup, they don’t trust you with the budget.)
 ### Step-6: Determine the Budget for the resources.
@@ -50,5 +49,3 @@ Thats it! You are done!
 The answer would be **yes**. (probably, as I don’t know the structure of your company).
 With this, we come to the end of our journey in the MLOps Series. I started this series as a follow-up to my notes on the MLOps specialization, and through the trip, I found areas that I needed to fill and enjoyed reading reports and articles on different topics.
 If you are also taking the course, you might have noticed some areas where I made some changes and expanded in some areas (especially this article!). While writing this series, I found my long-lost passion for ML, as after some point, I found it a drag to read something and write semester exams on it. (I take ML courses at my uni.)
-I went ahead and created this [site](https://neuronuts.in/) to sustain my passion and also try and meet different people who also have a high passion for ML. I hope you share your comments and views on the areas covered in this article.
-I will keep writing and publishing at least two articles a week from now on. So stay tuned! In the meantime, if you still need to read my other articles in this series, you can find them all [here](https://www.neuronuts.in/tag/mlopsseries/). You can also read some of my old articles on my [medium page](https://akhiltvsn.medium.com/). Stay safe till next time!

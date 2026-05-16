@@ -59,7 +59,6 @@ In this discussion, I’m still going to keep the discussion to a comprehensive 
 We can use the dataset to do what DeepSeek-R1 has done: train a smaller model directly using pure SFT. However, you can use the traditional SFT+RL approach using the `trl` library from HuggingFace.
 To go into the code and generate a dataset or use the HuggingFace Dataset, Selecting the right model for the dataset and tuning and evaluating it is a topic we’ll discuss in detail.
 With that, I want to leave you to your own devices. It’s time to explore and get an understanding of it on your own! However, I have given a few resources that I found very helpful for this process. I believe they are good starting points.
-I hope you’re able to find some value in this discussion. I’ll for sure go into detail regarding what I’ve started soon. Stay tuned by following or subscribing to get the following articles immediately!
 ## References:
 1.  [Understanding Reasoning LLMs](https://sebastianraschka.com/blog/2025/understanding-reasoning-llms.html) — Sebastian Raschka
 2.  [The Story of RLHF](https://cameronrwolfe.substack.com/p/the-story-of-rlhf-origins-motivations) — Cameron R. Wolfe

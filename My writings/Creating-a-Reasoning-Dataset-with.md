@@ -231,4 +231,3 @@ Like DeepSeek-R1’s training regime, this process also needs an intermediary re
 Of course, those new datasets won’t consist of even a single query shared today. I want to avoid any possible data leakages and other related issues.
 With that, I’ll end today’s summary. This is one of the longest articles I’ve ever written, and it is roughly 3000 words long. However, this was also one of the best articles I’ve enjoyed writing.
 Now that the dataset has been created, our next task, ideally, is to fine-tune the reasoning model (or) create an entirely new one based on Gemma/Llama. I still haven’t decided what path to follow, but I’ll enjoy playing with the latter approach.
-I hope you’ve gained some value from this article. I’d be glad to hear your opinions and suggestions on this article. Hope to meet you again! ✌️
