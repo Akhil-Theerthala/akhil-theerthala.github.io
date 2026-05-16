@@ -84,7 +84,7 @@ window.PORTFOLIO_DATA = {
     {
       year: "2026",
       status: "Submitted",
-      venue: "Mechanical Interpretability Workshop, ICML 2026",
+      venue: "Mechanistic Interpretability Workshop, ICML 2026",
       title: "Stable Steering in Activation Space for Large Language Models",
       authors: [
         "Glenn Matlin",
