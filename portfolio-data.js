@@ -52,7 +52,7 @@ window.PORTFOLIO_DATA = {
       org: "FSIL & HCAI Labs, Georgia Tech",
       desc: [
         "Co-authored FinForge, a semi-synthetic benchmark generation pipeline for financial agentic systems, accepted at the AAAI 2026 Agentic AI in Financial Services Workshop.",
-        "Contributed to 'Stable Steering in Activation Space for LLMs', submitted to the Mechanistic Interpretability Workshop at ICML 2026.",
+        "Contributed to 'Stable Steering in Activation Space for LLMs' project in developing mechanisms for persona elicitation.",
       ],
     },
     {
@@ -81,28 +81,28 @@ window.PORTFOLIO_DATA = {
   ],
 
   publications: [
-    {
-      year: "2026",
-      status: "Submitted",
-      venue: "Mechanistic Interpretability Workshop, ICML 2026",
-      title: "Stable Steering in Activation Space for Large Language Models",
-      authors: [
-        "Glenn Matlin",
-        "Isaac Song",
-        "Mohammed Rehan Parwani",
-        "Akhil Theerthala",
-        "Arjun Chatterjee",
-        "Anthony Wen-Ming Zang",
-        "Emile Timothy Anand",
-        "Mark Riedl",
-        "Sebastien Krier",
-        "Yonadav G Shavit",
-        "Maria Kostylew",
-      ],
-      abstract:
-        "A large-scale study of activation steering across 275 occupational roles, 4 steering strengths, and 500K judged generations on Olmo-3-7B-Instruct. The work connects controllability to the geometry of role vectors, identifying mostly smooth, direction-specific steering, a 13% anti-controllable minority due to prior saturation, and a clear mismatch between representational and behavioral dimensionality.",
-      tags: ["Activation Steering", "Interpretability", "LLMs"],
-    },
+    // {
+    //   year: "2026",
+    //   status: "Submitted",
+    //   venue: "Mechanistic Interpretability Workshop, ICML 2026",
+    //   title: "Stable Steering in Activation Space for Large Language Models",
+    //   authors: [
+    //     "Glenn Matlin",
+    //     "Isaac Song",
+    //     "Mohammed Rehan Parwani",
+    //     "Akhil Theerthala",
+    //     "Arjun Chatterjee",
+    //     "Anthony Wen-Ming Zang",
+    //     "Emile Timothy Anand",
+    //     "Mark Riedl",
+    //     "Sebastien Krier",
+    //     "Yonadav G Shavit",
+    //     "Maria Kostylew",
+    //   ],
+    //   abstract:
+    //     "A large-scale study of activation steering across 275 occupational roles, 4 steering strengths, and 500K judged generations on Olmo-3-7B-Instruct. The work connects controllability to the geometry of role vectors, identifying mostly smooth, direction-specific steering, a 13% anti-controllable minority due to prior saturation, and a clear mismatch between representational and behavioral dimensionality.",
+    //   tags: ["Activation Steering", "Interpretability", "LLMs"],
+    // },
     {
       year: "2026",
       status: "Accepted workshop paper",
