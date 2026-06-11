@@ -47,7 +47,7 @@ window.PORTFOLIO_DATA = {
       ],
     },
     {
-      date: "Aug 2025 - Present",
+      date: "Aug 2025 - Apr 2026",
       title: "Research Volunteer",
       org: "FSIL & HCAI Labs, Georgia Tech",
       desc: [
