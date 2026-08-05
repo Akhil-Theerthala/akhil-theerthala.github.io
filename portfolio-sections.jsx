@@ -46,7 +46,6 @@ function About({ data, accent }) {
   return (
     <section className="section about-section" id="about">
       <SectionHead
-        label="§ 01"
         title="About"
         sub="Professional context, current work, and research orientation."
       />
@@ -127,7 +126,7 @@ function Publications({ data, accent }) {
 
   return (
     <section className="section" id="research">
-      <SectionHead label="§ 02" title="Publications" />
+      <SectionHead title="Publications" />
 
       <div className="pubs">
         {publicationsByYear.map(([year, publications]) => (
@@ -207,7 +206,6 @@ function Projects({ data, accent }) {
   return (
     <section className="section" id="work">
       <SectionHead
-        label="§ 05"
         title="Research Artifacts"
         sub="Datasets, models, benchmarks, and tools that make the research concrete."
       />
@@ -262,7 +260,6 @@ function Experience({ data, accent }) {
   return (
     <section className="section" id="cv">
       <SectionHead
-        label="§ 03"
         title="Experience"
         sub="Industry research and applied ML contributions, written as problem-method-evaluation-impact."
       />
@@ -284,7 +281,6 @@ function Experience({ data, accent }) {
                 <p className="cv-desc">{e.desc}</p>
               )}
             </div>
-            <div className="cv-marker" style={{ background: accent }}></div>
           </div>
         ))}
       </div>
@@ -297,7 +293,6 @@ function Education({ data, accent }) {
   return (
     <section className="section" id="education">
       <SectionHead
-        label="§ 04"
         title="Education"
         sub="Formal training and affiliations."
       />
@@ -364,7 +359,6 @@ function Writings({ data, accent }) {
   return (
     <section className="section" id="writings">
       <SectionHead
-        label="§ 06"
         title="Writings"
         sub="Curated research notes first, technical essays second, older learning notes archived for completeness."
       />
@@ -391,6 +385,7 @@ function Writings({ data, accent }) {
             <button
               key={c}
               className={`chip ${filter === c ? "active" : ""}`}
+              aria-pressed={filter === c}
               style={filter === c ? { borderColor: accent, color: accent } : {}}
               onClick={() => setFilter(c)}
             >
@@ -434,7 +429,7 @@ function FooterBlock({ data, accent }) {
   return (
     <footer className="footer" id="contact">
       <div className="footer-head">
-        <p className="footer-eyebrow mono dim">§ 07 · Contact</p>
+        <p className="footer-eyebrow mono dim">Contact</p>
         <h2 className="footer-title serif">
           Contact and{" "}
           <span className="serif-italic" style={{ color: accent }}>
@@ -450,13 +445,7 @@ function FooterBlock({ data, accent }) {
         {data.collaborationInterests?.length > 0 && (
           <ul className="collab-list">
             {data.collaborationInterests.map((item, i) => (
-              <li key={i}>
-                <span
-                  className="collab-dot"
-                  style={{ background: accent }}
-                ></span>
-                {item}
-              </li>
+              <li key={i}>{item}</li>
             ))}
           </ul>
         )}
@@ -491,10 +480,9 @@ function FooterBlock({ data, accent }) {
 }
 
 // ───────── Shared bits ─────────
-function SectionHead({ label, title, sub }) {
+function SectionHead({ title, sub }) {
   return (
     <div className="sec-head">
-      <span className="sec-label mono dim">{label}</span>
       <h2
         className="sec-title serif"
         dangerouslySetInnerHTML={{ __html: title }}

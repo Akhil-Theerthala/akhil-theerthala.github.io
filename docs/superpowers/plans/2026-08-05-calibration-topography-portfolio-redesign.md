@@ -4,7 +4,7 @@
 
 **Goal:** Replace the animated signal background with a static calibration-topography field and apply the approved targeted visual, accessibility, and performance upgrades across the portfolio and writing page.
 
-**Architecture:** Add one shared presentational `CalibrationField` React component and implement its appearance entirely in CSS. Remove continuous animation and scroll-render loops from both pages, preserve the existing data and navigation structure, and verify the redesign with a dependency-free Node source contract plus browser inspection.
+**Architecture:** Add one shared presentational `CalibrationField` React component and implement its appearance entirely in CSS. Remove continuous animation and scroll-render loops from both pages, preserve the existing data and navigation structure, and verify the component with Node's test runner plus a separate source pre-flight and browser inspection.
 
 **Tech Stack:** React 18 UMD, Babel Standalone, vanilla CSS, static HTML, Node.js built-ins for verification.
 
@@ -21,8 +21,9 @@
 
 ## File structure
 
-- Create `ambient-field.jsx`: shared decorative React component with no state or effects.
-- Create `scripts/verify-redesign.mjs`: source-level regression contract for architecture, copy, metadata, and accessibility requirements.
+- Create `ambient-field.js`: shared decorative React component with no state or effects.
+- Create `tests/calibration-field.test.mjs`: behavior test that renders the shared component through a small React-compatible harness.
+- Create `scripts/verify-redesign.mjs`: source-level pre-flight for architecture, copy, metadata, and accessibility requirements. This is verification, not a behavioral test.
 - Modify `portfolio-app.jsx`: remove signal math and scroll-frame state; use IntersectionObserver for active navigation and reveal state.
 - Modify `writing-app.jsx`: remove duplicated signal math and scroll-frame state; use shared background and IntersectionObserver for the table of contents.
 - Modify `portfolio-sections.jsx`: remove numbered section labels and refine semantic component markup.
@@ -32,16 +33,33 @@
 
 ---
 
-### Task 1: Add the redesign source contract
+### Task 1: Add the background behavior test and redesign pre-flight
 
 **Files:**
+- Create: `tests/calibration-field.test.mjs`
 - Create: `scripts/verify-redesign.mjs`
 
 **Interfaces:**
 - Consumes: repository source files as UTF-8 strings.
-- Produces: exit code 0 and a concise success message when all redesign invariants hold.
+- Produces: a failing behavior test before the component exists and a separate source pre-flight for final verification.
 
-- [ ] **Step 1: Write the failing source contract**
+- [ ] **Step 1: Write the failing component behavior test**
+
+Use `node:test`, `node:assert/strict`, `node:fs`, and `node:vm`. Load `ambient-field.js` into a context containing a minimal `React.createElement` implementation and a `window` object. Assert that `window.CalibrationField()` returns a `div` with class `calibration-field` and boolean `aria-hidden`.
+
+The production change that makes this pass is the addition of the real shared component. Removing its accessible decorative semantics makes the test fail.
+
+- [ ] **Step 2: Run the behavior test and confirm it fails**
+
+Run:
+
+```bash
+node --test tests/calibration-field.test.mjs
+```
+
+Expected: failure because `ambient-field.js` does not exist.
+
+- [ ] **Step 3: Write the separate source pre-flight**
 
 Create a Node script using `node:assert/strict` and `node:fs`. It must assert:
 
@@ -58,9 +76,9 @@ assert.match(writingHtml, /class="skip-link"/);
 assert.equal((css.match(/@media \(prefers-reduced-motion: reduce\)/g) || []).length >= 1, true);
 ```
 
-Also verify that local script, stylesheet, image, and resume references used by `index.html` exist.
+Also verify that local script, stylesheet, image, and resume references used by `index.html` exist. Treat this script as a delivery gate, not a behavior test.
 
-- [ ] **Step 2: Run the contract and confirm the current design fails**
+- [ ] **Step 4: Run the pre-flight and confirm the current design fails**
 
 Run:
 
@@ -68,9 +86,9 @@ Run:
 node scripts/verify-redesign.mjs
 ```
 
-Expected: failure on the missing `ambient-field.jsx` or the existing `SignalLayer` implementation.
+Expected: failure on the missing `ambient-field.js` or the existing `SignalLayer` implementation.
 
-- [ ] **Step 3: Keep the failing contract in the worktree**
+- [ ] **Step 5: Keep both gates in the worktree**
 
 Do not weaken assertions to match the old implementation. Subsequent tasks make the contract pass.
 
@@ -79,7 +97,7 @@ Do not weaken assertions to match the old implementation. Subsequent tasks make 
 ### Task 2: Replace continuous animation and scroll work
 
 **Files:**
-- Create: `ambient-field.jsx`
+- Create: `ambient-field.js`
 - Modify: `portfolio-app.jsx`
 - Modify: `writing-app.jsx`
 - Modify: `index.html`
@@ -91,11 +109,14 @@ Do not weaken assertions to match the old implementation. Subsequent tasks make 
 
 - [ ] **Step 1: Add the shared static component**
 
-Implement:
+Implement without JSX so the dependency-free behavior test executes the same production file:
 
-```jsx
+```js
 function CalibrationField() {
-  return <div className="calibration-field" aria-hidden="true" />;
+  return React.createElement("div", {
+    className: "calibration-field",
+    "aria-hidden": true,
+  });
 }
 
 window.CalibrationField = CalibrationField;
@@ -103,7 +124,7 @@ window.CalibrationField = CalibrationField;
 
 - [ ] **Step 2: Load the component before both page applications**
 
-Add `<script type="text/babel" src="ambient-field.jsx"></script>` before `portfolio-app.jsx` and `writing-app.jsx` in their respective HTML files.
+Add `<script src="ambient-field.js"></script>` before `portfolio-app.jsx` and `writing-app.jsx` in their respective HTML files.
 
 - [ ] **Step 3: Remove the signal implementations**
 
@@ -117,16 +138,16 @@ Remove `scrollFx`, scroll-progress CSS variable writes, the `window` scroll list
 
 Remove JavaScript scroll progress and blur calculations. Use IntersectionObserver on generated `h2` and `h3` IDs to update `activeHeading`. Convert the visual reading progress bar to CSS scroll-driven animation with a static fallback.
 
-- [ ] **Step 6: Run the source contract**
+- [ ] **Step 6: Run the behavior test and source pre-flight**
 
-Run `node scripts/verify-redesign.mjs`.
+Run `node --test tests/calibration-field.test.mjs` and `node scripts/verify-redesign.mjs`.
 
 Expected: remaining failures concern CSS, section labels, or metadata, not signal or frame-loop code.
 
 - [ ] **Step 7: Commit the runtime cleanup**
 
 ```bash
-git add ambient-field.jsx portfolio-app.jsx writing-app.jsx index.html writing.html scripts/verify-redesign.mjs
+git add ambient-field.js portfolio-app.jsx writing-app.jsx index.html writing.html tests/calibration-field.test.mjs scripts/verify-redesign.mjs
 git commit -m "refactor: replace animated signal runtime"
 ```
 
@@ -318,7 +339,7 @@ Repeat Steps 1 through 5 until no required check fails.
 - [ ] **Step 7: Commit final polish**
 
 ```bash
-git add portfolio.css portfolio-app.jsx portfolio-sections.jsx writing-app.jsx index.html writing.html ambient-field.jsx scripts/verify-redesign.mjs
+git add portfolio.css portfolio-app.jsx portfolio-sections.jsx writing-app.jsx index.html writing.html ambient-field.js tests/calibration-field.test.mjs scripts/verify-redesign.mjs
 git commit -m "fix: polish responsive portfolio redesign"
 ```
 
