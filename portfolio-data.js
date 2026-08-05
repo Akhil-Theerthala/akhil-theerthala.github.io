@@ -2,14 +2,14 @@
 window.PORTFOLIO_DATA = {
   name: "Akhil Theerthala",
   role: "Applied Scientist",
-  currentRole: "Senior Data Scientist, Perfios Software Solutions",
+  currentRole: "Senior Member Data Scientist, Perfios Software Solutions",
   location: "Bengaluru, India",
   email: "akhiltvsn@gmail.com",
   intro:
     "Studying data-centric and evaluation-centric methods for reliable AI systems in Finance.",
 
   longIntro: [
-    "I am a Senior Data Scientist at Perfios Software Solutions, working on applied ML systems for financial document intelligence and finance-specific language models. My work sits between research and deployment: adapting VLMs for dense financial documents, building evaluation and quality gates, and translating prototypes into reliable systems for banks, lenders, insurers, and personal-finance workflows.",
+    "I am a Senior Member Data Scientist at Perfios Software Solutions, working on applied ML systems for financial document intelligence and finance-specific language models. My work sits between research and deployment: adapting VLMs for dense financial documents, building evaluation and quality gates, and translating prototypes into reliable systems for banks, lenders, insurers, and personal-finance workflows.",
     "My research focus is data-centric and evaluation-centric AI: synthetic and semi-synthetic data curation, behavior-aware personal-finance supervision, agentic finance benchmarks, slice-based evaluation, and lightweight interpretability or steering for language models. I care about methods that improve reliability under real constraints: latency, auditability, cost, and failure transparency.",
   ],
 
@@ -37,32 +37,33 @@ window.PORTFOLIO_DATA = {
   workExperience: [
     {
       date: "Apr 2025 - Present",
-      title: "Senior Data Scientist",
+      title: "Senior Member Data Scientist",
       org: "Perfios Software Solutions",
       desc: [
-        "Awarded Circle of Excellence for GenAI research in financial document intelligence.",
-        "Fine-tuned PaliGemma2 via LoRA on domain-specific financial data, achieving TEDS 0.85 on internal document benchmarks.",
-        "Built a reference-free ViT legibility scorer at 92% precision to gate low-fidelity inputs before inference, preventing downstream hallucination and reducing wasted compute.",
-        "Designed and validated multi-stage agentic reasoning workflows (Google ADK) for underwriting, claims, and retention-risk tasks.",
+        "Leading uncertainty-quantification research for financial LLMs by building a BFSI-specific benchmark, auditing cultural and demographic biases, measuring calibration across numerical-precision conditions, probing cues associated with miscalibration, and testing steering, context conditioning, and fine-tuning as mitigation methods.",
+        "Developing guardrails for LLM and agent applications in banking by mapping vulnerability surfaces, constructing adversarial and failure-mode evaluations, and testing output controls aligned with RBI's FREE-AI recommendations for safe, fair, explainable, and robust AI.",
+        "Developed and now monitor a reference-free document image-quality assessment service using ViT regression; the production system identifies low-quality documents at 92% precision before they enter HDB's downstream applications.",
+        "Adapted PaliGemma2 via LoRA on financial documents, achieving a 0.85 TEDS score on internal benchmarks for structured document understanding.",
+        "Received the Circle of Excellence award for research and contributions to generative AI and financial document intelligence.",
       ],
     },
     {
-      date: "Aug 2025 - Apr 2026",
+      date: "Aug 2025 - Present",
       title: "Research Volunteer",
       org: "FSIL & HCAI Labs, Georgia Tech",
       desc: [
         "Co-authored FinForge, a semi-synthetic benchmark generation pipeline for financial agentic systems, accepted at the AAAI 2026 Agentic AI in Financial Services Workshop.",
-        "Contributed to 'Stable Steering in Activation Space for LLMs' project in developing mechanisms for persona elicitation.",
+        "Contributed to the Role Steering of Language Models for Social Simulations project, published in the Social Simulations Workshop at COLM 2026.",
       ],
     },
     {
       date: "Jun 2023 - Apr 2025",
-      title: "Data Scientist",
+      title: "Member Data Scientist",
       org: "Perfios Software Solutions",
       desc: [
-        "Reduced document classification latency by 97.5% (8s → 200ms) via distillation and quantization, preserving F1 parity.",
-        "Improved generalized table detection by 27.6% through semi-synthetic data curation and systematic evaluation of YOLOv8 variants.",
-        "Integrated a fine-tuned semantic row-detection module into the production TSR pipeline at under 40ms overhead.",
+        "Distilled and quantized a multimodal document classifier into a lightweight student model, reducing latency from 8s to 200ms while preserving F1 parity in production-scale evaluation.",
+        "Improved generalized table detection accuracy by 27.6%, lifting downstream TSR module performance, via semi-synthetic data curation and systematic evaluation of YOLOv8 variants.",
+        "Integrated a semantic row-detection module (fine-tuned text encoders) into the production TSR pipeline with under 40ms added turnaround time, preserving existing throughput.",
       ],
     },
   ],
@@ -103,6 +104,28 @@ window.PORTFOLIO_DATA = {
     //     "A large-scale study of activation steering across 275 occupational roles, 4 steering strengths, and 500K judged generations on Olmo-3-7B-Instruct. The work connects controllability to the geometry of role vectors, identifying mostly smooth, direction-specific steering, a 13% anti-controllable minority due to prior saturation, and a clear mismatch between representational and behavioral dimensionality.",
     //   tags: ["Activation Steering", "Interpretability", "LLMs"],
     // },
+    {
+      year: "2026",
+      status: "Published workshop paper",
+      venue: "Social Simulations Workshop, COLM 2026",
+      title: "Role Steering of Language Models for Social Simulations",
+      authors: [
+        "Isaac Song",
+        "Mohammed Rehan Parwani",
+        "Glenn Matlin",
+        "Emile Anand",
+        "Akhil Theerthala",
+        "Arjun Chatterjee",
+        "Maria Kostylew",
+        "Yonadav G. Shavit",
+        "Sebastien Krier",
+        "Mark Riedl",
+      ],
+      abstract:
+        "An activation-steering screening workflow for role-conditioned language-model agents in social simulations. Across 275 roles, role-specific directions improve judged role-profile alignment over an assistant-axis control while preserving lexical diversity; 38 roles decline across every measured dimension, showing why steering strength should be selected per role rather than applied uniformly.",
+      tags: ["Activation Steering", "Social Simulation", "LLMs"],
+      arxiv: "https://arxiv.org/abs/2608.00023",
+    },
     {
       year: "2026",
       status: "Accepted workshop paper",
