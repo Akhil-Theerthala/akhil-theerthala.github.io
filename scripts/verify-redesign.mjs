@@ -30,6 +30,21 @@ assert.doesNotMatch(css, /grid-template-columns:\s*repeat\(3,\s*1fr\)/);
 assert.match(css, /:focus-visible/);
 assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
 assert.match(css, /@media\s*\(forced-colors:\s*active\)/);
+assert.match(css, /--surface-fill:/);
+assert.match(css, /--surface-grid-x:/);
+assert.match(css, /--surface-grid-y:/);
+assert.match(
+  css,
+  /\.root::before,[\s\S]*?\.reader-page::before[\s\S]*?backdrop-filter:\s*blur\(7px\)/,
+);
+assert.match(css, /@media\s*\(prefers-reduced-transparency:\s*reduce\)/);
+assert.match(css, /@media\s*\(max-width:\s*1280px\)/);
+assert.doesNotMatch(css, /@media\s*\(max-width:\s*1100px\)/);
+assert.doesNotMatch(css, /\.rail\s*\{\s*position:\s*static/);
+assert.match(
+  css,
+  /@media\s*\(max-width:\s*1280px\)[\s\S]*?\.rail\s*\{[\s\S]*?position:\s*relative/,
+);
 
 assert.doesNotMatch(sections, /§\s*0[1-9]/);
 assert.match(sections, /aria-pressed=/);
@@ -43,6 +58,7 @@ assert.match(data, /https:\/\/arxiv\.org\/abs\/2608\.00023/);
 assert.match(data, /Role Steering of Language Models for Social Simulations/);
 
 for (const html of [indexHtml, writingHtml]) {
+  assert.match(html, /href="portfolio\.css\?v=20260806-2"/);
   assert.match(html, /class="skip-link"/);
   assert.match(html, /property="og:title"/);
   assert.match(html, /property="og:description"/);

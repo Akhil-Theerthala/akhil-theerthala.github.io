@@ -25,6 +25,8 @@
 **Files:**
 - Modify: `scripts/verify-redesign.mjs`
 - Modify: `portfolio.css`
+- Modify: `index.html`
+- Modify: `writing.html`
 
 **Interfaces:**
 - Consumes: the existing CSS source pre-flight and shared surface selectors.
@@ -111,6 +113,12 @@ Change every `@media (max-width: 1100px)` block in `portfolio.css` to `@media (m
 
 - [ ] **Step 7: Run the automated gates**
 
+Before running the gates, version the shared stylesheet URL in both HTML files so browsers cannot retain the pre-change CSS:
+
+```html
+<link rel="stylesheet" href="portfolio.css?v=20260806-2" />
+```
+
 Run:
 
 ```bash
@@ -173,7 +181,6 @@ git status --short
 - [ ] **Step 6: Commit the implementation**
 
 ```bash
-git add portfolio.css scripts/verify-redesign.mjs docs/superpowers/plans/2026-08-06-translucent-reading-plane.md
+git add portfolio.css index.html writing.html scripts/verify-redesign.mjs docs/superpowers/plans/2026-08-06-translucent-reading-plane.md
 git commit -m "fix: restore translucent portfolio reading plane"
 ```
-

@@ -17,6 +17,9 @@
 
     --accent: #c8a66b;
     --accent-rgb: 200 166 107;
+    --surface-fill: rgb(8 10 9 / 0.58);
+    --surface-grid-x: rgb(var(--accent-rgb) / 0.026);
+    --surface-grid-y: rgb(237 240 235 / 0.018);
 
     --headline-font: "Newsreader", "Instrument Serif", Georgia, serif;
     --body-font:
@@ -122,8 +125,19 @@ body::before {
     z-index: var(--layer-surface);
     pointer-events: none;
     background:
-        linear-gradient(90deg, rgb(13 15 14 / 0.2), transparent 24%, transparent 76%, rgb(13 15 14 / 0.22)),
-        radial-gradient(circle at 50% 16%, transparent 0, rgb(13 15 14 / 0.08) 38rem, rgb(13 15 14 / 0.36) 74rem);
+        linear-gradient(to right, var(--surface-grid-x) 1px, transparent 1px)
+            0 0 / 8.333% 100%,
+        linear-gradient(to bottom, var(--surface-grid-y) 1px, transparent 1px)
+            0 0 / 100% 32px,
+        radial-gradient(
+            circle at 50% 12%,
+            transparent 0,
+            rgb(8 10 9 / 0.08) 34rem,
+            rgb(8 10 9 / 0.28) 72rem
+        ),
+        var(--surface-fill);
+    -webkit-backdrop-filter: blur(7px) saturate(112%);
+    backdrop-filter: blur(7px) saturate(112%);
 }
 
 .calibration-field {
@@ -349,9 +363,9 @@ body::before {
     color: var(--accent);
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1280px) {
     .rail {
-        position: static;
+        position: relative;
         width: 100%;
         flex-direction: row;
         padding: 1.5rem 2rem;
@@ -401,7 +415,7 @@ main {
 .feat {
     transition-property: opacity, transform, background-color, border-color;
 }
-@media (max-width: 1100px) {
+@media (max-width: 1280px) {
     main {
         padding-left: 0;
     }
@@ -1428,7 +1442,7 @@ main {
 .feat {
     transition-property: opacity, transform, background-color, border-color;
 }
-@media (max-width: 1100px) {
+@media (max-width: 1280px) {
     .footer {
         margin-left: auto;
     }
@@ -1898,7 +1912,7 @@ main {
 }
 
 /* ───── Responsive ───── */
-@media (max-width: 1100px) {
+@media (max-width: 1280px) {
     .article-rail .rail-item {
         align-items: center;
     }
@@ -2001,6 +2015,8 @@ main {
     :root {
         --pad: 46px;
         --gap: 1rem;
+        --surface-grid-x: rgb(var(--accent-rgb) / 0.018);
+        --surface-grid-y: rgb(237 240 235 / 0.012);
     }
     .root::before,
     .reader-page::before {
@@ -2186,6 +2202,22 @@ main {
     .reader-progress-fill {
         animation: none;
         transform: none;
+    }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .root::before,
+    .reader-page::before {
+        background-color: rgb(13 15 14 / 0.9);
+    }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+    .root::before,
+    .reader-page::before {
+        background: rgb(13 15 14 / 0.94);
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
     }
 }
 
