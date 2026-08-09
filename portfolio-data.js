@@ -46,6 +46,7 @@ window.PORTFOLIO_DATA = {
         "Developing guardrails for LLM and agent applications in banking by mapping vulnerability surfaces, constructing adversarial and failure-mode evaluations, and testing output controls aligned with RBI's FREE-AI recommendations for safe, fair, explainable, and robust AI.",
         "Developed and now monitor a reference-free document image-quality assessment service using ViT regression; the production system identifies low-quality documents at 92% precision before they enter HDB's downstream applications.",
       ],
+      emphasis: ["92% precision"],
       recognition:
         "Circle of Excellence award for research contributions to generative AI and financial document intelligence.",
       desc: [
@@ -64,6 +65,7 @@ window.PORTFOLIO_DATA = {
         "Co-authored FinForge, a semi-synthetic benchmark generation pipeline for financial agentic systems, accepted at the AAAI 2026 Agentic AI in Financial Services Workshop.",
         "Contributed to the Role Steering of Language Models for Social Simulations project, published in the Social Simulations Workshop at COLM 2026.",
       ],
+      emphasis: [],
       desc: [
         "Co-authored FinForge, a semi-synthetic benchmark generation pipeline for financial agentic systems, accepted at the AAAI 2026 Agentic AI in Financial Services Workshop.",
         "Contributed to the Role Steering of Language Models for Social Simulations project, published in the Social Simulations Workshop at COLM 2026.",
@@ -80,6 +82,7 @@ window.PORTFOLIO_DATA = {
         "Improved generalized table detection accuracy by 27.6%, lifting downstream TSR module performance, via semi-synthetic data curation and systematic evaluation of YOLOv8 variants.",
         "Integrated a semantic row-detection module (fine-tuned text encoders) into the production TSR pipeline with under 40ms added turnaround time, preserving existing throughput.",
       ],
+      emphasis: ["8s to 200ms", "27.6%", "under 40ms"],
       desc: [
         "Distilled and quantized a multimodal document classifier into a lightweight student model, reducing latency from 8s to 200ms while preserving F1 parity in production-scale evaluation.",
         "Improved generalized table detection accuracy by 27.6%, lifting downstream TSR module performance, via semi-synthetic data curation and systematic evaluation of YOLOv8 variants.",

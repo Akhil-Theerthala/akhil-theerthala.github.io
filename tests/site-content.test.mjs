@@ -69,3 +69,24 @@ test("writing slugs are unique and exactly two records are featured", () => {
     ["Density-Vs-Diversity.md", "Creating-a-Reasoning-Dataset-with.md"],
   );
 });
+
+test("credibility components expose accessible, non-duplicative contracts", () => {
+  const sections = fs.readFileSync("portfolio-sections.jsx", "utf8");
+
+  assert.match(sections, /function PublicationCitation\(/);
+  assert.match(sections, /aria-live="polite"/);
+  assert.match(sections, /function ArtifactEvidence\(/);
+  assert.match(sections, /function ExperienceEntry\(/);
+  assert.match(sections, /experience\.highlights/);
+  assert.match(sections, /filter\(\(item\) => !item\.featured\)/);
+  assert.match(sections, /<details className="older-writing-archive"/);
+  assert.match(sections, /\{data\.location\}/);
+  assert.doesNotMatch(sections, />Hyderabad, India</);
+});
+
+test("the production app uses the fixed approved visual tokens", () => {
+  const app = fs.readFileSync("portfolio-app.jsx", "utf8");
+
+  assert.doesNotMatch(app, /TweaksPanel|useTweaks|TWEAK_DEFAULTS/);
+  assert.match(app, /const APPROVED_ACCENT = "#c8a66b"/);
+});

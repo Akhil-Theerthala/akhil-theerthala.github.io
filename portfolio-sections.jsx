@@ -1,6 +1,6 @@
 // Section components for the portfolio
 
-const { useMemo, useState } = React;
+const { useEffect, useMemo, useState } = React;
 
 // ───────── Hero ─────────
 function Hero({ data, accent }) {
@@ -112,6 +112,72 @@ function About({ data, accent }) {
   );
 }
 
+function PublicationCitation({ publication }) {
+  const [status, setStatus] = useState("");
+
+  useEffect(() => {
+    if (!status) return undefined;
+    const reset = window.setTimeout(() => setStatus(""), 4000);
+    return () => window.clearTimeout(reset);
+  }, [status]);
+
+  const copy = async (value, label) => {
+    try {
+      await navigator.clipboard.writeText(value);
+      setStatus(`${label} copied`);
+    } catch {
+      setStatus(`Copy failed. Select the ${label.toLowerCase()} text below.`);
+    }
+  };
+
+  if (!publication.citation || !publication.bibtex) return null;
+
+  return (
+    <details className="citation">
+      <summary className="citation-summary">
+        <span>Citation</span>
+        <span className="citation-doi mono">DOI {publication.doi}</span>
+      </summary>
+      <div className="citation-body">
+        <div className="citation-actions">
+          <button
+            type="button"
+            onClick={() => copy(publication.citation, "Citation")}
+          >
+            Copy citation
+          </button>
+          <button
+            type="button"
+            onClick={() => copy(publication.bibtex, "BibTeX")}
+          >
+            Copy BibTeX
+          </button>
+          <a
+            href={`https://doi.org/${publication.doi}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Open DOI <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+        <div className="citation-record">
+          <p className="citation-label mono">Plain citation</p>
+          <pre className="citation-text">{publication.citation}</pre>
+        </div>
+        <div className="citation-record">
+          <p className="citation-label mono">BibTeX</p>
+          <pre className="citation-text citation-text--bibtex">
+            {publication.bibtex}
+          </pre>
+        </div>
+        <p className="sr-only" aria-live="polite">
+          {status}
+        </p>
+      </div>
+    </details>
+  );
+}
+
 // ───────── Selected Work (Publications) ─────────
 function Publications({ data, accent }) {
   const publicationsByYear = useMemo(() => {
@@ -191,6 +257,7 @@ function Publications({ data, accent }) {
                       )}
                     </div>
                   </div>
+                  <PublicationCitation publication={p} />
                 </article>
               ))}
             </div>
@@ -202,6 +269,53 @@ function Publications({ data, accent }) {
 }
 
 // ───────── Projects ─────────
+function ArtifactEvidence({ evidence }) {
+  if (!evidence) return null;
+
+  return (
+    <aside className={`artifact-evidence artifact-evidence--${evidence.kind}`}>
+      <div className="artifact-evidence-head">
+        <span className="artifact-evidence-mark" aria-hidden="true">
+          ✓
+        </span>
+        <p className="artifact-evidence-label mono">{evidence.label}</p>
+      </div>
+      <p className="artifact-evidence-caption">{evidence.caption}</p>
+
+      {evidence.metrics?.length > 0 && (
+        <dl className="artifact-metrics">
+          {evidence.metrics.map((metric) => (
+            <div className="artifact-metric" key={metric.label}>
+              <dt className="mono">{metric.label}</dt>
+              <dd className="serif">{metric.value}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
+
+      {evidence.schema?.length > 0 && (
+        <div className="artifact-schema">
+          <p className="artifact-evidence-label mono">Record schema</p>
+          <code>{evidence.schema.join("  ·  ")}</code>
+        </div>
+      )}
+
+      {evidence.stages?.length > 0 && (
+        <ol className="artifact-flow" aria-label="Pipeline stages">
+          {evidence.stages.map((stage, index) => (
+            <li key={stage}>
+              <span className="artifact-flow-index mono">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span>{stage}</span>
+            </li>
+          ))}
+        </ol>
+      )}
+    </aside>
+  );
+}
+
 function Projects({ data, accent }) {
   return (
     <section className="section" id="work">
@@ -211,51 +325,93 @@ function Projects({ data, accent }) {
       />
 
       <div className="projects">
-        {data.projects.map((p, i) => {
-          const Tag = p.href ? "a" : "article";
-          const linkProps = p.href
-            ? { href: p.href, target: "_blank", rel: "noreferrer" }
-            : {};
-          return (
-            <Tag className="project" key={i} {...linkProps}>
+        {data.projects.map((project, index) => (
+          <article
+            className={`project ${index === 0 ? "project--featured" : "project--supporting"}`}
+            key={project.title}
+          >
+            <div className="project-narrative">
               <div className="project-head">
-                <span className="project-kicker mono dim">{p.kicker}</span>
-                <span className="project-year mono dim">{p.year}</span>
-              </div>
-              <h3 className="project-title serif">{p.title}</h3>
-              <p className="project-desc">{p.desc}</p>
-              {p.stats?.length > 0 && (
-                <div className="project-stats">
-                  {p.stats.map((stat, j) => (
-                    <div className="project-stat" key={j}>
-                      <span className="project-stat-value serif">
-                        {stat.value}
-                      </span>
-                      <span className="project-stat-label mono">
-                        {stat.label}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
-              <div className="project-foot">
-                <span
-                  className="project-metric serif-italic"
-                  style={{ color: accent }}
-                >
-                  {p.metric}
+                <span className="project-kicker mono dim">
+                  {project.kicker}
                 </span>
-                {p.href && <span className="arrow project-arrow">→</span>}
+                <span className="project-year mono dim">{project.year}</span>
               </div>
-            </Tag>
-          );
-        })}
+              <h3 className="project-title serif">{project.title}</h3>
+              <p className="project-desc">{project.desc}</p>
+              <div className="project-links" aria-label={`${project.title} links`}>
+                {(project.links || []).map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="link-arrow"
+                    style={{ color: accent }}
+                  >
+                    {link.label} <span aria-hidden="true">↗</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+            <ArtifactEvidence evidence={project.evidence} />
+          </article>
+        ))}
       </div>
     </section>
   );
 }
 
 // ───────── Experience ─────────
+function EmphasizedText({ text, tokens = [] }) {
+  const matches = tokens
+    .map((token) => ({ token, index: text.indexOf(token) }))
+    .filter((match) => match.index >= 0)
+    .sort((a, b) => a.index - b.index);
+
+  if (matches.length === 0) return text;
+
+  const parts = [];
+  let cursor = 0;
+  matches.forEach(({ token, index }) => {
+    if (index < cursor) return;
+    if (index > cursor) parts.push(text.slice(cursor, index));
+    parts.push(<strong key={`${token}-${index}`}>{token}</strong>);
+    cursor = index + token.length;
+  });
+  if (cursor < text.length) parts.push(text.slice(cursor));
+  return parts;
+}
+
+function ExperienceEntry({ experience }) {
+  return (
+    <article className="cv-row">
+      <div className="cv-date mono dim">{experience.date}</div>
+      <div className="cv-body">
+        <h3 className="cv-title">{experience.title}</h3>
+        <p className="cv-org">{experience.org}</p>
+        <p className="cv-summary">{experience.summary}</p>
+        <ul className="cv-desc-list">
+          {experience.highlights.slice(0, 3).map((highlight) => (
+            <li key={highlight}>
+              <EmphasizedText
+                text={highlight}
+                tokens={experience.emphasis || []}
+              />
+            </li>
+          ))}
+        </ul>
+        {experience.recognition && (
+          <p className="cv-recognition">
+            <span className="cv-recognition-label mono">Recognition</span>
+            {experience.recognition}
+          </p>
+        )}
+      </div>
+    </article>
+  );
+}
+
 function Experience({ data, accent }) {
   return (
     <section className="section" id="cv">
@@ -265,23 +421,11 @@ function Experience({ data, accent }) {
       />
 
       <div className="cv">
-        {data.workExperience.map((e, i) => (
-          <div className="cv-row" key={i}>
-            <div className="cv-date mono dim">{e.date}</div>
-            <div className="cv-body">
-              <h3 className="cv-title">{e.title}</h3>
-              <p className="cv-org">{e.org}</p>
-              {Array.isArray(e.desc) ? (
-                <ul className="cv-desc-list">
-                  {e.desc.map((item, j) => (
-                    <li key={j}>{item}</li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="cv-desc">{e.desc}</p>
-              )}
-            </div>
-          </div>
+        {data.workExperience.map((experience) => (
+          <ExperienceEntry
+            experience={experience}
+            key={`${experience.org}-${experience.title}`}
+          />
         ))}
       </div>
     </section>
@@ -317,44 +461,35 @@ function getWritingHref(article) {
   return `writing.html?file=${encodeURIComponent(article.file)}`;
 }
 
+function WritingRows({ items }) {
+  return (
+    <div className="year-list">
+      {items.map((item, index) => (
+        <a className="item" key={item.slug} href={getWritingHref(item)}>
+          <span className="item-num mono dim">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+          <span className="item-title">{item.title}</span>
+          <span className="item-cat mono dim">{item.category}</span>
+          <span className="item-date mono dim">{item.date}</span>
+          <span className="item-arrow" aria-hidden="true">
+            →
+          </span>
+        </a>
+      ))}
+    </div>
+  );
+}
+
 function Writings({ data, accent }) {
-  const [filter, setFilter] = useState("All");
-  const categoryOrder = [
-    "Research Notes",
-    "Technical Essays",
-    "Older Learning Notes",
-  ];
-  const cats = useMemo(() => {
-    const set = new Set(data.writings.map((w) => w.category));
-    const ordered = categoryOrder.filter((category) => set.has(category));
-    const remaining = Array.from(set).filter(
-      (category) => !ordered.includes(category),
-    );
-    return ["All", ...ordered, ...remaining];
-  }, [data.writings]);
-
-  const filtered = useMemo(() => {
-    return filter === "All"
-      ? data.writings
-      : data.writings.filter((w) => w.category === filter);
-  }, [data.writings, filter]);
-
-  const byCategory = useMemo(() => {
-    const map = {};
-    filtered.forEach((w) => {
-      (map[w.category] = map[w.category] || []).push(w);
-    });
-    return Object.entries(map).sort((a, b) => {
-      const ai = categoryOrder.indexOf(a[0]);
-      const bi = categoryOrder.indexOf(b[0]);
-      if (ai === -1 && bi === -1) return a[0].localeCompare(b[0]);
-      if (ai === -1) return 1;
-      if (bi === -1) return -1;
-      return ai - bi;
-    });
-  }, [filtered]);
-
-  const featured = data.writings.filter((w) => w.featured);
+  const featured = data.writings.filter((item) => item.featured);
+  const archive = data.writings.filter((item) => !item.featured);
+  const current = archive.filter(
+    (item) => item.category !== "Older Learning Notes",
+  );
+  const older = archive.filter(
+    (item) => item.category === "Older Learning Notes",
+  );
 
   return (
     <section className="section" id="writings">
@@ -364,14 +499,14 @@ function Writings({ data, accent }) {
       />
 
       <div className="featured">
-        {featured.map((w, i) => (
-          <a className="feat" key={i} href={getWritingHref(w)}>
+        {featured.map((item) => (
+          <a className="feat" key={item.slug} href={getWritingHref(item)}>
             <div className="feat-head">
-              <span className="mono dim">{w.date}</span>
-              <span className="mono dim">{w.category}</span>
+              <span className="mono dim">{item.date}</span>
+              <span className="mono dim">{item.category}</span>
             </div>
-            <h3 className="feat-title serif">{w.title}</h3>
-            <p className="feat-excerpt">{w.excerpt}</p>
+            <h3 className="feat-title serif">{item.title}</h3>
+            <p className="feat-excerpt">{item.excerpt}</p>
             <span className="feat-link mono" style={{ color: accent }}>
               Read essay →
             </span>
@@ -379,46 +514,25 @@ function Writings({ data, accent }) {
         ))}
       </div>
 
-      <div className="writings-tools">
-        <div className="filter-row">
-          {cats.map((c) => (
-            <button
-              key={c}
-              className={`chip ${filter === c ? "active" : ""}`}
-              aria-pressed={filter === c}
-              style={filter === c ? { borderColor: accent, color: accent } : {}}
-              onClick={() => setFilter(c)}
-            >
-              {c}{" "}
-              <span className="dim">
-                {c === "All"
-                  ? data.writings.length
-                  : data.writings.filter((w) => w.category === c).length}
-              </span>
-            </button>
-          ))}
-        </div>
-      </div>
-
       <div className="archive">
-        {byCategory.map(([category, list]) => (
-          <div className="year-block" key={category}>
-            <div className="year-label serif">{category}</div>
-            <div className="year-list">
-              {list.map((w, i) => (
-                <a className="item" key={i} href={getWritingHref(w)}>
-                  <span className="item-num mono dim">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span className="item-title">{w.title}</span>
-                  <span className="item-cat mono dim">{w.category}</span>
-                  <span className="item-date mono dim">{w.date}</span>
-                  <span className="item-arrow">→</span>
-                </a>
-              ))}
-            </div>
+        <div className="year-block">
+          <div className="year-label serif">Technical essays</div>
+          <WritingRows items={current} />
+        </div>
+
+        <details className="older-writing-archive">
+          <summary>
+            <span className="serif">Older learning notes</span>
+            <span className="mono dim">{older.length} notes</span>
+          </summary>
+          <div className="older-writing-body">
+            <p className="older-writing-context">
+              Early notes kept as a public record of how my technical practice
+              developed.
+            </p>
+            <WritingRows items={older} />
           </div>
-        ))}
+        </details>
       </div>
     </section>
   );
@@ -472,7 +586,7 @@ function FooterBlock({ data, accent }) {
 
       <div className="footer-bottom">
         <span>© 2026 Akhil Theerthala</span>
-        <span>Hyderabad, India</span>
+        <span>{data.location}</span>
         <a href="#top">Back to top ↑</a>
       </div>
     </footer>
@@ -495,8 +609,11 @@ function SectionHead({ title, sub }) {
 Object.assign(window, {
   Hero,
   About,
+  PublicationCitation,
   Publications,
+  ArtifactEvidence,
   Projects,
+  ExperienceEntry,
   Experience,
   Education,
   Writings,

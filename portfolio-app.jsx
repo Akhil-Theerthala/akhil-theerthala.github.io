@@ -1,26 +1,9 @@
 // Main App
 const { useState, useEffect } = React;
 
-const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/ {
-  accent: "#c8a66b",
-  density: "comfortable",
-  headlineFamily: "Newsreader",
-}; /*EDITMODE-END*/
-
-const ACCENT_OPTIONS = ["#c8a66b"];
-
-const HEADLINE_OPTIONS = [
-  "Newsreader",
-  "Instrument Serif",
-  "EB Garamond",
-  "Geist",
-];
+const APPROVED_ACCENT = "#c8a66b";
 
 function App() {
-  const [tweaks, setTweak] = window.useTweaks
-    ? window.useTweaks(TWEAK_DEFAULTS)
-    : [TWEAK_DEFAULTS, () => {}];
-
   const [active, setActive] = useState("about");
   const data = window.PORTFOLIO_DATA;
 
@@ -38,7 +21,9 @@ function App() {
           else visible.delete(entry.target.id);
         });
         const current = Array.from(visible.values()).sort(
-          (a, b) => Math.abs(a.boundingClientRect.top) - Math.abs(b.boundingClientRect.top),
+          (a, b) =>
+            Math.abs(a.boundingClientRect.top) -
+            Math.abs(b.boundingClientRect.top),
         )[0];
         if (current) setActive(current.target.id);
       },
@@ -66,17 +51,6 @@ function App() {
     return () => io.disconnect();
   }, []);
 
-  // Apply tweaks to root
-  useEffect(() => {
-    const r = document.documentElement;
-    r.style.setProperty("--accent", tweaks.accent);
-    r.style.setProperty(
-      "--headline-font",
-      `'${tweaks.headlineFamily}', 'Instrument Serif', Georgia, serif`,
-    );
-    r.dataset.density = tweaks.density;
-  }, [tweaks]);
-
   const nav = [
     { id: "about", label: "About" },
     { id: "research", label: "Publications" },
@@ -88,7 +62,11 @@ function App() {
   ];
 
   return (
-    <div className="root" data-screen-label="Portfolio">
+    <div
+      className="root"
+      data-density="comfortable"
+      data-screen-label="Portfolio"
+    >
       <CalibrationField />
 
       <aside className="rail visible">
@@ -110,7 +88,7 @@ function App() {
                       className="rail-tick"
                       style={
                         isActive
-                          ? { background: tweaks.accent, width: "24px" }
+                          ? { background: APPROVED_ACCENT, width: "24px" }
                           : {}
                       }
                     ></span>
@@ -127,45 +105,16 @@ function App() {
       </aside>
 
       <main id="main-content">
-        <Hero data={data} accent={tweaks.accent} />
-        <About data={data} accent={tweaks.accent} />
-        <Publications data={data} accent={tweaks.accent} />
-        <Experience data={data} accent={tweaks.accent} />
-        <Education data={data} accent={tweaks.accent} />
-        <Projects data={data} accent={tweaks.accent} />
-        <Writings data={data} accent={tweaks.accent} />
+        <Hero data={data} accent={APPROVED_ACCENT} />
+        <About data={data} accent={APPROVED_ACCENT} />
+        <Publications data={data} accent={APPROVED_ACCENT} />
+        <Experience data={data} accent={APPROVED_ACCENT} />
+        <Education data={data} accent={APPROVED_ACCENT} />
+        <Projects data={data} accent={APPROVED_ACCENT} />
+        <Writings data={data} accent={APPROVED_ACCENT} />
       </main>
 
-      <FooterBlock data={data} accent={tweaks.accent} />
-
-      {window.TweaksPanel && (
-        <window.TweaksPanel title="Tweaks">
-          <window.TweakSection title="Accent">
-            <window.TweakColor
-              label="Accent color"
-              value={tweaks.accent}
-              options={ACCENT_OPTIONS}
-              onChange={(v) => setTweak("accent", v)}
-            />
-          </window.TweakSection>
-          <window.TweakSection title="Type">
-            <window.TweakSelect
-              label="Headline family"
-              value={tweaks.headlineFamily}
-              options={HEADLINE_OPTIONS}
-              onChange={(v) => setTweak("headlineFamily", v)}
-            />
-          </window.TweakSection>
-          <window.TweakSection title="Layout">
-            <window.TweakRadio
-              label="Density"
-              value={tweaks.density}
-              options={["compact", "comfortable"]}
-              onChange={(v) => setTweak("density", v)}
-            />
-          </window.TweakSection>
-        </window.TweaksPanel>
-      )}
+      <FooterBlock data={data} accent={APPROVED_ACCENT} />
     </div>
   );
 }
