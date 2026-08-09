@@ -291,31 +291,36 @@ window.PORTFOLIO_DATA = {
       tags: ["Reasoning", "Synthetic data", "Evaluation"],
     },
     {
-      title: "LazyInfer",
-      kicker: "Open source · Python framework",
-      desc: "Research contribution: designed a YAML-driven execution layer for repeatable multi-stage LLM inference over JSONL datasets, with async execution, retries, checkpointing, and schema validation.",
-      metric: "GitHub",
+      title: "Themis Scales: Moral Dilemma Resolution",
+      kicker: "Open source · AI ethics dataset",
+      desc: "Research contribution: created a 567-example seed dataset that structures moral-dilemma analysis through Morality-as-Cooperation, deontological, and utilitarian perspectives, with explicit limitations for further validation.",
+      metric: "567 dilemmas",
       year: "2025",
-      href: "https://github.com/Akhil-Theerthala/LazyInfer",
+      href: "https://huggingface.co/datasets/Akhil-Theerthala/Themis_Scales",
       links: [
         {
-          label: "Repository",
-          href: "https://github.com/Akhil-Theerthala/LazyInfer",
+          label: "Dataset",
+          href: "https://huggingface.co/datasets/Akhil-Theerthala/Themis_Scales",
+        },
+        {
+          label: "GitHub",
+          href: "https://github.com/Akhil-Theerthala/moral-dilemma-reasoning",
         },
       ],
       evidence: {
-        kind: "pipeline",
-        label: "Execution model",
+        kind: "dataset",
+        label: "Seed dataset record",
         caption:
-          "A configuration-led path from JSONL records to validated, restart-safe outputs.",
-        stages: [
-          "JSONL input",
-          "YAML stages",
-          "Schema validation",
-          "Checkpointed output",
+          "A proof-of-concept collection of 567 dilemmas across four categories, structured through three complementary ethical lenses.",
+        metrics: [
+          { label: "Rows", value: "567" },
+          { label: "Categories", value: "4" },
+          { label: "Ethical lenses", value: "3" },
+          { label: "DOI", value: "10.57967/hf/5177" },
         ],
+        schema: ["category", "query", "chain_of_thought", "response"],
       },
-      tags: ["Pipelines", "Structured outputs", "Reproducibility"],
+      tags: ["AI ethics", "Moral reasoning", "Dataset curation"],
     },
   ],
 

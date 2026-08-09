@@ -45,15 +45,36 @@ test("artifact evidence contains only approved verified values", () => {
     ["18.8k", "8", "8B", "80%"],
   );
 
-  const lazyInfer = data.projects.find(
-    (project) => project.title === "LazyInfer",
+  assert.deepEqual(
+    Array.from(data.projects, (project) => project.title),
+    [
+      "Kuvera Personal Finance Datasets and LLMs",
+      "Reasoning Dataset Challenge",
+      "Themis Scales: Moral Dilemma Resolution",
+    ],
   );
-  assert.deepEqual(Array.from(lazyInfer.evidence.stages), [
-    "JSONL input",
-    "YAML stages",
-    "Schema validation",
-    "Checkpointed output",
+
+  const themis = data.projects.find((project) =>
+    project.title.startsWith("Themis Scales"),
+  );
+  assert.equal(themis.evidence.kind, "dataset");
+  assert.deepEqual(
+    Array.from(themis.evidence.metrics, (metric) => metric.value),
+    ["567", "4", "3", "10.57967/hf/5177"],
+  );
+  assert.deepEqual(Array.from(themis.evidence.schema), [
+    "category",
+    "query",
+    "chain_of_thought",
+    "response",
   ]);
+  assert.deepEqual(
+    Array.from(themis.links, (link) => link.href),
+    [
+      "https://huggingface.co/datasets/Akhil-Theerthala/Themis_Scales",
+      "https://github.com/Akhil-Theerthala/moral-dilemma-reasoning",
+    ],
+  );
 });
 
 test("writing slugs are unique and exactly two records are featured", () => {
