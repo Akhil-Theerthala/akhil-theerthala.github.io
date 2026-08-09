@@ -469,7 +469,7 @@ function Education({ data, accent }) {
 
 // ───────── Writings ─────────
 function getWritingHref(article) {
-  return `writing.html?file=${encodeURIComponent(article.file)}`;
+  return `writing/${article.slug}/`;
 }
 
 function WritingRows({ items }) {

@@ -1,10 +1,6 @@
 const { useEffect, useMemo, useRef, useState } = React;
 
-const ARTICLE_TWEAKS = {
-  accent: "#c8a66b",
-  density: "comfortable",
-  headlineFamily: "Newsreader",
-};
+const ARTICLE_ACCENT = "#c8a66b";
 
 function slugify(text) {
   return (
@@ -16,12 +12,84 @@ function slugify(text) {
 }
 
 function getRequestedArticle() {
+  const generatedFile = document.documentElement.dataset.articleFile;
   const params = new URLSearchParams(window.location.search);
-  const file = params.get("file");
+  const file = generatedFile || params.get("file");
   if (!file) return null;
   return (
     window.PORTFOLIO_DATA.writings.find((article) => article.file === file) ||
     null
+  );
+}
+
+function getContentUrl(article) {
+  const prefix = document.documentElement.dataset.contentPrefix || "";
+  return `${prefix}My%20writings/${encodeURIComponent(article.file)}`;
+}
+
+function getHomeHref(hash = "") {
+  const prefix = document.documentElement.dataset.contentPrefix || "";
+  return `${prefix || "index.html"}${hash}`;
+}
+
+function ArticleIndex({ items, activeHeading }) {
+  const disclosureRef = useRef(null);
+  const activeItem =
+    items.find((item) => item.id === activeHeading) || items[0];
+
+  const closeDisclosure = () => {
+    if (disclosureRef.current) disclosureRef.current.open = false;
+  };
+
+  const renderLinks = () =>
+    items.map((item) => {
+      const isActive = activeHeading === item.id;
+      return (
+        <li key={item.id}>
+          <a
+            href={`#${item.id}`}
+            className={`rail-item toc-level-${item.level} ${isActive ? "active" : ""}`}
+            aria-current={isActive ? "location" : undefined}
+            onClick={closeDisclosure}
+          >
+            <span
+              className="rail-tick"
+              style={
+                isActive
+                  ? { background: ARTICLE_ACCENT, width: "24px" }
+                  : undefined
+              }
+            ></span>
+            <span className="rail-text">{item.text}</span>
+          </a>
+        </li>
+      );
+    });
+
+  return (
+    <>
+      <aside className="rail visible article-rail" aria-label="Article index">
+        <div className="rail-inner">
+          <a href={getHomeHref("#top")} className="rail-logo serif">
+            Akhil Theerthala
+          </a>
+          <ul className="rail-list">{renderLinks()}</ul>
+          <a href={getHomeHref("#writings")} className="rail-foot mono dim">
+            All writings
+          </a>
+        </div>
+      </aside>
+
+      <details className="article-index" ref={disclosureRef}>
+        <summary>
+          <span className="article-index-label mono">On this page</span>
+          <span className="article-index-current">{activeItem.text}</span>
+        </summary>
+        <nav aria-label="Article index">
+          <ul>{renderLinks()}</ul>
+        </nav>
+      </details>
+    </>
   );
 }
 
@@ -35,17 +103,17 @@ function WritingPage() {
   const bodyRef = useRef(null);
 
   useEffect(() => {
-    const root = document.documentElement;
-    root.style.setProperty("--accent", ARTICLE_TWEAKS.accent);
-    root.style.setProperty(
-      "--headline-font",
-      `'${ARTICLE_TWEAKS.headlineFamily}', 'Instrument Serif', Georgia, serif`,
-    );
-    root.dataset.density = ARTICLE_TWEAKS.density;
-
     document.title = article
       ? `${article.title} - Akhil Theerthala`
       : "Writing - Akhil Theerthala";
+
+    if (article) {
+      const canonical =
+        document.querySelector('link[rel="canonical"]') ||
+        document.head.appendChild(document.createElement("link"));
+      canonical.rel = "canonical";
+      canonical.href = `https://akhiltheerthala.com/writing/${article.slug}/`;
+    }
   }, [article]);
 
   useEffect(() => {
@@ -56,7 +124,7 @@ function WritingPage() {
     setContent("");
     setToc([]);
 
-    fetch(`My writings/${article.file}`)
+    fetch(getContentUrl(article))
       .then((response) => {
         if (!response.ok) throw new Error("not found");
         return response.text();
@@ -126,32 +194,7 @@ function WritingPage() {
     return (
       <div className="reader-page">
         <CalibrationField />
-
-        <aside className="rail visible article-rail">
-          <div className="rail-inner">
-            <a href="index.html#top" className="rail-logo serif">
-              Akhil Theerthala
-            </a>
-            <ul className="rail-list">
-              <li>
-                <a
-                  href="#article-top"
-                  className="rail-item active toc-level-1"
-                  aria-current="location"
-                >
-                  <span
-                    className="rail-tick"
-                    style={{ background: ARTICLE_TWEAKS.accent, width: "24px" }}
-                  ></span>
-                  <span className="rail-text">Overview</span>
-                </a>
-              </li>
-            </ul>
-            <a href="index.html#writings" className="rail-foot mono dim">
-              All writings
-            </a>
-          </div>
-        </aside>
+        <ArticleIndex items={tocItems} activeHeading={activeHeading} />
 
         <div className="reader-progress" aria-hidden="true">
           <div className="reader-progress-fill"></div>
@@ -163,13 +206,13 @@ function WritingPage() {
             <h1 className="reader-title">Article not found</h1>
             <div
               className="reader-divider"
-              style={{ background: ARTICLE_TWEAKS.accent, opacity: 0.4 }}
+              style={{ background: ARTICLE_ACCENT, opacity: 0.4 }}
             ></div>
             <div className="reader-error">
               <p>
                 The requested essay could not be found from the current URL.
               </p>
-              <a href="index.html#writings" className="reader-link">
+              <a href={getHomeHref("#writings")} className="reader-link">
                 Return to the writings archive →
               </a>
             </div>
@@ -182,41 +225,7 @@ function WritingPage() {
   return (
     <div className="reader-page">
       <CalibrationField />
-
-      <aside className="rail visible article-rail">
-        <div className="rail-inner">
-          <a href="index.html#top" className="rail-logo serif">
-            Akhil Theerthala
-          </a>
-          <ul className="rail-list">
-            {tocItems.map((item) => {
-              const isActive = activeHeading === item.id;
-              return (
-                <li key={item.id}>
-                  <a
-                    href={`#${item.id}`}
-                    className={`rail-item toc-level-${item.level} ${isActive ? "active" : ""}`}
-                    aria-current={isActive ? "location" : undefined}
-                  >
-                    <span
-                      className="rail-tick"
-                      style={
-                        isActive
-                          ? { background: ARTICLE_TWEAKS.accent, width: "24px" }
-                          : {}
-                      }
-                    ></span>
-                    <span className="rail-text">{item.text}</span>
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-          <a href="index.html#writings" className="rail-foot mono dim">
-            All writings
-          </a>
-        </div>
-      </aside>
+      <ArticleIndex items={tocItems} activeHeading={activeHeading} />
 
       <div className="reader-progress" aria-hidden="true">
         <div className="reader-progress-fill"></div>
@@ -229,7 +238,7 @@ function WritingPage() {
           <p className="reader-byline">Akhil Theerthala · {article.date}</p>
           <div
             className="reader-divider"
-            style={{ background: ARTICLE_TWEAKS.accent, opacity: 0.4 }}
+            style={{ background: ARTICLE_ACCENT, opacity: 0.4 }}
           ></div>
 
           {loading && <div className="reader-loading">Loading article…</div>}
@@ -267,7 +276,7 @@ function WritingPage() {
               <a
                 href="mailto:akhiltvsn@gmail.com"
                 className="reader-link"
-                style={{ color: ARTICLE_TWEAKS.accent }}
+                style={{ color: ARTICLE_ACCENT }}
               >
                 email me
               </a>

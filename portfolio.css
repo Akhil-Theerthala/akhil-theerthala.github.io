@@ -1840,6 +1840,9 @@ main {
 .article-rail .toc-level-3 .rail-tick {
     width: 6px;
 }
+.article-index {
+    display: none;
+}
 .reader-topbar-page {
     position: sticky;
     top: 0;
@@ -2141,15 +2144,80 @@ main {
 
 /* ───── Responsive ───── */
 @media (max-width: 1280px) {
-    .article-rail .rail-item {
+    .article-rail {
+        display: none;
+    }
+    .article-index {
+        display: block;
+        position: sticky;
+        top: 0;
+        z-index: 60;
+        border-bottom: 1px solid var(--rule);
+        background: rgb(13 15 14 / 0.94);
+        -webkit-backdrop-filter: blur(14px);
+        backdrop-filter: blur(14px);
+    }
+    .article-index > summary {
+        display: grid;
+        grid-template-columns: 130px minmax(0, 1fr);
         align-items: center;
+        gap: 1rem;
+        min-height: 64px;
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 0.85rem 2rem;
+        color: var(--ink-2);
+        cursor: pointer;
     }
-    .article-rail .rail-tick {
-        align-self: center;
-        margin-top: 0;
+    .article-index > summary:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: -4px;
     }
-    .article-rail .rail-text {
+    .article-index-label {
+        color: var(--accent);
+        font-size: 0.75rem;
+    }
+    .article-index-current {
+        min-width: 0;
+        overflow: hidden;
+        color: var(--ink);
+        font-size: 0.9rem;
+        font-weight: 520;
+        text-overflow: ellipsis;
         white-space: nowrap;
+    }
+    .article-index nav {
+        max-height: min(58vh, 32rem);
+        overflow-y: auto;
+        border-top: 1px solid var(--rule);
+    }
+    .article-index nav ul {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 0.65rem 2rem 1rem;
+    }
+    .article-index .rail-item {
+        display: grid;
+        grid-template-columns: 18px minmax(0, 1fr);
+        gap: 0.65rem;
+        width: 100%;
+        min-height: 44px;
+        padding: 0.55rem 0;
+        color: var(--muted);
+        font-size: 0.82rem;
+        line-height: 1.4;
+        text-transform: none;
+        letter-spacing: 0;
+    }
+    .article-index .rail-item.active {
+        color: var(--ink);
+    }
+    .article-index .rail-tick {
+        align-self: start;
+        margin-top: 0.65rem;
+    }
+    .article-index .toc-level-3 {
+        padding-left: 1rem;
     }
 }
 
@@ -2265,6 +2333,17 @@ main {
     body {
         font-size: 15px;
         line-height: 1.6;
+    }
+    .article-index > summary {
+        grid-template-columns: 96px minmax(0, 1fr);
+        min-height: 58px;
+        padding: 0.75rem 1.15rem;
+    }
+    .article-index nav ul {
+        padding: 0.5rem 1.15rem 0.9rem;
+    }
+    .article-index-current {
+        font-size: 0.82rem;
     }
     .rail {
         padding: 1rem 1.15rem 0.9rem;
