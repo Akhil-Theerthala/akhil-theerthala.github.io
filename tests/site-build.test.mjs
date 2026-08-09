@@ -98,3 +98,58 @@ test("the article reader supports generated and legacy requests", () => {
   assert.match(css, /@media \(max-width: 1280px\)[\s\S]*\.article-index/);
   assert.match(css, /@media \(max-width: 720px\)[\s\S]*\.article-index/);
 });
+
+test("the site ships local fonts and complete discovery metadata", () => {
+  const data = loadData();
+  const index = read("index.html");
+  const writing = read("writing.html");
+  const css = read("portfolio.css");
+
+  assert.doesNotMatch(`${index}\n${writing}`, /fonts\.googleapis\.com/);
+  for (const [family, file] of [
+    ["Newsreader", "newsreader-latin.woff2"],
+    ["Geist", "geist-latin.woff2"],
+    ["JetBrains Mono", "jetbrains-mono-latin.woff2"],
+  ]) {
+    assert.match(css, new RegExp(`font-family:\\s*"${family}"`));
+    assert.match(css, new RegExp(`assets/fonts/${file}`));
+    assert.equal(fs.existsSync(path.join("assets", "fonts", file)), true);
+  }
+
+  assert.match(
+    index,
+    /<link rel="canonical" href="https:\/\/akhiltheerthala\.com\/"/,
+  );
+  assert.match(index, /<script type="application\/ld\+json">/);
+  assert.match(index, /"@type":\s*"Person"/);
+  assert.match(index, /"@type":\s*"ScholarlyArticle"/);
+  for (const publication of data.publications) {
+    assert.ok(index.includes(escapeHtml(publication.title)));
+  }
+
+  const socialCard = fs.readFileSync(
+    "assets/social/akhil-theerthala-og.png",
+  );
+  assert.equal(socialCard.readUInt32BE(16), 1200);
+  assert.equal(socialCard.readUInt32BE(20), 630);
+
+  const sitemap = read("sitemap.xml");
+  assert.match(sitemap, /https:\/\/akhiltheerthala\.com\//);
+  for (const article of data.writings) {
+    assert.match(
+      sitemap,
+      new RegExp(
+        `https://akhiltheerthala\\.com/writing/${article.slug}/`,
+      ),
+    );
+  }
+  assert.match(
+    read("robots.txt"),
+    /Sitemap: https:\/\/akhiltheerthala\.com\/sitemap\.xml/,
+  );
+  const notFound = read("404.html");
+  assert.match(notFound, /href="\/"/);
+  assert.match(notFound, /href="\/#research"/);
+  assert.match(notFound, /href="\/#writings"/);
+  assert.match(notFound, /href="\/#contact"/);
+});

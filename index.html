@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-density="comfortable">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,24 +14,235 @@
             content="Research, publications, and field notes on reliable AI systems in finance and document intelligence."
         />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://akhiltheerthala.com/profile_photo.png" />
+        <meta property="og:image" content="https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
         <meta property="og:url" content="https://akhiltheerthala.com/" />
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content="https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png" />
         <meta name="theme-color" content="#0d0f0e" />
+        <link rel="canonical" href="https://akhiltheerthala.com/" />
         <link
             rel="icon"
             href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%230d0f0e'/%3E%3Cpath d='M15 49 29 14h7l14 35h-8l-3-9H25l-3 9h-7Zm12-16h10l-5-14-5 14Z' fill='%23c8a66b'/%3E%3C/svg%3E"
         />
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
-            href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Geist:wght@300;400;450;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
-            rel="stylesheet"
+            rel="preload"
+            href="assets/fonts/newsreader-latin.woff2"
+            as="font"
+            type="font/woff2"
+            crossorigin
+        />
+        <link
+            rel="preload"
+            href="assets/fonts/geist-latin.woff2"
+            as="font"
+            type="font/woff2"
+            crossorigin
+        />
+        <link
+            rel="preload"
+            as="image"
+            href="assets/media/profile-480.webp"
+            imagesrcset="assets/media/profile-480.webp 480w, assets/media/profile-960.webp 960w"
+            imagesizes="(max-width: 720px) 0px, (max-width: 1280px) 348px, 420px"
         />
 
         <link rel="stylesheet" href="portfolio.css?v=20260806-2" />
+
+        <!-- STRUCTURED-DATA:START -->
+        <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://akhiltheerthala.com/#person",
+      "name": "Akhil Theerthala",
+      "url": "https://akhiltheerthala.com/",
+      "image": "https://akhiltheerthala.com/assets/media/profile-960.webp",
+      "jobTitle": "Senior Member Data Scientist, Perfios Software Solutions",
+      "email": "mailto:akhiltvsn@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Bengaluru",
+        "addressCountry": "India"
+      },
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Perfios Software Solutions"
+      },
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "Indian Institute of Technology, Kharagpur"
+      },
+      "affiliation": [
+        {
+          "@type": "CollegeOrUniversity",
+          "name": "International Institute of Information Technology, Hyderabad"
+        },
+        {
+          "@type": "ResearchOrganization",
+          "name": "FSIL and HCAI Labs, Georgia Tech"
+        }
+      ],
+      "knowsAbout": [
+        "Data Curation for Reliable Models",
+        "Financial AI and Agentic Systems",
+        "Document AI and VLM Adaptation",
+        "LLM Evaluation and Interpretability"
+      ],
+      "sameAs": [
+        "https://scholar.google.com/citations?user=_H1O3ScAAAAJ&hl=en",
+        "https://github.com/Akhil-Theerthala",
+        "https://huggingface.co/Akhil-Theerthala",
+        "https://www.linkedin.com/in/akhil-theerthala/",
+        "https://x.com/thesilvervein"
+      ],
+      "subjectOf": [
+        {
+          "@id": "https://arxiv.org/abs/2608.00023#article"
+        },
+        {
+          "@id": "https://arxiv.org/abs/2601.06747#article"
+        },
+        {
+          "@id": "https://arxiv.org/abs/2509.14180#article"
+        }
+      ]
+    },
+    {
+      "@type": "ScholarlyArticle",
+      "@id": "https://arxiv.org/abs/2608.00023#article",
+      "headline": "Role Steering of Language Models for Social Simulations",
+      "name": "Role Steering of Language Models for Social Simulations",
+      "description": "An activation-steering screening workflow for role-conditioned language-model agents in social simulations. Across 275 roles, role-specific directions improve judged role-profile alignment over an assistant-axis control while preserving lexical diversity; 38 roles decline across every measured dimension, showing why steering strength should be selected per role rather than applied uniformly.",
+      "datePublished": "2026",
+      "author": [
+        {
+          "@type": "Person",
+          "name": "Isaac Song"
+        },
+        {
+          "@type": "Person",
+          "name": "Mohammed Rehan Parwani"
+        },
+        {
+          "@type": "Person",
+          "name": "Glenn Matlin"
+        },
+        {
+          "@type": "Person",
+          "name": "Emile Anand"
+        },
+        {
+          "@type": "Person",
+          "@id": "https://akhiltheerthala.com/#person"
+        },
+        {
+          "@type": "Person",
+          "name": "Arjun Chatterjee"
+        },
+        {
+          "@type": "Person",
+          "name": "Anthony Wen-Ming Zang"
+        },
+        {
+          "@type": "Person",
+          "name": "Maria Kostylew"
+        },
+        {
+          "@type": "Person",
+          "name": "Yonadav G. Shavit"
+        },
+        {
+          "@type": "Person",
+          "name": "Sebastien Krier"
+        },
+        {
+          "@type": "Person",
+          "name": "Mark Riedl"
+        }
+      ],
+      "url": "https://arxiv.org/abs/2608.00023",
+      "sameAs": "https://doi.org/10.48550/arXiv.2608.00023",
+      "identifier": "10.48550/arXiv.2608.00023",
+      "isPartOf": {
+        "@type": "CreativeWork",
+        "name": "Social Simulations Workshop, COLM 2026"
+      }
+    },
+    {
+      "@type": "ScholarlyArticle",
+      "@id": "https://arxiv.org/abs/2601.06747#article",
+      "headline": "FinForge: Semi-Synthetic Financial Benchmark Generation",
+      "name": "FinForge: Semi-Synthetic Financial Benchmark Generation",
+      "description": "A scalable semi-synthetic pipeline for building finance-specific LM benchmarks from authoritative sources using expert-guided curation and controlled LM synthesis. FinForge-5k contains 5,000+ human-validated question-answer pairs across 11 finance subdomains and reveals substantial gaps in financial reasoning, even as leading models approach 80% accuracy.",
+      "datePublished": "2026",
+      "author": [
+        {
+          "@type": "Person",
+          "name": "Glenn Matlin"
+        },
+        {
+          "@type": "Person",
+          "@id": "https://akhiltheerthala.com/#person"
+        },
+        {
+          "@type": "Person",
+          "name": "Anant Gupta"
+        },
+        {
+          "@type": "Person",
+          "name": "Anirudh JM"
+        },
+        {
+          "@type": "Person",
+          "name": "Rayan Castilla"
+        },
+        {
+          "@type": "Person",
+          "name": "Yi Mei Ng"
+        },
+        {
+          "@type": "Person",
+          "name": "Sudheer Chava"
+        }
+      ],
+      "url": "https://arxiv.org/abs/2601.06747",
+      "sameAs": "https://doi.org/10.48550/arXiv.2601.06747",
+      "identifier": "10.48550/arXiv.2601.06747",
+      "isPartOf": {
+        "@type": "CreativeWork",
+        "name": "Agentic AI in Financial Services Workshop, AAAI 2026"
+      }
+    },
+    {
+      "@type": "ScholarlyArticle",
+      "@id": "https://arxiv.org/abs/2509.14180#article",
+      "headline": "Synthesizing Behaviorally-Grounded Reasoning Chains: A Data-Generation Framework for Personal Finance LLMs",
+      "name": "Synthesizing Behaviorally-Grounded Reasoning Chains: A Data-Generation Framework for Personal Finance LLMs",
+      "description": "A reproducible data-centric framework that combines financial context with behavioral-finance studies to create supervision for end-to-end personal-finance advisors. Using a 19k-sample reasoning dataset, a fine-tuned Qwen-3-8B matches much larger 14-32B baselines on factuality, fluency, and personalization while reducing cost by about 80%.",
+      "datePublished": "2025",
+      "author": [
+        {
+          "@type": "Person",
+          "@id": "https://akhiltheerthala.com/#person"
+        }
+      ],
+      "url": "https://arxiv.org/abs/2509.14180",
+      "sameAs": "https://doi.org/10.48550/arXiv.2509.14180",
+      "identifier": "10.48550/arXiv.2509.14180",
+      "isPartOf": {
+        "@type": "CreativeWork",
+        "name": "arXiv"
+      }
+    }
+  ]
+}
+        </script>
+        <!-- STRUCTURED-DATA:END -->
 
         <script defer src="assets/js/portfolio.js"></script>
     </head>

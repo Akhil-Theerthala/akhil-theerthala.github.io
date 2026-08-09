@@ -1,5 +1,34 @@
 /* Akhil Theerthala portfolio: calibration topography. */
 
+@font-face {
+    font-family: "Newsreader";
+    src: url("assets/fonts/newsreader-latin.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 200 800;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Newsreader";
+    src: url("assets/fonts/newsreader-latin-italic.woff2") format("woff2");
+    font-style: italic;
+    font-weight: 200 800;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Geist";
+    src: url("assets/fonts/geist-latin.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+}
+@font-face {
+    font-family: "JetBrains Mono";
+    src: url("assets/fonts/jetbrains-mono-latin.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 100 800;
+    font-display: swap;
+}
+
 :root {
     --bg: #0d0f0e;
     --bg-1: #121513;
@@ -2139,6 +2168,12 @@ main {
 .reader-footer-text {
     color: var(--muted);
     font-size: 0.95rem;
+    margin-top: 2rem;
+}
+.not-found-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.5rem;
     margin-top: 2rem;
 }
 
