@@ -58,6 +58,15 @@ test("credibility layouts and responsive portrait assets are production-ready", 
   assert.equal(fs.existsSync("assets/media/profile-960.webp"), true);
 });
 
+test("artifact metric values allow unbroken identifiers to wrap", () => {
+  const css = read("portfolio.css");
+
+  assert.match(
+    css,
+    /\.artifact-metric dd\s*\{[^}]*overflow-wrap:\s*anywhere/s,
+  );
+});
+
 test("every writing has a canonical generated route", () => {
   const data = loadData();
   const slugs = new Set();

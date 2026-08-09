@@ -1153,6 +1153,7 @@ main {
     color: var(--ink);
     font-size: 1.7rem;
     line-height: 1;
+    overflow-wrap: anywhere;
 }
 .artifact-schema {
     margin-top: 1.25rem;
