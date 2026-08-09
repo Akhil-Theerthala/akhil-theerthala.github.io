@@ -39,18 +39,31 @@ window.PORTFOLIO_DATA = {
       date: "Apr 2025 - Present",
       title: "Senior Member Data Scientist",
       org: "Perfios Software Solutions",
+      summary:
+        "Leading research and production evaluation for reliable financial language and document-intelligence systems.",
+      highlights: [
+        "Leading uncertainty-quantification research for financial LLMs by building a BFSI-specific benchmark, auditing cultural and demographic biases, measuring calibration across numerical-precision conditions, probing cues associated with miscalibration, and testing steering, context conditioning, and fine-tuning as mitigation methods.",
+        "Developing guardrails for LLM and agent applications in banking by mapping vulnerability surfaces, constructing adversarial and failure-mode evaluations, and testing output controls aligned with RBI's FREE-AI recommendations for safe, fair, explainable, and robust AI.",
+        "Developed and now monitor a reference-free document image-quality assessment service using ViT regression; the production system identifies low-quality documents at 92% precision before they enter HDB's downstream applications.",
+      ],
+      recognition:
+        "Circle of Excellence award for research contributions to generative AI and financial document intelligence.",
       desc: [
         "Leading uncertainty-quantification research for financial LLMs by building a BFSI-specific benchmark, auditing cultural and demographic biases, measuring calibration across numerical-precision conditions, probing cues associated with miscalibration, and testing steering, context conditioning, and fine-tuning as mitigation methods.",
         "Developing guardrails for LLM and agent applications in banking by mapping vulnerability surfaces, constructing adversarial and failure-mode evaluations, and testing output controls aligned with RBI's FREE-AI recommendations for safe, fair, explainable, and robust AI.",
         "Developed and now monitor a reference-free document image-quality assessment service using ViT regression; the production system identifies low-quality documents at 92% precision before they enter HDB's downstream applications.",
-        "Adapted PaliGemma2 via LoRA on financial documents, achieving a 0.85 TEDS score on internal benchmarks for structured document understanding.",
-        "Received the Circle of Excellence award for research and contributions to generative AI and financial document intelligence.",
       ],
     },
     {
       date: "Aug 2025 - Present",
       title: "Research Volunteer",
       org: "FSIL & HCAI Labs, Georgia Tech",
+      summary:
+        "Contributing to open research on financial-agent evaluation and controllable language-model behavior.",
+      highlights: [
+        "Co-authored FinForge, a semi-synthetic benchmark generation pipeline for financial agentic systems, accepted at the AAAI 2026 Agentic AI in Financial Services Workshop.",
+        "Contributed to the Role Steering of Language Models for Social Simulations project, published in the Social Simulations Workshop at COLM 2026.",
+      ],
       desc: [
         "Co-authored FinForge, a semi-synthetic benchmark generation pipeline for financial agentic systems, accepted at the AAAI 2026 Agentic AI in Financial Services Workshop.",
         "Contributed to the Role Steering of Language Models for Social Simulations project, published in the Social Simulations Workshop at COLM 2026.",
@@ -60,6 +73,13 @@ window.PORTFOLIO_DATA = {
       date: "Jun 2023 - Apr 2025",
       title: "Member Data Scientist",
       org: "Perfios Software Solutions",
+      summary:
+        "Built and optimized production document-AI systems for classification, table detection, and structure recognition.",
+      highlights: [
+        "Distilled and quantized a multimodal document classifier into a lightweight student model, reducing latency from 8s to 200ms while preserving F1 parity in production-scale evaluation.",
+        "Improved generalized table detection accuracy by 27.6%, lifting downstream TSR module performance, via semi-synthetic data curation and systematic evaluation of YOLOv8 variants.",
+        "Integrated a semantic row-detection module (fine-tuned text encoders) into the production TSR pipeline with under 40ms added turnaround time, preserving existing throughput.",
+      ],
       desc: [
         "Distilled and quantized a multimodal document classifier into a lightweight student model, reducing latency from 8s to 200ms while preserving F1 parity in production-scale evaluation.",
         "Improved generalized table detection accuracy by 27.6%, lifting downstream TSR module performance, via semi-synthetic data curation and systematic evaluation of YOLOv8 variants.",
@@ -116,6 +136,7 @@ window.PORTFOLIO_DATA = {
         "Emile Anand",
         "Akhil Theerthala",
         "Arjun Chatterjee",
+        "Anthony Wen-Ming Zang",
         "Maria Kostylew",
         "Yonadav G. Shavit",
         "Sebastien Krier",
@@ -125,13 +146,25 @@ window.PORTFOLIO_DATA = {
         "An activation-steering screening workflow for role-conditioned language-model agents in social simulations. Across 275 roles, role-specific directions improve judged role-profile alignment over an assistant-axis control while preserving lexical diversity; 38 roles decline across every measured dimension, showing why steering strength should be selected per role rather than applied uniformly.",
       tags: ["Activation Steering", "Social Simulation", "LLMs"],
       arxiv: "https://arxiv.org/abs/2608.00023",
+      doi: "10.48550/arXiv.2608.00023",
+      citation:
+        "Song, I., Parwani, M. R., Matlin, G., Anand, E., Theerthala, A., Chatterjee, A., Zang, A. W.-M., Kostylew, M., Shavit, Y. G., Krier, S., & Riedl, M. (2026). Role Steering of Language Models for Social Simulations. arXiv:2608.00023. https://doi.org/10.48550/arXiv.2608.00023",
+      bibtex: `@misc{song2026role,
+  title={Role Steering of Language Models for Social Simulations},
+  author={Isaac Song and Mohammed Rehan Parwani and Glenn Matlin and Emile Anand and Akhil Theerthala and Arjun Chatterjee and Anthony Wen-Ming Zang and Maria Kostylew and Yonadav G. Shavit and Sebastien Krier and Mark Riedl},
+  year={2026},
+  eprint={2608.00023},
+  archivePrefix={arXiv},
+  primaryClass={cs.CL},
+  doi={10.48550/arXiv.2608.00023},
+  url={https://arxiv.org/abs/2608.00023}
+}`,
     },
     {
       year: "2026",
       status: "Accepted workshop paper",
       venue: "Agentic AI in Financial Services Workshop, AAAI 2026",
-      title:
-        "FinForge: A Semi-Synthetic Benchmark Generation Framework for Finance",
+      title: "FinForge: Semi-Synthetic Financial Benchmark Generation",
       authors: [
         "Glenn Matlin",
         "Akhil Theerthala",
@@ -145,18 +178,44 @@ window.PORTFOLIO_DATA = {
         "A scalable semi-synthetic pipeline for building finance-specific LM benchmarks from authoritative sources using expert-guided curation and controlled LM synthesis. FinForge-5k contains 5,000+ human-validated question-answer pairs across 11 finance subdomains and reveals substantial gaps in financial reasoning, even as leading models approach 80% accuracy.",
       tags: ["Benchmarks", "Agentic AI", "Finance"],
       arxiv: "https://arxiv.org/abs/2601.06747",
+      doi: "10.48550/arXiv.2601.06747",
+      citation:
+        "Matlin, G., Theerthala, A., Gupta, A., JM, A., Castilla, R., Ng, Y. M., & Chava, S. (2026). FinForge: Semi-Synthetic Financial Benchmark Generation. arXiv:2601.06747. https://doi.org/10.48550/arXiv.2601.06747",
+      bibtex: `@misc{matlin2026finforge,
+  title={FinForge: Semi-Synthetic Financial Benchmark Generation},
+  author={Glenn Matlin and Akhil Theerthala and Anant Gupta and Anirudh JM and Rayan Castilla and Yi Mei Ng and Sudheer Chava},
+  year={2026},
+  eprint={2601.06747},
+  archivePrefix={arXiv},
+  primaryClass={cs.AI},
+  doi={10.48550/arXiv.2601.06747},
+  url={https://arxiv.org/abs/2601.06747}
+}`,
     },
     {
       year: "2025",
-      status: "Preprint / submission-stage work",
-      venue: "FinNLP @ EMNLP 2025",
+      status: "Preprint",
+      venue: "arXiv",
       title:
-        "A Data-Centric Framework for Training Behaviour-Aware Personal Finance Language Models",
+        "Synthesizing Behaviorally-Grounded Reasoning Chains: A Data-Generation Framework for Personal Finance LLMs",
       authors: ["Akhil Theerthala"],
       abstract:
         "A reproducible data-centric framework that combines financial context with behavioral-finance studies to create supervision for end-to-end personal-finance advisors. Using a 19k-sample reasoning dataset, a fine-tuned Qwen-3-8B matches much larger 14-32B baselines on factuality, fluency, and personalization while reducing cost by about 80%.",
       tags: ["Personal Finance", "Data-centric", "LLM Evaluation"],
       arxiv: "https://arxiv.org/abs/2509.14180",
+      doi: "10.48550/arXiv.2509.14180",
+      citation:
+        "Theerthala, A. (2025). Synthesizing Behaviorally-Grounded Reasoning Chains: A Data-Generation Framework for Personal Finance LLMs. arXiv:2509.14180. https://doi.org/10.48550/arXiv.2509.14180",
+      bibtex: `@misc{theerthala2025synthesizing,
+  title={Synthesizing Behaviorally-Grounded Reasoning Chains: A Data-Generation Framework for Personal Finance LLMs},
+  author={Akhil Theerthala},
+  year={2025},
+  eprint={2509.14180},
+  archivePrefix={arXiv},
+  primaryClass={cs.CL},
+  doi={10.48550/arXiv.2509.14180},
+  url={https://arxiv.org/abs/2509.14180}
+}`,
     },
   ],
 
@@ -167,13 +226,40 @@ window.PORTFOLIO_DATA = {
       desc: "Research contribution: curated behavior-aware supervision data for Indian personal-finance reasoning, fine-tuned 8B and 14B models, and evaluated personalization quality against larger baselines.",
       metric: "HuggingFace",
       stats: [
-        { label: "Total downloads", value: "56,124" },
-        { label: "Direct downloads", value: "10K" },
-        { label: "Community GGUF downloads", value: "46,124" },
-        { label: "Likes", value: "103" },
+        { label: "Dataset rows", value: "18.8k" },
+        { label: "Thematic categories", value: "8" },
+        { label: "Fine-tuned model", value: "8B" },
+        { label: "Lower operating cost", value: "80%" },
       ],
       year: "2025",
       href: "https://huggingface.co/datasets/Akhil-Theerthala/Kuvera-PersonalFinance-V2.1",
+      links: [
+        {
+          label: "Dataset",
+          href: "https://huggingface.co/datasets/Akhil-Theerthala/Kuvera-PersonalFinance-V2.1",
+        },
+        {
+          label: "Paper",
+          href: "https://arxiv.org/abs/2509.14180",
+        },
+        {
+          label: "Model",
+          href: "https://huggingface.co/Akhil-Theerthala/Kuvera-8B-qwen3-v0.2.1",
+        },
+      ],
+      evidence: {
+        kind: "dataset",
+        label: "Dataset record",
+        caption:
+          "Kuvera PersonalFinance V2.1 contains 18.8k reasoning records across eight thematic categories.",
+        metrics: [
+          { label: "Rows", value: "18.8k" },
+          { label: "Categories", value: "8" },
+          { label: "Model", value: "8B" },
+          { label: "Lower cost", value: "80%" },
+        ],
+        schema: ["category", "query", "chain_of_thought", "response"],
+      },
       tags: ["Dataset", "Fine-tuning", "Finance"],
     },
     {
@@ -183,6 +269,22 @@ window.PORTFOLIO_DATA = {
       metric: "1 / 150+ teams",
       year: "2025",
       href: "https://huggingface.co/Akhil-Theerthala",
+      links: [
+        {
+          label: "Hugging Face",
+          href: "https://huggingface.co/Akhil-Theerthala",
+        },
+      ],
+      evidence: {
+        kind: "result",
+        label: "Competition result",
+        caption:
+          "First-place reasoning dataset submission in a field of more than 150 teams.",
+        metrics: [
+          { label: "Placement", value: "1st" },
+          { label: "Teams", value: "150+" },
+        ],
+      },
       tags: ["Reasoning", "Synthetic data", "Evaluation"],
     },
     {
@@ -192,6 +294,24 @@ window.PORTFOLIO_DATA = {
       metric: "GitHub",
       year: "2025",
       href: "https://github.com/Akhil-Theerthala/LazyInfer",
+      links: [
+        {
+          label: "Repository",
+          href: "https://github.com/Akhil-Theerthala/LazyInfer",
+        },
+      ],
+      evidence: {
+        kind: "pipeline",
+        label: "Execution model",
+        caption:
+          "A configuration-led path from JSONL records to validated, restart-safe outputs.",
+        stages: [
+          "JSONL input",
+          "YAML stages",
+          "Schema validation",
+          "Checkpointed output",
+        ],
+      },
       tags: ["Pipelines", "Structured outputs", "Reproducibility"],
     },
   ],
@@ -199,6 +319,7 @@ window.PORTFOLIO_DATA = {
   writings: [
     {
       file: "Density-Vs-Diversity.md",
+      slug: "density-vs-diversity-in-data-selection",
       title: "Density vs. Diversity in Data Selection",
       date: "Jan 2026",
       year: "2026",
@@ -210,6 +331,7 @@ window.PORTFOLIO_DATA = {
     },
     {
       file: "Creating-a-Reasoning-Dataset-with.md",
+      slug: "creating-a-reasoning-dataset-with-no-budget",
       title: "Creating a Reasoning Dataset with No Budget",
       date: "Apr 2025",
       year: "2025",
@@ -221,17 +343,18 @@ window.PORTFOLIO_DATA = {
     },
     {
       file: "LazyInfer-Design-Notes.md",
+      slug: "lazyinfer-design-notes-for-reliable-llm-pipelines",
       title: "LazyInfer: Design Notes for Reliable LLM Pipelines",
       date: "Jan 2026",
       year: "2026",
       category: "Technical Essays",
       read: "7 min",
-      featured: true,
       excerpt:
         "Design notes for repeatable multi-stage LLM inference with YAML configuration, retries, checkpointing, and schema validation.",
     },
     {
       file: "From-Training-Language-Models-to.md",
+      slug: "from-training-language-models-to-deepseek-r1",
       title: "From Training Language Models to DeepSeek-R1",
       date: "Feb 2025",
       year: "2025",
@@ -242,6 +365,7 @@ window.PORTFOLIO_DATA = {
     },
     {
       file: "7-Practical-PyTorch-Tips-for.md",
+      slug: "7-practical-pytorch-tips",
       title: "7 Practical PyTorch Tips",
       date: "Feb 2025",
       year: "2025",
@@ -252,6 +376,7 @@ window.PORTFOLIO_DATA = {
     },
     {
       file: "Building-Blocks-of-Transformers.md",
+      slug: "building-blocks-of-transformers",
       title: "Building Blocks of Transformers",
       date: "Mar 2024",
       year: "2024",
@@ -260,6 +385,7 @@ window.PORTFOLIO_DATA = {
     },
     {
       file: "Making-Sense-of-PyTorch’s-to-and.md",
+      slug: "making-sense-of-pytorch-to-and-device-management",
       title: "Making Sense of PyTorch's .to() and Device Management",
       date: "Aug 2023",
       year: "2023",
@@ -268,6 +394,7 @@ window.PORTFOLIO_DATA = {
     },
     {
       file: "De-mystifying-Regular-Expressions.md",
+      slug: "de-mystifying-regular-expressions",
       title: "De-mystifying Regular Expressions",
       date: "Aug 2023",
       year: "2023",
@@ -276,6 +403,7 @@ window.PORTFOLIO_DATA = {
     },
     {
       file: "Data-Lifecycle-in-Production.md",
+      slug: "data-lifecycle-in-production",
       title: "Data Lifecycle in Production",
       date: "Jun 2023",
       year: "2023",
@@ -284,6 +412,7 @@ window.PORTFOLIO_DATA = {
     },
     {
       file: "Data-Processing-in-Production.md",
+      slug: "data-processing-in-production",
       title: "Data Processing in Production",
       date: "Feb 2023",
       year: "2023",
@@ -292,6 +421,7 @@ window.PORTFOLIO_DATA = {
     },
     {
       file: "Error-Analysis-for-Machine-learning.md",
+      slug: "error-analysis-for-machine-learning",
       title: "Error Analysis for Machine Learning",
       date: "Jan 2023",
       year: "2023",
@@ -300,6 +430,7 @@ window.PORTFOLIO_DATA = {
     },
     {
       file: "An-Overview-of-Modeling-for-ML.md",
+      slug: "an-overview-of-modeling-for-ml",
       title: "An Overview of Modeling for ML",
       date: "Jan 2023",
       year: "2023",
@@ -308,6 +439,7 @@ window.PORTFOLIO_DATA = {
     },
     {
       file: "MLOps-Notes-2-Model-Deployment.md",
+      slug: "mlops-notes-2-model-deployment",
       title: "MLOps Notes 2: Model Deployment",
       date: "Jan 2023",
       year: "2023",
@@ -316,6 +448,7 @@ window.PORTFOLIO_DATA = {
     },
     {
       file: "MLOps-Notes-1-The-Machine-Learning.md",
+      slug: "mlops-notes-1-the-machine-learning-lifecycle",
       title: "MLOps Notes 1: The Machine Learning Lifecycle",
       date: "Jan 2023",
       year: "2023",
