@@ -29,11 +29,22 @@ function Hero({ data, accent }) {
 
         <div className="hero-right">
           <div className="portrait-wrap">
-            <img
-              src="profile_photo.png"
-              alt="Akhil Theerthala"
-              className="portrait"
-            />
+            <picture>
+              <source
+                type="image/webp"
+                srcSet="assets/media/profile-480.webp 480w, assets/media/profile-960.webp 960w"
+                sizes="(max-width: 720px) 0px, (max-width: 1280px) 348px, 420px"
+              />
+              <img
+                src="profile_photo.png"
+                width="960"
+                height="995"
+                decoding="async"
+                fetchPriority="high"
+                alt="Akhil Theerthala"
+                className="portrait"
+              />
+            </picture>
           </div>
         </div>
       </div>
