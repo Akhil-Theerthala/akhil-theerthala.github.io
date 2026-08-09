@@ -33,6 +33,9 @@ assert.match(css, /@media\s*\(forced-colors:\s*active\)/);
 assert.match(css, /--surface-fill:/);
 assert.match(css, /--surface-grid-x:/);
 assert.match(css, /--surface-grid-y:/);
+assert.match(css, /--dim:\s*#788179/);
+assert.match(css, /\.artifact-evidence/);
+assert.match(css, /\.citation/);
 assert.match(
   css,
   /\.root::before,[\s\S]*?\.reader-page::before[\s\S]*?backdrop-filter:\s*blur\(7px\)/,
@@ -47,9 +50,13 @@ assert.match(
 );
 
 assert.doesNotMatch(sections, /§\s*0[1-9]/);
-assert.match(sections, /aria-pressed=/);
+assert.match(sections, /function PublicationCitation/);
+assert.match(sections, /function ArtifactEvidence/);
+assert.match(sections, /className="older-writing-archive"/);
+assert.match(sections, /aria-live="polite"/);
 assert.match(portfolioApp, /aria-current=/);
 assert.match(writingApp, /aria-current=/);
+assert.doesNotMatch(portfolioApp, /TweaksPanel|useTweaks/);
 
 assert.match(data, /Senior Member Data Scientist/);
 assert.match(data, /Research Volunteer/);
@@ -65,8 +72,12 @@ for (const html of [indexHtml, writingHtml]) {
   assert.match(html, /property="og:type"/);
   assert.match(html, /property="og:image"/);
   assert.match(html, /rel="icon"/);
-  assert.match(html, /src="ambient-field\.js"/);
+  assert.doesNotMatch(html, /src="ambient-field\.js"/);
+  assert.doesNotMatch(html, /fonts\.googleapis\.com/);
 }
+assert.match(indexHtml, /src="assets\/js\/portfolio\.js"/);
+assert.match(writingHtml, /src="assets\/js\/writing\.js"/);
+assert.match(indexHtml, /type="application\/ld\+json"/);
 
 for (const source of [indexHtml, writingHtml, portfolioApp, writingApp, sections]) {
   assert.doesNotMatch(source, /[—–]/);
@@ -80,8 +91,15 @@ const requiredFiles = [
   "ambient-field.js",
   "portfolio-app.jsx",
   "portfolio-sections.jsx",
-  "tweaks-panel.jsx",
   "writing-app.jsx",
+  "assets/js/portfolio.js",
+  "assets/js/writing.js",
+  "assets/media/profile-480.webp",
+  "assets/media/profile-960.webp",
+  "assets/social/akhil-theerthala-og.png",
+  "robots.txt",
+  "sitemap.xml",
+  "404.html",
 ];
 
 for (const file of requiredFiles) {
@@ -105,5 +123,5 @@ for (const id of sectionIds) {
 }
 
 console.log(
-  "Redesign pre-flight passed: static field, accessible structure, single visual runtime, and local assets verified.",
+  "Redesign pre-flight passed: calibrated field, evidence-led content, production runtime, and local assets verified.",
 );

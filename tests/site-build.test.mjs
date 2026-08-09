@@ -153,3 +153,28 @@ test("the site ships local fonts and complete discovery metadata", () => {
   assert.match(notFound, /href="\/#writings"/);
   assert.match(notFound, /href="\/#contact"/);
 });
+
+test("production commands and runtime files are self-contained", () => {
+  const pkg = JSON.parse(read("package.json"));
+  assert.deepEqual(Object.keys(pkg.scripts).sort(), [
+    "build",
+    "check",
+    "serve",
+    "test",
+  ]);
+  assert.equal(fs.existsSync("scripts/check-site.mjs"), true);
+  assert.equal(fs.existsSync("scripts/serve.mjs"), true);
+
+  const production = [
+    read("index.html"),
+    read("writing.html"),
+    read("assets/js/portfolio.js"),
+    read("assets/js/writing.js"),
+  ].join("\n");
+  assert.doesNotMatch(
+    production,
+    /tweaks-panel\.jsx|portfolio-reader\.jsx|babel|react\.development|fonts\.googleapis\.com/i,
+  );
+  assert.equal(fs.existsSync("tweaks-panel.jsx"), false);
+  assert.equal(fs.existsSync("portfolio-reader.jsx"), false);
+});
