@@ -259,7 +259,7 @@ body::before {
 }
 .mono {
     font-family: var(--label-font);
-    font-size: 0.74rem;
+    font-size: 0.75rem;
     font-weight: 500;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -394,7 +394,7 @@ body::before {
     padding-top: 1.5rem;
     border-top: 1px solid var(--rule);
     font-family: var(--label-font);
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     letter-spacing: 0.06em;
     color: var(--muted);
     text-transform: none;
@@ -763,7 +763,7 @@ main {
 }
 .profile-link-handle {
     grid-column: 1;
-    font-size: 0.58rem;
+    font-size: 0.75rem;
     letter-spacing: 0.08em;
     line-height: 1.35;
 }
@@ -855,7 +855,7 @@ main {
 }
 .pub-venue {
     font-family: var(--label-font);
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     color: var(--muted);
     letter-spacing: 0.045em;
     font-weight: 500;
@@ -905,7 +905,7 @@ main {
     border: 1px solid var(--rule-2);
     border-radius: var(--radius-ui);
     font-family: var(--label-font);
-    font-size: 0.68rem;
+    font-size: 0.75rem;
     letter-spacing: 0.045em;
     font-weight: 500;
     color: var(--muted);
@@ -915,7 +915,7 @@ main {
     align-items: center;
     gap: 0.5rem;
     font-family: var(--label-font);
-    font-size: 0.74rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.14em;
     font-weight: 500;
@@ -1229,7 +1229,7 @@ main {
 }
 .cv-date {
     font-family: var(--label-font);
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     color: var(--muted);
     text-transform: uppercase;
     letter-spacing: 0.14em;
@@ -1383,7 +1383,7 @@ main {
     display: flex;
     justify-content: space-between;
     font-family: var(--label-font);
-    font-size: 0.68rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.14em;
     font-weight: 500;
@@ -1405,7 +1405,7 @@ main {
 }
 .feat-link {
     font-family: var(--label-font);
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.16em;
     font-weight: 500;
@@ -1427,7 +1427,7 @@ main {
     border: 1px solid var(--rule-2);
     border-radius: var(--radius-ui);
     font-family: var(--label-font);
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     letter-spacing: 0.045em;
     font-weight: 500;
     color: var(--muted);
@@ -1532,7 +1532,7 @@ main {
 }
 .item-num {
     font-family: var(--label-font);
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     font-weight: 500;
     letter-spacing: 0.1em;
     color: var(--dim);
@@ -1663,7 +1663,7 @@ main {
 }
 .now-aside {
     font-family: var(--label-font);
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.14em;
     font-weight: 500;
@@ -1711,7 +1711,7 @@ main {
 }
 .footer-eyebrow {
     font-family: var(--label-font);
-    font-size: 0.74rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.16em;
     font-weight: 500;
@@ -1803,7 +1803,7 @@ main {
 }
 .social-handle {
     font-family: var(--label-font);
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     letter-spacing: 0.04em;
     text-transform: none;
 }
@@ -2021,7 +2021,7 @@ main {
 .reader-eyebrow {
     color: var(--accent);
     font-family: var(--label-font);
-    font-size: 0.74rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.16em;
     font-weight: 500;
@@ -2413,7 +2413,7 @@ main {
         border: 1px solid var(--rule);
         border-radius: var(--radius-ui);
         padding: 0.35rem 0.7rem;
-        font-size: 0.68rem;
+        font-size: 0.75rem;
         background: var(--bg-1);
         min-height: 44px;
     }

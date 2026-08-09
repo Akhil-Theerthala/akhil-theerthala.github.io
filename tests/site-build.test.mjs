@@ -45,6 +45,10 @@ test("credibility layouts and responsive portrait assets are production-ready", 
   assert.match(css, /\.citation\s*\{/);
   assert.match(css, /\.citation-actions button:focus-visible/);
   assert.match(css, /\.older-writing-archive\s*\{/);
+  assert.doesNotMatch(
+    css,
+    /font-size:\s*0\.(?:[0-6][0-9]|7[0-4])rem/,
+  );
   assert.match(sections, /<picture>/);
   assert.match(sections, /profile-480\.webp 480w/);
   assert.match(sections, /profile-960\.webp 960w/);
