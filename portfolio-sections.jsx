@@ -6,10 +6,6 @@ const { useEffect, useMemo, useState } = React;
 function Hero({ data, accent }) {
   return (
     <section className="hero" id="top">
-      <div className="hero-index mono">
-        <span>Applied AI research</span>
-        <span>{data.location}</span>
-      </div>
       <div className="hero-grid">
         <div className="hero-left">
           <h1 className="hero-title">{data.name}</h1>
@@ -60,7 +56,10 @@ function Hero({ data, accent }) {
 function About({ data, accent }) {
   return (
     <section className="section about-section" id="about">
-      <SectionHead title="About" />
+      <SectionHead
+        title="About"
+        sub="Professional context, current work, and research orientation."
+      />
       <div className="about-grid">
         <div className="about-body">
           <p className="about-kicker mono" style={{ color: accent }}>
@@ -332,8 +331,8 @@ function Projects({ data, accent }) {
   return (
     <section className="section" id="work">
       <SectionHead
-        title="Research artifacts"
-        sub="Datasets and models I've built and released."
+        title="Research Artifacts"
+        sub="Datasets, models, benchmarks, and tools that make the research concrete."
       />
 
       <div className="projects">
@@ -427,7 +426,10 @@ function ExperienceEntry({ experience }) {
 function Experience({ data, accent }) {
   return (
     <section className="section" id="cv">
-      <SectionHead title="Experience" />
+      <SectionHead
+        title="Experience"
+        sub="Industry research and applied ML contributions, written as problem-method-evaluation-impact."
+      />
 
       <div className="cv">
         {data.workExperience.map((experience) => (
@@ -445,7 +447,10 @@ function Experience({ data, accent }) {
 function Education({ data, accent }) {
   return (
     <section className="section" id="education">
-      <SectionHead title="Education" />
+      <SectionHead
+        title="Education"
+        sub="Formal training and affiliations."
+      />
 
       <div className="cv cv--compact">
         {data.education.map((e, i) => (
@@ -501,7 +506,7 @@ function Writings({ data, accent }) {
     <section className="section" id="writings">
       <SectionHead
         title="Writings"
-        sub="Research notes, experiments, and lessons from building ML systems."
+        sub="Curated research notes first, technical essays second, older learning notes archived for completeness."
       />
 
       <div className="featured">
@@ -533,7 +538,8 @@ function Writings({ data, accent }) {
           </summary>
           <div className="older-writing-body">
             <p className="older-writing-context">
-              Notes from when I was learning these topics.
+              Early notes kept as a public record of how my technical practice
+              developed.
             </p>
             <WritingRows items={older} />
           </div>
@@ -557,8 +563,9 @@ function FooterBlock({ data, accent }) {
           .
         </h2>
         <p className="footer-sub">
-          Working on a related problem? Email me about a collaboration,
-          a reading group, or a question about the work here.
+          Open to research collaborations, reading-group invitations, and
+          concrete questions about reliable AI systems in finance and document
+          intelligence.
         </p>
         {data.collaborationInterests?.length > 0 && (
           <ul className="collab-list">
@@ -586,11 +593,6 @@ function FooterBlock({ data, accent }) {
             <span className="social-arrow">↗</span>
           </a>
         ))}
-      </div>
-
-      <div className="footer-signature" aria-hidden="true">
-        <span className="mono">{data.location}</span>
-        <span className="footer-wordmark serif">Akhil Theerthala</span>
       </div>
 
       <div className="footer-bottom">

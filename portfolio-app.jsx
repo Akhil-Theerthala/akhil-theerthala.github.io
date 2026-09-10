@@ -1,7 +1,7 @@
 // Main App
 const { useState, useEffect } = React;
 
-const APPROVED_ACCENT = "var(--accent)";
+const APPROVED_ACCENT = "#c8a66b";
 
 function App() {
   const [active, setActive] = useState("about");
@@ -75,7 +75,7 @@ function App() {
             Akhil Theerthala
           </a>
           <ul className="rail-list">
-            {nav.map((n, index) => {
+            {nav.map((n) => {
               const isActive = active === n.id;
               return (
                 <li key={n.id}>
@@ -84,9 +84,14 @@ function App() {
                     className={`rail-item ${isActive ? "active" : ""}`}
                     aria-current={isActive ? "location" : undefined}
                   >
-                    <span className="rail-number mono" aria-hidden="true">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
+                    <span
+                      className="rail-tick"
+                      style={
+                        isActive
+                          ? { background: APPROVED_ACCENT, width: "24px" }
+                          : {}
+                      }
+                    ></span>
                     <span className="rail-text">{n.label}</span>
                   </a>
                 </li>

@@ -6,29 +6,29 @@ window.PORTFOLIO_DATA = {
   location: "Bengaluru, India",
   email: "akhiltvsn@gmail.com",
   intro:
-    "I build datasets and evaluations to understand where AI systems in finance work, and where they fail.",
+    "Studying data-centric and evaluation-centric methods for reliable AI systems in Finance.",
 
   longIntro: [
-    "At Perfios, I build and evaluate AI systems that read financial documents and work with financial language. I adapt vision-language models for dense documents, test their failure modes, and help bring them into production.",
-    "My research asks how training data shapes model behavior, and whether our evaluations catch the errors that matter. I work on financial reasoning datasets, uncertainty in language models, and benchmarks for AI agents. I care about what these methods cost to run and whether we can understand their failures.",
+    "I am a Senior Member Data Scientist at Perfios Software Solutions, working on applied ML systems for financial document intelligence and finance-specific language models. My work sits between research and deployment: adapting VLMs for dense financial documents, building evaluation and quality gates, and translating prototypes into reliable systems for banks, lenders, insurers, and personal-finance workflows.",
+    "My research focus is data-centric and evaluation-centric AI: synthetic and semi-synthetic data curation, behavior-aware personal-finance supervision, agentic finance benchmarks, slice-based evaluation, and lightweight interpretability or steering for language models. I care about methods that improve reliability under real constraints: latency, auditability, cost, and failure transparency.",
   ],
 
   researchFocus: [
     {
-      title: "Training data and model behavior",
-      desc: "How dataset design affects model behavior, including synthetic data, question density versus image diversity, and training examples informed by behavioral research.",
+      title: "Data Curation for Reliable Models",
+      desc: "Synthetic and semi-synthetic dataset design, density-versus-diversity studies, and behavior-grounded supervision for low-resource or high-stakes domains.",
     },
     {
-      title: "Financial AI and agents",
-      desc: "Testing financial agents on underwriting, personalized advice, and market intelligence.",
+      title: "Financial AI and Agentic Systems",
+      desc: "Benchmarks and evaluation protocols for financial agents, underwriting workflows, personalization, and market-intelligence tasks.",
     },
     {
-      title: "Reading financial documents",
-      desc: "Adapting vision-language models to financial documents, recovering table structure, and detecting images that are too difficult to read.",
+      title: "Document AI and VLM Adaptation",
+      desc: "Vision-language adaptation, table-structure understanding, legibility gating, and deployment-aware evaluation for financial documents.",
     },
     {
-      title: "Evaluating and steering language models",
-      desc: "Scoring outputs without reference answers, using panels of model judges, and testing how changes to internal activations affect behavior.",
+      title: "LLM Evaluation and Interpretability",
+      desc: "Reference-free quality scoring, LLM-jury evaluation, activation-space steering, and methods that make model behavior measurable and auditable.",
     },
   ],
 
@@ -40,19 +40,19 @@ window.PORTFOLIO_DATA = {
       title: "Senior Member Data Scientist",
       org: "Perfios Software Solutions",
       summary:
-        "I lead research and evaluation for financial language models and document AI in production.",
+        "Leading research and production evaluation for reliable financial language and document-intelligence systems.",
       highlights: [
-        "I lead research on uncertainty in financial language models. I am building a banking, financial services, and insurance benchmark to audit cultural and demographic bias and measure calibration as numerical precision changes. I also probe signals of miscalibration and test steering, context conditioning, and fine-tuning as possible remedies.",
-        "I develop guardrails for banking applications that use language models and agents. This involves identifying vulnerabilities, designing adversarial tests, and testing output controls against RBI's FREE-AI recommendations.",
-        "I built and now monitor a vision-transformer regression service that scores document image quality without a reference image. It identifies low-quality documents at 92% precision before they enter HDB's downstream applications.",
+        "Leading uncertainty-quantification research for financial LLMs by building a BFSI-specific benchmark, auditing cultural and demographic biases, measuring calibration across numerical-precision conditions, probing cues associated with miscalibration, and testing steering, context conditioning, and fine-tuning as mitigation methods.",
+        "Developing guardrails for LLM and agent applications in banking by mapping vulnerability surfaces, constructing adversarial and failure-mode evaluations, and testing output controls aligned with RBI's FREE-AI recommendations for safe, fair, explainable, and robust AI.",
+        "Developed and now monitor a reference-free document image-quality assessment service using ViT regression; the production system identifies low-quality documents at 92% precision before they enter HDB's downstream applications.",
       ],
       emphasis: ["92% precision"],
       recognition:
         "Circle of Excellence award for research contributions to generative AI and financial document intelligence.",
       desc: [
-        "I lead research on uncertainty in financial language models. I am building a banking, financial services, and insurance benchmark to audit cultural and demographic bias and measure calibration as numerical precision changes. I also probe signals of miscalibration and test steering, context conditioning, and fine-tuning as possible remedies.",
-        "I develop guardrails for banking applications that use language models and agents. This involves identifying vulnerabilities, designing adversarial tests, and testing output controls against RBI's FREE-AI recommendations.",
-        "I built and now monitor a vision-transformer regression service that scores document image quality without a reference image. It identifies low-quality documents at 92% precision before they enter HDB's downstream applications.",
+        "Leading uncertainty-quantification research for financial LLMs by building a BFSI-specific benchmark, auditing cultural and demographic biases, measuring calibration across numerical-precision conditions, probing cues associated with miscalibration, and testing steering, context conditioning, and fine-tuning as mitigation methods.",
+        "Developing guardrails for LLM and agent applications in banking by mapping vulnerability surfaces, constructing adversarial and failure-mode evaluations, and testing output controls aligned with RBI's FREE-AI recommendations for safe, fair, explainable, and robust AI.",
+        "Developed and now monitor a reference-free document image-quality assessment service using ViT regression; the production system identifies low-quality documents at 92% precision before they enter HDB's downstream applications.",
       ],
     },
     {
@@ -60,15 +60,15 @@ window.PORTFOLIO_DATA = {
       title: "Research Volunteer",
       org: "FSIL & HCAI Labs, Georgia Tech",
       summary:
-        "I contribute to research on financial-agent evaluation and steering language-model behavior.",
+        "Contributing to open research on financial-agent evaluation and controllable language-model behavior.",
       highlights: [
-        "I co-authored FinForge, a pipeline for generating semi-synthetic financial benchmarks. The paper was accepted at the AAAI 2026 Agentic AI in Financial Services Workshop.",
-        "I contributed to Role Steering of Language Models for Social Simulations, published in the Social Simulations Workshop at COLM 2026.",
+        "Co-authored FinForge, a semi-synthetic benchmark generation pipeline for financial agentic systems, accepted at the AAAI 2026 Agentic AI in Financial Services Workshop.",
+        "Contributed to the Role Steering of Language Models for Social Simulations project, published in the Social Simulations Workshop at COLM 2026.",
       ],
       emphasis: [],
       desc: [
-        "I co-authored FinForge, a pipeline for generating semi-synthetic financial benchmarks. The paper was accepted at the AAAI 2026 Agentic AI in Financial Services Workshop.",
-        "I contributed to Role Steering of Language Models for Social Simulations, published in the Social Simulations Workshop at COLM 2026.",
+        "Co-authored FinForge, a semi-synthetic benchmark generation pipeline for financial agentic systems, accepted at the AAAI 2026 Agentic AI in Financial Services Workshop.",
+        "Contributed to the Role Steering of Language Models for Social Simulations project, published in the Social Simulations Workshop at COLM 2026.",
       ],
     },
     {
@@ -76,17 +76,17 @@ window.PORTFOLIO_DATA = {
       title: "Member Data Scientist",
       org: "Perfios Software Solutions",
       summary:
-        "I built production systems to classify documents, detect tables, and recover their structure.",
+        "Built and optimized production document-AI systems for classification, table detection, and structure recognition.",
       highlights: [
-        "I distilled and quantized a multimodal document classifier into a smaller model. Latency fell from 8s to 200ms with F1 parity in production-scale evaluation.",
-        "I improved generalized table detection accuracy by 27.6% through semi-synthetic data curation and evaluation of YOLOv8 variants. This also improved downstream table structure recognition.",
-        "I added semantic row detection using fine-tuned text encoders to the production table structure recognition pipeline. It added under 40ms to processing time while preserving throughput.",
+        "Distilled and quantized a multimodal document classifier into a lightweight student model, reducing latency from 8s to 200ms while preserving F1 parity in production-scale evaluation.",
+        "Improved generalized table detection accuracy by 27.6%, lifting downstream TSR module performance, via semi-synthetic data curation and systematic evaluation of YOLOv8 variants.",
+        "Integrated a semantic row-detection module (fine-tuned text encoders) into the production TSR pipeline with under 40ms added turnaround time, preserving existing throughput.",
       ],
       emphasis: ["8s to 200ms", "27.6%", "under 40ms"],
       desc: [
-        "I distilled and quantized a multimodal document classifier into a smaller model. Latency fell from 8s to 200ms with F1 parity in production-scale evaluation.",
-        "I improved generalized table detection accuracy by 27.6% through semi-synthetic data curation and evaluation of YOLOv8 variants. This also improved downstream table structure recognition.",
-        "I added semantic row detection using fine-tuned text encoders to the production table structure recognition pipeline. It added under 40ms to processing time while preserving throughput.",
+        "Distilled and quantized a multimodal document classifier into a lightweight student model, reducing latency from 8s to 200ms while preserving F1 parity in production-scale evaluation.",
+        "Improved generalized table detection accuracy by 27.6%, lifting downstream TSR module performance, via semi-synthetic data curation and systematic evaluation of YOLOv8 variants.",
+        "Integrated a semantic row-detection module (fine-tuned text encoders) into the production TSR pipeline with under 40ms added turnaround time, preserving existing throughput.",
       ],
     },
   ],
@@ -146,7 +146,7 @@ window.PORTFOLIO_DATA = {
         "Mark Riedl",
       ],
       abstract:
-        "We tested activation steering for language-model agents across 275 roles in social simulations. Role-specific directions improved judged role-profile alignment over an assistant-axis control while preserving lexical diversity. But 38 roles declined across every measured dimension, supporting per-role selection of steering strength.",
+        "An activation-steering screening workflow for role-conditioned language-model agents in social simulations. Across 275 roles, role-specific directions improve judged role-profile alignment over an assistant-axis control while preserving lexical diversity; 38 roles decline across every measured dimension, showing why steering strength should be selected per role rather than applied uniformly.",
       tags: ["Activation Steering", "Social Simulation", "LLMs"],
       arxiv: "https://arxiv.org/abs/2608.00023",
       doi: "10.48550/arXiv.2608.00023",
@@ -178,7 +178,7 @@ window.PORTFOLIO_DATA = {
         "Sudheer Chava",
       ],
       abstract:
-        "FinForge combines expert curation of authoritative financial sources with controlled language-model generation to build benchmarks. FinForge-5k contains 5,000+ human-validated question-answer pairs across 11 finance subdomains. Leading models approach 80% accuracy, with substantial gaps in financial reasoning.",
+        "A scalable semi-synthetic pipeline for building finance-specific LM benchmarks from authoritative sources using expert-guided curation and controlled LM synthesis. FinForge-5k contains 5,000+ human-validated question-answer pairs across 11 finance subdomains and reveals substantial gaps in financial reasoning, even as leading models approach 80% accuracy.",
       tags: ["Benchmarks", "Agentic AI", "Finance"],
       arxiv: "https://arxiv.org/abs/2601.06747",
       doi: "10.48550/arXiv.2601.06747",
@@ -203,7 +203,7 @@ window.PORTFOLIO_DATA = {
         "Synthesizing Behaviorally-Grounded Reasoning Chains: A Data-Generation Framework for Personal Finance LLMs",
       authors: ["Akhil Theerthala"],
       abstract:
-        "I combined financial context with behavioral-finance studies to build a 19k-sample reasoning dataset for personal-finance models. In the reported evaluation, a fine-tuned Qwen-3-8B matched 14-32B baselines on factuality, fluency, and personalization at about 80% lower cost.",
+        "A reproducible data-centric framework that combines financial context with behavioral-finance studies to create supervision for end-to-end personal-finance advisors. Using a 19k-sample reasoning dataset, a fine-tuned Qwen-3-8B matches much larger 14-32B baselines on factuality, fluency, and personalization while reducing cost by about 80%.",
       tags: ["Personal Finance", "Data-centric", "LLM Evaluation"],
       arxiv: "https://arxiv.org/abs/2509.14180",
       doi: "10.48550/arXiv.2509.14180",
@@ -226,7 +226,7 @@ window.PORTFOLIO_DATA = {
     {
       title: "Kuvera Personal Finance Datasets and LLMs",
       kicker: "Open source · Hugging Face",
-      desc: "I built training data for Indian personal-finance reasoning using insights from behavioral finance. I fine-tuned 8B and 14B models and compared their personalization quality with larger baselines.",
+      desc: "Research contribution: curated behavior-aware supervision data for Indian personal-finance reasoning, fine-tuned 8B and 14B models, and evaluated personalization quality against larger baselines.",
       metric: "HuggingFace",
       stats: [
         { label: "Dataset rows", value: "18.8k" },
@@ -254,7 +254,7 @@ window.PORTFOLIO_DATA = {
         kind: "dataset",
         label: "Dataset record",
         caption:
-          "Kuvera PersonalFinance V2.1 includes a question, reasoning chain, and response for each record.",
+          "Kuvera PersonalFinance V2.1 contains 18.8k reasoning records across eight thematic categories.",
         metrics: [
           { label: "Rows", value: "18.8k" },
           { label: "Categories", value: "8" },
@@ -268,7 +268,7 @@ window.PORTFOLIO_DATA = {
     {
       title: "Reasoning Dataset Challenge",
       kicker: "1st place, global competition",
-      desc: "I built a synthetic reasoning dataset and trained a 7B model that outperformed larger baselines. The submission took first place among more than 150 teams.",
+      desc: "Research contribution: built a synthetic reasoning dataset and trained a 7B model that outperformed larger baselines through curation quality rather than model scale.",
       metric: "1 / 150+ teams",
       year: "2025",
       href: "https://huggingface.co/Akhil-Theerthala",
@@ -293,7 +293,7 @@ window.PORTFOLIO_DATA = {
     {
       title: "Themis Scales: Moral Dilemma Resolution",
       kicker: "Open source · AI ethics dataset",
-      desc: "I created a seed dataset for analyzing moral dilemmas through Morality-as-Cooperation, deontological, and utilitarian perspectives. It is a starting point for further validation, with 567 examples.",
+      desc: "Research contribution: created a 567-example seed dataset that structures moral-dilemma analysis through Morality-as-Cooperation, deontological, and utilitarian perspectives, with explicit limitations for further validation.",
       metric: "567 dilemmas",
       year: "2025",
       href: "https://huggingface.co/datasets/Akhil-Theerthala/Themis_Scales",
@@ -311,7 +311,7 @@ window.PORTFOLIO_DATA = {
         kind: "dataset",
         label: "Seed dataset record",
         caption:
-          "Each dilemma includes a reasoning chain and response. The collection covers four categories and three ethical perspectives.",
+          "A proof-of-concept collection of 567 dilemmas across four categories, structured through three complementary ethical lenses.",
         metrics: [
           { label: "Rows", value: "567" },
           { label: "Categories", value: "4" },
@@ -335,7 +335,7 @@ window.PORTFOLIO_DATA = {
       read: "12 min",
       featured: true,
       excerpt:
-        "With limited domain data, should a vision-language model see more questions per image or a wider range of images? A controlled comparison of the two approaches.",
+        "A controlled VLM data-curation study comparing dense questioning against diverse visual sampling under domain-data constraints.",
     },
     {
       file: "Creating-a-Reasoning-Dataset-with.md",
@@ -347,7 +347,7 @@ window.PORTFOLIO_DATA = {
       read: "18 min",
       featured: true,
       excerpt:
-        "How I built a personal-finance reasoning dataset with no budget and won a global reasoning-data challenge.",
+        "A practical account of building a personal-finance reasoning dataset and winning a global reasoning-data challenge through curation.",
     },
     {
       file: "LazyInfer-Design-Notes.md",
@@ -358,7 +358,7 @@ window.PORTFOLIO_DATA = {
       category: "Technical Essays",
       read: "7 min",
       excerpt:
-        "How I designed an LLM inference pipeline with YAML configuration, retries, checkpoints, and schema validation.",
+        "Design notes for repeatable multi-stage LLM inference with YAML configuration, retries, checkpointing, and schema validation.",
     },
     {
       file: "From-Training-Language-Models-to.md",
@@ -369,7 +369,7 @@ window.PORTFOLIO_DATA = {
       category: "Technical Essays",
       read: "14 min",
       excerpt:
-        "How language-model training connects supervised learning with the methods behind reasoning models.",
+        "A guided overview of how training regimes evolved from supervised learning to modern reasoning models.",
     },
     {
       file: "7-Practical-PyTorch-Tips-for.md",
@@ -380,7 +380,7 @@ window.PORTFOLIO_DATA = {
       category: "Technical Essays",
       read: "8 min",
       excerpt:
-        "Notes on device placement, debugging, memory use, and iterating on PyTorch models.",
+        "Production PyTorch practices for device placement, debugging, memory behavior, and model iteration.",
     },
     {
       file: "Building-Blocks-of-Transformers.md",
@@ -466,10 +466,10 @@ window.PORTFOLIO_DATA = {
   ],
 
   collaborationInterests: [
-    "Training data and evaluation for financial AI",
-    "Financial-agent benchmarks and tool use",
-    "Document quality and vision-language models",
-    "Behavioral finance in personal-finance models",
+    "Data-centric and evaluation-centric AI for finance",
+    "Agentic finance benchmarks and tool-use evaluation",
+    "Document AI reliability, legibility, and VLM adaptation",
+    "Behavior-aware personal-finance language models",
   ],
 
   now: [

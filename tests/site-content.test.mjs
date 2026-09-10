@@ -109,5 +109,5 @@ test("the production app uses the fixed approved visual tokens", () => {
   const app = fs.readFileSync("portfolio-app.jsx", "utf8");
 
   assert.doesNotMatch(app, /TweaksPanel|useTweaks|TWEAK_DEFAULTS/);
-  assert.match(app, /const APPROVED_ACCENT = "var\(--accent\)"/);
+  assert.match(app, /const APPROVED_ACCENT = "#c8a66b"/);
 });
