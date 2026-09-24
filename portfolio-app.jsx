@@ -119,4 +119,10 @@ function App() {
   );
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+window.App = App;
+
+if (typeof document !== "undefined") {
+  const root = document.getElementById("root");
+  if (root.hasChildNodes()) ReactDOM.hydrateRoot(root, <App />);
+  else ReactDOM.createRoot(root).render(<App />);
+}

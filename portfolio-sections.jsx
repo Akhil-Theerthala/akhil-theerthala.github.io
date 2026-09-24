@@ -275,7 +275,13 @@ function Artifact({ project }) {
             </h2>
             <p className="artifact-dialog-desc">{project.desc}</p>
             <ArtifactEvidence evidence={project.evidence} />
-            <LinkButtons links={project.links} />
+            <LinkButtons links={project.links}>
+              {project.story && (
+                <a className="btn btn-primary" href={`artifacts/${project.slug}/`}>
+                  Read more
+                </a>
+              )}
+            </LinkButtons>
           </div>
         </dialog>
       )}
@@ -551,12 +557,13 @@ function NewTabNote() {
   return <span className="sr-only"> (opens in a new tab)</span>;
 }
 
-function LinkButtons({ links }) {
-  if (!links?.length) return null;
+function LinkButtons({ links, children }) {
+  if (!links?.length && !children) return null;
 
   return (
     <div className="link-buttons">
-      {links.map((link) => (
+      {children}
+      {(links || []).map((link) => (
         <a
           key={link.label}
           href={link.href}

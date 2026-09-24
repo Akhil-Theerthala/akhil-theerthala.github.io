@@ -191,3 +191,49 @@ test("production commands and runtime files are self-contained", () => {
   assert.equal(fs.existsSync("tweaks-panel.jsx"), false);
   assert.equal(fs.existsSync("portfolio-reader.jsx"), false);
 });
+
+test("the homepage ships its content in the HTML, not only via JavaScript", () => {
+  const index = read("index.html");
+  const app = read("portfolio-app.jsx");
+  const block = index.match(/<!-- APP:START -->([\s\S]*?)<!-- APP:END -->/);
+
+  assert.ok(block, "index.html needs a prerendered APP block");
+  const html = block[1];
+  for (const text of [
+    "Akhil Theerthala",
+    "I build and evaluate ML systems",
+    "Senior Member Data Scientist",
+    "Public Artifacts",
+    "LocalXiv",
+    "Publications",
+    "Contact and",
+  ]) {
+    assert.ok(html.includes(text), `prerendered HTML is missing "${text}"`);
+  }
+  assert.match(index, /<noscript>[\s\S]*?\.section[\s\S]*?opacity:\s*1/);
+  assert.match(app, /hydrateRoot/);
+});
+
+test("artifacts with a story get a static, crawlable page", () => {
+  const page = read("artifacts/localxiv/index.html");
+  const sitemap = read("sitemap.xml");
+  const sections = read("portfolio-sections.jsx");
+
+  assert.doesNotMatch(page, /<div id="root"><\/div>/);
+  assert.match(page, /<h1[^>]*>LocalXiv<\/h1>/);
+  for (const heading of [
+    "What it is",
+    "Why it was needed",
+    "What I built",
+    "What it achieved",
+    "Status",
+    "Related",
+  ]) {
+    assert.match(page, new RegExp(`<h2[^>]*>${heading}</h2>`), heading);
+  }
+  assert.match(page, /<link rel="canonical" href="https:\/\/akhiltheerthala\.com\/artifacts\/localxiv\/" \/>/);
+  assert.match(page, /"@type": "SoftwareApplication"/);
+  assert.match(page, /https:\/\/www\.producthunt\.com\/products\/localxiv/);
+  assert.match(sitemap, /https:\/\/akhiltheerthala\.com\/artifacts\/localxiv\//);
+  assert.match(sections, /href=\{`artifacts\/\$\{project\.slug\}\/`\}/);
+});

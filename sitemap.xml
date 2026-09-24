@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://akhiltheerthala.com/</loc></url>
+  <url><loc>https://akhiltheerthala.com/artifacts/localxiv/</loc></url>
   <url><loc>https://akhiltheerthala.com/writing/density-vs-diversity-in-data-selection/</loc></url>
   <url><loc>https://akhiltheerthala.com/writing/creating-a-reasoning-dataset-with-no-budget/</loc></url>
   <url><loc>https://akhiltheerthala.com/writing/lazyinfer-design-notes-for-reliable-llm-pipelines/</loc></url>

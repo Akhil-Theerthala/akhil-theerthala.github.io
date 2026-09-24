@@ -84,6 +84,12 @@ test("artifact evidence contains only approved verified values", () => {
     ],
   );
 
+  assert.equal(localxiv.slug, "localxiv");
+  assert.equal(localxiv.status, "Active");
+  for (const part of ["what", "why", "built", "achieved", "status"]) {
+    assert.ok(localxiv.story[part]?.length > 0, `LocalXiv story is missing "${part}"`);
+  }
+
   const density = data.projects.find((project) =>
     project.title.startsWith("Density vs. Diversity"),
   );

@@ -222,6 +222,49 @@ window.PORTFOLIO_DATA = {
   projects: [
     {
       title: "LocalXiv",
+      slug: "localxiv",
+      status: "Active",
+      summary:
+        "A Mac app that turns arXiv and alphaXiv links into a local paper library you can read comfortably, explore with optional AI explanations, and send to a Kindle.",
+      // Draft from the LocalXiv README and release history. Rewrite in your own words.
+      story: {
+        what: [
+          "LocalXiv is a reading app for research papers on the Mac. Paste an arXiv or alphaXiv link and it saves the paper to a library on your machine, renders it with adjustable fonts, text size, margins and equations, and exports it as an EPUB you can send to a Kindle.",
+          "Optional AI features sit beside the paper rather than replacing it: an Overview that explains the contribution visually, a longer Blog-style explanation with source citations, and chat for questions. They use your own provider and API key. Importing, reading and exporting need no AI account.",
+        ],
+        why: [
+          "Generated explanations are only useful if you can check them. LocalXiv keeps the original paper beside every explanation, so any claim can be checked against what the paper actually says.",
+        ],
+        built: [
+          "A Swift/AppKit launcher, a WebKit reader and a local Python service, with SQLite storing the library and job records.",
+          "Conversion and AI generation run as separate jobs, so a failed explanation never invalidates a saved paper. When EPUB conversion fails, the app falls back to the retained original.",
+          "Overviews are laid out by the app, not drawn by the model: the model writes a digest and a scene tree of cards, groups, steps and bars, and the app places them and routes the arrows. A figure that still fails after bounded corrections is left out.",
+          "Developed primarily with GPT-6 Astra in Codex, for the Product Hunt GPT-6 Astra Challenge. The model used inside the app is chosen separately by each user.",
+        ],
+        achieved: [
+          "Twelve public preview releases between 6 and 18 September 2026, from v0.0.1 to v0.0.14.",
+          "Launched on Product Hunt as part of the GPT-6 Astra Challenge.",
+          "Ships its own conversion tools: no Homebrew, Python or AI account is needed to import and read papers.",
+          "Recorded verification work for figure reliability in the repository.",
+        ],
+        status: [
+          "Active early preview for Apple Silicon Macs on macOS 26 or newer. Releases are ad hoc signed and not yet notarised by Apple, conversion can be imperfect for unusual equations, tables and layouts, and AI explanations can contain mistakes.",
+        ],
+      },
+      related: [
+        {
+          label: "Verification notes: SVG figure reliability",
+          href: "https://github.com/Akhil-Theerthala/LocalXiv/blob/main/docs/verification/2026-09-16-svg-reliability.md",
+        },
+        {
+          label: "Xiv2Pub: arXiv papers to EPUB",
+          href: "https://github.com/Akhil-Theerthala/Xiv2Pub",
+        },
+        {
+          label: "VisLearn-Paper: a visual paper interpreter",
+          href: "https://github.com/Akhil-Theerthala/VisLearn-Paper",
+        },
+      ],
       kicker: "Open source · Mac app",
       desc: "A reading app that turns arXiv and alphaXiv links into a paper library on your Mac, with adjustable layouts, optional AI overviews and explanations, and EPUB export for Kindle. Built primarily with GPT-6 Astra in Codex.",
       released: "2026-09",

@@ -1030,6 +1030,74 @@ html:has(.artifact-dialog[open]) {
     font-size: 0.75rem;
 }
 
+/* ───── Artifact pages ───── */
+.artifact-page-top {
+    position: relative;
+    z-index: var(--layer-content);
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid var(--rule);
+}
+.artifact-page-home {
+    color: var(--ink);
+    font-size: 1.05rem;
+}
+.artifact-page-back {
+    color: var(--muted);
+    font-size: 0.875rem;
+    text-decoration: underline;
+    text-decoration-color: var(--rule-3);
+    text-underline-offset: 0.2em;
+}
+.artifact-page-home:hover,
+.artifact-page-back:hover {
+    color: var(--accent);
+}
+.artifact-story-summary {
+    max-width: 640px;
+    color: var(--ink-2);
+    font-family: var(--headline-font);
+    font-size: 1.35rem;
+    line-height: 1.45;
+    text-wrap: pretty;
+}
+.artifact-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1.25rem 0 1.5rem;
+    color: var(--ink-2);
+    font-family: var(--label-font);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+.artifact-status::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--muted);
+}
+.artifact-status--active::before {
+    background: var(--accent);
+}
+.artifact-story-body {
+    margin-top: 1rem;
+}
+.artifact-story-body ul {
+    list-style: disc;
+}
+.artifact-story-body li::marker {
+    color: var(--dim);
+}
+
 /* ───── CV ───── */
 .cv-groups {
     display: flex;
