@@ -30,10 +30,20 @@ test("publications carry verified citation metadata", () => {
     assert.match(publication.arxiv, /^https:\/\/arxiv\.org\/abs\//);
   }
 
+  assert.ok(data.publications.every((publication) => !("status" in publication)));
+  const sections = fs.readFileSync("portfolio-sections.jsx", "utf8");
+  assert.doesNotMatch(sections, /\.status\b/);
+  assert.match(sections, /formatVenue\(p\.venue\)/);
+
   const roleSteering = data.publications.find((publication) =>
     publication.title.startsWith("Role Steering"),
   );
   assert.ok(roleSteering.authors.includes("Anthony Wen-Ming Zang"));
+
+  const reasoningChains = data.publications.find((publication) =>
+    publication.title.startsWith("Synthesizing Behaviorally-Grounded"),
+  );
+  assert.equal(reasoningChains.venue, "FinNLP Workshop, EMNLP 2025");
 });
 
 test("artifact evidence contains only approved verified values", () => {
@@ -48,9 +58,45 @@ test("artifact evidence contains only approved verified values", () => {
   assert.deepEqual(
     Array.from(data.projects, (project) => project.title),
     [
+      "LocalXiv",
+      "Density vs. Diversity: VLM Curation Datasets",
       "Kuvera Personal Finance Datasets and LLMs",
       "Reasoning Dataset Challenge",
       "Themis Scales: Moral Dilemma Resolution",
+    ],
+  );
+
+  assert.ok(
+    data.projects.every((project) => !/^Research contribution/.test(project.desc)),
+  );
+
+  const released = Array.from(data.projects, (project) => project.released);
+  assert.ok(released.every((month) => /^\d{4}-(0[1-9]|1[0-2])$/.test(month)));
+  assert.deepEqual(released, [...released].sort().reverse());
+
+  const localxiv = data.projects.find((project) => project.title === "LocalXiv");
+  assert.deepEqual(
+    Array.from(localxiv.links, (link) => link.href),
+    [
+      "https://github.com/Akhil-Theerthala/LocalXiv",
+      "https://www.producthunt.com/products/localxiv",
+      "https://github.com/Akhil-Theerthala/LocalXiv/releases/latest",
+    ],
+  );
+
+  const density = data.projects.find((project) =>
+    project.title.startsWith("Density vs. Diversity"),
+  );
+  assert.equal(density.evidence.kind, "dataset");
+  assert.deepEqual(
+    Array.from(density.evidence.metrics, (metric) => metric.value),
+    ["15k", "750", "7.5k", "6"],
+  );
+  assert.deepEqual(
+    Array.from(density.links, (link) => link.href),
+    [
+      "https://huggingface.co/datasets/Akhil-Theerthala/DesnityVsDiversity",
+      "https://huggingface.co/blog/Akhil-Theerthala/diversity-density-for-vision-language-models",
     ],
   );
 
@@ -94,9 +140,15 @@ test("writing slugs are unique and exactly two records are featured", () => {
 test("credibility components expose accessible, non-duplicative contracts", () => {
   const sections = fs.readFileSync("portfolio-sections.jsx", "utf8");
 
-  assert.match(sections, /function PublicationCitation\(/);
-  assert.match(sections, /aria-live="polite"/);
+  assert.doesNotMatch(sections, /PublicationCitation|className="citation/);
+  assert.match(sections, /<ul className="tag-list" aria-label="Topics">/);
+  assert.doesNotMatch(sections, /className="tag"/);
   assert.match(sections, /function ArtifactEvidence\(/);
+  assert.match(sections, /title="Public Artifacts"/);
+  assert.match(sections, /<dialog/);
+  assert.match(sections, /\.showModal\(\)/);
+  assert.match(sections, /aria-haspopup="dialog"/);
+  assert.doesNotMatch(sections, /className="artifact-trigger"/);
   assert.match(sections, /function ExperienceEntry\(/);
   assert.match(sections, /experience\.highlights/);
   assert.match(sections, /filter\(\(item\) => !item\.featured\)/);
@@ -110,4 +162,38 @@ test("the production app uses the fixed approved visual tokens", () => {
 
   assert.doesNotMatch(app, /TweaksPanel|useTweaks|TWEAK_DEFAULTS/);
   assert.match(app, /const APPROVED_ACCENT = "#c8a66b"/);
+});
+
+test("links carry no arrow glyphs; destinations are buttons", () => {
+  for (const file of ["portfolio-sections.jsx", "writing-app.jsx", "404.html"]) {
+    const source = fs.readFileSync(file, "utf8");
+    assert.doesNotMatch(source, /[↗→↑←]/, `${file} still renders an arrow`);
+    assert.doesNotMatch(source, /link-arrow|item-arrow|social-arrow|profile-link-arrow|className="arrow"/);
+  }
+  const sections = fs.readFileSync("portfolio-sections.jsx", "utf8");
+  assert.match(sections, /\(opens in a new tab\)/);
+});
+
+test("the page leads with applied work, then research", () => {
+  const app = fs.readFileSync("portfolio-app.jsx", "utf8");
+  const sections = fs.readFileSync("portfolio-sections.jsx", "utf8");
+  const index = fs.readFileSync("index.html", "utf8");
+  const order = ["About", "Experience", "Projects", "Publications", "Writings", "Education"];
+
+  const rendered = [...app.matchAll(/<(About|Experience|Projects|Publications|Writings|Education) data=/g)]
+    .map((match) => match[1]);
+  assert.deepEqual(rendered, order);
+
+  const navIds = [...app.matchAll(/\{ id: "([a-z]+)", label:/g)].map((match) => match[1]);
+  assert.deepEqual(navIds, ["about", "cv", "work", "research", "writings", "education", "contact"]);
+
+  assert.match(index, /<title>Akhil Theerthala - Applied Data Scientist<\/title>/);
+  assert.doesNotMatch(index, /Applied AI Researcher/);
+  assert.equal(data.role, "Applied Data Scientist");
+  assert.doesNotMatch(sections, /Research interests|researchFocus/);
+  assert.equal(data.researchProfiles[0].label, "GitHub");
+  assert.match(
+    sections.replace(/\s+/g, " "),
+    /Open to applied ML work, research collaborations, and fellowship conversations about reliable AI systems in finance and document intelligence\./,
+  );
 });

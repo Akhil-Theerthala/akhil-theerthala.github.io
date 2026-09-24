@@ -1,6 +1,6 @@
 // Section components for the portfolio
 
-const { useEffect, useMemo, useState } = React;
+const { useId, useMemo, useRef } = React;
 
 // ───────── Hero ─────────
 function Hero({ data, accent }) {
@@ -22,7 +22,8 @@ function Hero({ data, accent }) {
               rel="noreferrer"
               className="btn btn-primary"
             >
-              Download CV <span className="arrow">↗</span>
+              Download CV
+              <NewTabNote />
             </a>
           </div>
         </div>
@@ -58,7 +59,7 @@ function About({ data, accent }) {
     <section className="section about-section" id="about">
       <SectionHead
         title="About"
-        sub="Professional context, current work, and research orientation."
+        sub="What I build, and the research questions behind it."
       />
       <div className="about-grid">
         <div className="about-body">
@@ -70,38 +71,14 @@ function About({ data, accent }) {
           ))}
         </div>
 
-        <div className="about-side">
-          <details className="about-panel">
-            <summary className="about-panel-title serif">
-              Research interests
-            </summary>
-            <div className="about-focus-list">
-              {data.researchFocus.map((item, i) => (
-                <article className="about-focus-item" key={i}>
-                  <span
-                    className="about-focus-num mono"
-                    style={{ color: accent }}
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <div>
-                    <h4>{item.title}</h4>
-                    <p>{item.desc}</p>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </details>
-
-          {data.researchProfiles?.length > 0 && (
-            <details className="about-panel profile-links">
-              <summary className="about-panel-title serif">
-                Research profiles
-              </summary>
+        {data.researchProfiles?.length > 0 && (
+          <aside className="about-side">
+            <div className="about-panel profile-links">
+              <h3 className="about-panel-heading serif">Profiles</h3>
               <div className="profile-link-grid">
-                {data.researchProfiles.map((profile, i) => (
+                {data.researchProfiles.map((profile) => (
                   <a
-                    key={i}
+                    key={profile.label}
                     href={profile.href}
                     target="_blank"
                     rel="noreferrer"
@@ -111,85 +88,23 @@ function About({ data, accent }) {
                     <span className="profile-link-handle mono dim">
                       {profile.handle}
                     </span>
-                    <span className="profile-link-arrow">↗</span>
+                    <NewTabNote />
                   </a>
                 ))}
               </div>
-            </details>
-          )}
-        </div>
+            </div>
+          </aside>
+        )}
       </div>
     </section>
   );
 }
 
-function PublicationCitation({ publication }) {
-  const [status, setStatus] = useState("");
-
-  useEffect(() => {
-    if (!status) return undefined;
-    const reset = window.setTimeout(() => setStatus(""), 4000);
-    return () => window.clearTimeout(reset);
-  }, [status]);
-
-  const copy = async (value, label) => {
-    try {
-      await navigator.clipboard.writeText(value);
-      setStatus(`${label} copied`);
-    } catch {
-      setStatus(`Copy failed. Select the ${label.toLowerCase()} text below.`);
-    }
-  };
-
-  if (!publication.citation || !publication.bibtex) return null;
-
-  return (
-    <details className="citation">
-      <summary className="citation-summary">
-        <span>Citation</span>
-        <span className="citation-doi mono">DOI {publication.doi}</span>
-      </summary>
-      <div className="citation-body">
-        <div className="citation-actions">
-          <button
-            type="button"
-            onClick={() => copy(publication.citation, "Citation")}
-          >
-            Copy citation
-          </button>
-          <button
-            type="button"
-            onClick={() => copy(publication.bibtex, "BibTeX")}
-          >
-            Copy BibTeX
-          </button>
-          <a
-            href={`https://doi.org/${publication.doi}`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Open DOI <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-        <div className="citation-record">
-          <p className="citation-label mono">Plain citation</p>
-          <pre className="citation-text">{publication.citation}</pre>
-        </div>
-        <div className="citation-record">
-          <p className="citation-label mono">BibTeX</p>
-          <pre className="citation-text citation-text--bibtex">
-            {publication.bibtex}
-          </pre>
-        </div>
-        <p className="sr-only" aria-live="polite">
-          {status}
-        </p>
-      </div>
-    </details>
-  );
+// ───────── Selected Work (Publications) ─────────
+function formatVenue(venue) {
+  return venue.replace(/\s(?:19|20)(\d{2})$/, "’$1");
 }
 
-// ───────── Selected Work (Publications) ─────────
 function Publications({ data, accent }) {
   const publicationsByYear = useMemo(() => {
     const grouped = {};
@@ -216,8 +131,7 @@ function Publications({ data, accent }) {
               {publications.map((p, i) => (
                 <article className="pub" key={`${year}-${i}`}>
                   <div className="pub-venue mono">
-                    {p.status ? `${p.status} · ` : ""}
-                    {p.venue}
+                    {formatVenue(p.venue)}
                   </div>
                   <h3 className="pub-title serif">{p.title}</h3>
                   {p.authors?.length > 0 && (
@@ -236,39 +150,18 @@ function Publications({ data, accent }) {
                   )}
                   <p className="pub-abstract">{p.abstract}</p>
                   <div className="pub-foot">
-                    <div className="tag-row">
-                      {p.tags.map((t, j) => (
-                        <span className="tag" key={j}>
-                          {t}
-                        </span>
+                    <ul className="tag-list" aria-label="Topics">
+                      {p.tags.map((tag) => (
+                        <li key={tag}>{tag}</li>
                       ))}
-                    </div>
-                    <div className="pub-links">
-                      {p.arxiv && (
-                        <a
-                          href={p.arxiv}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="link-arrow"
-                          style={{ color: accent }}
-                        >
-                          arXiv <span className="arrow">↗</span>
-                        </a>
-                      )}
-                      {p.file && (
-                        <a
-                          href={p.file}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="link-arrow"
-                          style={{ color: accent }}
-                        >
-                          PDF <span className="arrow">→</span>
-                        </a>
-                      )}
-                    </div>
+                    </ul>
+                    <LinkButtons
+                      links={[
+                        p.arxiv && { label: "arXiv", href: p.arxiv },
+                        p.file && { label: "PDF", href: p.file },
+                      ].filter(Boolean)}
+                    />
                   </div>
-                  <PublicationCitation publication={p} />
                 </article>
               ))}
             </div>
@@ -280,17 +173,20 @@ function Publications({ data, accent }) {
 }
 
 // ───────── Projects ─────────
+function formatMonth(released) {
+  const [year, month] = released.split("-").map(Number);
+  return new Intl.DateTimeFormat("en", {
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(Date.UTC(year, month - 1));
+}
+
 function ArtifactEvidence({ evidence }) {
   if (!evidence) return null;
 
   return (
-    <aside className={`artifact-evidence artifact-evidence--${evidence.kind}`}>
-      <div className="artifact-evidence-head">
-        <span className="artifact-evidence-mark" aria-hidden="true">
-          ✓
-        </span>
-        <p className="artifact-evidence-label mono">{evidence.label}</p>
-      </div>
+    <div className={`artifact-evidence artifact-evidence--${evidence.kind}`}>
       <p className="artifact-evidence-caption">{evidence.caption}</p>
 
       {evidence.metrics?.length > 0 && (
@@ -312,7 +208,7 @@ function ArtifactEvidence({ evidence }) {
       )}
 
       {evidence.stages?.length > 0 && (
-        <ol className="artifact-flow" aria-label="Pipeline stages">
+        <ol className="artifact-flow" aria-label="Steps">
           {evidence.stages.map((stage, index) => (
             <li key={stage}>
               <span className="artifact-flow-index mono">
@@ -323,50 +219,102 @@ function ArtifactEvidence({ evidence }) {
           ))}
         </ol>
       )}
-    </aside>
+    </div>
   );
 }
 
-function Projects({ data, accent }) {
+function Artifact({ project }) {
+  const titleId = useId();
+  const dialogRef = useRef(null);
+  const meta = `${formatMonth(project.released)} · ${project.kicker}`;
+  const openDetails = () => dialogRef.current?.showModal();
+  const closeDetails = () => dialogRef.current?.close();
+
+  return (
+    <article className="pub artifact">
+      <p className="artifact-meta mono">{meta}</p>
+      <h3 className="pub-title serif">
+        {project.evidence ? (
+          <button
+            type="button"
+            className="artifact-title"
+            aria-haspopup="dialog"
+            onClick={openDetails}
+          >
+            {project.title}
+          </button>
+        ) : (
+          project.title
+        )}
+      </h3>
+      <p className="pub-abstract">{project.desc}</p>
+      <LinkButtons links={project.links} />
+
+      {project.evidence && (
+        <dialog
+          ref={dialogRef}
+          className="artifact-dialog"
+          aria-labelledby={titleId}
+          onClick={(event) => {
+            if (event.target === event.currentTarget) closeDetails();
+          }}
+        >
+          <div className="artifact-dialog-body">
+            <div className="artifact-dialog-head">
+              <p className="artifact-meta mono">{meta}</p>
+              <button
+                type="button"
+                className="reader-close"
+                onClick={closeDetails}
+              >
+                Close
+              </button>
+            </div>
+            <h2 id={titleId} className="artifact-dialog-title serif">
+              {project.title}
+            </h2>
+            <p className="artifact-dialog-desc">{project.desc}</p>
+            <ArtifactEvidence evidence={project.evidence} />
+            <LinkButtons links={project.links} />
+          </div>
+        </dialog>
+      )}
+    </article>
+  );
+}
+
+function Projects({ data }) {
+  const projectsByYear = useMemo(() => {
+    const grouped = new Map();
+    [...data.projects]
+      .sort((a, b) => b.released.localeCompare(a.released))
+      .forEach((project) => {
+        const year = project.released.slice(0, 4);
+        grouped.set(year, [...(grouped.get(year) || []), project]);
+      });
+    return [...grouped];
+  }, [data.projects]);
+
   return (
     <section className="section" id="work">
       <SectionHead
-        title="Research Artifacts"
-        sub="Datasets, models, benchmarks, and tools that make the research concrete."
+        title="Public Artifacts"
+        sub="Datasets, models, and tools I have released in the open."
       />
 
-      <div className="projects">
-        {data.projects.map((project, index) => (
-          <article
-            className={`project ${index === 0 ? "project--featured" : "project--supporting"}`}
-            key={project.title}
-          >
-            <div className="project-narrative">
-              <div className="project-head">
-                <span className="project-kicker mono dim">
-                  {project.kicker}
-                </span>
-                <span className="project-year mono dim">{project.year}</span>
-              </div>
-              <h3 className="project-title serif">{project.title}</h3>
-              <p className="project-desc">{project.desc}</p>
-              <div className="project-links" aria-label={`${project.title} links`}>
-                {(project.links || []).map((link) => (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="link-arrow"
-                    style={{ color: accent }}
-                  >
-                    {link.label} <span aria-hidden="true">↗</span>
-                  </a>
-                ))}
-              </div>
+      <div className="pubs">
+        {projectsByYear.map(([year, projects]) => (
+          <div className="pub-group" key={year}>
+            <div className="pub-group-side">
+              <div className="pub-year serif">{year}</div>
             </div>
-            <ArtifactEvidence evidence={project.evidence} />
-          </article>
+
+            <div className="pub-group-main">
+              {projects.map((project) => (
+                <Artifact key={project.title} project={project} />
+              ))}
+            </div>
+          </div>
         ))}
       </div>
     </section>
@@ -428,7 +376,7 @@ function Experience({ data, accent }) {
     <section className="section" id="cv">
       <SectionHead
         title="Experience"
-        sub="Industry research and applied ML contributions, written as problem-method-evaluation-impact."
+        sub="Production ML systems and research collaborations, most recent first."
       />
 
       <div className="cv">
@@ -483,9 +431,6 @@ function WritingRows({ items }) {
           <span className="item-title">{item.title}</span>
           <span className="item-cat mono dim">{item.category}</span>
           <span className="item-date mono dim">{item.date}</span>
-          <span className="item-arrow" aria-hidden="true">
-            →
-          </span>
         </a>
       ))}
     </div>
@@ -518,9 +463,6 @@ function Writings({ data, accent }) {
             </div>
             <h3 className="feat-title serif">{item.title}</h3>
             <p className="feat-excerpt">{item.excerpt}</p>
-            <span className="feat-link mono" style={{ color: accent }}>
-              Read essay →
-            </span>
           </a>
         ))}
       </div>
@@ -563,8 +505,8 @@ function FooterBlock({ data, accent }) {
           .
         </h2>
         <p className="footer-sub">
-          Open to research collaborations, reading-group invitations, and
-          concrete questions about reliable AI systems in finance and document
+          Open to applied ML work, research collaborations, and fellowship
+          conversations about reliable AI systems in finance and document
           intelligence.
         </p>
         {data.collaborationInterests?.length > 0 && (
@@ -575,7 +517,7 @@ function FooterBlock({ data, accent }) {
           </ul>
         )}
         <a href={`mailto:${data.email}`} className="footer-mail serif">
-          {data.email} <span className="arrow">→</span>
+          {data.email}
         </a>
       </div>
 
@@ -590,7 +532,7 @@ function FooterBlock({ data, accent }) {
           >
             <span className="social-label">{s.label}</span>
             <span className="social-handle mono dim">{s.handle}</span>
-            <span className="social-arrow">↗</span>
+            <NewTabNote />
           </a>
         ))}
       </div>
@@ -598,13 +540,38 @@ function FooterBlock({ data, accent }) {
       <div className="footer-bottom">
         <span>© 2026 Akhil Theerthala</span>
         <span>{data.location}</span>
-        <a href="#top">Back to top ↑</a>
+        <a href="#top">Back to top</a>
       </div>
     </footer>
   );
 }
 
 // ───────── Shared bits ─────────
+function NewTabNote() {
+  return <span className="sr-only"> (opens in a new tab)</span>;
+}
+
+function LinkButtons({ links }) {
+  if (!links?.length) return null;
+
+  return (
+    <div className="link-buttons">
+      {links.map((link) => (
+        <a
+          key={link.label}
+          href={link.href}
+          target="_blank"
+          rel="noreferrer"
+          className="btn"
+        >
+          {link.label}
+          <NewTabNote />
+        </a>
+      ))}
+    </div>
+  );
+}
+
 function SectionHead({ title, sub }) {
   return (
     <div className="sec-head">
@@ -620,7 +587,6 @@ function SectionHead({ title, sub }) {
 Object.assign(window, {
   Hero,
   About,
-  PublicationCitation,
   Publications,
   ArtifactEvidence,
   Projects,

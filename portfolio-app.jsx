@@ -45,7 +45,7 @@ function App() {
     );
     document
       .querySelectorAll(
-        ".section, .hero, .footer, .feat, .pub, .project, .cv-row",
+        ".section, .hero, .footer, .feat, .pub, .cv-row",
       )
       .forEach((el) => io.observe(el));
     return () => io.disconnect();
@@ -53,11 +53,11 @@ function App() {
 
   const nav = [
     { id: "about", label: "About" },
-    { id: "research", label: "Publications" },
     { id: "cv", label: "Experience" },
-    { id: "education", label: "Education" },
     { id: "work", label: "Artifacts" },
+    { id: "research", label: "Publications" },
     { id: "writings", label: "Writings" },
+    { id: "education", label: "Education" },
     { id: "contact", label: "Contact" },
   ];
 
@@ -107,11 +107,11 @@ function App() {
       <main id="main-content">
         <Hero data={data} accent={APPROVED_ACCENT} />
         <About data={data} accent={APPROVED_ACCENT} />
-        <Publications data={data} accent={APPROVED_ACCENT} />
         <Experience data={data} accent={APPROVED_ACCENT} />
-        <Education data={data} accent={APPROVED_ACCENT} />
         <Projects data={data} accent={APPROVED_ACCENT} />
+        <Publications data={data} accent={APPROVED_ACCENT} />
         <Writings data={data} accent={APPROVED_ACCENT} />
+        <Education data={data} accent={APPROVED_ACCENT} />
       </main>
 
       <FooterBlock data={data} accent={APPROVED_ACCENT} />

@@ -42,12 +42,12 @@ test("credibility layouts and responsive portrait assets are production-ready", 
 
   assert.match(css, /--dim:\s*#788179/);
   assert.match(css, /\.artifact-evidence\s*\{/);
-  assert.match(css, /\.citation\s*\{/);
-  assert.match(css, /\.citation-actions button:focus-visible/);
+  assert.doesNotMatch(css, /\.citation/);
+  assert.match(css, /\.tag-list\s*\{/);
   assert.match(css, /\.older-writing-archive\s*\{/);
   assert.doesNotMatch(
     css,
-    /font-size:\s*0\.(?:[0-6][0-9]|7[0-4])rem/,
+    /font-size:\s*0\.(?:[0-6]\d?|7[0-4]?)rem/,
   );
   assert.match(sections, /<picture>/);
   assert.match(sections, /profile-480\.webp 480w/);

@@ -35,7 +35,7 @@ assert.match(css, /--surface-grid-x:/);
 assert.match(css, /--surface-grid-y:/);
 assert.match(css, /--dim:\s*#788179/);
 assert.match(css, /\.artifact-evidence/);
-assert.match(css, /\.citation/);
+assert.match(css, /\.tag-list/);
 assert.match(
   css,
   /\.root::before,[\s\S]*?\.reader-page::before[\s\S]*?backdrop-filter:\s*blur\(7px\)/,
@@ -50,10 +50,9 @@ assert.match(
 );
 
 assert.doesNotMatch(sections, /§\s*0[1-9]/);
-assert.match(sections, /function PublicationCitation/);
+assert.doesNotMatch(sections, /PublicationCitation/);
 assert.match(sections, /function ArtifactEvidence/);
 assert.match(sections, /className="older-writing-archive"/);
-assert.match(sections, /aria-live="polite"/);
 assert.match(portfolioApp, /aria-current=/);
 assert.match(writingApp, /aria-current=/);
 assert.doesNotMatch(portfolioApp, /TweaksPanel|useTweaks/);

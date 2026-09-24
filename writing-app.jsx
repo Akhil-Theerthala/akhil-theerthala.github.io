@@ -213,7 +213,7 @@ function WritingPage() {
                 The requested essay could not be found from the current URL.
               </p>
               <a href={getHomeHref("#writings")} className="reader-link">
-                Return to the writings archive →
+                Return to the writings archive
               </a>
             </div>
           </article>
@@ -254,7 +254,8 @@ function WritingPage() {
                 rel="noreferrer"
                 className="reader-link"
               >
-                medium.com/@akhiltvsn →
+                medium.com/@akhiltvsn
+                <span className="sr-only"> (opens in a new tab)</span>
               </a>
             </div>
           )}

@@ -1,12 +1,12 @@
 // Akhil Theerthala portfolio content
 window.PORTFOLIO_DATA = {
   name: "Akhil Theerthala",
-  role: "Applied Scientist",
+  role: "Applied Data Scientist",
   currentRole: "Senior Member Data Scientist, Perfios Software Solutions",
   location: "Bengaluru, India",
   email: "akhiltvsn@gmail.com",
   intro:
-    "Studying data-centric and evaluation-centric methods for reliable AI systems in Finance.",
+    "I build and evaluate ML systems for financial documents and language models, from data curation to production quality gates.",
 
   longIntro: [
     "I am a Senior Member Data Scientist at Perfios Software Solutions, working on applied ML systems for financial document intelligence and finance-specific language models. My work sits between research and deployment: adapting VLMs for dense financial documents, building evaluation and quality gates, and translating prototypes into reliable systems for banks, lenders, insurers, and personal-finance workflows.",
@@ -129,7 +129,6 @@ window.PORTFOLIO_DATA = {
     // },
     {
       year: "2026",
-      status: "Published workshop paper",
       venue: "Social Simulations Workshop, COLM 2026",
       title: "Role Steering of Language Models for Social Simulations",
       authors: [
@@ -165,7 +164,6 @@ window.PORTFOLIO_DATA = {
     },
     {
       year: "2026",
-      status: "Accepted workshop paper",
       venue: "Agentic AI in Financial Services Workshop, AAAI 2026",
       title: "FinForge: Semi-Synthetic Financial Benchmark Generation",
       authors: [
@@ -197,8 +195,7 @@ window.PORTFOLIO_DATA = {
     },
     {
       year: "2025",
-      status: "Preprint",
-      venue: "arXiv",
+      venue: "FinNLP Workshop, EMNLP 2025",
       title:
         "Synthesizing Behaviorally-Grounded Reasoning Chains: A Data-Generation Framework for Personal Finance LLMs",
       authors: ["Akhil Theerthala"],
@@ -224,9 +221,71 @@ window.PORTFOLIO_DATA = {
 
   projects: [
     {
+      title: "LocalXiv",
+      kicker: "Open source · Mac app",
+      desc: "A reading app that turns arXiv and alphaXiv links into a paper library on your Mac, with adjustable layouts, optional AI overviews and explanations, and EPUB export for Kindle. Built primarily with GPT-6 Astra in Codex.",
+      released: "2026-09",
+      href: "https://github.com/Akhil-Theerthala/LocalXiv",
+      links: [
+        {
+          label: "GitHub",
+          href: "https://github.com/Akhil-Theerthala/LocalXiv",
+        },
+        {
+          label: "Product Hunt",
+          href: "https://www.producthunt.com/products/localxiv",
+        },
+        {
+          label: "Download",
+          href: "https://github.com/Akhil-Theerthala/LocalXiv/releases/latest",
+        },
+      ],
+      evidence: {
+        kind: "tool",
+        label: "Public preview",
+        caption:
+          "Free under AGPL-3.0 for Apple Silicon Macs on macOS 26 or newer. Importing, reading, and exporting papers need no AI account.",
+        stages: [
+          "Paste an arXiv or alphaXiv link",
+          "Read with adjustable fonts and rendered equations",
+          "Explore an Overview, a Blog, or chat",
+          "Export an EPUB or send it to Kindle",
+        ],
+      },
+    },
+    {
+      title: "Density vs. Diversity: VLM Curation Datasets",
+      kicker: "Open source · Hugging Face",
+      desc: "Two synthetic spatial-reasoning training sets built from GQA images at opposite curation extremes, ten questions per image against one, used to fine-tune six Qwen3‑VL models for a controlled comparison.",
+      released: "2026-01",
+      href: "https://huggingface.co/datasets/Akhil-Theerthala/DesnityVsDiversity",
+      links: [
+        {
+          label: "Dataset",
+          href: "https://huggingface.co/datasets/Akhil-Theerthala/DesnityVsDiversity",
+        },
+        {
+          label: "Blog",
+          href: "https://huggingface.co/blog/Akhil-Theerthala/diversity-density-for-vision-language-models",
+        },
+      ],
+      evidence: {
+        kind: "dataset",
+        label: "Dataset record",
+        caption:
+          "Train and validation sets for the density-versus-diversity study: the same question budget spent on 750 images or on 7,500.",
+        metrics: [
+          { label: "Samples per set", value: "15k" },
+          { label: "Dense images", value: "750" },
+          { label: "Diverse images", value: "7.5k" },
+          { label: "Fine-tuned VLMs", value: "6" },
+        ],
+      },
+    },
+    {
       title: "Kuvera Personal Finance Datasets and LLMs",
       kicker: "Open source · Hugging Face",
-      desc: "Research contribution: curated behavior-aware supervision data for Indian personal-finance reasoning, fine-tuned 8B and 14B models, and evaluated personalization quality against larger baselines.",
+      desc: "Curated behavior-aware supervision data for Indian personal-finance reasoning, fine-tuned 8B and 14B models, and evaluated personalization quality against larger baselines.",
       metric: "HuggingFace",
       stats: [
         { label: "Dataset rows", value: "18.8k" },
@@ -234,7 +293,7 @@ window.PORTFOLIO_DATA = {
         { label: "Fine-tuned model", value: "8B" },
         { label: "Lower operating cost", value: "80%" },
       ],
-      year: "2025",
+      released: "2025-09",
       href: "https://huggingface.co/datasets/Akhil-Theerthala/Kuvera-PersonalFinance-V2.1",
       links: [
         {
@@ -263,14 +322,13 @@ window.PORTFOLIO_DATA = {
         ],
         schema: ["category", "query", "chain_of_thought", "response"],
       },
-      tags: ["Dataset", "Fine-tuning", "Finance"],
     },
     {
       title: "Reasoning Dataset Challenge",
       kicker: "1st place, global competition",
-      desc: "Research contribution: built a synthetic reasoning dataset and trained a 7B model that outperformed larger baselines through curation quality rather than model scale.",
+      desc: "Built a synthetic reasoning dataset and trained a 7B model that outperformed larger baselines through curation quality rather than model scale.",
       metric: "1 / 150+ teams",
-      year: "2025",
+      released: "2025-05",
       href: "https://huggingface.co/Akhil-Theerthala",
       links: [
         {
@@ -288,14 +346,13 @@ window.PORTFOLIO_DATA = {
           { label: "Teams", value: "150+" },
         ],
       },
-      tags: ["Reasoning", "Synthetic data", "Evaluation"],
     },
     {
       title: "Themis Scales: Moral Dilemma Resolution",
       kicker: "Open source · AI ethics dataset",
-      desc: "Research contribution: created a 567-example seed dataset that structures moral-dilemma analysis through Morality-as-Cooperation, deontological, and utilitarian perspectives, with explicit limitations for further validation.",
+      desc: "Created a 567-example seed dataset that structures moral-dilemma analysis through Morality-as-Cooperation, deontological, and utilitarian perspectives, with explicit limitations for further validation.",
       metric: "567 dilemmas",
-      year: "2025",
+      released: "2025-04",
       href: "https://huggingface.co/datasets/Akhil-Theerthala/Themis_Scales",
       links: [
         {
@@ -320,7 +377,6 @@ window.PORTFOLIO_DATA = {
         ],
         schema: ["category", "query", "chain_of_thought", "response"],
       },
-      tags: ["AI ethics", "Moral reasoning", "Dataset curation"],
     },
   ],
 
@@ -493,11 +549,6 @@ window.PORTFOLIO_DATA = {
 
   researchProfiles: [
     {
-      label: "Google Scholar",
-      href: "https://scholar.google.com/citations?user=_H1O3ScAAAAJ&hl=en",
-      handle: "Publications and citations",
-    },
-    {
       label: "GitHub",
       href: "https://github.com/Akhil-Theerthala",
       handle: "Code and tools",
@@ -506,6 +557,11 @@ window.PORTFOLIO_DATA = {
       label: "Hugging Face",
       href: "https://huggingface.co/Akhil-Theerthala",
       handle: "Datasets and models",
+    },
+    {
+      label: "Google Scholar",
+      href: "https://scholar.google.com/citations?user=_H1O3ScAAAAJ&hl=en",
+      handle: "Publications and citations",
     },
   ],
 
