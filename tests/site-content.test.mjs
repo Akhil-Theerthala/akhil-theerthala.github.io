@@ -90,6 +90,12 @@ test("artifact evidence contains only approved verified values", () => {
     assert.ok(localxiv.story[part]?.length > 0, `LocalXiv story is missing "${part}"`);
   }
 
+  assert.equal(kuvera.slug, "kuvera");
+  assert.equal(kuvera.status, "Maintained");
+  for (const part of ["what", "why", "built", "achieved", "status"]) {
+    assert.ok(kuvera.story[part]?.length > 0, `Kuvera story is missing "${part}"`);
+  }
+
   const density = data.projects.find((project) =>
     project.title.startsWith("Density vs. Diversity"),
   );

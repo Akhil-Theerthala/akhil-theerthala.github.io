@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en" data-density="comfortable">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kuvera Personal Finance Datasets and LLMs - Akhil Theerthala</title>
+    <meta name="description" content="Open personal-finance reasoning datasets and the models fine-tuned on them, built to give advice that accounts for both the numbers and the person asking." />
+    <link rel="canonical" href="https://akhiltheerthala.com/artifacts/kuvera/" />
+    <meta property="og:title" content="Kuvera Personal Finance Datasets and LLMs - Akhil Theerthala" />
+    <meta property="og:description" content="Open personal-finance reasoning datasets and the models fine-tuned on them, built to give advice that accounts for both the numbers and the person asking." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://akhiltheerthala.com/artifacts/kuvera/" />
+    <meta property="og:image" content="https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png" />
+    <meta name="theme-color" content="#0d0f0e" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%230d0f0e'/%3E%3Cpath d='M15 49 29 14h7l14 35h-8l-3-9H25l-3 9h-7Zm12-16h10l-5-14-5 14Z' fill='%23c8a66b'/%3E%3C/svg%3E"
+    />
+    <link rel="preload" href="../../assets/fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../../assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="../../portfolio.css" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "Kuvera Personal Finance Datasets and LLMs",
+  "description": "Open personal-finance reasoning datasets and the models fine-tuned on them, built to give advice that accounts for both the numbers and the person asking.",
+  "url": "https://akhiltheerthala.com/artifacts/kuvera/",
+  "datePublished": "2025-09",
+  "sameAs": [
+    "https://huggingface.co/datasets/Akhil-Theerthala/Kuvera-PersonalFinance-V2.1",
+    "https://arxiv.org/abs/2509.14180",
+    "https://huggingface.co/Akhil-Theerthala/Kuvera-8B-qwen3-v0.2.1"
+  ],
+  "author": {
+    "@type": "Person",
+    "name": "Akhil Theerthala",
+    "url": "https://akhiltheerthala.com/"
+  }
+}
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <div class="reader-page artifact-page">
+      <div class="calibration-field" aria-hidden="true"></div>
+      <header class="artifact-page-top">
+        <a class="artifact-page-home serif" href="../../">Akhil Theerthala</a>
+        <a class="artifact-page-back" href="../../#work">All artifacts</a>
+      </header>
+      <main class="reader-page-main" id="main-content">
+        <article class="reader-article artifact-story">
+          <p class="artifact-meta mono">Sep 2025 · Open source · Hugging Face</p>
+          <h1 class="reader-title">Kuvera Personal Finance Datasets and LLMs</h1>
+          <p class="artifact-story-summary">Open personal-finance reasoning datasets and the models fine-tuned on them, built to give advice that accounts for both the numbers and the person asking.</p>
+          <p class="artifact-status artifact-status--maintained"><span class="sr-only">Status: </span>Maintained</p>
+          <div class="link-buttons">
+          <a class="btn" href="https://huggingface.co/datasets/Akhil-Theerthala/Kuvera-PersonalFinance-V2.1" target="_blank" rel="noreferrer">Dataset<span class="sr-only"> (opens in a new tab)</span></a>
+          <a class="btn" href="https://arxiv.org/abs/2509.14180" target="_blank" rel="noreferrer">Paper<span class="sr-only"> (opens in a new tab)</span></a>
+          <a class="btn" href="https://huggingface.co/Akhil-Theerthala/Kuvera-8B-qwen3-v0.2.1" target="_blank" rel="noreferrer">Model<span class="sr-only"> (opens in a new tab)</span></a>
+          </div>
+          <div class="reader-body artifact-story-body">
+          <h2>What it is</h2>
+          <p>Kuvera is a line of open datasets and models for personal-finance advice. The latest dataset, Kuvera PersonalFinance V2.1, holds 18,846 records, each pairing a real personal-finance question with a reasoning chain and a response.</p>
+          <p>Five models have been fine-tuned on this data across two generations, from 4B to 14B parameters. The method is written up in Synthesizing Behaviorally-Grounded Reasoning Chains, published at the FinNLP Workshop, EMNLP 2025.</p>
+          <h2>Why it was needed</h2>
+          <p>Financial AI benchmarks concentrate on corporate finance, trading and general financial knowledge. Personal-finance planning gets little attention, and so do the behavioural biases, such as loss aversion, overconfidence and anchoring, that shape real decisions about money.</p>
+          <p>Personal-finance questions also need reasoning rather than retrieval. A useful answer weighs income, debt, risk tolerance and time horizon against each other and applies general principles to one person&#39;s situation, instead of repeating generic advice.</p>
+          <h2>What I built</h2>
+          <ul>
+            <li>Sourced real questions from r/personalfinance, limited to posts made before Reddit&#39;s mid-2023 API and terms changes, and filtered them with an LLM jury (Gemini 2.0 Flash, Phi-4 14B and Gemma-3-27B) to keep only posts that pose a problem needing a reasoned answer.</li>
+            <li>A multi-stage generation pipeline: query analysis and psychological-intent extraction (sentiment, emotions, communicative intent and certainty) run in parallel, then retrieval from a curated finance knowledge base of about 800k tokens, then response generation and validation.</li>
+            <li>LLM juries check each critical step: the relevance of retrieved context, the completeness of the query analysis, and a 5-shot comparative selection of the final response using GPT-4o-mini, DeepSeek-V3 and Gemini 2.0 Flash.</li>
+            <li>Two model generations: v0.1 (June 2025) fine-tuned a 14B LoRA on DeepSeek-R1-Distill-Qwen-14B and an 8B model on PersonalFinance_v2; v0.2 (July to August 2025) fine-tuned Gemma 3 4B and 12B and Qwen3-8B on the scaled-up V2.1 dataset.</li>
+          </ul>
+          <h2>What it achieved</h2>
+          <ul>
+            <li>A fine-tuned Qwen3-8B matches much larger 14B to 32B baselines on factuality, fluency and personalisation while cutting cost by about 80%.</li>
+            <li>Published at the FinNLP Workshop, EMNLP 2025.</li>
+            <li>Kuvera PersonalFinance V2.1 released openly under Apache 2.0: 18,846 records across eight personal-finance domains, from debt and retirement to tax and estate planning.</li>
+          </ul>
+          <h2>Status</h2>
+          <p>Maintained. I update the datasets and models irregularly as the generation pipeline improves.</p>
+          <h2>Related</h2>
+          <ul>
+            <li><a href="https://huggingface.co/collections/Akhil-Theerthala/kuvera-personalfinance-v3-689bacddcb854cb523e3a450" target="_blank" rel="noreferrer">Kuvera PersonalFinance V3 collection: models and dataset<span class="sr-only"> (opens in a new tab)</span></a></li>
+            <li><a href="https://huggingface.co/datasets/Akhil-Theerthala/PersonalFinance_v2" target="_blank" rel="noreferrer">PersonalFinance_v2: the earlier dataset<span class="sr-only"> (opens in a new tab)</span></a></li>
+            <li><a href="https://huggingface.co/Akhil-Theerthala/Kuvera-14B-v0.1.0" target="_blank" rel="noreferrer">Kuvera 14B v0.1.0<span class="sr-only"> (opens in a new tab)</span></a></li>
+            <li><a href="../../writing/creating-a-reasoning-dataset-with-no-budget/">Essay: Creating a Reasoning Dataset with No Budget</a></li>
+          </ul>
+          </div>
+          <p class="reader-footer-text">
+            Questions or feedback: <a class="reader-link" href="mailto:akhiltvsn@gmail.com">akhiltvsn@gmail.com</a>
+          </p>
+        </article>
+      </main>
+    </div>
+  </body>
+</html>

@@ -327,6 +327,53 @@ window.PORTFOLIO_DATA = {
     },
     {
       title: "Kuvera Personal Finance Datasets and LLMs",
+      slug: "kuvera",
+      status: "Maintained",
+      summary:
+        "Open personal-finance reasoning datasets and the models fine-tuned on them, built to give advice that accounts for both the numbers and the person asking.",
+      // Draft from the Kuvera V2.1 dataset card, the model cards and the paper abstract. Rewrite in your own words.
+      story: {
+        what: [
+          "Kuvera is a line of open datasets and models for personal-finance advice. The latest dataset, Kuvera PersonalFinance V2.1, holds 18,846 records, each pairing a real personal-finance question with a reasoning chain and a response.",
+          "Five models have been fine-tuned on this data across two generations, from 4B to 14B parameters. The method is written up in Synthesizing Behaviorally-Grounded Reasoning Chains, published at the FinNLP Workshop, EMNLP 2025.",
+        ],
+        why: [
+          "Financial AI benchmarks concentrate on corporate finance, trading and general financial knowledge. Personal-finance planning gets little attention, and so do the behavioural biases, such as loss aversion, overconfidence and anchoring, that shape real decisions about money.",
+          "Personal-finance questions also need reasoning rather than retrieval. A useful answer weighs income, debt, risk tolerance and time horizon against each other and applies general principles to one person's situation, instead of repeating generic advice.",
+        ],
+        built: [
+          "Sourced real questions from r/personalfinance, limited to posts made before Reddit's mid-2023 API and terms changes, and filtered them with an LLM jury (Gemini 2.0 Flash, Phi-4 14B and Gemma-3-27B) to keep only posts that pose a problem needing a reasoned answer.",
+          "A multi-stage generation pipeline: query analysis and psychological-intent extraction (sentiment, emotions, communicative intent and certainty) run in parallel, then retrieval from a curated finance knowledge base of about 800k tokens, then response generation and validation.",
+          "LLM juries check each critical step: the relevance of retrieved context, the completeness of the query analysis, and a 5-shot comparative selection of the final response using GPT-4o-mini, DeepSeek-V3 and Gemini 2.0 Flash.",
+          "Two model generations: v0.1 (June 2025) fine-tuned a 14B LoRA on DeepSeek-R1-Distill-Qwen-14B and an 8B model on PersonalFinance_v2; v0.2 (July to August 2025) fine-tuned Gemma 3 4B and 12B and Qwen3-8B on the scaled-up V2.1 dataset.",
+        ],
+        achieved: [
+          "A fine-tuned Qwen3-8B matches much larger 14B to 32B baselines on factuality, fluency and personalisation while cutting cost by about 80%.",
+          "Published at the FinNLP Workshop, EMNLP 2025.",
+          "Kuvera PersonalFinance V2.1 released openly under Apache 2.0: 18,846 records across eight personal-finance domains, from debt and retirement to tax and estate planning.",
+        ],
+        status: [
+          "Maintained. I update the datasets and models irregularly as the generation pipeline improves.",
+        ],
+      },
+      related: [
+        {
+          label: "Kuvera PersonalFinance V3 collection: models and dataset",
+          href: "https://huggingface.co/collections/Akhil-Theerthala/kuvera-personalfinance-v3-689bacddcb854cb523e3a450",
+        },
+        {
+          label: "PersonalFinance_v2: the earlier dataset",
+          href: "https://huggingface.co/datasets/Akhil-Theerthala/PersonalFinance_v2",
+        },
+        {
+          label: "Kuvera 14B v0.1.0",
+          href: "https://huggingface.co/Akhil-Theerthala/Kuvera-14B-v0.1.0",
+        },
+        {
+          label: "Essay: Creating a Reasoning Dataset with No Budget",
+          href: "writing/creating-a-reasoning-dataset-with-no-budget/",
+        },
+      ],
       kicker: "Open source · Hugging Face",
       desc: "Curated behavior-aware supervision data for Indian personal-finance reasoning, fine-tuned 8B and 14B models, and evaluated personalization quality against larger baselines.",
       metric: "HuggingFace",

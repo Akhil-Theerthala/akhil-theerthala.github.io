@@ -236,4 +236,11 @@ test("artifacts with a story get a static, crawlable page", () => {
   assert.match(page, /https:\/\/www\.producthunt\.com\/products\/localxiv/);
   assert.match(sitemap, /https:\/\/akhiltheerthala\.com\/artifacts\/localxiv\//);
   assert.match(sections, /href=\{`artifacts\/\$\{project\.slug\}\/`\}/);
+
+  const kuvera = read("artifacts/kuvera/index.html");
+  assert.match(kuvera, /<h1[^>]*>Kuvera Personal Finance Datasets and LLMs<\/h1>/);
+  assert.match(kuvera, /"@type": "Dataset"/);
+  assert.match(kuvera, /18,846/);
+  assert.match(kuvera, /href="\.\.\/\.\.\/writing\/[a-z0-9-]+\/">/);
+  assert.match(sitemap, /https:\/\/akhiltheerthala\.com\/artifacts\/kuvera\//);
 });

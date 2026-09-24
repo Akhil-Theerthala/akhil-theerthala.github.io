@@ -151,9 +151,10 @@ function artifactPage(project, data, siteUrl) {
   const { story } = project;
   const statusClass = project.status.toLowerCase();
   const related = (project.related || [])
-    .map(
-      (link) =>
-        `<li><a href="${escapeHtml(link.href)}" target="_blank" rel="noreferrer">${escapeHtml(link.label)}<span class="sr-only"> (opens in a new tab)</span></a></li>`,
+    .map((link) =>
+      /^https?:/.test(link.href)
+        ? `<li><a href="${escapeHtml(link.href)}" target="_blank" rel="noreferrer">${escapeHtml(link.label)}<span class="sr-only"> (opens in a new tab)</span></a></li>`
+        : `<li><a href="../../${escapeHtml(link.href)}">${escapeHtml(link.label)}</a></li>`,
     )
     .join("\n            ");
 
