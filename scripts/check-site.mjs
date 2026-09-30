@@ -85,7 +85,10 @@ for (const article of data.writings) {
 }
 
 for (const publication of data.publications) {
-  report(Boolean(publication.arxiv), `${publication.title}: arXiv URL missing`);
+  if (!publication.arxiv) {
+    report(Boolean(publication.slug), `${publication.title}: slug missing for a paper without arXiv`);
+    continue;
+  }
   report(Boolean(publication.doi), `${publication.title}: DOI missing`);
   report(Boolean(publication.citation), `${publication.title}: citation missing`);
   report(Boolean(publication.bibtex), `${publication.title}: BibTeX missing`);

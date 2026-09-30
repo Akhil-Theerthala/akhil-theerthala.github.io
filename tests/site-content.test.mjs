@@ -22,8 +22,8 @@ test("the current role is a selected-impact record", () => {
 });
 
 test("publications carry verified citation metadata", () => {
-  assert.equal(data.publications.length, 3);
-  for (const publication of data.publications) {
+  assert.equal(data.publications.length, 4);
+  for (const publication of data.publications.filter((entry) => entry.arxiv)) {
     assert.match(publication.doi, /^10\.48550\/arXiv\./);
     assert.match(publication.citation, /Theerthala/);
     assert.match(publication.bibtex, /^@misc\{/);
@@ -39,6 +39,15 @@ test("publications carry verified citation metadata", () => {
     publication.title.startsWith("Role Steering"),
   );
   assert.ok(roleSteering.authors.includes("Anthony Wen-Ming Zang"));
+
+  const attribution = data.publications[0];
+  assert.equal(attribution.title, "Data Attribution Should Guide Pretraining");
+  assert.equal(attribution.venue, "ATTRIB Workshop, NeurIPS 2026");
+  assert.equal(attribution.year, "2026");
+  assert.equal(attribution.authors.length, 11);
+  assert.equal(attribution.authors[5], "Akhil Theerthala");
+  assert.equal(attribution.slug, "data-attribution-should-guide-pretraining");
+  assert.ok(!attribution.arxiv && !attribution.doi);
 
   const reasoningChains = data.publications.find((publication) =>
     publication.title.startsWith("Synthesizing Behaviorally-Grounded"),

@@ -129,6 +129,28 @@ window.PORTFOLIO_DATA = {
     // },
     {
       year: "2026",
+      venue: "ATTRIB Workshop, NeurIPS 2026",
+      slug: "data-attribution-should-guide-pretraining",
+      title: "Data Attribution Should Guide Pretraining",
+      authors: [
+        "Glenn Matlin",
+        "Chandreyi Chakraborty",
+        "Mohammed Rehan Parwani",
+        "Saehee Eom",
+        "Anthony Wen-Ming Zang",
+        "Akhil Theerthala",
+        "Arjun Chatterjee",
+        "Tejas Khandwekar",
+        "Brandon Michaels",
+        "Alvin Deng",
+        "Mark Riedl",
+      ],
+      abstract:
+        "Pretraining data curation decides what a model learns from, yet the properties that make a document worth learning from depend on what the model already knows. We argue that training-data attribution should steer pretraining. Influence-driven selectors already act on attribution to improve a run; we argue that the field should ask more of that attribution. A ranking of documents serves the run it was computed for, whereas a data property that explains a gain can be tested on new data and, where it holds, written into a curation criterion, including where familiar quality signals are known to diverge from measured usefulness. We specify a feedback loop that interprets attributed sources, tests the data changes they suggest, and folds the outcomes back into the next run and its curation criteria, and we state what evidence each step requires and what none of them establishes. Historical contribution, an understandable explanation, and future data value are distinct claims that require distinct evidence. We set out a research agenda for establishing when attribution improves curation decisions over existing methods at matched cost.",
+      tags: ["Training Data Attribution", "Data Curation", "Pretraining"],
+    },
+    {
+      year: "2026",
       venue: "Social Simulations Workshop, COLM 2026",
       title: "Role Steering of Language Models for Social Simulations",
       authors: [

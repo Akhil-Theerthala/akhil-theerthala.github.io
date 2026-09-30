@@ -244,3 +244,10 @@ test("artifacts with a story get a static, crawlable page", () => {
   assert.match(kuvera, /href="\.\.\/\.\.\/writing\/[a-z0-9-]+\/">/);
   assert.match(sitemap, /https:\/\/akhiltheerthala\.com\/artifacts\/kuvera\//);
 });
+
+test("papers without an arXiv version still get honest structured data", () => {
+  const index = read("index.html");
+  assert.match(index, /"@id": "https:\/\/akhiltheerthala\.com\/#data-attribution-should-guide-pretraining"/);
+  assert.match(index, /"name": "ATTRIB Workshop, NeurIPS 2026"/);
+  assert.doesNotMatch(index, /"@id": "undefined#article"|"url": "undefined"|doi\.org\/undefined/);
+});

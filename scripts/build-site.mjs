@@ -247,6 +247,12 @@ async function generateArtifactPages(data, siteUrl) {
   );
 }
 
+function publicationId(publication, siteUrl) {
+  return publication.arxiv
+    ? `${publication.arxiv}#article`
+    : `${siteUrl}/#${publication.slug}`;
+}
+
 function homepageStructuredData(data, siteUrl) {
   const personId = `${siteUrl}/#person`;
   const sameAs = [
@@ -293,12 +299,12 @@ function homepageStructuredData(data, siteUrl) {
         knowsAbout: data.researchFocus.map((focus) => focus.title),
         sameAs: [...new Set(sameAs)],
         subjectOf: data.publications.map((publication) => ({
-          "@id": `${publication.arxiv}#article`,
+          "@id": publicationId(publication, siteUrl),
         })),
       },
       ...data.publications.map((publication) => ({
         "@type": "ScholarlyArticle",
-        "@id": `${publication.arxiv}#article`,
+        "@id": publicationId(publication, siteUrl),
         headline: publication.title,
         name: publication.title,
         description: publication.abstract,
@@ -307,9 +313,11 @@ function homepageStructuredData(data, siteUrl) {
           "@type": "Person",
           ...(name === data.name ? { "@id": personId } : { name }),
         })),
-        url: publication.arxiv,
-        sameAs: `https://doi.org/${publication.doi}`,
-        identifier: publication.doi,
+        ...(publication.arxiv && { url: publication.arxiv }),
+        ...(publication.doi && {
+          sameAs: `https://doi.org/${publication.doi}`,
+          identifier: publication.doi,
+        }),
         isPartOf: {
           "@type": "CreativeWork",
           name: publication.venue,
