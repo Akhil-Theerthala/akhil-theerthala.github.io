@@ -75,8 +75,12 @@ test("the map data is real, complete and linked to pages that exist", () => {
   // One node per work: every paper and project once, nothing twice.
   assert.equal(map.works.length, spec.works.length);
   assert.equal(new Set(map.works.map((work) => work.id)).size, map.works.length);
+  // A paper is its own work, or rides on the project it describes as one of its sources.
   for (const publication of data.publications) {
-    assert.ok(map.works.some((work) => work.kind === "paper" && work.title === publication.title), publication.title);
+    const own = map.works.some((work) => work.kind === "paper" && work.title === publication.title);
+    const source = map.sources.findIndex((item) => item.kind === "paper" && item.title === publication.title);
+    const carried = source >= 0 && map.works.some((work) => work.sources.includes(map.sources[source].id));
+    assert.ok(own || carried, publication.title);
   }
   for (const project of data.projects) {
     assert.ok(map.works.some((work) => work.title === project.title), project.title);
