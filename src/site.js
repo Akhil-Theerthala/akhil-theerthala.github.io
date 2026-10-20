@@ -70,6 +70,50 @@ const onScroll = () => nav?.classList.toggle("scrolled", scrollY > 12);
 addEventListener("scroll", onScroll, { passive: true });
 onScroll();
 
+// Below 980px the section links live in a panel under the header.
+const menuToggle = $(".nav-toggle");
+if (nav && menuToggle) {
+  const isOpen = () => nav.classList.contains("menu-open");
+  const setMenu = (open) => {
+    nav.classList.toggle("menu-open", open);
+    menuToggle.setAttribute("aria-expanded", String(open));
+  };
+  menuToggle.addEventListener("click", () => setMenu(!isOpen()));
+  nav.addEventListener("click", (event) => {
+    if (event.target.closest(".nav-links a")) setMenu(false);
+  });
+  document.addEventListener("click", (event) => {
+    if (isOpen() && !event.target.closest(".site-nav")) setMenu(false);
+  });
+  addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && isOpen()) {
+      setMenu(false);
+      menuToggle.focus();
+    }
+  });
+  // Past the phone layout the links return to the bar, so the panel closes.
+  matchMedia("(min-width: 981px)").addEventListener("change", (event) => event.matches && setMenu(false));
+}
+
+// The header's "Email me" is gold only while no other email button is on
+// screen: the hero's on the way in, the contact block's at the end.
+const navCta = $(".site-nav .nav-cta");
+const emailBlocks = $$(".hero-actions, .contact-actions");
+if (navCta && emailBlocks.length) {
+  const visible = new Set();
+  const watcher = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) visible.add(entry.target);
+        else visible.delete(entry.target);
+      }
+      navCta.classList.toggle("btn-primary", visible.size === 0);
+    },
+    { rootMargin: "-72px 0px 0px 0px" },
+  );
+  emailBlocks.forEach((block) => watcher.observe(block));
+}
+
 if (page === "home") {
   const links = new Map($$(".nav-links a").map((link) => [link.dataset.section, link]));
   // Every section is watched, so the hero and Education clear the highlight.

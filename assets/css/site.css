@@ -59,6 +59,7 @@
   --elev: #232924;
   --line: #2a302a;
   --line-2: #3b423b;
+  --ring: var(--line-2);
   --ink: #eef0ea;
   --ink-2: #cdd1c9;
   --muted: #9fa59c;
@@ -151,6 +152,8 @@
   --elev: #f2f3ef;
   --line: #ced1c9;
   --line-2: #b5b9b0;
+  /* Darker than the hairlines, so outlined buttons hold on the paper (3.3:1). */
+  --ring: #7a807a;
   --ink: #131914;
   --ink-2: #333a34;
   --muted: #575f57;
@@ -428,7 +431,7 @@ button {
 /* One filled primary per region; everything else is a ringed secondary. */
 .btn {
   --btn-bg: color-mix(in srgb, var(--ink) 4%, transparent);
-  --btn-ring: var(--line-2);
+  --btn-ring: var(--ring);
   --btn-ink: var(--ink);
   display: inline-flex;
   align-items: center;
@@ -486,18 +489,18 @@ button {
   text-decoration-color: currentColor;
 }
 
-/* Small mono labels: section indexes, dates, kickers, metric names. */
+/* Small mono labels: dates, kickers, metric names. Never under 13px, and
+   capitals only on the shortest of them. */
 .kicker {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 4px 12px;
   font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   line-height: 1.35;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  letter-spacing: 0.04em;
   color: var(--muted);
 }
 
@@ -511,7 +514,7 @@ button {
   border: 0;
   border-radius: 999px;
   background: color-mix(in srgb, var(--surface) 70%, transparent);
-  box-shadow: inset 0 0 0 1px var(--line-2);
+  box-shadow: inset 0 0 0 1px var(--ring);
   font-size: var(--step-xs);
   font-weight: 500;
   cursor: pointer;
@@ -559,7 +562,7 @@ button {
 .chip small {
   color: var(--muted);
   font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
 }
 
 /* ---------- Navigation ---------- */
@@ -696,6 +699,17 @@ button {
   transform: rotate(40deg);
 }
 
+/* The menu button appears below 980px, where the links move into a panel. */
+.nav-toggle,
+.nav-toggle .close,
+.site-nav.menu-open .nav-toggle .menu {
+  display: none;
+}
+
+.site-nav.menu-open .nav-toggle .close {
+  display: block;
+}
+
 /* ---------- Hero map ---------- */
 
 .hero {
@@ -756,6 +770,34 @@ button {
   max-width: 34ch;
 }
 
+/* Three facts under the lede, one per line, each a link to its proof. */
+.hero-proof {
+  display: grid;
+  gap: 4px;
+  margin-top: 18px;
+  font-size: var(--step-s);
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+
+.hero-proof a {
+  width: fit-content;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.hero-proof a:hover {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 4px;
+}
+
+.hero-proof b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
@@ -796,7 +838,7 @@ button {
   width: 100%;
   height: 50px;
   padding: 0 44px 0 46px;
-  border: 1px solid var(--line-2);
+  border: 1px solid var(--ring);
   border-radius: 999px;
   background: color-mix(in srgb, var(--surface) 86%, transparent);
   color: var(--ink);
@@ -893,6 +935,36 @@ button {
   padding: 12px;
   color: var(--muted);
   font-size: var(--step-s);
+}
+
+/* On a short desktop screen the intro tightens so the search field stays
+   inside the hero; the search label becomes screen-reader only. */
+@media (min-width: 981px) and (max-height: 840px) {
+  .hero-lede {
+    margin-top: 18px;
+  }
+
+  .hero-proof {
+    gap: 2px;
+    margin-top: 14px;
+  }
+
+  .hero-actions {
+    margin-top: 22px;
+  }
+
+  .map-search {
+    margin-top: 26px;
+  }
+
+  .map-search label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
 }
 
 /* The legend sits under the map, which starts at 46% of the hero (src/site.js). */
@@ -1092,7 +1164,7 @@ button {
   background: rgba(10, 12, 11, 0.62);
   color: #fff;
   font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   letter-spacing: 0.04em;
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
@@ -1146,9 +1218,9 @@ button {
   align-items: center;
   gap: 8px;
   font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 500;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--muted);
 }
@@ -1220,9 +1292,9 @@ button {
 .role time {
   padding-top: 4px;
   font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 500;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--muted);
   text-align: right;
@@ -1288,9 +1360,9 @@ button {
   align-items: center;
   gap: 10px;
   font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 500;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--muted);
   cursor: pointer;
@@ -1472,10 +1544,9 @@ button {
 
 .metrics dt {
   font-family: var(--mono);
-  font-size: 0.6875rem;
+  font-size: 0.8125rem;
   font-weight: 500;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
+  letter-spacing: 0.04em;
   color: var(--muted);
 }
 
@@ -1538,7 +1609,7 @@ button {
   background: var(--elev);
   box-shadow: inset 0 -1px 0 var(--line);
   font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   color: var(--muted);
 }
 
@@ -1754,10 +1825,9 @@ button {
 
 .drivers-title {
   font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: 0.04em;
   color: var(--accent-text);
 }
 
@@ -1807,7 +1877,7 @@ button {
 
 .drivers-effect {
   margin-left: auto;
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   line-height: 1.3;
   text-align: right;
   color: var(--muted);
@@ -1860,7 +1930,7 @@ button {
 
 .drivers-value {
   font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   text-align: right;
   color: var(--ink-2);
   font-variant-numeric: tabular-nums;
@@ -1868,7 +1938,7 @@ button {
 
 .drivers-foot {
   margin-top: 12px;
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   line-height: 1.45;
   color: var(--muted);
 }
@@ -1879,7 +1949,7 @@ button {
   margin-top: 18px;
   padding-top: 14px;
   box-shadow: inset 0 1px 0 var(--line);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   line-height: 1.45;
   color: var(--ink-2);
 }
@@ -1972,10 +2042,9 @@ button {
   padding: 6px 0;
   background: none;
   font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: 0.04em;
   color: var(--muted);
   cursor: pointer;
   transition: color 0.15s;
@@ -2001,7 +2070,7 @@ button {
   font-family: var(--mono);
   font-size: 0.8125rem;
   font-weight: 500;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--ink);
 }
@@ -2150,10 +2219,9 @@ button {
   align-items: center;
   gap: 6px 10px;
   font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: 0.04em;
   color: var(--accent-text);
 }
 
@@ -2188,7 +2256,7 @@ button {
   margin-top: 10px;
   font-size: var(--step-s);
   color: var(--muted);
-  max-width: 80ch;
+  max-width: 72ch;
 }
 
 .pub-authors strong {
@@ -2247,7 +2315,7 @@ button {
   border-radius: var(--radius-xs);
   box-shadow: inset 0 0 0 1px var(--line-2);
   font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   color: var(--muted);
 }
 
@@ -3043,8 +3111,53 @@ button {
 }
 
 @media (max-width: 980px) {
-  .nav-links {
+  .nav-toggle {
+    display: inline-grid;
+  }
+
+  /* The open panel and the bar above it are one solid sheet: a blurred
+     panel inside a blurred bar cannot see the page, so it would show through. */
+  .site-nav nav {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
     display: none;
+    margin: 0;
+    padding: 4px 0 12px;
+    background: var(--surface);
+    box-shadow: 0 1px 0 var(--line);
+  }
+
+  .site-nav.menu-open nav {
+    display: block;
+  }
+
+  .site-nav.menu-open,
+  .site-nav.menu-open.scrolled {
+    background: var(--surface);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    gap: 0;
+    width: min(100% - 2 * var(--gutter), var(--max));
+    margin-inline: auto;
+  }
+
+  .nav-links a {
+    padding: 12px 0;
+    font-size: var(--step-1);
+    color: var(--ink);
+  }
+
+  .nav-links a::after {
+    left: 0;
+    right: auto;
+    bottom: 8px;
+    width: 24px;
   }
 
   .nav-actions {
@@ -3233,6 +3346,27 @@ button {
     gap: 20px;
   }
 
+}
+
+@media (max-width: 420px) {
+  .wordmark {
+    gap: 8px;
+  }
+
+  .nav-actions {
+    gap: 0;
+  }
+
+  .icon-btn {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (max-width: 360px) {
+  .wordmark-text {
+    display: none;
+  }
 }
 
 /* No keyboard, no shortcut hint. */

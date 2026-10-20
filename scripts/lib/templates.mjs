@@ -22,6 +22,8 @@ const icon = {
   search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
   target: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>',
   award: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="6"/><path d="m8.5 14-1.5 8 5-3 5 3-1.5-8"/></svg>',
+  menu: '<svg class="menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg>',
+  close: '<svg class="close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>',
 };
 
 /* ---------- Shell ---------- */
@@ -114,17 +116,20 @@ const pageSection = { article: "writings", writing: "writings", artifact: "work"
 
 function nav(root, page) {
   const home = page === "home" ? "" : root || "./";
+  // On the homepage the hero carries the gold button; the header's turns gold
+  // only once that one has scrolled away (src/site.js).
   return `    <header class="site-nav">
       <div class="wrap">
-        <a class="wordmark" href="${root || "./"}" aria-label="Akhil Theerthala, home">${mark}Akhil Theerthala</a>
+        <a class="wordmark" href="${root || "./"}" aria-label="Akhil Theerthala, home">${mark}<span class="wordmark-text">Akhil Theerthala</span></a>
         <nav aria-label="Sections">
-          <ul class="nav-links">
+          <ul class="nav-links" id="site-menu">
             ${sections.map(([id, label]) => `<li><a href="${home}#${id}" data-section="${id}"${pageSection[page] === id ? ' aria-current="page"' : ""}>${label}</a></li>`).join("\n            ")}
           </ul>
         </nav>
         <div class="nav-actions">
           <button class="icon-btn theme-toggle" type="button" aria-label="Switch between light and dark theme">${icon.sun}${icon.moon}</button>
-          <a class="btn btn-primary btn-small" href="mailto:akhiltvsn@gmail.com">Email me</a>
+          <a class="btn${page === "home" ? "" : " btn-primary"} btn-small nav-cta" href="mailto:akhiltvsn@gmail.com">Email me</a>
+          <button class="icon-btn nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Menu">${icon.menu}${icon.close}</button>
         </div>
       </div>
     </header>`;
@@ -266,7 +271,9 @@ function achievementHtml(item, index) {
   const mark = item.mark
     ? `<div class="big-result" data-sparkle><canvas aria-hidden="true"></canvas><div><b>${e(item.mark[0])}</b><span>${e(item.mark[1])}</span></div></div>`
     : `<div class="award-mark">${icon.award}</div>`;
-  const links = (item.links || []).map((link, i) => linkButton(link, i === 0 ? "btn btn-small btn-primary" : "btn btn-small")).join("");
+  // The site's own page, when there is one, is the primary button.
+  const ordered = [...(item.links || [])].sort((a, b) => Number(external(a.href)) - Number(external(b.href)));
+  const links = ordered.map((link, i) => linkButton(link, i === 0 ? "btn btn-small btn-primary" : "btn btn-small")).join("");
   return `<li class="achievement${item.mark ? "" : " compact"} reveal"${item.id ? ` id="achievement-${e(item.id)}"` : ""} style="--i:${index}">
             ${mark}
             <div>
@@ -281,9 +288,10 @@ function achievementHtml(item, index) {
 function projectHtml(project, samples, index) {
   const slug = projectSlug(project);
   const metrics = project.evidence?.metrics?.length ? metricsHtml(project.evidence.metrics) : "";
+  // The site's own case study is the primary action; the project's links follow.
   const actions = [
-    ...(project.links || []).map((link, i) => linkButton(link, i === 0 ? "btn btn-primary" : "btn", project.title)),
-    project.story && `<a class="btn" href="artifacts/${project.slug}/">Case study<span class="sr-only">: ${e(project.title)}</span></a>`,
+    project.story && `<a class="btn btn-primary" href="artifacts/${project.slug}/">Case study<span class="sr-only">: ${e(project.title)}</span></a>`,
+    ...(project.links || []).map((link, i) => linkButton(link, i === 0 && !project.story ? "btn btn-primary" : "btn", project.title)),
     mapButton(`project:${slug}`),
   ].filter(Boolean);
   return `        <article class="project reveal" id="project-${slug}" style="--i:${index % 2}">
@@ -343,7 +351,6 @@ function publicationHtml(publication, me, index) {
     : e(publication.title);
   const actions = [
     publication.arxiv && `<a class="btn btn-small btn-primary" href="${e(publication.arxiv)}" target="_blank" rel="noreferrer">arXiv<span class="sr-only"> (opens in a new tab)</span></a>`,
-    publication.doi && `<a class="btn btn-small" href="https://doi.org/${e(publication.doi)}" target="_blank" rel="noreferrer">DOI<span class="sr-only"> (opens in a new tab)</span></a>`,
     publication.bibtex && `<button class="btn btn-small copy-btn" type="button" data-copy="${e(publication.bibtex)}" data-copied-label="BibTeX copied">Copy BibTeX</button>`,
     publication.citation && `<button class="btn btn-small copy-btn" type="button" data-copy="${e(publication.citation)}" data-copied-label="Citation copied">Copy citation</button>`,
     mapButton(`paper:${slug}`),
@@ -376,6 +383,18 @@ ${items.map((publication, index) => publicationHtml(publication, data.name, inde
   ].filter(Boolean).join("\n          ");
 }
 
+// Roles flagged "other" collapse under the main timeline. None are at present.
+function otherRoles(roles) {
+  const other = roles.filter((role) => role.other);
+  if (!other.length) return "";
+  return `<details class="other-roles">
+            <summary>Other roles</summary>
+            <ol class="timeline">
+${other.map(roleHtml).join("\n")}
+            </ol>
+          </details>`;
+}
+
 function roleHtml(role) {
   const highlights = role.highlights
     .map((item) => `<li>${emphasise(item, role.emphasis)}</li>`)
@@ -400,6 +419,19 @@ function essayRow(article) {
   return `<li><a href="writing/${article.slug}/"><span>${e(article.title)}</span><span class="meta">${e(article.date)}</span><span class="meta read">${e(article.read)}</span></a></li>`;
 }
 
+// Three facts a visitor weighs first, each linking to its proof further down.
+function heroProof(data) {
+  // Publications are listed newest first; name the venues in the order they happened.
+  const venues = [...new Set(data.publications.map((publication) => publication.venue.split(", ").pop()))].reverse();
+  const list = venues.length > 1 ? `${venues.slice(0, -1).join(", ")} and ${venues.at(-1)}` : venues[0];
+  const [challenge] = data.achievements;
+  return [
+    `<a href="#research">Workshop papers at <b>${e(list)}</b></a>`,
+    `<a href="#achievements"><b>${e(challenge.mark.join(" "))}</b> in the ${e(challenge.title.replace(/^1st place, /, ""))}</a>`,
+    `<a href="#achievements"><b>${e(challenge.downloads)}</b> downloads on Hugging Face</a>`,
+  ].join("\n            ");
+}
+
 export function homeBody(data, samples, map) {
   const workCounts = { paper: 0, project: 0, role: 0 };
   for (const work of map.works) workCounts[work.kind] += 1;
@@ -410,6 +442,9 @@ export function homeBody(data, samples, map) {
         <div class="hero-intro">
           <h1>Akhil Theerthala</h1>
           <p class="hero-lede">Applied data scientist at Perfios. I build reliable AI systems for finance. My core work is calibrated LLM safeguards and agentic workflows for consumer-finance market intelligence.</p>
+          <p class="hero-proof">
+            ${heroProof(data)}
+          </p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="mailto:${e(data.email)}">Email me</a>
             <a class="btn" href="data/Akhil_Theerthala_Resume.pdf" target="_blank" rel="noreferrer">Download CV<span class="sr-only"> (PDF, opens in a new tab)</span></a>
@@ -468,12 +503,7 @@ export function homeBody(data, samples, map) {
           <ol class="timeline">
 ${data.workExperience.filter((role) => !role.other).map(roleHtml).join("\n")}
           </ol>
-          <details class="other-roles">
-            <summary>Other roles</summary>
-            <ol class="timeline">
-${data.workExperience.filter((role) => role.other).map(roleHtml).join("\n")}
-            </ol>
-          </details>
+          ${otherRoles(data.workExperience)}
         </div>
       </section>
 
