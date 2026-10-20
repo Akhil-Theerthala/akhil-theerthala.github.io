@@ -45,8 +45,6 @@ window.PORTFOLIO_DATA = {
       date: "Aug 2025 - Present",
       title: "Research Volunteer",
       org: "FSIL & HCAI Labs, Georgia Tech",
-      // Listed under "Other" on the homepage, collapsed by default.
-      other: true,
       highlights: [
         "Co-authored FinForge, a pipeline that generates semi-synthetic benchmarks for financial tasks. The paper was accepted at the AAAI 2026 Workshop on Agentic AI in Financial Services.",
         "Contributed to the Role Steering of Language Models for Social Simulations paper at the COLM 2026 Social Simulations Workshop. I also contributed to the Data Attribution Should Guide Pretraining paper at the NeurIPS 2026 ATTRIB Workshop.",
@@ -495,6 +493,8 @@ window.PORTFOLIO_DATA = {
       // The map lists the challenge entry as a work; this id ties the two.
       id: "reasoning-dataset-challenge",
       mark: ["1st", "of 150+ teams"],
+      // All-time Hugging Face downloads of the Kuvera releases (scripts/hf-count.py).
+      downloads: "56k+",
       detail:
         "I built synthetic data pipelines from real personal-finance questions and fine-tuned 8B and 14B models. I released the datasets, LoRA adapters, and quantized weights on Hugging Face. These releases have more than 56k downloads, counting community GGUF versions.",
       links: [
