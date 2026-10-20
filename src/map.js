@@ -438,8 +438,8 @@ export class MapView {
     ctx.font = `600 ${size}px "IBM Plex Sans", sans-serif`;
     ctx.textBaseline = "middle";
     ctx.textAlign = "left";
-    // Labels stay clear of the hero text to the plot's left.
-    const left = Math.max(2, this.box.x - 20);
+    // Labels may use the gutter left of the plot, but stay clear of the hero text.
+    const left = Math.max(2, this.box.x - 56);
     const overlaps = ([x, y, w, h], [ox, oy, ow, oh]) =>
       !(x + w < ox - 2 || ox + ow < x - 2 || y + h < oy - 1 || oy + oh < y - 1);
     const nodeRects = this.live.map(({ x, y }) => [x - 9, y - 9, 18, 18]);
@@ -482,7 +482,8 @@ export class MapView {
           .map(fit)
           .filter((rect) => rect[1] > 2 && rect[1] + rect[3] < this.height - 2)
           .filter((rect) => !fixed.some((other) => overlaps(rect, other)))
-          .filter((rect) => nodeRects.every((other, n) => n === w || !overlaps(rect, other)));
+          // A name never covers a node, its own included once it slides to stay in the plot.
+          .filter((rect) => nodeRects.every((other, n) => !overlaps(rect, n === w ? [node.x - 6, node.y - 6, 12, 12] : other)));
         return { ...item, options, fallback: fit(beside(side)) };
       })
       .sort((a, b) => Number(b.active) - Number(a.active) || Number(Boolean(lit?.has(b.w))) - Number(Boolean(lit?.has(a.w))) || a.options.length - b.options.length);

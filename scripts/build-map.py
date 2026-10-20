@@ -43,10 +43,10 @@ NEAR = 2
 LINK_MIN = 0.15
 # The hero plot is about this much wider than tall; spacing is measured on it.
 ASPECT = 1.1
-# Minimum distance between area centres, in plot heights.
-AREA_GAP = 0.37
+# Room left between two areas' orbits for the works' names, in plot heights.
+NAME_ROOM = 0.2
 # How hard linked areas pull together, per iteration and per link (up to 4).
-PULL = 0.1
+PULL = 0.02
 
 
 def align_to_published(coords: np.ndarray, texts: list[str]) -> np.ndarray:
@@ -71,16 +71,31 @@ def align_to_published(coords: np.ndarray, texts: list[str]) -> np.ndarray:
     return (aligned - low) / (high - low)
 
 
-def spread_areas(centres: np.ndarray, links: np.ndarray, sizes: list[int]) -> np.ndarray:
+def orbit_radius(name: str, size: int) -> float:
+    """About how far an area's orbit reaches, in plot heights, as src/map.js
+    draws it on a 660px plot: the name in spaced 11px Plex Mono on one or two
+    lines, and more room for an area with more works."""
+    words = name.upper().split()
+    half = (len(words) + 1) // 2
+    lines = [" ".join(words[:half]), " ".join(words[half:])] if len(words) > 1 and len(name) > 12 else [name]
+    width = max(len(line) for line in lines) * 7.8 + 16
+    return (max(width / 2 + 24, 56) + max(0, size - 2) * 6) / 660
+
+
+def spread_areas(centres: np.ndarray, links: np.ndarray, sizes: list[int], radii: list[float]) -> np.ndarray:
     """Draws linked areas together and pushes all areas apart, so linked
-    areas end up side by side and no two are closer than AREA_GAP.
+    areas end up side by side and two orbits always leave NAME_ROOM between
+    them.
 
     links[a, b] counts the links between the works of areas a and b. An area
     with more works keeps further from the plot's edge, so the works on its
     outer side still have room for their names.
     """
+    gap = NAME_ROOM + np.add.outer(radii, radii)
     margin = np.array([0.1 + 0.025 * (size - 1) for size in sizes])[:, None]
     low, high = margin * [ASPECT, 1.0], (1 - margin) * [ASPECT, 1.0]
+    # Names cannot run left into the hero text, so the left edge keeps more room.
+    low[:, 0] += 0.05 * ASPECT
 
     def separate(points: np.ndarray) -> bool:
         moved = False
@@ -88,8 +103,8 @@ def spread_areas(centres: np.ndarray, links: np.ndarray, sizes: list[int]) -> np
             for j in range(i + 1, len(points)):
                 delta = points[i] - points[j]
                 distance = float(np.hypot(*delta)) or 1e-6
-                if distance < AREA_GAP:
-                    push = (AREA_GAP - distance) / 2 * delta / distance
+                if distance < gap[i, j]:
+                    push = (gap[i, j] - distance) / 2 * delta / distance
                     points[i] += push
                     points[j] -= push
                     moved = True
@@ -101,8 +116,8 @@ def spread_areas(centres: np.ndarray, links: np.ndarray, sizes: list[int]) -> np
         for i, j in zip(*np.nonzero(np.triu(links))):
             delta = points[j] - points[i]
             distance = float(np.hypot(*delta)) or 1e-6
-            if distance > AREA_GAP:
-                pull = PULL * min(links[i, j], 4) * (distance - AREA_GAP) / 2 * delta / distance
+            if distance > gap[i, j]:
+                pull = PULL * min(links[i, j], 4) * (distance - gap[i, j]) / 2 * delta / distance
                 points[i] += pull
                 points[j] -= pull
         separate(points)
@@ -219,7 +234,11 @@ def main() -> None:
 
     raw = np.stack([np.mean([w["position"] for w in works if w["area"] == a], axis=0) for a in range(len(areas))])
     sizes = [sum(w["area"] == a for w in works) for a in range(len(areas))]
-    centres = spread_areas(raw.copy(), links, sizes)
+    radii = [orbit_radius(name, size) for name, size in zip(areas, sizes)]
+    centres = spread_areas(raw.copy(), links, sizes, radii)
+    short = [(round(float(np.hypot(*((centres[i] - centres[j]) * [ASPECT, 1.0]))) / (NAME_ROOM + radii[i] + radii[j]), 2), areas[i], areas[j])
+             for i in range(len(areas)) for j in range(i + 1, len(areas))]
+    print("tightest pair:", min(short))
     middle = centres.mean(axis=0)
     for a, name in enumerate(areas):
         members = [w for w in works if w["area"] == a]
