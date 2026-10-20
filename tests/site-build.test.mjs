@@ -85,15 +85,33 @@ test("the map data is real, complete and linked to pages that exist", () => {
   for (const project of data.projects) {
     assert.ok(map.works.some((work) => work.title === project.title), project.title);
   }
+  const specWorks = Object.fromEntries(spec.works.map((work) => [work.id, work]));
   for (const work of map.works) {
     assert.ok(map.areas[work.area], `${work.id} has no area`);
     assert.ok(work.summary.length > 20, `${work.id} needs a summary`);
-    assert.ok(work.near.every((n) => map.works[n] && map.works[n].area !== work.area), `${work.id} links inside its own area`);
+    assert.ok(!("angle" in work) && !("near" in work), `${work.id} still carries islands data`);
+    assert.ok(work.homes.length >= 1, `${work.id} has no home`);
+    assert.equal(work.homes[0][0], work.area, `${work.id}: area must lead its homes`);
+    const weights = specWorks[work.id].weights;
+    for (const [a, weight] of work.homes) {
+      assert.ok(weight >= 0.2, `${work.id}: ${map.areas[a].name} is below the home threshold`);
+      assert.equal(weight, weights[map.areas[a].name]);
+    }
+    assert.equal(Math.max(...Object.values(weights)), weights[map.areas[work.area].name], `${work.id}: area is not a heaviest weight`);
+    assert.ok(work.links.every((n) => map.works[n] && map.works[n].links.includes(map.works.indexOf(work))), `${work.id} has a one-way link`);
     if (work.href.startsWith("#")) {
       assert.ok(read("index.html").includes(`id="${work.href.slice(1)}"`), `${work.href} missing on homepage`);
     } else {
       assert.equal(fs.existsSync(path.join(work.href, "index.html")), true, `${work.href} has no page`);
     }
+  }
+  assert.equal(map.links.length, spec.links.length);
+  for (const [a, b, why] of map.links) {
+    assert.ok(map.works[a] && map.works[b] && why.length > 10);
+  }
+  for (const area of map.areas) {
+    assert.equal(area.description, spec.descriptions[area.name]);
+    assert.equal(area.size, map.works.filter((work) => work.homes.some(([a]) => map.areas[a] === area)).length);
   }
 
   // Only essays that write up a project or experiment are on the map.

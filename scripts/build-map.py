@@ -8,14 +8,16 @@
 # ///
 """Builds assets/data/map.json, the map of work on the homepage.
 
-The map has two levels. Areas are fields of AI work, named in
-data/map-areas.json. Works are the papers, projects and production systems
-in each area, drawn around the area's name. Both are placed from the text:
-every passage printed by scripts/map-corpus.mjs is embedded and projected to
-2D with UMAP, and a work sits where its passages sit. Each work links to the
-works in other areas whose passages read most alike. An area starts where its
-works sit and is then drawn toward the areas its works link to, because UMAP
-keeps neighbourhoods but not the distances between them.
+The map is a graph. Areas are fields of AI work, named in data/map-areas.json
+and drawn as hubs. Works are the papers, projects and production systems, each
+joined to every area it belongs to (its homes: the weights of HOME_MIN or more
+in the spec file) and to the works it is curated-linked to. Hubs are placed
+from the text: every passage printed by scripts/map-corpus.mjs is embedded and
+projected to 2D with UMAP, an area starts at the weighted mean of its works'
+passages, and the areas are then spread apart, drawn together by the works
+they share and the relations in the spec file. Once published, hubs stay put
+between builds unless the set of areas changes. The works are placed around
+the hubs at run time (src/graph-layout.js).
 
 Points are kept for search and the small decorative fields:
 [x, y, source index, area index, passage text, anchor, work index], with -1
@@ -28,8 +30,8 @@ data/map-areas.json or data/artifact-texts.json:
 """
 
 import json
-import math
 import subprocess
+from itertools import combinations
 from pathlib import Path
 
 import numpy as np
@@ -38,15 +40,19 @@ from sentence_transformers import SentenceTransformer
 
 ROOT = Path(__file__).resolve().parent.parent
 MODEL = "sentence-transformers/all-MiniLM-L6-v2"
-NEAR = 2
-# Centred cosine similarity a link needs; weaker pairs are left unlinked.
-LINK_MIN = 0.15
+# A membership this heavy makes the area one of the work's homes.
+HOME_MIN = 0.2
 # The hero plot is about this much wider than tall; spacing is measured on it.
 ASPECT = 1.1
-# Room left between two areas' orbits for the works' names, in plot heights.
-NAME_ROOM = 0.2
-# How hard linked areas pull together, per iteration and per link (up to 4).
+# The gap two hubs keep, in plot heights: a base, more for every work the two
+# share, and a little for every work of each.
+GAP_BASE = 0.28
+GAP_SHARED = 0.015
+GAP_SIZE = 0.006
+# How hard related hubs pull together on a fresh placement, per iteration and
+# per unit of strength (shared weight plus relation, up to 4).
 PULL = 0.02
+RELATION_PULL = {"strong": 1.0, "medium": 0.5}
 
 
 def align_to_published(coords: np.ndarray, texts: list[str]) -> np.ndarray:
@@ -71,28 +77,33 @@ def align_to_published(coords: np.ndarray, texts: list[str]) -> np.ndarray:
     return (aligned - low) / (high - low)
 
 
-def orbit_radius(name: str, size: int) -> float:
-    """About how far an area's orbit reaches, in plot heights, as src/map.js
-    draws it on a 660px plot: the name in spaced 11px Plex Mono on one or two
-    lines, and more room for an area with more works."""
-    words = name.upper().split()
-    half = (len(words) + 1) // 2
-    lines = [" ".join(words[:half]), " ".join(words[half:])] if len(words) > 1 and len(name) > 12 else [name]
-    width = max(len(line) for line in lines) * 7.8 + 16
-    return (max(width / 2 + 24, 56) + max(0, size - 2) * 6) / 660
+def published_hubs(areas: list[str]) -> np.ndarray | None:
+    """The hub positions of the published map, when it has the same areas."""
+    published = ROOT / "assets" / "data" / "map.json"
+    if not published.exists():
+        return None
+    old = json.loads(published.read_text(encoding="utf-8"))["areas"]
+    if [area["name"] for area in old] != areas:
+        return None
+    return np.array([[area["x"], area["y"]] for area in old], dtype=float)
 
 
-def spread_areas(centres: np.ndarray, links: np.ndarray, sizes: list[int], radii: list[float]) -> np.ndarray:
-    """Draws linked areas together and pushes all areas apart, so linked
-    areas end up side by side and two orbits always leave NAME_ROOM between
-    them.
+def hub_gaps(shared_count: np.ndarray, sizes: list[int]) -> np.ndarray:
+    return GAP_BASE + GAP_SHARED * shared_count + GAP_SIZE * np.add.outer(sizes, sizes)
 
-    links[a, b] counts the links between the works of areas a and b. An area
-    with more works keeps further from the plot's edge, so the works on its
-    outer side still have room for their names.
+
+def spread_hubs(
+    start: np.ndarray, strength: np.ndarray, gap: np.ndarray, sizes: list[int], pull: bool
+) -> np.ndarray:
+    """Pushes all hubs apart until every pair keeps its gap and, on a fresh
+    placement, draws related hubs together first so they end up side by side.
+
+    strength[a, b] is how hard a and b pull on each other. A hub with more
+    works keeps further from the plot's edge, so its works have room for
+    their names. With pull off, the hubs only move where a gap is violated,
+    which is what keeps the published map stable.
     """
-    gap = NAME_ROOM + np.add.outer(radii, radii)
-    margin = np.array([0.1 + 0.025 * (size - 1) for size in sizes])[:, None]
+    margin = np.array([0.1 + 0.015 * (size - 1) for size in sizes])[:, None]
     low, high = margin * [ASPECT, 1.0], (1 - margin) * [ASPECT, 1.0]
     # Names cannot run left into the hero text, so the left edge keeps more room.
     low[:, 0] += 0.05 * ASPECT
@@ -111,41 +122,21 @@ def spread_areas(centres: np.ndarray, links: np.ndarray, sizes: list[int], radii
         np.clip(points, low, high, out=points)
         return moved
 
-    points = centres * [ASPECT, 1.0]
-    for _ in range(400):
-        for i, j in zip(*np.nonzero(np.triu(links))):
-            delta = points[j] - points[i]
-            distance = float(np.hypot(*delta)) or 1e-6
-            if distance > gap[i, j]:
-                pull = PULL * min(links[i, j], 4) * (distance - gap[i, j]) / 2 * delta / distance
-                points[i] += pull
-                points[j] -= pull
-        separate(points)
+    points = start * [ASPECT, 1.0]
+    if pull:
+        for _ in range(400):
+            for i, j in zip(*np.nonzero(np.triu(strength))):
+                delta = points[j] - points[i]
+                distance = float(np.hypot(*delta)) or 1e-6
+                if distance > gap[i, j]:
+                    step = PULL * min(strength[i, j], 4) * (distance - gap[i, j]) / 2 * delta / distance
+                    points[i] += step
+                    points[j] -= step
+            separate(points)
     for _ in range(400):
         if not separate(points):
             break
     return points / [ASPECT, 1.0]
-
-
-def spread_angles(angles: list[float]) -> list[float]:
-    """Keeps the works around one area name from bunching on one side."""
-    if len(angles) < 2:
-        return angles
-    gap = 2 * math.pi / len(angles) * 0.75
-    order = sorted(range(len(angles)), key=lambda i: angles[i])
-    values = [angles[i] for i in order]
-    for _ in range(200):
-        for k in range(len(values)):
-            a, b = values[k], values[(k + 1) % len(values)]
-            span = (b - a) % (2 * math.pi)
-            if span < gap:
-                shift = (gap - span) / 2
-                values[k] -= shift
-                values[(k + 1) % len(values)] += shift
-    out = [0.0] * len(angles)
-    for slot, i in enumerate(order):
-        out[i] = values[slot] % (2 * math.pi)
-    return out
 
 
 def main() -> None:
@@ -178,6 +169,7 @@ def main() -> None:
         return found
 
     areas = spec["areas"]
+    descriptions = spec.get("descriptions", {})
     work_of = np.full(len(rows), -1)
     works = []
     for w, entry in enumerate(spec["works"]):
@@ -201,88 +193,99 @@ def main() -> None:
                              'give it "kind": "project" in data/map-areas.json')
         for role, start in entry.get("roleHighlights", []):
             members += highlight_rows(role, start)
-        if entry["area"] not in areas:
-            raise SystemExit(f"{entry['id']}: unknown area {entry['area']!r}")
+
+        weights = entry["weights"]
+        unknown = [name for name in weights if name not in areas]
+        if unknown or entry["area"] not in areas:
+            raise SystemExit(f"{entry['id']}: unknown area {unknown or [entry['area']]}")
+        if abs(sum(weights.values()) - 1) > 1e-6:
+            raise SystemExit(f"{entry['id']}: weights sum to {sum(weights.values())}, not 1")
+        if weights.get(entry["area"], 0) < max(weights.values()):
+            raise SystemExit(f"{entry['id']}: area {entry['area']!r} is not a heaviest weight")
+        area = areas.index(entry["area"])
+        homes = [(areas.index(name), weight) for name, weight in weights.items() if weight >= HOME_MIN]
+        if not homes:
+            raise SystemExit(f"{entry['id']}: no membership reaches {HOME_MIN}")
+        homes.sort(key=lambda home: (home[0] != area, -home[1]))
+
         work_of[members] = w
-        vector = embeddings[members].mean(axis=0)
         works.append({
             "id": entry["id"], "short": entry["short"], **info,
-            "area": areas.index(entry["area"]), "size": len(members),
-            "vector": vector / np.linalg.norm(vector),
+            "area": area, "homes": homes, "size": len(members),
             "position": coords[members].mean(axis=0),
         })
     unassigned = [texts[r][:60] for r in np.flatnonzero(work_of < 0)]
     print(f"{len(works)} works over {len(areas)} areas; {len(unassigned)} passages belong to no work")
 
-    # Links join works in different areas. Centring the vectors first removes
-    # what every work shares, so one generic work doesn't become everyone's
-    # nearest neighbour.
-    vectors = np.stack([w["vector"] for w in works])
-    vectors -= vectors.mean(axis=0)
-    vectors /= np.linalg.norm(vectors, axis=1, keepdims=True)
-    similarity = vectors @ vectors.T
-    same_area = np.array([[a["area"] == b["area"] for b in works] for a in works])
-    similarity[same_area] = -1
+    index = {work["id"]: w for w, work in enumerate(works)}
+    links = []
+    for link in spec.get("links", []):
+        missing = [i for i in link["works"] if i not in index]
+        if missing:
+            raise SystemExit(f"map-areas.json links name works it lacks: {missing}")
+        a, b = (index[i] for i in link["works"])
+        links.append([a, b, link["why"]])
+    work_links: list[list[int]] = [[] for _ in works]
+    for a, b, _ in links:
+        work_links[a].append(b)
+        work_links[b].append(a)
 
-    near = [[int(n) for n in similarity[w].argsort()[::-1][:NEAR] if similarity[w, n] >= LINK_MIN]
-            for w in range(len(works))]
-    links = np.zeros((len(areas), len(areas)))
-    for w, targets in enumerate(near):
-        for n in targets:
-            links[works[w]["area"], works[n]["area"]] += 1
-            links[works[n]["area"], works[w]["area"]] += 1
+    sizes = [sum(any(h == a for h, _ in work["homes"]) for work in works) for a in range(len(areas))]
+    shared = np.zeros((len(areas), len(areas)))
+    shared_count = np.zeros((len(areas), len(areas)))
+    for work in works:
+        for (a, wa), (b, wb) in combinations(work["homes"], 2):
+            shared[a, b] = shared[b, a] = shared[a, b] + min(wa, wb)
+            shared_count[a, b] = shared_count[b, a] = shared_count[a, b] + 1
+    relations = np.zeros((len(areas), len(areas)))
+    for relation in spec.get("relations", []):
+        a, b = (areas.index(name) for name in relation["areas"])
+        relations[a, b] = relations[b, a] = RELATION_PULL.get(relation["strength"], 0)
 
-    raw = np.stack([np.mean([w["position"] for w in works if w["area"] == a], axis=0) for a in range(len(areas))])
-    sizes = [sum(w["area"] == a for w in works) for a in range(len(areas))]
-    radii = [orbit_radius(name, size) for name, size in zip(areas, sizes)]
-    centres = spread_areas(raw.copy(), links, sizes, radii)
-    short = [(round(float(np.hypot(*((centres[i] - centres[j]) * [ASPECT, 1.0]))) / (NAME_ROOM + radii[i] + radii[j]), 2), areas[i], areas[j])
-             for i in range(len(areas)) for j in range(i + 1, len(areas))]
-    print("tightest pair:", min(short))
-    middle = centres.mean(axis=0)
+    # An area starts at the weighted mean of its works' passages.
+    raw = np.full((len(areas), 2), 0.5)
+    for a in range(len(areas)):
+        pairs = [(work["position"], weight) for work in works for home, weight in work["homes"] if home == a]
+        if pairs:
+            raw[a] = sum(position * weight for position, weight in pairs) / sum(weight for _, weight in pairs)
+    gap = hub_gaps(shared_count, sizes)
+    start = published_hubs(areas)
+    centres = spread_hubs(raw if start is None else start, shared + relations, gap, sizes, pull=start is None)
+    print("hubs kept from the published map" if start is not None else "hubs placed afresh")
+    tightest = min(
+        (round(float(np.hypot(*((centres[i] - centres[j]) * [ASPECT, 1.0]))) / gap[i, j], 2), areas[i], areas[j])
+        for i in range(len(areas)) for j in range(i + 1, len(areas))
+    )
+    print("tightest pair:", tightest)
     for a, name in enumerate(areas):
-        members = [w for w in works if w["area"] == a]
-        angles = []
-        for work in members:
-            delta = (work["position"] - raw[a]) * [ASPECT, 1.0]
-            if len(members) == 1 or np.hypot(*delta) < 1e-3:
-                delta = (centres[a] - middle) * [ASPECT, 1.0]
-            angles.append(math.atan2(delta[1], delta[0]))
-        # A lone work facing a plot edge would push its name off the plot;
-        # it sits below the area's name instead.
-        if len(members) == 1:
-            facing = math.cos(angles[0])
-            if (facing > 0.5 and centres[a][0] > 0.75) or (facing < -0.5 and centres[a][0] < 0.25):
-                angles[0] = math.pi / 2
-        for work, angle in zip(members, spread_angles(angles)):
-            work["angle"] = round(angle, 4)
-        print(f"{name}: {', '.join(w['short'] for w in members)}")
+        print(f"{name}: {', '.join(w['short'] for w in works if any(h == a for h, _ in w['homes']))}")
 
-    out_works = []
-    for w, work in enumerate(works):
-        out_works.append({
-            key: work[key] for key in ("id", "kind", "title", "short", "meta", "summary", "href", "sources", "area", "angle", "size")
-        } | {"near": near[w]})
-
-    out_areas = [{"name": name, "x": round(float(x), 4), "y": round(float(y), 4)}
-                 for name, (x, y) in zip(areas, centres)]
+    out_works = [
+        {key: work[key] for key in ("id", "kind", "title", "short", "meta", "summary", "href", "sources", "area", "homes", "size")}
+        | {"links": work_links[w]}
+        for w, work in enumerate(works)
+    ]
+    out_areas = [{"name": name, "x": round(float(x), 4), "y": round(float(y), 4),
+                  "description": descriptions.get(name, ""), "size": size}
+                 for name, (x, y), size in zip(areas, centres, sizes)]
     out_sources = [{key: source[key] for key in ("id", "kind", "title", "meta", "href")} for source in sources]
 
     points = []
-    for r, ((index, chunk), (x, y)) in enumerate(zip(rows, coords)):
+    for r, ((index_, chunk), (x, y)) in enumerate(zip(rows, coords)):
         work = int(work_of[r])
-        anchor = chunk["href"][len(sources[index]["href"]):]
+        anchor = chunk["href"][len(sources[index_]["href"]):]
         area = works[work]["area"] if work >= 0 else -1
-        points.append([round(float(x), 4), round(float(y), 4), index, area, chunk["text"], anchor, work])
+        points.append([round(float(x), 4), round(float(y), 4), index_, area, chunk["text"], anchor, work])
 
     target = ROOT / "assets" / "data" / "map.json"
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(
-        json.dumps({"model": MODEL, "areas": out_areas, "works": out_works, "sources": out_sources,
-                    "points": points}, ensure_ascii=False, separators=(",", ":")),
+        json.dumps({"model": MODEL, "areas": out_areas, "works": out_works, "links": links,
+                    "sources": out_sources, "points": points},
+                   ensure_ascii=False, separators=(",", ":")),
         encoding="utf-8",
     )
-    print(f"wrote {target.relative_to(ROOT)}: {len(points)} passages, {len(out_works)} works")
+    print(f"wrote {target.relative_to(ROOT)}: {len(points)} passages, {len(out_works)} works, {len(links)} links")
 
 
 if __name__ == "__main__":
