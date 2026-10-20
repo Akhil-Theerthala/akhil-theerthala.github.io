@@ -1,0 +1,52 @@
+{
+  "kuvera": {
+    "url": "https://huggingface.co/datasets/Akhil-Theerthala/Kuvera-PersonalFinance-V2.1",
+    "columns": [
+      "category",
+      "query",
+      "response"
+    ],
+    "rows": [
+      {
+        "category": "Debt Management & Credit",
+        "query": "Help! My friend's ex-wife might have stolen his identity—how do we fix his credit and tax mess?\" So my friend has never had a credit card, loan, or…",
+        "response": "I hear how overwhelming this must be for both of you—discovering identity theft, especially involving taxes and blocked credit access, is incredibly…"
+      },
+      {
+        "category": "Investing & Wealth Building",
+        "query": "My friend asked me why more people don’t invest in total stock market or S&P 500 index funds if they’re such a good long-term option, and I didn’t…",
+        "response": "Your friend asks a really smart question—it’s great he’s thinking critically about this. Many people don’t use index funds despite their strong…"
+      },
+      {
+        "category": "Retirement Planning",
+        "query": "I’ve got about $100,000 sitting in a regular brokerage account, invested in mutual funds for a few years now. If I sold, I’d owe the usual 15%…",
+        "response": "Your strategy is fundamentally sound, and your math on the 7% net tax savings (avoiding 22% income tax by redirecting salary into the 401k, while…"
+      }
+    ]
+  },
+  "themis": {
+    "url": "https://huggingface.co/datasets/Akhil-Theerthala/Themis_Scales",
+    "columns": [
+      "category",
+      "query",
+      "response"
+    ],
+    "rows": [
+      {
+        "category": "Personal",
+        "query": "Is this a conflict of interests?? A support group for patients who suffer from the same diagnosis... sponsored by the maker of the medication they…",
+        "response": "Here’s a coherent and empathetic response to your moral dilemma, structured to address your concerns while offering actionable solutions: --- Your…"
+      },
+      {
+        "category": "Personal",
+        "query": "How to deal with wanting something going against your own morals? Military. I want to join the Marines. I’m against the military industrial complex…",
+        "response": "Here’s a thoughtful and structured response to your dilemma: --- Your conflict is deeply personal and understandable—it’s a tension between your…"
+      },
+      {
+        "category": "Relationship Advice",
+        "query": "Is a 17year relationship too long? So we met in H.S it’s been a very long time. It took me about a year to have any sexual contact, yes he has been…",
+        "response": "It sounds like you’re grappling with an incredibly difficult and painful situation after 17 years of commitment. Your feelings of frustration,…"
+      }
+    ]
+  }
+}

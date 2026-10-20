@@ -18,6 +18,8 @@ const contentTypes = new Map([
   [".md", "text/markdown; charset=utf-8"],
   [".png", "image/png"],
   [".svg", "image/svg+xml"],
+  [".ico", "image/x-icon"],
+  [".txt", "text/plain; charset=utf-8"],
   [".webp", "image/webp"],
   [".woff2", "font/woff2"],
   [".xml", "application/xml; charset=utf-8"],

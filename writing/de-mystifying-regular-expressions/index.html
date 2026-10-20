@@ -1,33 +1,185 @@
 <!doctype html>
-<html lang="en" data-article-file="De-mystifying-Regular-Expressions.md" data-content-prefix="../../" data-density="comfortable">
+<html lang="en" data-page="article" data-root="../../">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>De-mystifying Regular Expressions - Akhil Theerthala</title>
-    <meta name="description" content="An essay by Akhil Theerthala on older learning notes." />
+    <meta name="description" content="Regular expressions taught through one date-matching example: direct search, disjunction, character sets, optional characters and position anchors." />
     <link rel="canonical" href="https://akhiltheerthala.com/writing/de-mystifying-regular-expressions/" />
     <meta property="og:title" content="De-mystifying Regular Expressions - Akhil Theerthala" />
-    <meta property="og:description" content="An essay by Akhil Theerthala on older learning notes." />
+    <meta property="og:description" content="Regular expressions taught through one date-matching example: direct search, disjunction, character sets, optional characters and position anchors." />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://akhiltheerthala.com/writing/de-mystifying-regular-expressions/" />
+    <meta property="og:site_name" content="Akhil Theerthala" />
     <meta property="og:image" content="https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="article:published_time" content="2023" />
+    <meta property="og:image:alt" content="The AT mark, the name Akhil Theerthala and the title Applied data scientist, beside a map of nine areas of his work, such as document AI and LLM evaluation." />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@thesilvervein" />
     <meta name="twitter:image" content="https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png" />
-    <meta name="theme-color" content="#0d0f0e" />
-    <link
-      rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%230d0f0e'/%3E%3Cpath d='M15 49 29 14h7l14 35h-8l-3-9H25l-3 9h-7Zm12-16h10l-5-14-5 14Z' fill='%23c8a66b'/%3E%3C/svg%3E"
-    />
-    <link rel="preload" href="../../assets/fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="../../assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="../../portfolio.css" />
-    <script defer src="../../assets/js/writing.js"></script>
+    <meta name="twitter:image:alt" content="The AT mark, the name Akhil Theerthala and the title Applied data scientist, beside a map of nine areas of his work, such as document AI and LLM evaluation." />
+    <meta name="theme-color" content="#0c0f0d" />
+    <link rel="icon" href="../../favicon.ico" sizes="48x48" />
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+    <link rel="preload" href="../../assets/fonts/plex-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="../../assets/css/site.css" />
+    <script>
+      (function () {
+        var d = document.documentElement, t;
+        try { t = localStorage.getItem("theme"); } catch (_) {}
+        // Dark is the site's own look; light is there for anyone who switches.
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.classList.add("js");
+        // If the site script never runs, show everything the reveal animation hides.
+        setTimeout(function () { if (!window.__siteReady) d.classList.remove("js"); }, 2500);
+      })();
+    </script>
+    <meta property="article:published_time" content="2023-08" />
+    <meta property="article:author" content="https://akhiltheerthala.com/" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "De-mystifying Regular Expressions",
+  "description": "Regular expressions taught through one date-matching example: direct search, disjunction, character sets, optional characters and position anchors.",
+  "datePublished": "2023-08",
+  "url": "https://akhiltheerthala.com/writing/de-mystifying-regular-expressions/",
+  "mainEntityOfPage": "https://akhiltheerthala.com/writing/de-mystifying-regular-expressions/",
+  "image": "https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png",
+  "author": {
+    "@type": "Person",
+    "@id": "https://akhiltheerthala.com/#person",
+    "name": "Akhil Theerthala",
+    "url": "https://akhiltheerthala.com/"
+  }
+}
+    </script>
+    <script defer src="../../assets/js/site.js"></script>
   </head>
   <body>
+    <div class="ground" aria-hidden="true"><i class="ground-cols"></i><i class="ground-ticks"></i><i class="ground-spot"></i><i class="ground-contour"></i><i class="ground-contour"></i></div>
     <a class="skip-link" href="#main-content">Skip to main content</a>
-    <div id="root"></div>
+    <header class="site-nav">
+      <div class="wrap">
+        <a class="wordmark" href="../../" aria-label="Akhil Theerthala, home"><svg class="wordmark-mark" viewBox="0 0 23 22" width="23" height="22" aria-hidden="true"><path fill="currentColor" d="M10 5H13L22 20H18.5L11.5 8.33L4.5 20H1Z"/><path class="accent" d="M2 2H21V5H13V20H10V5H2Z"/></svg>Akhil Theerthala</a>
+        <nav aria-label="Sections">
+          <ul class="nav-links">
+            <li><a href="../../#about" data-section="about">About</a></li>
+            <li><a href="../../#cv" data-section="cv">Experience</a></li>
+            <li><a href="../../#work" data-section="work">Projects</a></li>
+            <li><a href="../../#research" data-section="research">Papers</a></li>
+            <li><a href="../../#writings" data-section="writings" aria-current="page">Writing</a></li>
+            <li><a href="../../#contact" data-section="contact">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="nav-actions">
+          <button class="icon-btn theme-toggle" type="button" aria-label="Switch between light and dark theme"><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg></button>
+          <a class="btn btn-primary btn-small" href="mailto:akhiltvsn@gmail.com">Email me</a>
+        </div>
+      </div>
+    </header>
+    <main id="main-content">
+      <div class="wrap page-top">
+        <p class="crumbs"><a href="../../#writings">Writing</a><span aria-hidden="true">/</span><span>Older Learning Notes</span></p>
+        <h1 class="page-title">De-mystifying Regular Expressions</h1>
+        
+        <p class="page-meta"><span class="dot" aria-hidden="true"></span><span>Akhil Theerthala</span><span>Aug 2023</span><span>15 min read</span></p>
+        <details class="toc-mobile"><summary>On this page</summary><ol><li><a href="#one-of-the-most-underrated-skills-any-data-professional-should-have-when-working-with-strings">One of the most underrated skills any data professional should have when working with strings</a></li><li><a href="#searching-directly">Searching directly</a></li><li><a href="#increasing-the-scope-of-the-search">Increasing the scope of the search</a></li><li><a href="#the-disjunction-operator" class="sub">The disjunction operator (|):</a></li><li><a href="#the" class="sub">The “\[ \]”:</a></li><li><a href="#optional-characters">Optional characters</a></li><li><a href="#the-operator" class="sub">The ? operator</a></li><li><a href="#the-parenthesis" class="sub">The parenthesis</a></li><li><a href="#specifying-the-position">Specifying the position</a></li><li><a href="#how-do-we-add-this-information" class="sub">How do we add this information?</a></li><li><a href="#the-issue-in-our-pattern">The issue in our pattern!</a></li></ol></details>
+      </div>
+      <div class="wrap reader no-aside">
+        <nav class="toc" aria-label="On this page"><p>On this page</p><ol><li><a href="#one-of-the-most-underrated-skills-any-data-professional-should-have-when-working-with-strings">One of the most underrated skills any data professional should have when working with strings</a></li><li><a href="#searching-directly">Searching directly</a></li><li><a href="#increasing-the-scope-of-the-search">Increasing the scope of the search</a></li><li><a href="#the-disjunction-operator" class="sub">The disjunction operator (|):</a></li><li><a href="#the" class="sub">The “\[ \]”:</a></li><li><a href="#optional-characters">Optional characters</a></li><li><a href="#the-operator" class="sub">The ? operator</a></li><li><a href="#the-parenthesis" class="sub">The parenthesis</a></li><li><a href="#specifying-the-position">Specifying the position</a></li><li><a href="#how-do-we-add-this-information" class="sub">How do we add this information?</a></li><li><a href="#the-issue-in-our-pattern">The issue in our pattern!</a></li></ol></nav>
+        <article class="prose" data-article-file="De-mystifying-Regular-Expressions.md">
+<h2 id="one-of-the-most-underrated-skills-any-data-professional-should-have-when-working-with-strings">One of the most underrated skills any data professional should have when working with strings</h2>
+<p id="p-0">RegEx is one of the most powerful text-related skills out there; however, it&#39;s equally frustrating to learn. We come across the applications of RegEx, some of its notable uses include syntax highlighting in IDEs, and routing in web applications, among others etc. It is also prominent in the fields that involve processing huge chunks of data, like Data validation, Web Scraping, Data Mining etc.
+<img src="https://miro.medium.com/v2/resize:fit:1400/0*QXEQDCzIWKXGksGi" alt="Example of syntax highlighting. Photo by Mika Baumeister / Unsplash" loading="lazy" decoding="async" />
+However, it is equally frustrating to understand it when we try to learn it academically. It is more comfortable when we learn it through an example. However, the example must be simple yet versatile enough to cover different features and the facilities Regex offers. After much thought, I realised that a simple example like today&#39;s date could cover most of the RegEx concepts I use in my projects. <em>(Well…I was looking for an example while looking at my phone, but I guess this counts as trying.)</em>
+So, in this article, we will explore the different operators of Regular Expressions while we try and match this Sunday, 23 July 2023.</p>
+<h2 id="searching-directly">Searching directly</h2>
+<p id="p-1">One of the simplest ways to search a string is to search for the string directly. In practice, you can do this by <code>re.search(&#39;23 July 2023&#39;)</code>. However, not all programming languages use this kind of notation. For example, in javascript, we represent regex patterns using the literals or the forward slash character <code>/</code>. This is how the patterns are also generally represented in the literature too. Hence, for uniformity, we will use the forward slash notation throughout the article.Now, when searching directly, we represent it by <code>/23 July 2023/</code>.
+Directly searching for <code>/23 July 2023/</code>returns all the matches with the date in this exact format. However, as previously mentioned, dates are generally have countless variations. The same date can be written as <code>23 jul 2023</code> ;<code>23 july 2023</code> ;<code>23/07/2023</code> or even <code>23/07/23</code>. How can we adapt our search to include all these different date formats?</p>
+<h2 id="increasing-the-scope-of-the-search">Increasing the scope of the search</h2>
+<p id="p-2">Now, the search scope in our example needs to be narrower. However, these broad examples can be condensed into two representations. The word representations <code>23 July 2023</code> and the numeric representation <code>23/07/2023</code>. Two different expressions can match these two different strings. First, let&#39;s try to get an expression matching these two representations.</p>
+<h3 id="the-disjunction-operator">The disjunction operator (|):</h3>
+<p id="p-3">We need to specify where the pattern can be varied to include these different text formats. Let&#39;s first specify the variation between two variations, <code>23 July 2023</code> and <code>23/07/2023</code>. This can be specified using the <strong>disjunction</strong><code>|</code> operator.
+The disjunction operator enables us to match two or more expressions in a single query. Hence, our original expression changes to the following expression,
+<code>/23 July 2023|23/07/2023/</code>
+Upon seeing this, you might think, &quot;Wait! There is something wrong with the earlier notation! The / is used multiple times in the string. Doesn&#39;t the representation get confusing?&quot; If you did think that way, then you are right. This is not how the special characters <code>/</code> are represented in Regex. These special characters include. <code>*,$, ^, +,(,), {, }, [, ] and .</code>, among many other things that will be introduced later.
+We typically add these into the expression using an escape character, which is generally a backslash(<code>\</code>). Hence, the correct expression changes to,
+<code>/23 July 2023|23\/07\/2023/</code>
+Looks confusing. However, these are the few things we must tolerate when writing such expressions.</p>
+<blockquote>
+<p><em>Note that in some situations, the \ can be considered as a part of the string. Hence you might need to use a \ as an escape sequence. This is generally not that prominent, but I thought it is better to mention this.</em></p>
+</blockquote>
+<h3 id="the">The “[ ]”:</h3>
+<p id="p-4">Now that we have the pattern to match two forms, i.e. numeric and textual forms of date, you might think you can relax. But there are still a lot of varieties to consider. Take your time to ponder about a few of these variations.
+Let&#39;s start with simple things; people might write <code>July</code> without a capital <code>J</code> or they might use a hyphen (-) or a period (.) instead of a slash. Now, how do we make these considerations in the pattern? We can&#39;t just add all these representations by using the disjunction operator. (That takes too long when searching for complex patterns; honestly, it&#39;s just a lot of work.).
+That&#39;s when the <code>[]</code> come into play. This operator considers whatever the characters or expressions in it as a sequence of <code>OR</code> probabilities. For example, when we mention <code>/[ab]c/</code> the system searches for either <code>ac</code> or <code>bc</code>. This is useful for us to mention these different forms of representation. Hence, our new expression comes to,
+<code>/23 [Jj]uly 2023|23[-\/\.]07[-\/\.]2023/</code></p>
+<blockquote>
+<p><em>Note that we have represented the period (</em> <code>_._</code> <em>) as</em> <code>_\._</code><em>. As it is one of those special characters mentioned previously.</em>
+Now this representation considers <code>23 July 2023, 23 july 2023, 23/07/2023, 23-07-2023, 23.07.2023</code>. Now, you can step back and relax before continuing the journey.</p>
+</blockquote>
+<h2 id="optional-characters">Optional characters</h2>
+<p id="p-5">Now in the final set of representations, we have covered the two variations of the word <code>July</code> and different ways of writing the numerical format of the date. But there are more variations of writing a date. You can find multiple variations when we think for a few seconds. However, let&#39;s take some baby steps and start with the next simplest variation.</p>
+<h3 id="the-operator">The <code>?</code> operator</h3>
+<p id="p-6">In our case, the next simplest representation is the one where we represent <code>July</code> without the <code>y</code>. <code>23 Jul 2023</code> is also a valid way of writing the date. Hence, we need to add that to our representations too. So how do we do that?
+This is where the <code>?</code> comes into play. Using the <code>?</code> operator immediately after a character indicates that the character might or might not occur in the pattern. This simple use case can be very powerful when combined with the previous operators and another operator we will look into shortly. We will look into these examples later on. For now, let&#39;s update our expression,
+<code>/23 [Jj]uly? 2023|23[-\/\.]07[-\/\.]2023/</code>
+This simple change adds two representations to our collection, expanding our search scope. However, there are still things that can be done.</p>
+<h3 id="the-parenthesis">The parenthesis</h3>
+<p id="p-7">The next simplest representation that can be added is the optional occurrence of the <code>20</code> in the <code>2023</code>. So how do we do that? Do we add two question marks after 2 and 0? That can be done for simple things like this. However, what would you do with multiple sets of characters that might not occur, such as plurals like puppy and puppies? Do you add <code>?</code> after all the optional characters like <code>puppy?i?e?s?</code> This increases the chances of including things like the puppet or sometimes misspelled words like puppi. Using disjunction is also not a valid choice as <code>puppy|ies</code> represents <code>puppy</code> or <code>ies</code> not <code>puppy</code> or <code>puppies</code>.
+Let&#39;s simplify this problem. What we need is the ability to group different characters into one block. (<em>This can help concatenate our current expression, too!</em>). Now, this is what the parenthesis operator provides us. We can group multiple characters into a block by placing them in parenthesis. Hence, <code>(20)?23</code> can match either 2023 or 23. This changes our expression to
+<code>/23 [Jj]uly? (20)?23|23[-\/\.]07[-\/\.](20)23/</code>
+However, we can use the parenthesis further to shorten our entire expression, as the major difference between the two representations is how we write the month. Hence, our new expression becomes,
+<code>/23( [Jj]uly? |[-\/\.]07[-\/\.])(20)?23/</code></p>
+<blockquote>
+<p><em>Take note that in our shortened expression there is no space around the parenthesis but rather it is located around the text July. If we keep the spaces outside the parenthesis, then our pattern becomes something like this</em> <code>_23 /07/ 2023_</code> <em>instead of</em> <code>_23/07/2023_</code><em>.</em>
+This is not the end, as we haven&#39;t considered variations like <code>23-Jul-2023</code> or <code>23-Jul-23</code>. However, with the understanding you&#39;ve gained so far, I encourage you to tweak the existing regex pattern to accommodate these forms. Give it a shot before continuing with the article.</p>
+</blockquote>
+<h2 id="specifying-the-position">Specifying the position</h2>
+<p id="p-8">Now that we have the expression to match the dates, it is time to take the next step. However, it is important to note that the expression from the above pattern includes multiple items we don&#39;t need. Some of these include situations where we might come across a few cases where the 23 might belong to a different statement and the <code>July 23</code> or <code>July 2023</code>. Hence, it is important to include the position information in our expression.</p>
+<h3 id="how-do-we-add-this-information">How do we add this information?</h3>
+<p id="p-9">In RegEx, we use a few specified notations called Position Anchors to indicate this position. Some of the common ones include <code>^,\b,\B,$</code>. Each of these has a specific use case, which is mentioned in the table below,
+<img src="https://miro.medium.com/v2/resize:fit:1400/1*5CxPX8qjJS5JB9oWHHKWNw.png" alt="Anchors and their definitions. Image owned by Author." loading="lazy" decoding="async" />
+Among these, the word boundary is the most useful for us, as it enables the &quot;whole words only&quot; search mode in RegEx. This filters most confusion from the picture when we push July into the parenthesis. Hence, our pattern changes to,
+<code>/\b23[ \.\/-]([Jj]uly?|07)[ \.\/-](20)?23\b/</code>
+This is used because we might encounter situations with punctuation before or after the date, and we don&#39;t want to exclude them. You can try these out and see whether the punctuations occur or not. (If you do, you will be in for a surprise!)</p>
+<h2 id="the-issue-in-our-pattern">The issue in our pattern!</h2>
+<p id="p-10">Let&#39;s delve deeper into a common issue we might face with our pattern. Suppose you try running the above pattern with Python&#39;s <code>re.findall()</code> function using a sequence such as &quot;Today is 23 July 2023&quot;. Here&#39;s what happens::
+<img src="https://miro.medium.com/v2/resize:fit:1128/0*TdOjFTmUnvVZ3thN.png" alt="Output from using the earlier regex pattern in Python’s re.findall() function. Image generated by the Author." loading="lazy" decoding="async" />
+Output from using the earlier regex pattern in Python&#39;s <code>re.findall()</code> function. Image generated by the Author.
+Well, what do we see here? We see that the pattern we mention only returns the results of the expressions in the parenthesis. Why is that?
+This is because Regex has a simple application called <strong>substitution</strong>. In substitution, we generally tend to group a pattern in the text and store it for reference with a numbered indicator to call it later on in the pattern. This helps us keep our pattern simple and not use the same expression again and again. These groups are generally called <strong>capturing groups.</strong>
+However, these things also interfere when the parenthesis is used for normal pattern searching. Hence, we only need to mention to the system that these things are not meant to be stored. How can we do this? We add <code>?:</code> the beginning of the expression in the parenthesis. These kinds of groups are called <strong>non-capturing groups.</strong> Hence, our pattern changes slightly,
+<code>/\b23[ \.\/-](?:[Jj]uly?|07)[ \.\/-](?:20)?23\b/</code>
+This gives us the output we need. You can check the output we get now,
+<img src="https://miro.medium.com/v2/resize:fit:1240/0*rjNjDyZAZoIpKX6_.png" alt="" loading="lazy" decoding="async" />
+With this, we have covered most of the common operators in RegEx, and you can go ahead and try to identify different patterns using what we have discussed today. However, before we leave, I will present all the operators we discussed today for quick reference, along with a few others we didn&#39;t get a chance to do so.
+<img src="https://miro.medium.com/v2/resize:fit:1400/1*AqknDD3NnEbT-6rKTLkPDQ.png" alt="A table describing basic RegEx operators and their definitions. Image created by Author." loading="lazy" decoding="async" />
+The above table can be a simple reference for most regex operators. You can see that some of these operators have multiple uses based on the position they are used in, so it is especially important to check the use and effect of these operators when writing an expression.</p>
+
+          <div class="article-foot">
+            <p>Send questions or corrections to <a href="mailto:akhiltvsn@gmail.com">akhiltvsn@gmail.com</a>.</p>
+            <p><a href="../../writing.html">All writing</a></p>
+          </div>
+        </article>
+        
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <p>© 2026 Akhil Theerthala, Bengaluru</p>
+        <nav aria-label="Profiles">
+          <a href="https://github.com/Akhil-Theerthala" target="_blank" rel="noreferrer">GitHub</a>
+          <a href="https://huggingface.co/Akhil-Theerthala" target="_blank" rel="noreferrer">Hugging Face</a>
+          <a href="https://scholar.google.com/citations?user=_H1O3ScAAAAJ&amp;hl=en" target="_blank" rel="noreferrer">Google Scholar</a>
+          <a href="https://www.linkedin.com/in/akhil-theerthala/" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="https://x.com/thesilvervein" target="_blank" rel="noreferrer">X</a>
+          <a href="../../writing.html">All writing</a>
+        </nav>
+      </div>
+    </footer>
   </body>
 </html>

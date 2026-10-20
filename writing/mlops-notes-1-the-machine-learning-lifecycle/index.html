@@ -1,33 +1,179 @@
 <!doctype html>
-<html lang="en" data-article-file="MLOps-Notes-1-The-Machine-Learning.md" data-content-prefix="../../" data-density="comfortable">
+<html lang="en" data-page="article" data-root="../../">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MLOps Notes 1: The Machine Learning Lifecycle - Akhil Theerthala</title>
-    <meta name="description" content="An essay by Akhil Theerthala on older learning notes." />
+    <meta name="description" content="Notes from the DeepLearning.AI MLOps course on the four phases of a production ML project: scoping, data, modelling and deployment." />
     <link rel="canonical" href="https://akhiltheerthala.com/writing/mlops-notes-1-the-machine-learning-lifecycle/" />
     <meta property="og:title" content="MLOps Notes 1: The Machine Learning Lifecycle - Akhil Theerthala" />
-    <meta property="og:description" content="An essay by Akhil Theerthala on older learning notes." />
+    <meta property="og:description" content="Notes from the DeepLearning.AI MLOps course on the four phases of a production ML project: scoping, data, modelling and deployment." />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://akhiltheerthala.com/writing/mlops-notes-1-the-machine-learning-lifecycle/" />
+    <meta property="og:site_name" content="Akhil Theerthala" />
     <meta property="og:image" content="https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="article:published_time" content="2023" />
+    <meta property="og:image:alt" content="The AT mark, the name Akhil Theerthala and the title Applied data scientist, beside a map of nine areas of his work, such as document AI and LLM evaluation." />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@thesilvervein" />
     <meta name="twitter:image" content="https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png" />
-    <meta name="theme-color" content="#0d0f0e" />
-    <link
-      rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%230d0f0e'/%3E%3Cpath d='M15 49 29 14h7l14 35h-8l-3-9H25l-3 9h-7Zm12-16h10l-5-14-5 14Z' fill='%23c8a66b'/%3E%3C/svg%3E"
-    />
-    <link rel="preload" href="../../assets/fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="../../assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="../../portfolio.css" />
-    <script defer src="../../assets/js/writing.js"></script>
+    <meta name="twitter:image:alt" content="The AT mark, the name Akhil Theerthala and the title Applied data scientist, beside a map of nine areas of his work, such as document AI and LLM evaluation." />
+    <meta name="theme-color" content="#0c0f0d" />
+    <link rel="icon" href="../../favicon.ico" sizes="48x48" />
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+    <link rel="preload" href="../../assets/fonts/plex-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="../../assets/css/site.css" />
+    <script>
+      (function () {
+        var d = document.documentElement, t;
+        try { t = localStorage.getItem("theme"); } catch (_) {}
+        // Dark is the site's own look; light is there for anyone who switches.
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.classList.add("js");
+        // If the site script never runs, show everything the reveal animation hides.
+        setTimeout(function () { if (!window.__siteReady) d.classList.remove("js"); }, 2500);
+      })();
+    </script>
+    <meta property="article:published_time" content="2023-01" />
+    <meta property="article:author" content="https://akhiltheerthala.com/" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "MLOps Notes 1: The Machine Learning Lifecycle",
+  "description": "Notes from the DeepLearning.AI MLOps course on the four phases of a production ML project: scoping, data, modelling and deployment.",
+  "datePublished": "2023-01",
+  "url": "https://akhiltheerthala.com/writing/mlops-notes-1-the-machine-learning-lifecycle/",
+  "mainEntityOfPage": "https://akhiltheerthala.com/writing/mlops-notes-1-the-machine-learning-lifecycle/",
+  "image": "https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png",
+  "author": {
+    "@type": "Person",
+    "@id": "https://akhiltheerthala.com/#person",
+    "name": "Akhil Theerthala",
+    "url": "https://akhiltheerthala.com/"
+  }
+}
+    </script>
+    <script defer src="../../assets/js/site.js"></script>
   </head>
   <body>
+    <div class="ground" aria-hidden="true"><i class="ground-cols"></i><i class="ground-ticks"></i><i class="ground-spot"></i><i class="ground-contour"></i><i class="ground-contour"></i></div>
     <a class="skip-link" href="#main-content">Skip to main content</a>
-    <div id="root"></div>
+    <header class="site-nav">
+      <div class="wrap">
+        <a class="wordmark" href="../../" aria-label="Akhil Theerthala, home"><svg class="wordmark-mark" viewBox="0 0 23 22" width="23" height="22" aria-hidden="true"><path fill="currentColor" d="M10 5H13L22 20H18.5L11.5 8.33L4.5 20H1Z"/><path class="accent" d="M2 2H21V5H13V20H10V5H2Z"/></svg>Akhil Theerthala</a>
+        <nav aria-label="Sections">
+          <ul class="nav-links">
+            <li><a href="../../#about" data-section="about">About</a></li>
+            <li><a href="../../#cv" data-section="cv">Experience</a></li>
+            <li><a href="../../#work" data-section="work">Projects</a></li>
+            <li><a href="../../#research" data-section="research">Papers</a></li>
+            <li><a href="../../#writings" data-section="writings" aria-current="page">Writing</a></li>
+            <li><a href="../../#contact" data-section="contact">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="nav-actions">
+          <button class="icon-btn theme-toggle" type="button" aria-label="Switch between light and dark theme"><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg></button>
+          <a class="btn btn-primary btn-small" href="mailto:akhiltvsn@gmail.com">Email me</a>
+        </div>
+      </div>
+    </header>
+    <main id="main-content">
+      <div class="wrap page-top">
+        <p class="crumbs"><a href="../../#writings">Writing</a><span aria-hidden="true">/</span><span>Older Learning Notes</span></p>
+        <h1 class="page-title">MLOps Notes 1: The Machine Learning Lifecycle</h1>
+        
+        <p class="page-meta"><span class="dot" aria-hidden="true"></span><span>Akhil Theerthala</span><span>Jan 2023</span><span>10 min read</span></p>
+        <details class="toc-mobile"><summary>On this page</summary><ol><li><a href="#what-is-this-course-about">What is this course about?</a></li><li><a href="#ml-system-lifecycle">ML System lifecycle:</a></li><li><a href="#step-1-scoping">Step-1: Scoping</a></li><li><a href="#step-2-data">Step-2: Data</a></li><li><a href="#step-3-modelling">Step-3: Modelling</a></li><li><a href="#step-4-deployment">Step-4: Deployment</a></li></ol></details>
+      </div>
+      <div class="wrap reader no-aside">
+        <nav class="toc" aria-label="On this page"><p>On this page</p><ol><li><a href="#what-is-this-course-about">What is this course about?</a></li><li><a href="#ml-system-lifecycle">ML System lifecycle:</a></li><li><a href="#step-1-scoping">Step-1: Scoping</a></li><li><a href="#step-2-data">Step-2: Data</a></li><li><a href="#step-3-modelling">Step-3: Modelling</a></li><li><a href="#step-4-deployment">Step-4: Deployment</a></li></ol></nav>
+        <article class="prose" data-article-file="MLOps-Notes-1-The-Machine-Learning.md">
+<h2 id="what-is-this-course-about">What is this course about?</h2>
+<p id="p-0">Till now, we have seen the training part of machine learning models. Now it is time for us to see how we put them into production and the challenges and requirements we face in the process. i.e., this course deals with what happens <strong>outside the Jupyter notebook.</strong>
+<strong>Example:</strong> Let us look at the case of scratch detection of mobile phones. We use a device to identify whether the phone has scratches or not.</p>
+<ul>
+<li><strong>Edge Device</strong>: device living inside the factories</li>
+<li><strong>Software</strong>: The program that controls the way edge device works.
+In our case, we have inspection software that controls the camera, takes photos, and passes them to the control software.</li>
+<li>The control software calls an API, which passes the picture to the prediction server.</li>
+<li>The prediction server has the model, whose job is to predict whether there is a scratch.</li>
+<li>This result is sent back to the control software, which behaves in specified ways to classify the phone.
+<img src="https://miro.medium.com/v2/resize:fit:1400/1*8ZXE4TNqPH1OtKH_kQjLsg.png" alt="Illustration of a speech recognition model deployed in the cloud." loading="lazy" decoding="async" />
+An example of a Scratch recognition system in a factory. Source: Deeplearning.AI, licensed under the <a href="https://en.wikipedia.org/wiki/en:Creative_Commons" target="_blank" rel="noreferrer">Creative Commons</a> <a href="https://creativecommons.org/licenses/by-sa/2.0/legalcode" target="_blank" rel="noreferrer">Attribution-ShareAlike 2.0</a> license.
+This is generally termed cloud deployment. There is another type of deployment called edge deployment, where the factory keeps running irrespective of the internet connection. The POC (proof of concept) is the ultimate model we build. But a lot is out there that makes people believe that this POC is only 5~10% of a production deployment.
+<img src="https://miro.medium.com/v2/resize:fit:1400/1*iBo0iDUwOu_YghRo6PvkqQ.png" alt="Illustration of all the steps of an entire ML infrastructure in production, scaled to the amount of time taken." loading="lazy" decoding="async" />
+The requirements surrounding ML infrastructure. Source: [D. Sculley et. al. NIPS 2015: Hidden Debt in Machine Learning Systems]
+Well, the above image shows the entire components of an ml production deployment. In this course, the goal is to look into all the other processes. One of the easiest ways to look into these other components is to define a lifecycle for the machine learning project and explore each step when needed.</li>
+</ul>
+<h2 id="ml-system-lifecycle">ML System lifecycle:</h2>
+<p id="p-1">The generic lifecycle consists of 4 significant phases. We go through different processes or tasks in each step and move on to the next phase when we are satisfied with the current one. The parts are</p>
+<ul>
+<li><strong>Scoping the project</strong> — Here, we define the project and the requirements and assumptions of the project we work on.</li>
+<li><strong>Data —</strong> Based on the scoping, we define the required data, label them, and organize them.</li>
+<li><strong>Modelling —</strong> We select and train a model using the final processed data and performing error analysis. This is the part we are most familiar with, and it happens in the Jupyter notebook.</li>
+<li><strong>Deployment</strong> — After testing the model, it is sent to the first deployment into production. After the deployment, we monitor and maintain the entire production system based on user feedback.
+<img src="https://miro.medium.com/v2/resize:fit:1400/1*1rX7cwZoaXd3dFuu4ZCFog.png" alt="General flowchart of an ML project that is in production. Starting from scoping the project, data defining and labelling, data preprocessing, modelling and deployment." loading="lazy" decoding="async" />
+Lifecycle of a generic Machine learning project in production. Source: DeepLearning.AI, licensed under the <a href="https://en.wikipedia.org/wiki/en:Creative_Commons" target="_blank" rel="noreferrer">Creative Commons</a> <a href="https://creativecommons.org/licenses/by-sa/2.0/legalcode" target="_blank" rel="noreferrer">Attribution-ShareAlike 2.0</a> license.
+The modelling and deployment steps are iterative in nature, i.e. these steps are constantly changed or might influence changes in the previous steps based on the intermittent observations.
+Let us look at an example by using the steps in this cycle: Consider a <strong>Speech Recognition</strong> system where, based on the input audio clip, we will generate the transcript and a search function. In each step, we will ask ourselves a few questions which clarify what we need to do.</li>
+</ul>
+<h2 id="step-1-scoping">Step-1: Scoping</h2>
+<ul>
+<li><strong>Defining the project:</strong> Speech recognition can have many applications. One such application is speech recognition for voice search.</li>
+<li>What would be our key metrics in this case? (Completely problem dependent)</li>
+<li>Some of the key metrics include accuracy, latency, throughput, etc.,</li>
+<li>What is the target resource consumption? (In this step, we can see how the different systems are performing in the market and define a target)
+So primarily, what we do in this step is theoretically define what we have to do and how we do it, along with making necessary assumptions. This part will be discussed in detail later in the course.</li>
+</ul>
+<h2 id="step-2-data">Step-2: Data</h2>
+<ul>
+<li>Is the data labelled consistently?</li>
+<li>How much silence should we expect in the clip?</li>
+<li>How is the volume of different speakers normalized?
+This step contains mostly Data scraping, processing, and feature engineering, which makes modelling with this data more manageable.</li>
+</ul>
+<h2 id="step-3-modelling">Step-3: Modelling</h2>
+<ul>
+<li>Selecting the training model, i.e., choosing the code, hyperparameters, and data, gives us the model.</li>
+<li>Generally, in <em>research work,</em> the data is fixed, and the code is played around with. Whereas, in <em>Product Teams,</em> it is found that holding the code fixed and playing around with the data and the hyperparameters is regular and efficient.</li>
+<li>Rather than taking a model-centric approach, <em>it is recommended to take pre-defined open-source models and then optimize them for the code and the data.</em></li>
+<li>Error analysis for the model generally helps us be more targeted in selecting the data and also verify that the model is working.</li>
+</ul>
+<h2 id="step-4-deployment">Step-4: Deployment</h2>
+<ul>
+<li>Assuming that the edge device for the project is a mobile phone. We can write software that utilizes the modules in a mobile phone.</li>
+<li>Ideally, the <strong>software</strong> should use the device’s microphone and VAD (voice activity detection) module and send the speech data to the production server.</li>
+<li>The production server processes the request and sends the results according to the request. Generally, this production server is where our model pipeline is stored.</li>
+<li>Later, we have to monitor the system to see any concept drifts or other issues to ensure that the production tool delivers the value we envisioned.
+The entire step is practically different and is highly application dependent. But the general essence of what we do is we try and deploy the model with a specific deployment pattern and later monitor it.
+Suppose the model is performing according to our plan. In that case, we go ahead with the full-scale deployment, with constant monitoring for errors that can creep up.
+In the first course, we will look backwards, starting from the deployment and then going each step back, i.e., the following article in the series will be on the Deployment part. We will also be looking into MLOps, which is an emerging discipline and comprises a set of tools and principles that support the best practices.
+Thanks for stopping by! I will ensure that the following article comes out as soon as possible. So, keep an eye out for it! In the meantime, you can read my articles about my data analytics project or how the popular Deep Learning Specialization compares to Udacity’s Deep Learning Nanodegree.</li>
+</ul>
+
+          <div class="article-foot">
+            <p>Send questions or corrections to <a href="mailto:akhiltvsn@gmail.com">akhiltvsn@gmail.com</a>.</p>
+            <p><a href="../../writing.html">All writing</a></p>
+          </div>
+        </article>
+        
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <p>© 2026 Akhil Theerthala, Bengaluru</p>
+        <nav aria-label="Profiles">
+          <a href="https://github.com/Akhil-Theerthala" target="_blank" rel="noreferrer">GitHub</a>
+          <a href="https://huggingface.co/Akhil-Theerthala" target="_blank" rel="noreferrer">Hugging Face</a>
+          <a href="https://scholar.google.com/citations?user=_H1O3ScAAAAJ&amp;hl=en" target="_blank" rel="noreferrer">Google Scholar</a>
+          <a href="https://www.linkedin.com/in/akhil-theerthala/" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="https://x.com/thesilvervein" target="_blank" rel="noreferrer">X</a>
+          <a href="../../writing.html">All writing</a>
+        </nav>
+      </div>
+    </footer>
   </body>
 </html>

@@ -21,221 +21,131 @@ function loadData() {
   return context.window.PORTFOLIO_DATA;
 }
 
-test("pages load local production bundles without browser compilation", () => {
-  const index = read("index.html");
-  const writing = read("writing.html");
+const data = loadData();
+const pages = ["index.html", "writing.html", "404.html"];
 
-  for (const html of [index, writing]) {
-    assert.doesNotMatch(
-      html,
-      /babel|react\.development|react-dom\.development/i,
-    );
+test("pages are static HTML with one local script and no React runtime", () => {
+  for (const file of pages) {
+    const html = read(file);
+    assert.match(html, /assets\/js\/site\.js/);
+    assert.doesNotMatch(html, /babel|\breact(?:-dom)?\b|<div id="root"><\/div>/i);
   }
-
-  assert.match(index, /assets\/js\/portfolio\.js/);
-  assert.match(writing, /assets\/js\/writing\.js/);
-});
-
-test("credibility layouts and responsive portrait assets are production-ready", () => {
-  const css = read("portfolio.css");
-  const sections = read("portfolio-sections.jsx");
-
-  assert.match(css, /--dim:\s*#788179/);
-  assert.match(css, /\.artifact-evidence\s*\{/);
-  assert.doesNotMatch(css, /\.citation/);
-  assert.match(css, /\.tag-list\s*\{/);
-  assert.match(css, /\.older-writing-archive\s*\{/);
-  assert.doesNotMatch(
-    css,
-    /font-size:\s*0\.(?:[0-6]\d?|7[0-4]?)rem/,
-  );
-  assert.match(sections, /<picture>/);
-  assert.match(sections, /profile-480\.webp 480w/);
-  assert.match(sections, /profile-960\.webp 960w/);
-  assert.match(sections, /width="960"/);
-  assert.match(sections, /height="995"/);
-  assert.equal(fs.existsSync("assets/media/profile-480.webp"), true);
-  assert.equal(fs.existsSync("assets/media/profile-960.webp"), true);
-});
-
-test("artifact metric values allow unbroken identifiers to wrap", () => {
-  const css = read("portfolio.css");
-
-  assert.match(
-    css,
-    /\.artifact-metric dd\s*\{[^}]*overflow-wrap:\s*anywhere/s,
-  );
-});
-
-test("every writing has a canonical generated route", () => {
-  const data = loadData();
-  const slugs = new Set();
-
-  for (const article of data.writings) {
-    assert.equal(slugs.has(article.slug), false);
-    slugs.add(article.slug);
-    assert.equal(
-      fs.existsSync(path.join("My writings", article.file)),
-      true,
-      `${article.file} must exist`,
-    );
-
-    const route = path.join("writing", article.slug, "index.html");
-    assert.equal(fs.existsSync(route), true, `${route} must be generated`);
-    const html = read(route);
-    assert.ok(
-      html.includes(
-        `<title>${escapeHtml(article.title)} - Akhil Theerthala</title>`,
-      ),
-    );
-    assert.match(
-      html,
-      new RegExp(
-        `https://akhiltheerthala\\.com/writing/${article.slug}/`,
-      ),
-    );
-    assert.ok(html.includes(`data-article-file="${escapeHtml(article.file)}"`));
-    assert.match(html, /data-content-prefix="\.\.\/\.\.\/"/);
-    assert.match(html, /\.\.\/\.\.\/assets\/js\/writing\.js/);
+  const script = read("assets/js/site.js");
+  assert.doesNotMatch(script, /react|babel/i);
+  for (const removed of ["portfolio-app.jsx", "portfolio-sections.jsx", "writing-app.jsx", "portfolio.css"]) {
+    assert.equal(fs.existsSync(removed), false, `${removed} should be gone`);
   }
-});
-
-test("the article reader supports generated and legacy requests", () => {
-  const app = read("writing-app.jsx");
-  const css = read("portfolio.css");
-
-  assert.match(app, /document\.documentElement\.dataset\.articleFile/);
-  assert.match(app, /document\.documentElement\.dataset\.contentPrefix/);
-  assert.match(app, /function ArticleIndex\(/);
-  assert.match(app, /<details className="article-index"/);
-  assert.match(css, /@media \(max-width: 1280px\)[\s\S]*\.article-index/);
-  assert.match(css, /@media \(max-width: 720px\)[\s\S]*\.article-index/);
-});
-
-test("the site ships local fonts and complete discovery metadata", () => {
-  const data = loadData();
-  const index = read("index.html");
-  const writing = read("writing.html");
-  const css = read("portfolio.css");
-
-  assert.doesNotMatch(`${index}\n${writing}`, /fonts\.googleapis\.com/);
-  for (const [family, file] of [
-    ["Newsreader", "newsreader-latin.woff2"],
-    ["Geist", "geist-latin.woff2"],
-    ["JetBrains Mono", "jetbrains-mono-latin.woff2"],
-  ]) {
-    assert.match(css, new RegExp(`font-family:\\s*"${family}"`));
-    assert.match(css, new RegExp(`assets/fonts/${file}`));
-    assert.equal(fs.existsSync(path.join("assets", "fonts", file)), true);
-  }
-
-  assert.match(
-    index,
-    /<link rel="canonical" href="https:\/\/akhiltheerthala\.com\/"/,
-  );
-  assert.match(index, /<script type="application\/ld\+json">/);
-  assert.match(index, /"@type":\s*"Person"/);
-  assert.match(index, /"@type":\s*"ScholarlyArticle"/);
-  for (const publication of data.publications) {
-    assert.ok(index.includes(escapeHtml(publication.title)));
-  }
-
-  const socialCard = fs.readFileSync(
-    "assets/social/akhil-theerthala-og.png",
-  );
-  assert.equal(socialCard.readUInt32BE(16), 1200);
-  assert.equal(socialCard.readUInt32BE(20), 630);
-
-  const sitemap = read("sitemap.xml");
-  assert.match(sitemap, /https:\/\/akhiltheerthala\.com\//);
-  for (const article of data.writings) {
-    assert.match(
-      sitemap,
-      new RegExp(
-        `https://akhiltheerthala\\.com/writing/${article.slug}/`,
-      ),
-    );
-  }
-  assert.match(
-    read("robots.txt"),
-    /Sitemap: https:\/\/akhiltheerthala\.com\/sitemap\.xml/,
-  );
-  const notFound = read("404.html");
-  assert.match(notFound, /href="\/"/);
-  assert.match(notFound, /href="\/#research"/);
-  assert.match(notFound, /href="\/#writings"/);
-  assert.match(notFound, /href="\/#contact"/);
-});
-
-test("production commands and runtime files are self-contained", () => {
-  const pkg = JSON.parse(read("package.json"));
-  assert.deepEqual(Object.keys(pkg.scripts).sort(), [
-    "build",
-    "check",
-    "serve",
-    "test",
-  ]);
-  assert.equal(fs.existsSync("scripts/check-site.mjs"), true);
-  assert.equal(fs.existsSync("scripts/serve.mjs"), true);
-
-  const production = [
-    read("index.html"),
-    read("writing.html"),
-    read("assets/js/portfolio.js"),
-    read("assets/js/writing.js"),
-  ].join("\n");
-  assert.doesNotMatch(
-    production,
-    /tweaks-panel\.jsx|portfolio-reader\.jsx|babel|react\.development|fonts\.googleapis\.com/i,
-  );
-  assert.equal(fs.existsSync("tweaks-panel.jsx"), false);
-  assert.equal(fs.existsSync("portfolio-reader.jsx"), false);
 });
 
 test("the homepage ships its content in the HTML, not only via JavaScript", () => {
   const index = read("index.html");
-  const app = read("portfolio-app.jsx");
-  const block = index.match(/<!-- APP:START -->([\s\S]*?)<!-- APP:END -->/);
-
-  assert.ok(block, "index.html needs a prerendered APP block");
-  const html = block[1];
   for (const text of [
     "Akhil Theerthala",
-    "I build and evaluate ML systems",
+    "I build reliable AI systems for finance",
     "Senior Member Data Scientist",
-    "Public Artifacts",
+    "Projects",
     "LocalXiv",
-    "Publications",
-    "Contact and",
+    "Papers",
+    "Get in touch",
   ]) {
-    assert.ok(html.includes(text), `prerendered HTML is missing "${text}"`);
+    assert.ok(index.includes(text), `homepage HTML is missing "${text}"`);
   }
-  assert.match(index, /<noscript>[\s\S]*?\.section[\s\S]*?opacity:\s*1/);
-  assert.match(app, /hydrateRoot/);
+  assert.match(index, /<noscript>/);
+  // Content hidden for the reveal animation comes back if the script never runs.
+  assert.match(index, /classList\.add\("js"\)/);
+  assert.match(index, /if \(!window\.__siteReady\) d\.classList\.remove\("js"\)/);
+  assert.match(read("src/site.js"), /window\.__siteReady = true/);
+  assert.match(read("assets/css/site.css"), /prefers-reduced-motion: reduce[\s\S]*\.js \.reveal/);
+});
+
+test("the map data is real, complete and linked to pages that exist", () => {
+  const map = JSON.parse(read("assets/data/map.json"));
+  const spec = JSON.parse(read("data/map-areas.json"));
+  assert.match(map.model, /MiniLM/);
+  assert.ok(map.points.length >= 400, "the map should rest on hundreds of passages");
+
+  // Areas are fields of AI work, named in data/map-areas.json, never a project's name.
+  assert.deepEqual(map.areas.map((area) => area.name), spec.areas);
+  const titles = [...data.projects, ...data.publications].map((item) => item.title.toLowerCase());
+  for (const area of map.areas) {
+    assert.ok(!titles.some((title) => title.startsWith(area.name.toLowerCase())), area.name);
+    assert.ok(area.x >= 0 && area.x <= 1 && area.y >= 0 && area.y <= 1);
+  }
+
+  // One node per work: every paper and project once, nothing twice.
+  assert.equal(map.works.length, spec.works.length);
+  assert.equal(new Set(map.works.map((work) => work.id)).size, map.works.length);
+  for (const publication of data.publications) {
+    assert.ok(map.works.some((work) => work.kind === "paper" && work.title === publication.title), publication.title);
+  }
+  for (const project of data.projects) {
+    assert.ok(map.works.some((work) => work.title === project.title), project.title);
+  }
+  for (const work of map.works) {
+    assert.ok(map.areas[work.area], `${work.id} has no area`);
+    assert.ok(work.summary.length > 20, `${work.id} needs a summary`);
+    assert.ok(work.near.every((n) => map.works[n] && map.works[n].area !== work.area), `${work.id} links inside its own area`);
+    if (work.href.startsWith("#")) {
+      assert.ok(read("index.html").includes(`id="${work.href.slice(1)}"`), `${work.href} missing on homepage`);
+    } else {
+      assert.equal(fs.existsSync(path.join(work.href, "index.html")), true, `${work.href} has no page`);
+    }
+  }
+
+  // Only essays that write up a project or experiment are on the map.
+  const ids = new Set(map.sources.map((source) => source.id));
+  for (const article of data.writings) {
+    assert.equal(ids.has(`essay:${article.slug}`), Boolean(article.onMap), article.slug);
+  }
+  for (const [x, y, source, area, text, anchor, work] of map.points) {
+    assert.ok(x >= 0 && x <= 1 && y >= 0 && y <= 1);
+    assert.ok(map.sources[source], "point refers to a missing source");
+    assert.ok(work === -1 ? area === -1 : map.works[work].area === area);
+    assert.ok(text.length > 20);
+    const owner = map.sources[source];
+    if (owner.kind === "essay") {
+      assert.match(anchor, /^#[a-z0-9-]+$/);
+      const html = read(path.join(owner.href, "index.html"));
+      assert.ok(html.includes(`id="${anchor.slice(1)}"`), `${owner.href}${anchor} has no target`);
+    }
+  }
+});
+
+test("every writing has a pre-rendered canonical route", () => {
+  for (const article of data.writings) {
+    assert.equal(fs.existsSync(path.join("My writings", article.file)), true, `${article.file} must exist`);
+    const html = read(path.join("writing", article.slug, "index.html"));
+    assert.ok(html.includes(`<title>${escapeHtml(article.title)} - Akhil Theerthala</title>`));
+    assert.ok(html.includes(`https://akhiltheerthala.com/writing/${article.slug}/`));
+    assert.ok(html.includes(`data-article-file="${escapeHtml(article.file)}"`));
+    assert.match(html, /\.\.\/\.\.\/assets\/js\/site\.js/);
+    assert.match(html, /<p id="p-0">/, `${article.slug} body is not pre-rendered`);
+    if (article.onMap) assert.match(html, /data-map="mini"/);
+    else assert.doesNotMatch(html, /data-map="mini"/);
+  }
+});
+
+test("old writing.html?file= links still reach the essay", () => {
+  const writing = read("writing.html");
+  for (const article of data.writings) {
+    assert.ok(writing.includes(JSON.stringify(article.file).slice(1, -1)));
+    assert.ok(writing.includes(`writing/${article.slug}/`));
+  }
+  assert.match(writing, /URLSearchParams\(location\.search\)\.get\("file"\)/);
 });
 
 test("artifacts with a story get a static, crawlable page", () => {
   const page = read("artifacts/localxiv/index.html");
   const sitemap = read("sitemap.xml");
-  const sections = read("portfolio-sections.jsx");
-
-  assert.doesNotMatch(page, /<div id="root"><\/div>/);
   assert.match(page, /<h1[^>]*>LocalXiv<\/h1>/);
-  for (const heading of [
-    "What it is",
-    "Why it was needed",
-    "What I built",
-    "What it achieved",
-    "Status",
-    "Related",
-  ]) {
+  for (const heading of ["What it is", "Why it was needed", "What I built", "What it achieved", "Status", "Related"]) {
     assert.match(page, new RegExp(`<h2[^>]*>${heading}</h2>`), heading);
   }
   assert.match(page, /<link rel="canonical" href="https:\/\/akhiltheerthala\.com\/artifacts\/localxiv\/" \/>/);
   assert.match(page, /"@type": "SoftwareApplication"/);
   assert.match(page, /https:\/\/www\.producthunt\.com\/products\/localxiv/);
   assert.match(sitemap, /https:\/\/akhiltheerthala\.com\/artifacts\/localxiv\//);
-  assert.match(sections, /href=\{`artifacts\/\$\{project\.slug\}\/`\}/);
+  assert.match(read("index.html"), /href="artifacts\/localxiv\/"/);
 
   const kuvera = read("artifacts/kuvera/index.html");
   assert.match(kuvera, /<h1[^>]*>Kuvera Personal Finance Datasets and LLMs<\/h1>/);
@@ -245,9 +155,106 @@ test("artifacts with a story get a static, crawlable page", () => {
   assert.match(sitemap, /https:\/\/akhiltheerthala\.com\/artifacts\/kuvera\//);
 });
 
+test("the site ships local fonts and complete discovery metadata", () => {
+  const css = read("assets/css/site.css");
+  for (const file of pages) assert.doesNotMatch(read(file), /fonts\.googleapis\.com|fonts\.gstatic\.com/);
+  for (const [family, file] of [
+    ["IBM Plex Sans", "plex-sans-latin.woff2"],
+    ["IBM Plex Mono", "plex-mono-latin-400.woff2"],
+    ["IBM Plex Serif", "plex-serif-latin-400.woff2"],
+  ]) {
+    assert.match(css, new RegExp(`font-family:\\s*"${family}"`));
+    assert.match(css, new RegExp(`fonts/${file}`));
+    assert.equal(fs.existsSync(path.join("assets", "fonts", file)), true, file);
+  }
+
+  const index = read("index.html");
+  assert.match(index, /<link rel="canonical" href="https:\/\/akhiltheerthala\.com\/" \/>/);
+  assert.match(index, /"@type": "Person"/);
+  assert.match(index, /"@type": "ScholarlyArticle"/);
+  for (const publication of data.publications) assert.ok(index.includes(escapeHtml(publication.title)));
+
+  const socialCard = fs.readFileSync("assets/social/akhil-theerthala-og.png");
+  assert.equal(socialCard.readUInt32BE(16), 1200);
+  assert.equal(socialCard.readUInt32BE(20), 630);
+
+  const sitemap = read("sitemap.xml");
+  assert.match(sitemap, /https:\/\/akhiltheerthala\.com\//);
+  for (const article of data.writings) assert.ok(sitemap.includes(`https://akhiltheerthala.com/writing/${article.slug}/`));
+  assert.match(read("robots.txt"), /Sitemap: https:\/\/akhiltheerthala\.com\/sitemap\.xml/);
+
+  const notFound = read("404.html");
+  for (const href of ["/", "/#research", "/#writings", "/#contact"]) assert.ok(notFound.includes(`href="${href}"`), href);
+  assert.match(notFound, /noindex/);
+});
+
 test("papers without an arXiv version still get honest structured data", () => {
   const index = read("index.html");
-  assert.match(index, /"@id": "https:\/\/akhiltheerthala\.com\/#data-attribution-should-guide-pretraining"/);
+  assert.match(index, /"@id": "https:\/\/akhiltheerthala\.com\/#paper-data-attribution-should-guide-pretraining"/);
+  assert.match(index, /id="paper-data-attribution-should-guide-pretraining"/);
   assert.match(index, /"name": "ATTRIB Workshop, NeurIPS 2026"/);
   assert.doesNotMatch(index, /"@id": "undefined#article"|"url": "undefined"|doi\.org\/undefined/);
+});
+
+test("production commands are unchanged and media is reserved", () => {
+  const pkg = JSON.parse(read("package.json"));
+  assert.deepEqual(Object.keys(pkg.scripts).sort(), ["build", "check", "serve", "test"]);
+  assert.equal(pkg.dependencies.react, undefined);
+  const index = read("index.html");
+  for (const image of index.matchAll(/<img\b[^>]*>/g)) {
+    assert.match(image[0], /width="\d+"/, image[0]);
+    assert.match(image[0], /height="\d+"/, image[0]);
+    assert.match(image[0], /alt="/, image[0]);
+  }
+  assert.equal(fs.existsSync("assets/media/profile-480.webp"), true);
+  assert.equal(fs.existsSync("assets/media/profile-960.webp"), true);
+});
+
+test("every page sits on the ground layer", () => {
+  for (const file of [...pages, "writing/density-vs-diversity-in-data-selection/index.html", "artifacts/kuvera/index.html"]) {
+    assert.match(read(file), /<div class="ground" aria-hidden="true">/, file);
+  }
+});
+
+test("papers are split by authorship and unreleased ones get a typeset first page", () => {
+  const index = read("index.html");
+  const first = index.indexOf("First-author work");
+  const major = index.indexOf("Major contributions");
+  assert.ok(first > 0 && major > first, "first-author work comes before major contributions");
+  for (const publication of data.publications) {
+    const at = index.indexOf(`>${escapeHtml(publication.title)}`);
+    const own = publication.authors[0] === data.name;
+    assert.ok(own ? at > first && at < major : at > major, publication.title);
+  }
+  const unreleased = data.publications.filter((publication) => !publication.arxiv);
+  assert.equal((index.match(/class="pub-thumb draft"/g) || []).length, unreleased.length);
+  assert.match(index, /Unreleased/);
+
+  // Released papers say what the contribution was, never an author position.
+  const roles = [...index.matchAll(/class="pub-role">([^<]*)</g)].map((match) => match[1]);
+  const released = data.publications.filter((publication) => publication.arxiv);
+  assert.deepEqual(
+    roles.sort(),
+    Array.from(released, (publication) => (publication.authors[0] === data.name ? "First author" : "Major contribution")).sort(),
+  );
+  assert.doesNotMatch(index, /Sole author| of \d+ authors/);
+});
+
+test("LocalXiv is shown with its own cover image", () => {
+  for (const file of ["index.html", "artifacts/localxiv/index.html"]) {
+    assert.match(read(file), /localxiv-cover\.webp" width="1920" height="1200"/, file);
+  }
+  assert.equal(fs.existsSync("assets/media/localxiv-cover.webp"), true);
+});
+
+test("every page carries the mark and its icons", () => {
+  for (const file of pages) {
+    const html = read(file);
+    assert.match(html, /<svg class="wordmark-mark" viewBox="0 0 23 22"/, file);
+    assert.match(html, /rel="icon" href="[^"]*favicon\.svg" type="image\/svg\+xml"/, file);
+    assert.match(html, /rel="apple-touch-icon" href="[^"]*apple-touch-icon\.png"/, file);
+  }
+  for (const icon of ["favicon.svg", "favicon.ico", "apple-touch-icon.png"]) {
+    assert.equal(fs.existsSync(icon), true, icon);
+  }
 });

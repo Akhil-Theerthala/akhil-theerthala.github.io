@@ -1,0 +1,1145 @@
+{
+ "paper:synthesizing-behaviorally-grounded-reasoning-chains-a": {
+  "url": "https://arxiv.org/html/2509.14180",
+  "passages": [
+   {
+    "section": "Introduction",
+    "text": "Legal counseling, healthcare, and finance are among the numerous high-stakes domains in which personalized advice is essential. However, the development of this personalized advice is fraught with obstacles, requiring substantial investments and years of human expertise. Recent research efforts have thoroughly investigated automated decision support systems in various areas, emphasizing their cost-effectiveness. In the financial sector, a variety of support systems have been investigated, with a particular emphasis on asset recommendations and investment predictions. Sanz-Cruzado et al. (2024); Luo et al. (2025); Takayanagi et al. (2023)"
+   },
+   {
+    "section": "Introduction",
+    "text": "Recent advances in large language models (LLMs) have shown effective performance in acting as decision support systems for investors Gupta (2023) and financial planners Huang et al. (2024). The core advantage of natural language generation presents these automated support systems with a unique advantage that was never available in previous applications. This advantage has repeatedly shown its power in linguistic tasks such as streamlining complex financial narratives from extensive documents, corporate discourses, news sources, and social media. Gueta et al. (2025); Lee and Lay-Ki (2024) The utility of these models is also being explored in Time series Liu and Jia (2025) and Financial reasoning applications Liu et al. (2025)."
+   },
+   {
+    "section": "Introduction",
+    "text": "Notwithstanding this capability, recent research indicates that no model excels across all financial task categories, which include text summarization, sentiment analysis, causal analysis, forecasting, and text classification Matlin et al. (2025). It has been demonstrated that attaining robust performance frequently necessitates the utilization of large, expensive models, thereby constraining the practicality of these solutions. Due to these inherent limitations and the complexity of financial advisory, many studies focusing on broader financial decision systems have preferred an agentic approach over training financial domain-specific language models. Okpala et al. (2025); Joshi (2025); Takayanagi et al. (2025a)"
+   },
+   {
+    "section": "Introduction",
+    "text": "Although the initial agentic frameworks focused on answering simple inquiries, Lakkaraju et al. (2023) recent studies have accelerated the development of these systems to provide practical and actionable advice to the end user Takayanagi et al. (2025b); Okpala et al. (2025). These agents can now dynamically interact with users and can assist in various tasks such as recommendation, question answering, search, and customer profiling. Li et al. (2024); Takayanagi et al. (2025a); Han et al. (2024)"
+   },
+   {
+    "section": "Introduction",
+    "text": "Although agentic systems demonstrate potential in providing tailored financial advice, their efficacy is hindered by considerable constraints, including the integration with legacy systems, compliance with data security regulations, and high inference costs. Cemri et al. (2025); Wang et al. (2025). In support of these concerns, a recent study by Meimandi et al. (2025) illustrates that a confluence of technical and cost-related factors hinders these applications from realizing even 25% of their anticipated returns. This research also establishes an important differentiation: success in benchmarks does not necessarily equate to success in deployment. In practical terms, these proactive financial advisors frequently encounter a swift deterioration in performance within a matter of months following their implementation, attributable to the inherent volatility of real-world conditions. Concurrently, studies show that the extent of personalization is often limited by the volume of context and information that can be supplied to an agent, impacting the overall performance. Zhou et al. (2025); Winder et al. (2024)"
+   },
+   {
+    "section": "Introduction",
+    "text": "One of the direct ways to address these limitations is to tune a model with a domain-specific context that integrates financial, behavioral, and psychological information. This work aims to close this gap by providing a reproducible framework to generate financial advice through a well-structured chain-of-thought. In particular, the framework constructs supervision data to train models to (a) provide personalized guidance for users’ financial dilemmas, (b) reliably apply core financial knowledge, and (c) recognize and mitigate user-side behavioral biases by integrating behavioral and historical evidence."
+   },
+   {
+    "section": "Introduction",
+    "text": "To address these limitations, we propose a novel, data-centric framework for synthesising behaviorally-grounded reasoning chains. Rather than relying on complex agentic architectures, our approach directly bakes financial, behavioural, and psychological knowledge into the training data itself. Crucially, we treat the inference of the user’s psychological state not as an afterthought, but as a standalone, foundational phase in the reasoning chain. This design choice is directly motivated by recent findings that users’ trust and engagement are heavily influenced by the persona of the advisor Takayanagi et al. (2025a), not just the raw accuracy of its advice. By isolating and explicitly modelling this psychological dimension, our framework ensures that personalisation and empathetic framing are intrinsic to the model’s reasoning process, leading to more effective and trustworthy financial guidance."
+   },
+   {
+    "section": "Introduction",
+    "text": "It should also be considered that although recent agentic frameworks respond based on real-time knowledge; most of these knowledge sources need to be manually curated Aggarwal and Singh (2024). In addition to this, we should note that most of the recommendations needed for general financial advice do not require real-time financial knowledge. Instead, this advice needs an agent that can inherently retrieve the relevant information from its memory. We address this problem by carefully crafting a chain-of-thought section to retrieve the financial context relevant to the query."
+   },
+   {
+    "section": "Introduction",
+    "text": "Recent studies have shown that inherent biases often limit users’ ability to make many wealth-making financial decisions. Baker et al. (2017); Agrawal (2012) These biases are highly variable and often depend on the age, experience and location of the user. Many financial agents do not directly address these biases when providing financial advice to the user. In this study, we have tried to integrate these biases into the reasoning model’s natural chain-of-thought to tune the final responses towards acknowledging and addressing these biases."
+   },
+   {
+    "section": "Introduction",
+    "text": "Each stage of chain-of-thought generation is verified by a set of Large Language Model juries that rank various generations and pick the best version suitable for the user queries. We used this framework to generate a 19k sample dataset, which is used to finetune a Qwen-3-8B model. This model is then compared to models of similar sizes to determine the impact of this framework."
+   },
+   {
+    "section": "Introduction",
+    "text": "This paper introduces a principled, data-centric framework as a step toward smaller, more trustworthy personal finance LLMs, and we outline its use as a backbone policy within agentic workflows to thin planning chains and lower orchestration cost—an evaluation we defer to future work."
+   },
+   {
+    "section": "Dataset construction",
+    "text": "Our first step was to collect a large pool of real-world finance questions. Reddit Reddit ([2025]) proved ideal as a source of complex scenarios that span the breadth of personal finance domains—from debt consolidation and retirement planning to tax optimization and insurance decisions. The platform’s subreddits, particularly r/personalfinance, which receives hundreds of thousands to millions of user queries, contain authentic scenarios that capture the intricate, multi-faceted nature of real financial decision-making, providing the scenario diversity essential for training comprehensive advisory models."
+   },
+   {
+    "section": "Dataset construction",
+    "text": "To comply with Reddit’s terms and conditions, we exclusively utilized publicly available archived data from posts prior to June 2023, ensuring all collected queries were ethically sourced and properly de-identified."
+   },
+   {
+    "section": "Dataset construction",
+    "text": "Topical validity – retained posts that contained an explicit, answerable personal finance question (e.g., budgeting, credit, retirement), discarding generic news, advertisements, or off-topic commentary."
+   },
+   {
+    "section": "Dataset construction",
+    "text": "Contextual clustering – grouped semantically similar posts and removed near-duplicates to reduce noise."
+   },
+   {
+    "section": "Dataset construction",
+    "text": "This pipeline yielded 405k unique questions. We sampled 19k representative queries that span eight thematic categories. Table 1 contains the detailed description of the final dataset generated using the framework. The entire 405k-item corpus remains available for future scaling. Details about prompt templates and specific instructions used in each phase of the generation framework are presented in Appendix A.1."
+   },
+   {
+    "section": "Dataset construction",
+    "text": "On a high level, the dataset generation framework can be divided into two parts: (i) chain-of-thought generation and (ii) response generation."
+   },
+   {
+    "section": "Dataset construction",
+    "text": "Our chain-of-thought generation is divided into four major phases, as illustrated in Fig. 1. This modular approach helps us focus on developing an independent rubric for each phase while giving the ability to stitch them together as a coherent chain-of-thought."
+   },
+   {
+    "section": "Dataset construction",
+    "text": "The issue with natural language inquiries is the potential inconsistency of the information supplied to the model. There may be significant redundancy, or essential information may be hidden at times. Thus, the initial stage of answer creation, the question analysis phase, serves as a fundamental step in which the user’s question is deconstructed into its essential components. This is required to ascertain the (i) primary conflict from the user’s input; (ii) the principal players in the dilemma; and (iii) the essential financial facts to address the inquiry. This facilitates the optimization of subsequent cognitive processes while remaining aligned with the user’s inquiry."
+   },
+   {
+    "section": "Dataset construction",
+    "text": "After intent parsing, we assemble a compact evidence pack via a modular RAG framework Gao et al. (2024) built on two self-curated corpora snapshotted through February 2025: (i) a financial corpus of ~ 600k tokens—practical sources such as Investopedia and a Bogleheads snapshot Investopedia (2025); Bogleheads (2025) covering core concepts (e.g., retirement accounts, debt-repayment strategies), plus curated summaries of policy changes for major U.S. credit-card products and other consumer-policy/market updates; and (ii) a behavioral corpus of ~ 300k tokens—research and practitioner write-ups spanning psychology of risk, investor behavior, behavioral portfolio theory, behavioral asset pricing, psychological effects of debt, and generational differences."
+   },
+   {
+    "section": "Dataset construction",
+    "text": "Candidate chunks are retrieved with text-embeddings-3-large OpenAI (2025b) (top-25), re-ranked with all-MiniLM-L12-v2 Sentence-Transformers (2021), and the top-15 are condensed by gemini-2.0-flash Google (2025); Team et al. (2025a) to remove residual noise and unify terminology. The streamlined context and the user query then feed the downstream reasoning stage. Further details are provided in Appendix B."
+   },
+   {
+    "section": "Dataset construction",
+    "text": "In parallel to context identification, a psychological cue identification module is run to identify cues from the text. We extract the overall sentiment of the text, the primary emotions identifiable from the choice of words in the query, and the level of certainty present in the information. Using these cues, we try to generalize a set of communicative intents that might be behind the user’s query. By breaking down the assessment into four distinct categories, the process ensures a comprehensive evaluation of the user’s intent. This intent is utilized to direct the final response into a tone that is most suitable for the user, rather than directly providing them a monotonous response."
+   },
+   {
+    "section": "Dataset construction",
+    "text": "To operate the cue-identification at scale, and in line with the prior studies which demonstrate that state-of-the-art large language models outperform human annotators in judgment tasks Bojić et al. (2025); O’Leary (2025), we adopt an LLM-based framework for cue identification similar to the other stages in the framework."
+   },
+   {
+    "section": "Dataset construction",
+    "text": "The final phase of the chain-of-thought is a distinct response formulation phase, in which we synthesize a set of instructions, consolidating information from all preceding phases. This produces a set of directives that must be adhered to throughout the response-generation phase."
+   },
+   {
+    "section": "Dataset construction",
+    "text": "A conclusive response is formulated to address the user’s inquiry, utilizing the previously optimized stages of information. This concluding comment is based on the financial context presented and is articulated in a suitable tone for the user."
+   },
+   {
+    "section": "Dataset construction",
+    "text": "Given that various open and proprietary LLMs automate numerous generations, there is a clear necessity to assess and authenticate their outputs. We employed a series of juries, specifically gemini-2.0-flash and o4-mini OpenAI (2025a), to evaluate and rank various generations for each phase. Each juror assessed the created information within a three-shot evaluation framework, ultimately selecting the highest-ranked response for subsequent generation jobs."
+   },
+   {
+    "section": "Evaluation",
+    "text": "To test whether our dataset enables practical decision support, we fine-tune Qwen-3-8B Yang et al. (2025) for five epochs and compare it with baselines of similar size."
+   },
+   {
+    "section": "Evaluation",
+    "text": "We perform an additional assessment of the performance using two separate held-out datasets. We employ these methods to assess the quality of the responses through both quantitative and qualitative measures."
+   },
+   {
+    "section": "Evaluation",
+    "text": "To assess the quantitative performance of the models, we utilize a held-out dataset comprising 500 distinct queries across various categories of personal finance. Ground truths were produced by the generation framework presented in Section 3.2 (not the fine-tuned model) prior to training and validated by independent jurors. Following the ground-truth generation, we calculate the BERTScore Zhang et al. (2020) using the Qwen-3-8B-embeddings Zhang et al. (2025) model to assess the semantic accuracy of the responses. We also calculate the BLEURT Sellam et al. (2020) score to assess the fluency (or) human-likeness of the responses, respectively. The quantitative scores of various models utilized in this evaluation are detailed in Table 2."
+   },
+   {
+    "section": "Evaluation",
+    "text": "Our 8B model achieves semantic accuracy comparable to leading baselines, including Gemma3-27B/12B and Mistral-24B. In particular, our model surpasses these larger models by approximately 3–5% in human-likeness and fluency. This indicates a reduced deviation from ground-truth data and enhanced fluency signals compared to models twice its size."
+   },
+   {
+    "section": "Evaluation",
+    "text": "To complement reference-based metrics and, critically, to assess the model’s generalization capabilities, we run a list-wise blind LLM-jury ranking on 504 queries that were entirely held out and unseen during the training phase. These test queries were collected from a subsequent time period to ensure no data contamination. Meanwhile, all the candidates were zero-shot generated in their respective default inference settings to get their best performance. This setup allows us to evaluate whether our fine-tuned model has merely learned to mimic the training data or if it has successfully internalized a generalizable framework for the response generation that can be applied to novel user problems."
+   },
+   {
+    "section": "Evaluation",
+    "text": "To mitigate familial bias and leakage, we excluded judges from model families used anywhere in our pipeline. In particular, Gemini models were omitted because they were used during dataset generation/validation, and Qwen-family judges were omitted because the system under test is Qwen-8B. A few otherwise suitable judges were also excluded for cost reasons. The final judge pool comprises models from unrelated families; none overlapped with training or data-creation components."
+   },
+   {
+    "section": "Evaluation",
+    "text": "For each query, every judge sees all k anonymized candidates simultaneously (no ground truth and no model identities) and returns a full ranking; candidate order is uniformly randomized per replicate. We use two main judges, namely DeepSeek-V3-0324 DeepSeek-AI et al. (2025) and Kimi-k2 AI (2025). Kimi-k2 is run three times, and DeepSeek-v3-0324 is run five times on independently shuffled anonymized candidate orders for each query to reduce possible biases. These judges were chosen in order to avoid same-family bias prevalent in modern LLM-judge studies."
+   },
+   {
+    "section": "Evaluation",
+    "text": "The rankings are converted to Borda points Saari (2023) and averaged across judges and replicates to obtain the representative score of a response. We receive the ranking judgments according to three criteria, namely their financial accuracy, plausibility, and relevance to the query, and report the aggregate Borda scores in Fig. 2. Whereas Appendix C.1 presents the in-depth analysis of the evaluation results."
+   },
+   {
+    "section": "Evaluation",
+    "text": "To examine rank consistency between the judge sets, we compute Kendall’s τ and Spearman’s ρ over per-query model ranks. Kendall’s τ assesses pairwise order agreement (do both judges prioritize model A above model B?). Spearman’s ρ assesses how closely the complete ranked lists move together and penalizes significant rank differences. We observe τ≈ 0.62 - 0.69 and ρ≈ 0.76 - 0.83 (overall τ=0.64, ρ=0.79), indicating substantial agreement. The consistently higher ρ than τ suggests disagreements are mostly local swaps rather than wholesale reorderings. Relevance demonstrates the strongest alignment (τ=0.691, ρ=0.826). Table 3 shows τ and ρ for each metric and overall."
+   },
+   {
+    "section": "Evaluation",
+    "text": "Our experimental results demonstrate that a well-curated, behavior-tuned finance dataset can elevate an 8B open model to achieve performance parity with models two to three times its size, thus validating the practical utility of our framework. Details about the entire training environment and settings are presented in Appendix D."
+   },
+   {
+    "section": "Evaluation",
+    "text": "Analysis of the 504 held-out responses reveals consistent patterns across the three evaluation dimensions. When models produce inaccurate responses, they typically also exhibit degraded reasoning quality—accuracy and plausibility failures often co-occur. However, relevance remains relatively independent; responses can stay on-topic and address user constraints even when containing factual errors or poor reasoning."
+   },
+   {
+    "section": "Evaluation",
+    "text": "Strengths. The model consistently produces well-structured responses with clear headers, sequential action steps, and appropriate empathetic framing. It reliably extracts user-specific details (monetary amounts, timelines, constraints) and incorporates them into tailored advice. Responses typically acknowledge emotional context before providing practical guidance—a pattern that enhances perceived helpfulness."
+   },
+   {
+    "section": "Evaluation",
+    "text": "Failure Modes. The primary weakness is factual hallucination, particularly for jurisdiction-specific regulations and tax details. The model occasionally generates plausible-sounding but incorrect specifics (e.g., non-existent grant programs, outdated tax brackets). These errors are most frequent in regulation-heavy domains (taxes, insurance) and least common in general planning tasks (budgeting, debt management)."
+   },
+   {
+    "section": "Evaluation",
+    "text": "Implications. While the model maintains strong structural and empathetic qualities across all responses, factual grounding remains the key bottleneck. This suggests that adding targeted retrieval for regulatory information and calculation verification would yield the highest marginal improvement. Even with current limitations, the model’s consistent task alignment and user-responsive framing provide practical utility for non-critical advisory scenarios."
+   },
+   {
+    "section": "Evaluation",
+    "text": "Beyond performance metrics, practical deployment requires careful cost consideration. Table 4 presents a comprehensive cost analysis of the model produced by our framework against several baselines, comparing hosting infrastructure, inference latency, and total operational expenses."
+   },
+   {
+    "section": "Evaluation",
+    "text": "Our data-centric approach delivers exceptional cost efficiency in the personal finance domain. By enabling a compact 8B model to achieve performance competitive with much larger systems, our method facilitates at least an 80% reduction in operational costs when compared to baselines with over 12B parameters. This dramatic cost reduction stems from targeted behavioral integration and principled data construction, rather than sheer computational scale."
+   },
+   {
+    "section": "Evaluation",
+    "text": "The efficiency translates to practical deployment advantages: at a hosting cost of $0.8 per hour and an average inference time of 34.15 seconds, our model enables responsive financial advisory services without prohibitive infrastructure requirements. These results validate the effectiveness of our novel data generation framework. They demonstrate that by carefully integrating financial and behavioral signals into training data, it is possible to create competent, domain-specific models that are also economically viable. This presents a compelling approach for developing production-ready financial advisory tools that do not rely solely on expensive, large-scale models."
+   },
+   {
+    "section": "Future Works",
+    "text": "We will advance this research by first determining the optimal path for global scaling: either finalizing a US-optimized pipeline for systematic market porting or—contingent on high-precision detection of regional signals (e.g., currency symbols, policy terminology, and spelling conventions)—implementing a Mixture-of-Experts (MoE) framework. In the latter case, a shared backbone model will process universal financial logic while lightweight regional experts handle localized nuances. This core model will deploy as a backbone policy within a thin agentic stack, minimizing latency and cost by resolving queries internally and invoking external tools (e.g., regulatory databases or fact-checking APIs) only for uncertainty resolution. We will rigorously measure resulting cost-latency trade-offs across regions. Rather than additional supervised fine-tuning, we will treat financial advice generation as an alignment problem, testing preference-based optimization (e.g., DPO/IPO) to refine outputs and deploying rule-based compliance layers to enforce regulatory fidelity, bias mitigation, and tone consistency. Success will be quantified through targeted evaluations of safety, compliance adherence, and user trust metrics."
+   },
+   {
+    "section": "Conclusion",
+    "text": "Our research establishes a data-centric framework that enables an 8B-parameter model to achieve semantic fidelity and human-likeness on par with, and sometimes exceeding, 27–32B baselines in our held-out evaluations and blind LLM-jury study. On a 500-query test, the model outperforms Gemma3-27B by 5% on BLEURT and is competitive on BERTScore, with only a 2% difference; jury rankings show the 8B system approaching the 27–32B leaders. These gains stem from three synergistic components: explicit psychological cues, retrieval-augmented grounding, and a thin agentic execution layer. The modular design supports incremental extension (e.g., regional experts with minimal retraining). While geographic scope, behavioral depth, and privacy safeguards remain limitations, this work offers a cost-aware backbone for stand-alone personal-finance assistants and a viable alternative to monolithic cloud deployments—leaving a precise cost/latency audit to future work."
+   },
+   {
+    "section": "Limitations",
+    "text": "Several aspects of our work leave room for future improvements. First, our study is limited to inquiries sourced solely from Reddit, which may overlook other demographics and query formats, suggesting a need for more diverse data sources. Second, our 19k sample dataset, though sufficient for proof-of-concept, lacks the scale and diversity needed to cover the full spectrum of real-world personal finance scenarios. Future work should expand the corpus with varied sources beyond Reddit to improve generalization. Third, our psychological analysis remains rudimentary, deriving only basic sentiment from phrases rather than incorporating enhanced psychological indicators such as risk tolerance or financial stress through specialized surveys or transfer learning from clinical datasets. Finally, our framework’s scope excludes tasks beyond core natural language processing, particularly multi-modal data processing and reasoning capabilities, which represent critical areas for future research expansion."
+   }
+  ]
+ },
+ "paper:finforge-semi-synthetic-financial-benchmark-generation": {
+  "url": "https://arxiv.org/html/2601.06747",
+  "passages": [
+   {
+    "section": "Introduction",
+    "text": "Language Models (LMs) are increasingly adopted for decision support in complex, high-stakes domains such as finance, law, and public policy (Bommasani et al. 2021; Nie et al. 2024). While recent advances in LMs have demonstrated strong performance on general knowledge benchmarks (Hendrycks et al. 2021) and professional exams (OpenAI 2023), reliably evaluating these systems in specialized, knowledge-intensive, and dynamic domains remains a significant challenge. Existing evaluation sets offer broad subject coverage and serve as useful indicators of general knowledge. However, static benchmarks are limited by potential data leakage into LM training corpora (Deng et al. 2024), which can artificially inflate performance due to LM memorization. These challenges are exacerbated in dynamic domains like finance, where knowledge must be continually updated to reflect real-world developments. Empirical evidence suggests that top-performing general models do not necessarily excel at financial tasks requiring domain-specific nuance or quantitative reasoning (Chen et al. 2021; Islam et al. 2023). This highlights the necessity of dynamic benchmark generation to rigorously assess LM financial knowledge and reasoning robustness in realistic industry scenarios."
+   },
+   {
+    "section": "Introduction",
+    "text": "Finance presents unique challenges for LM evaluation due to its multi-domain complexity, stochastic characteristics, and stringent regulatory requirements (Cao 2022; Vuković et al. 2025; Kamalov et al. 2024; Alzoubi et al. 2025). Effective financial analysis requires both comprehensive domain knowledge—such as familiarity with financial instruments, regulations, and policies—and advanced quantitative problem-solving using real-world data, including asset valuations and risk projections. Additionally, the financial sector evolves rapidly, with new markets, regulations, and trends emerging continuously due to the dynamic nature of global economic systems. Consequently, maintaining up-to-date knowledge is essential for accurate financial reasoning. These challenges motivate three research questions:"
+   },
+   {
+    "section": "Introduction",
+    "text": "RQ1: Can semi-synthetic benchmark generation produce high-quality, contamination-free evaluation datasets for specialized domains like finance?"
+   },
+   {
+    "section": "Introduction",
+    "text": "RQ2: How do state-of-the-art language models perform across financial subdomains, and what patterns emerge?"
+   },
+   {
+    "section": "Introduction",
+    "text": "RQ3: What reasoning capabilities—conceptual versus quantitative—do current models lack in financial contexts?"
+   },
+   {
+    "section": "Introduction",
+    "text": "To address these questions, this paper introduces the FinForge framework, a methodology for generating semi-synthetic benchmarks tailored to the financial domain. FinForge addresses the gap in the dynamic evaluation of language models’ financial knowledge by providing a novel pipeline to generate diverse, challenging finance questions grounded in real-world content on demand. The methodology combines human-guided data curation with LM-driven question synthesis, thereby overcoming the limitations of prior static, easily memorizable benchmarks. By leveraging a hybrid workflow, FinForge allows for the continuous creation of contamination-free evaluation sets that evolve alongside the dynamic financial landscape."
+   },
+   {
+    "section": "Introduction",
+    "text": "The FinForge methodology curates relevant knowledge exclusively from authoritative sources, such as academic textbooks, institutional research, and domain experts, deliberately excluding user forums and trivial stock data. By leveraging verified knowledge, the pipeline increases the difficulty of AI evaluations by generating challenging scenarios that test domain-specific problem-solving capabilities. The process employs a multi-stage language model workflow to analyze long-context documents, extract key information, and generate knowledge for creating question–answer pairs. Each question is planned by identifying a central concept or reasoning challenge within the source material, formulating a complex question with embedded background information, and providing a correct answer and distractors. A more advanced language model serves as a judge to validate the quality and financial relevance of each question. This controlled generation process produces difficult, self-contained questions that require expert-level economic insight and multi-step reasoning."
+   },
+   {
+    "section": "Introduction",
+    "text": "To demonstrate the framework’s utility, we generate FinForge-5k, a snapshot benchmark comprising 5,000 expert-level finance question–answer pairs. This benchmark is derived from a high-quality corpus of up-to-date financial documents—curated via the pipeline—totaling 143M tokens across more than 100,000 verified articles spanning 11 subdomains, including personal finance, corporate finance, macroeconomics, and securitized investments. Notably, the underlying methodology is dynamic: the FinForge framework can be rerun and new documents incorporated to update the question set, allowing continual adaptation to emerging financial knowledge. This paper details the FinForge methodology and demonstrates its capabilities by benchmarking several state-of-the-art models on FinForge-5k, thereby highlighting current strengths and weaknesses in financial reasoning."
+   },
+   {
+    "section": "Methodology",
+    "text": "To enable scalable and controlled evaluation of financial reasoning, we required a robust corpus of finance-relevant documents encompassing both numerical and conceptual knowledge. Specifically, the corpus needed to capture (i) quantitative material such as financial calculations and analytical exercises, and (ii) qualitative content reflecting economic principles, market behavior, and institutional context. Given the scarcity of open-source datasets with verified, diverse, and high-quality financial text, we constructed a semi-synthetic dataset using a two-stage pipeline that integrates expert-guided data curation and LM-based question generation. In the first stage, we curated a corpus of high-quality financial documents drawn from authoritative web sources, leveraging a hybrid manual–programmatic pipeline that combines domain expertise with automated filtering and extraction. In the second stage, we employed frontier LMs (specifically, Gemini 2.5 Flash) (Team and others 2025a) to generate diverse, high-quality question–answer pairs from a representative subset of this corpus. Together, these stages yield a scalable, high-fidelity foundation for benchmarking and training models on financial reasoning tasks."
+   },
+   {
+    "section": "Methodology",
+    "text": "We structured our data curation methodology as a hybrid manual–programmatic pipeline that balances domain expertise with scalability. To minimize effort while maximizing domain coverage and quality, we first decomposed finance into a structured hierarchy of 11 subdomains, including personal finance, corporate finance, investment theory, and macroeconomics. This taxonomy was guided in part by authoritative educational frameworks to ensure conceptual completeness and internal consistency."
+   },
+   {
+    "section": "Methodology",
+    "text": "For each subdomain, humans identified authoritative web domains based on content rigor, institutional credibility, and topical relevance. Sources without clear editorial oversight or academic grounding—such as discussion forums or informal opinion sites—were systematically excluded. This filtering ensured that only high-quality, verifiable content was included in the corpus."
+   },
+   {
+    "section": "Methodology",
+    "text": "The pipeline then applies a suite of open-source tools and heuristics—including domain whitelisting, keyword co-occurrence, sitemap traversal, and link structure analysis—to automatically identify, filter, and rank candidate sites for extraction. Once candidate sites were finalized, we leveraged each site’s structure to efficiently extract relevant financial text, avoiding the need for exhaustive manual traversal. For text extraction and parsing, we employed Trafilatura and BeautifulSoup for HTML-based content, and PyMuPDF4LLM for PDF documents, ensuring consistent text normalization and formatting across source types."
+   },
+   {
+    "section": "Methodology",
+    "text": "The process cleanly separates filtering and extraction stages, enabling parallelized domain filtering and asynchronous content extraction at scale."
+   },
+   {
+    "section": "Methodology",
+    "text": "Recent works in question generation demonstrate the scalability and controllability of using tailored LM agents for this task (Li and Zhang 2024; Noorbakhsh et al. 2025). Our approach synthesizes insights from these methods and adapts them for controlled generation from domain-specific documents."
+   },
+   {
+    "section": "Methodology",
+    "text": "FinForge employs an automated five-stage process, as illustrated in Figure 2. First, we perform a deep analysis of the input documents to extract salient information. This analysis informs the generation of a structured answer plan, which serves as a blueprint for guiding question formulation. Using this plan, we then generate complex questions that remain strictly grounded in the source material. In the final stage, an LM-as-a-judge framework validates these questions against a predefined rubric, filtering for relevance and quality."
+   },
+   {
+    "section": "Methodology",
+    "text": "The preliminary document analysis phase aims to discern deep financial thinking patterns within articles to uncover opportunities for probing questions. We specifically focus on identifying four essential characteristics in a document: causal relationships, prominent and competing hypotheses, necessary assumptions, and counterfactual possibilities."
+   },
+   {
+    "section": "Methodology",
+    "text": "This breakdown of the document is crucial during the planning stage. In this stage, we translate the unstructured information into a concrete blueprint for generation. This involves identifying a specific, testable conceptual nucleus within the text that serves as the “focus area.” The agent also assesses the cognitive complexity of this concept, assigning a difficulty rating on a five-point scale ranging from basic recall (1) through multi-step reasoning (3) to expert-level synthesis requiring multiple constraints (5). Finally, it extracts the minimal set of relevant passages required to construct a self-contained question. This plan ensures that the question is well-defined, appropriately challenging, and directly traceable to the source document."
+   },
+   {
+    "section": "Methodology",
+    "text": "In the third stage, we use this blueprint to formulate a complete question–answer pair. Adhering to the principle of self-containment, all necessary context and data from the relevant passages are embedded directly into the question’s premise. The language model for this stage is prompted to generate a natural-language question, plausible distractors, and a concise explanation for the correct answer, all while adhering to the domain-specific requirements provided in the inputs."
+   },
+   {
+    "section": "Methodology",
+    "text": "In addition to the preceding processes, we implement a supplementary labeling phase to categorize the artifacts based on the financial issue, perceived difficulty, and the targeted model’s finance-related capability. These labels help filter out irrelevant questions and provide valuable insights into a model’s performance across diverse settings. Each label is linked to its own case-specific rules that help the model adapt to the nature of the topic it must address."
+   },
+   {
+    "section": "Methodology",
+    "text": "The primary issue of automated generation is that outputs frequently fail to meet benchmark standards. We frequently observed unclear inquiries, erroneous hypotheses, or entirely unrelated questions arising from ostensibly direct materials. Consequently, we implemented an extra question validation phase that uses a language model to assess the question’s validity for the specific use case. Each question is evaluated across multiple dimensions—financial relevance (domain appropriateness), self-sufficiency (answerable without external context), logical consistency (no contradictions), clarity (unambiguous wording), and complexity (appropriate difficulty). A question passes validation only if it satisfies all five criteria; failure on any dimension results in rejection."
+   },
+   {
+    "section": "Methodology",
+    "text": "Each iteration of the pipeline development has undergone rigorous validation through expert review, independent of the existing automated checks. Based on this expert feedback, we iteratively refined the generation and filtering logic to produce a final set of higher-quality, more challenging questions."
+   },
+   {
+    "section": "Results",
+    "text": "To demonstrate the pipeline’s efficiency, the complete corpus construction and question-generation workflow was executed over seven days, encompassing taxonomy design, domain filtering, and content extraction. For this snapshot generation, the data curation stage yielded over 100,000 high-quality and verified financial documents spanning eleven well-defined subdomains. Collectively, these documents contained 143M tokens of domain-specific text, providing a diverse foundation that integrates both quantitative and conceptual financial knowledge."
+   },
+   {
+    "section": "Results",
+    "text": "From this corpus, we sampled 10,000 documents for question generation via stratified random sampling across the 11 subdomains, ensuring proportional representation using Gemini 2.5 Flash as the synthesis model. This process produced 10,000 initial question–answer (Q/A) pairs. Subsequent automated filtering—combining rule-based quality control with LM-as-judge scoring for relevance, clarity, and factual accuracy—resulted in the refined FinForge-5k benchmark set of 5,000 Q/A pairs. The primary rejection reasons were insufficient self-containment (questions requiring external context), ambiguous answer choices, and misalignment between question difficulty and source material complexity. A stratified random sample of 500 Q/A pairs was additionally reviewed by domain experts (see Expert Evaluation)."
+   },
+   {
+    "section": "Results",
+    "text": "The validated FinForge-5k benchmark was used to evaluate a range of both open-source and closed-source language models (Table 1). Performance was measured using a consistent multiple-choice setup, with accuracy defined as the proportion of correctly predicted answers across 5,000 question–answer pairs."
+   },
+   {
+    "section": "Results",
+    "text": "We organize the evaluation along two dimensions: model availability (proprietary vs. open-source) and scale (parameter count). Closed-source models such as GPT-4o and Claude Sonnet 4 achieve accuracies of 73.4% and 72.6%, respectively. Notably, open-source models of the same generation, such as Qwen-3-235B and DeepSeek v3.1, demonstrate superior performance on the benchmark."
+   },
+   {
+    "section": "Results",
+    "text": "Additionally, we have categorized the evaluated models into three key groups to assess the influence of model scale on their performance against the benchmark. Surprisingly, mid-range models (32-110B) demonstrate performance comparable to large-scale proprietary models, with Qwen3-Next-80B exhibiting only a 5% deficit relative to Qwen-3-235B and remaining within 1% of the DeepSeek, GPT-4o, and Sonnet models. This suggests that sheer model scale is not the sole determinant of success in domain-specific financial reasoning, underscoring the utility of FinForge-5k in diagnosing reasoning capabilities beyond generalist benchmarks. We hypothesize that observed performance differences may reflect variations in training data composition or domain-specific optimization strategies; however, confirming these hypotheses would require access to training corpora and implementation details that are not publicly disclosed."
+   },
+   {
+    "section": "Results",
+    "text": "These results reveal a key insight for financial evaluation: neither state-of-the-art generalist performance nor model scale alone guarantees superior financial reasoning capabilities."
+   },
+   {
+    "section": "Results",
+    "text": "To validate the efficacy of the pipeline’s generation capability, three domain experts conducted a qualitative assessment on a 10% stratified sample of the FinForge-5k snapshot. This expert review entailed verifying the clarity, self-containment, plausibility, and real-world relevance of the generated items."
+   },
+   {
+    "section": "Results",
+    "text": "The expert review validated the high quality and complexity of the generated questions, with 70% of the 500 samples deemed clear, accurate, and relevant. Crucially, the remaining 30% were typically not factually incorrect, but were flagged for ambiguity or missing contextual assumptions required for a definitive answer. This validation rate stands in significant contrast to the 100% approval rate assigned by the automated LM-as-a-judge (Stage 5) for the identical sample. The 30-point discrepancy offers quantitative support for our conclusion regarding the limitations of the ’LM-as-a-judge,’ indicating that it currently lacks the sophistication required to assess complex financial reasoning, demonstrating that expert oversight remains essential."
+   },
+   {
+    "section": "Results",
+    "text": "Data contamination—where test data appears in training corpora—remains a significant concern for LLM evaluation (Cheng et al. 2025). As a methodological sanity check, we evaluated the generator model (Gemini 2.5 Flash) and a model from the same family (Gemma 27B Team and others (2025b)) on the resulting benchmark. They achieved scores of 79.3% and 74.0%, respectively. Due to the inherent risk of data contamination from this circular evaluation, we explicitly omit the Gemma and Gemini models from our primary benchmark (Table 1) to ensure a fair and rigorous assessment of other models."
+   },
+   {
+    "section": "Discussion",
+    "text": "The FinForge-5k snapshot reveals systematic weaknesses in current model capabilities. Beyond the accuracy scores in Table 1, we conduct a proportional error analysis to identify specific reasoning deficiencies."
+   },
+   {
+    "section": "Discussion",
+    "text": "Our analysis indicates that Personal Finance & Wealth Management and Corporate Finance & Valuation are notably challenging topics relative to others in the benchmark. Fundamentally, we characterize these domains as tasks requiring complex multi-constraint satisfaction—such as optimizing for tax liabilities, liquidity needs, and risk simultaneously—in contrast to traditional retrieval-based finance tasks. This contrasts with the models’ comparatively high performance on Markets and Derivatives and Portfolio Management. This disparity suggests that despite exposure to substantial publicly available financial data during pretraining (Wu et al. 2023), models struggle to transfer such knowledge to scenarios requiring the integration of regulatory constraints with fundamental financial principles."
+   },
+   {
+    "section": "Discussion",
+    "text": "Conversely, across subjects, evidence indicates that models struggle most with quantitative questions, followed by counterfactual inquiries, aligning with the recent understanding of language model capabilities (Ahn et al. 2024; Mirzadeh et al. 2025). It is noteworthy that while the FinForge framework can generate multi-hop reasoning questions, for this snapshot they were frequently derived from distinct sections of single documents, representing a specific tier of reasoning difficulty."
+   },
+   {
+    "section": "Discussion",
+    "text": "Expert evaluation of incorrect quantitative answers in FinForge-5k identified two distinct failure modes. The first was conceptual: models applied incorrect financial methodologies, made flawed assumptions, or constructed inadequate logic (e.g., miscalculating depreciation). The second was arithmetic: models recognized the correct steps but erred in calculation. This distinction is essential. Arithmetic failures can be mitigated by external tools (Schick et al. 2023; Gao et al. 2023), but conceptual failures reveal a fundamental deficiency: models are misinterpreting the intricate financial reasoning demanded by the prompt. Future studies should concentrate on addressing these conceptual misinterpretations."
+   },
+   {
+    "section": "Discussion",
+    "text": "The findings possess substantial real-world implications. The significant shortcomings in Personal Finance & Wealth Management highlight that the average user cannot currently rely on these models for important financial decisions (Hean et al. 2025; Takayanagi et al. 2025). This represents a significant gap that has previously been overlooked in benchmarks focused on conventional information retrieval."
+   },
+   {
+    "section": "Discussion",
+    "text": "This work contributes in two ways. We first identify and analyze specific, high-impact weaknesses in contemporary LMs concerning financial reasoning and personalization. We demonstrate that the FinForge framework is an effective method for generating nuanced, domain-specific benchmarks. This outlines a clear framework for guiding future advancements and focused enhancements to financial-sector models."
+   },
+   {
+    "section": "Conclusion",
+    "text": "FinForge demonstrates that scalable, domain-grounded benchmark generation is achievable through a principled combination of expert oversight and controlled LM synthesis. By integrating verified financial sources with structured question generation and multi-stage validation, FinForge produces high-quality datasets that accurately reflect the depth of reasoning and quantitative rigor demanded in economic analysis. Evaluations using the FinForge-5k snapshot reveal specific, high-impact weaknesses in state-of-the-art models, particularly a tendency to fail at conceptual reasoning rather than simple arithmetic. This validation gap reinforces the importance of expert oversight in complex domains. Beyond the immediate utility of the FinForge-5k snapshot, the framework offers a generalizable methodology for creating transparent, extendable evaluation pipelines in other specialized domains. Future work will focus on expanding the corpus to additional subfields, integrating temporal and dynamic data to assess model recency, and establishing continual-learning benchmarks that evolve alongside financial markets. Ultimately, FinForge lays the groundwork for systematic, reproducible, and evolving evaluation of LMs in finance and other expert-driven disciplines."
+   },
+   {
+    "section": "Limitations",
+    "text": "The primary limitation of the study is the reliance on Gemini 2.5 Flash for both question generation and evaluation. Manual verification revealed that while questions were challenging, they often lacked the contextual assumptions needed for a definitive answer. The ambiguity, likely arising from the generator’s speed optimization, poses a risk of leading assessed LMs to make incorrect assumptions, thereby compromising the reliability of assessments."
+   },
+   {
+    "section": "Limitations",
+    "text": "Gemini 2.5 Flash’s design, which prioritizes speed, results in a capabilities mismatch when evaluating complex reasoning models. This likely led to the evaluator lacking the sophistication necessary to accurately assess advanced outputs, which may have distorted performance metrics. The boolean validator operated as a “black box.” The system effectively filtered out irrelevant questions; however, its lack of transparency obstructed the analysis of failed questions, thereby impeding the improvement of the generation pipeline."
+   },
+   {
+    "section": "Limitations",
+    "text": "Additionally, data contamination and circular dependency remain concerns when evaluating models from the same family as the generator. The present study omits the performance of Gemini and Gemma models from the primary results to mitigate this issue, but future work should develop more robust strategies for isolating generator influence from evaluation outcomes."
+   }
+  ]
+ },
+ "paper:role-steering-of-language-models-for": {
+  "url": "https://arxiv.org/html/2608.00023",
+  "passages": [
+   {
+    "section": "Introduction",
+    "text": "Social simulations built from language-model agents inherit the assumptions encoded in those agents. A workplace, civic process, platform community, or institutional workflow may require agents that express distinct priorities, registers, social stances, and decision styles. Prompting a model to “act as” a role is convenient, but small prompt changes can alter behavior, instruction adherence can drift, and simulated populations can flatten or misportray heterogeneity (Li et al., 2024; Lutz et al., 2025; Tosato et al., 2025). For social simulation, this creates an attribution problem: an observed interaction pattern may reflect the intended role population, the wording of the role prompts, or shared biases of the underlying model (Qu et al., 2026; Anand et al., 2025; Anand and Karmarkar, 2026; Horwitz et al., 2026)."
+   },
+   {
+    "section": "Introduction",
+    "text": "We study activation steering as a way to make role construction measurable before agents are used in a simulation. Rather than repeatedly specifying a role in natural language, we extract a direction from the model’s activation space and add it during generation. This intervention exposes a scalar coefficient that can be varied while holding the model, question, and decoding setup fixed. Prior work shows that persona- and role-related directions can be extracted and used to modulate behavior (Chen et al., 2025; Lu et al., 2026; Potertì et al., 2025; Bas and Novak, 2026; Anand et al., 2026). In that literature, the Assistant Axis of Lu et al. (2026) is a reference direction associated with default assistant-like behavior, not with any target role in our inventory. We use assistant-axis steering as a baseline of comparison: a role-specific vector evaluated with the same questions and coefficient grid. The methodological question is how to improve upon the language model’s alignment of a role to its true character: define many roles, extract candidate directions, evaluate them consistently, choose coefficients, and identify roles for which stronger steering is counterproductive."
+   },
+   {
+    "section": "Introduction",
+    "text": "We address this question with a mixed 275-role inventory on OLMo-3-7B-Instruct (Olmo et al., 2026). For each role, we construct a structured profile, generate role-specific elicitation prompts, extract a judge-filtered mean-difference direction at layer 16, and finally evaluate the resulting candidate agent steered by CastVectors at α∈1.0,1.5,2.0,2.5 on 228 role-agnostic questions. The principal comparison uses that assistant-axis control vector. The control is not scale matched: its vectors have mean 2 norm 9.68, compared with 3.79 for the CastVectors, so equal coefficients do not imply equal perturbation magnitudes."
+   },
+   {
+    "section": "Introduction",
+    "text": "The resulting picture is heterogeneous rather than uniformly positive. CastVectors achieve higher mean judged role-profile alignment than the assistant-axis directional control across the tested grid. For most roles, alignment rises as α increases: the median per-role correlation is r=+0.98, and 74% of roles improve at every consecutive step. A distinct minority behaves differently. Thirty-eight roles decline with increasing α on all six measured dimensions, so they should be flagged rather than deployed under a uniform high-strength setting. Many of these roles already score highly at the lowest tested coefficient, indicating that the baseline assistant naturally steers strongly toward such roles, in turn making it a coefficient-selection problem rather than a negative reflection of the CastVectors. We call this category anti-controllable over the tested range. Misaligned directional vectors and over-steering are plausible interpretations, but the current design leaves the mechanism open."
+   },
+   {
+    "section": "Introduction",
+    "text": "Scope of the measured outcome. Throughout this paper, role-profile alignment denotes judged agreement with the constructed role description and prompted role reference used by our evaluation pipeline. It measures whether a candidate synthetic agent steered by the CastVectors expresses the intended profile under the tested questions and coefficients. Section 6 states the corresponding validity boundaries and responsible-use constraints."
+   },
+   {
+    "section": "Introduction",
+    "text": "A pre-deployment calibration pipeline for role-conditioned agents. We combine structured role profiles, contrastive activation extraction, coefficient sweeps, and behavioral screening into a practical workflow for preparing synthetic agents for social simulation."
+   },
+   {
+    "section": "Introduction",
+    "text": "A large-scale characterization across 275 roles. Across four tested steering strengths and a 228-question role-agnostic battery, CastVectors achieve higher judged role-profile alignment than an assistant-axis control vector, and most roles show increasing alignment with stronger intervention."
+   },
+   {
+    "section": "Introduction",
+    "text": "A failure-aware account of heterogeneous role response. We distinguish controllable, partially deteriorating, and anti-controllable roles, and use exploratory geometric-diversity analyses to interpret, rather than replace, the behavioral screen."
+   },
+   {
+    "section": "A Pre-Deployment Role-Steering Pipeline",
+    "text": "Our pipeline treats every extracted CastVector as a candidate role-agent configuration that must be evaluated before simulation use. Figure 1 summarizes the operational stages: define a role profile, extract a candidate vector, sweep the steering coefficient, screen the resulting behavior, and either pass a documented configuration or flag it for revision, lower-strength use, prompt conditioning, or exclusion."
+   },
+   {
+    "section": "A Pre-Deployment Role-Steering Pipeline",
+    "text": "Model and layer. All experiments use OLMo-3-7B-Instruct (Olmo et al., 2026) on the residual stream at layer 16, the middlemost layer, following the middle-layer convention common in role-steering work (Lu et al., 2026)."
+   },
+   {
+    "section": "A Pre-Deployment Role-Steering Pipeline",
+    "text": "Role inventory and elicitation. The inventory contains 275 role labels. Many entries correspond to occupations, while others are broader archetypal or nonoccupational roles; we therefore refer to the collection as a mixed role inventory. For each role we construct a structured profile of fifteen behavioral directives (e.g. core drive, decision style, conflict stance, risk orientation, inner contradiction; the full list is in Appendix A.1), grounded in a role description, a set of mandatory tasks, and a set of role contexts. From this profile we generate five system prompts and 50 role-specific elicitation questions spanning seven situation types (e.g. resource conflict, ambiguity response, identity under removal; the full list is in Appendix A.1). Profiles and questions are generated with moonshotai/kimi-k2.5:nitro, seeded from the O*NET occupational database where an O*NET occupation matches the role. These generated profiles are explicit modeling assumptions rather than empirical descriptions of people in an occupation. The questions probe decision-making trade-offs implied by the profile rather than testing domain knowledge or surface-level stylistic mimicry. Generation details are in Appendix A.1."
+   },
+   {
+    "section": "A Pre-Deployment Role-Steering Pipeline",
+    "text": "Judge-filtered vector extraction. For each role we collect responses under prompted and default (Assistant) conditions and score each response with an LLM judge into four labels: fully role-playing, partially role-playing, task-responsive, and non role-playing. We retain only fully role-playing positives and Assistant -style negatives, then form the role vector vr as the layer-16 mean-of-differences over the filtered pairs — the optimal pointwise-MSE estimator under the formulation of Im and Li (2025)."
+   },
+   {
+    "section": "A Pre-Deployment Role-Steering Pipeline",
+    "text": "Steering coefficient sweep. Following Lu et al. (2026), we steer at the same layer used for extraction with additive intervention h↦ h+α vr, where h is the residual-stream activation at that layer, at α∈1.0,1.5,2.0,2.5. This grid provides four tested intervention strengths, so the coefficient-response claims in this paper are limited to these values. The reported coefficient-response screen starts at α=1.0; separate prompted-reference or unsteered diagnostics are not part of the four-point correlation used to classify controllability. We analyze the 275-role inventory of Lu et al. (2026). Exact model revisions, decoding settings, and intervention-span details are deferred to the released configuration artifacts where available."
+   },
+   {
+    "section": "A Pre-Deployment Role-Steering Pipeline",
+    "text": "Role-profile alignment readout and screening. For every (role, α) cell we generate responses to 228 role-agnostic alignment questions and score them with GPT-4.1-mini along six dimensions: an overall role-profile alignment score plus emotional register, vocab choice, social dynamic, motivation, and worldview alignment against a prompted role reference. GPT-4.1-mini generates the prompted references and serves as all judges, so shared model priors may influence both the target and the score. The screen reports three quantities that matter for simulation use: absolute role-profile alignment, response across the four tested coefficients, and text quality indicators such as unique-bigram ratio as a lexical repetition proxy. We also compare every role to the assistant-axis control vector of Lu et al. (2026) under the same questions and coefficients. The assistant-axis comparison is not scale matched because its vectors have larger mean 2 norm than the role-specific vectors (9.68 versus 3.79). Full judge prompts, pairwise position-swap checks, and reliability analyses are in Appendix B; the behavioral RDM split-half result (r=0.97 for correlation distance) measures internal stability of this automated readout, not external validity."
+   },
+   {
+    "section": "Evaluation Across 275 Roles",
+    "text": "We evaluate the pipeline with three questions relevant to simulation builders: how judged role-profile alignment changes across the tested coefficient grid, how CastVectors compare with the assistant-axis control vectors with respect to role alignment, and which candidate roles deteriorate under stronger intervention. Full per-metric tables and per- α breakdowns are in Appendix C."
+   },
+   {
+    "section": "Evaluation Across 275 Roles",
+    "text": "CastVectors show higher role-profile alignment than the assistant-axis control. Aggregated across 275 roles and 228 questions per (role, α) cell, the role-specific condition receives a mean overall role-profile alignment score of 63.2, compared with 41.1 for the assistant-axis directional control and 89.2 for the prompted role reference. The reference is a model-generated prompting condition rather than empirical ground truth. The assistant-axis result should be read with a scale caveat: its vectors have a larger mean 2 norm than the CastVectors (9.68 versus 3.79), so equal coefficients do not produce equal perturbation magnitudes. Under the current extraction and evaluation setup, the assistant-related control does not provide a pure directional comparison, but rather a behavioral and role-aligned comparison of the methodologies as applied. It should not be read as evidence that assistant-like directions point away from natural assistant behavior; the control also has a larger norm and degrades most at the largest coefficients. Unique-bigram ratio remains high for the CastVectors over the tested range and falls sharply for the assistant-axis control vector at the largest coefficients; this statistic is a lexical repetition proxy, not a complete measure of semantic quality (Tables 9 and 10)."
+   },
+   {
+    "section": "Evaluation Across 275 Roles",
+    "text": "Pairwise checks on the 39-role subset give the same practical conclusion at α=2.5. Across 7,666 response pairs, role-specific steered responses win 92.9% of comparisons against the assistant-axis directional control, and the debiased advantage is positive for all 39 evaluated roles (Figure 3). This is still a comparison to the control vector rather than a prompt-only or norm-matched baseline, but it shows that the aggregate score gap is also visible to the pairwise judge."
+   },
+   {
+    "section": "Evaluation Across 275 Roles",
+    "text": "CastVectors should be screened for alignment. Aggregate means are not enough for simulation deployment. At every α, some roles receive high role-profile alignment scores, while others stagnate or degrade. Screening only at a single coefficient would miss this distinction: low-strength alignment can coexist with high-strength deterioration, while a high-strength-only report can hide usable lower-coefficient configurations. A role inventory therefore needs a per-role screen: a vector is useful only if it expresses the intended profile under the tested questions without increasing lexical repetition or pushing the model away from the role at stronger coefficients."
+   },
+   {
+    "section": "Evaluation Across 275 Roles",
+    "text": "For a simulation user, stronger intervention should usually produce stronger role-profile expression rather than generic drift. We measure this per role by the Pearson correlation between α and overall role-profile alignment score across the four tested coefficients."
+   },
+   {
+    "section": "Evaluation Across 275 Roles",
+    "text": "The distribution is strongly bimodal (Figure 4). Most roles behave as desired: median r=+0.98, 82% are positive, 79% exceed r=0.8, and 74% improve monotonically across all four α steps. These statistics show that α is a useful within-grid tuning parameter for the majority of the inventory. The four-point correlation should not be extrapolated beyond the evaluated coefficient grid. The minority mode near r=-1 is just as important: it exposes roles that should be handled specially rather than silently mixed into a simulated population."
+   },
+   {
+    "section": "Evaluation Across 275 Roles",
+    "text": "The coefficient sweep identifies 38 roles (14% of 275) whose score decreases with α across all six measured axes. We call these roles anti-controllable over the tested range. They include analyst, coach, consultant, moderator, supervisor, teacher, and validator, but the full inventory also contains nonoccupational and archetypal entries; the category is an operational role-vector result rather than a finding about professions as real populations. The pattern is structured across roles and dimensions under the current readout. It is an operational warning that stronger intervention is not uniformly beneficial."
+   },
+   {
+    "section": "Evaluation Across 275 Roles",
+    "text": "At α=1.0, these anti-controllable roles already average 81.1 judged role-profile alignment, versus 55.6 across all roles and within 6.0 points of their own prompted references. With stronger steering, this average declines to 74.2 at α=2.5 (Figure 5). This pattern is consistent with poor vector alignment or over-steering, but the present four-point screen does not distinguish those mechanisms: all four points are steered conditions, and the prompted-reference baseline is a separate model-generated target rather than a comparable point on the same coefficient trajectory. The practical rule is independent of the mechanism: candidate role directions should be swept and screened before agents are used in a simulation."
+   },
+   {
+    "section": "Geometry as Diagnostic Context",
+    "text": "The behavioral sweep is the primary screen. We use representation geometry as a diversity and failure-context diagnostic: it asks whether the role-vector inventory preserves separations relevant to heterogeneous simulation, and how those directions relate to the observed coefficient-response curves. Across roles, vector norm is moderately associated with the fitted response slope (r=+0.49). Distance to the pipeline-extracted Assistant role vector is also inversely correlated with the score difference to the reference, with the strongest correlation at α=1.0 (r=-0.419) and a weaker correlation at α=2.5 (r=-0.145). This relation still holds after accounting for vector magnitude, indicating that the association is directional rather than driven by magnitude alone."
+   },
+   {
+    "section": "Geometry as Diagnostic Context",
+    "text": "Pairwise representational similarity has a modest association with pairwise behavioral similarity. The cosine/correlation RSA rises from ρ=+0.085 at α=1.0 to ρ=+0.179 at α=2.5 under the current readout. PCA, trait-axis projections, and rank analyses in the appendix provide additional descriptions of the role-vector cloud, but their effect sizes are moderate and their semantic labels are interpretive."
+   },
+   {
+    "section": "Geometry as Diagnostic Context",
+    "text": "These analyses support the behavioral screen by adding post hoc context for why some directions may require different coefficient choices and by making the assumptions behind the role inventory easier to inspect. They are diagnostics rather than deployment rules. The full technical account is in Appendix E."
+   },
+   {
+    "section": "Implications, Limitations, and Responsible Use",
+    "text": "The study demonstrates a large-scale procedure for constructing and screening role-conditioned agents under one model, one layer, one coefficient grid, and one evaluation pipeline. CastVectors receive higher mean judged role-profile alignment than the assistant-axis directional control across the tested coefficients, and most roles improve as intervention strength grows. The role-level analysis is equally important: 38 roles decline across every measured dimension, showing that a single global steering strength is not appropriate for the full inventory. The screen asks which coefficient, if any, is usable for each role."
+   },
+   {
+    "section": "Implications, Limitations, and Responsible Use",
+    "text": "The workflow is meant to sit before the simulation run itself. A builder defines the intended synthetic role and documents the profile assumptions; extracts a candidate activation direction; evaluates the candidate over the tested coefficient grid; inspects role-profile alignment and lexical repetition proxies; flags declining or dimensionally inconsistent roles; and records the profile, coefficient, reference condition, and screening result before using the agent in a simulation. The output is a documented agent configuration and a set of role-level warnings."
+   },
+   {
+    "section": "Implications, Limitations, and Responsible Use",
+    "text": "Role-profile alignment is an operational screen, not a population-validity study. The evaluation measures agreement with constructed role profiles and prompted references rather than correspondence to real workers or real occupational populations. GPT-4.1-mini generated the references and served as the evaluator, so shared priors may influence the target and the score. The assistant-axis comparison is directional rather than scale matched, the controllability classification uses four nonzero values, and all experiments use OLMo-3-7B-Instruct at layer 16. The current study leaves prompt paraphrase robustness, multi-turn persistence, cross-model generality, agent-agent interaction, and downstream simulation fidelity for future work. The geometry analyses are correlational diagnostic context rather than prospective selection rules."
+   },
+   {
+    "section": "Implications, Limitations, and Responsible Use",
+    "text": "The role profiles and CastVectors are model- and prompt-derived archetypes. They are not psychological representations of people in an occupation. Real roles contain substantial variation across individuals, institutions, cultures, seniority levels, and contexts, while one vector per label can flatten that variation or amplify familiar stereotypes. Simulation reports should therefore disclose how roles were defined, which coefficient was selected, which agents were flagged, and which outcomes depend on these modeling choices."
+   },
+   {
+    "section": "Conclusion",
+    "text": "We present activation steering as a screening workflow for constructing role-conditioned synthetic agents before simulation use. Across a 275-role inventory, role-specific directions achieve higher judged role-profile alignment than an assistant-axis directional control over four tested steering strengths, and most roles improve as the coefficient grows. A notable minority declines across every measured dimension, demonstrating that candidate directions should be swept and screened rather than deployed with a uniform setting. The contribution is methodological: activation steering produces candidate configurations that can be measured, compared, documented, and rejected before they are used in a simulation. For social-simulation builders, the practical lesson is to treat role construction as a screened configuration step rather than a one-shot prompt or vector choice."
+   }
+  ]
+ },
+ "project:kuvera": {
+  "url": "https://huggingface.co/datasets/Akhil-Theerthala/Kuvera-PersonalFinance-V2.1/raw/main/README.md",
+  "passages": [
+   {
+    "section": "Personal Finance Reasoning-V2.1",
+    "text": "This dataset is associated with the paper Synthesizing Behaviorally-Grounded Reasoning Chains: A Data-Generation Framework for Personal Finance LLMs."
+   },
+   {
+    "section": "Personal Finance Reasoning-V2.1",
+    "text": "This is a scaled up version of the PersonalFinance-V2 dataset with some pipeline streamlining done."
+   },
+   {
+    "section": "1. Introduction & Motivation",
+    "text": "The landscape of financial AI benchmarks is currently dominated by applications in corporate finance, algorithmic trading, and general financial knowledge extraction. While valuable, these benchmarks often overlook the critical domain of personal finance planning. Furthermore, they typically fail to account for the significant influence of individual psychology and behavioural biases (e.g., loss aversion, overconfidence, anchoring) on financial decision-making."
+   },
+   {
+    "section": "1. Introduction & Motivation",
+    "text": "This dataset addresses this crucial gap by providing a specialised benchmark designed to evaluate the reasoning capabilities of Large Language Models (LLMs) in delivering actionable, personalised, and psychologically-aware financial advice. Existing systems often provide generic information; the challenge lies in synthesising user-specific context, relevant financial knowledge, and inferred psychological drivers to generate effective guidance."
+   },
+   {
+    "section": "1. Introduction & Motivation",
+    "text": "Importance: The ability of AI to provide nuanced, empathetic, and behaviorally informed financial guidance is paramount for empowering individuals to navigate complex financial situations and make better long-term decisions. This dataset facilitates the development and rigorous evaluation of LLMs specifically for this high-impact application, pushing the boundaries of AI reasoning beyond simple information retrieval towards complex problem-solving and personalised interaction in a vital real-world domain."
+   },
+   {
+    "section": "Why does Personal finance advice need \"reasoning\"?",
+    "text": "Financial decisions involve complex interactions between multiple variables (income, debt, risk tolerance, time horizons). Unlike factual queries, these situations demand analyzing trade-offs between competing priorities while considering psychological factors that influence decision-making. Financial advice must evaluate long-term consequences and opportunity costs within the context of varying regulatory frameworks. A mere retrieval-based approach would provide generic information without the crucial analysis of how that information applies to an individual's unique circumstances, potentially leading to inappropriate recommendations that fail to account for the nuanced interplay between financial facts and personal context."
+   },
+   {
+    "section": "Possible Realworld Impact",
+    "text": "Successfully enabling the kind of nuanced, psychologically-aware reasoning outlined previously promises significant real-world benefits. A model trained on the fully developed version of this dataset would possibly be capable of offering truly personalized and effective financial guidance, moving far beyond the limitations of current generic systems. Ultimately, this can help individuals (especially those lacking access to traditional advisors), to better understand their finances, overcome detrimental behavioral patterns, make sounder long-term decisions."
+   },
+   {
+    "section": "2. Dataset Description",
+    "text": "Objective: To benchmark LLM reasoning in generating personalised financial advice that integrates factual knowledge with understanding user context and potential psychological factors."
+   },
+   {
+    "section": "2. Dataset Description",
+    "text": "Scope & Content: The dataset comprises query-response pairs covering core areas of personal finance. Each instance presents a user query requiring multi-faceted reasoning to generate an appropriate response."
+   },
+   {
+    "section": "2. Dataset Description",
+    "text": "Query Categories: The user queries within the dataset fall into the following key personal finance domains:"
+   },
+   {
+    "section": "2. Dataset Description",
+    "text": "Requirement/Prompt consolidation: The requirements for each stage are listed and refined before starting the process. These refined requirements are then used to carefully craft the relevant prompts highlighting the instructions, probable use-cases and negative examples for each stage of the generation. In order to craft these prompts carefully, I've employed the use of Claude-Sonnet-3.7 and the resources from Together.ai, Cohere and Anthropic."
+   },
+   {
+    "section": "3. Data Gathering",
+    "text": "A central challenge in creating a benchmark for financial reasoning is sourcing appropriate input queries. While generic personal finance questions are readily available online, many fall into the category of basic financial literacy queries whose answers are easily found via standard search engines. The goal of this dataset, however, is not to replicate search engine functionality but to evaluate an AI's ability to analyze, understand, and reason about complex, often multi-faceted personal financial situations presented by users."
+   },
+   {
+    "section": "3. Data Gathering",
+    "text": "To acquire queries demanding nuanced understanding and personalised advice, we turned to online communities where individuals discuss their real-world financial circumstances. Reddit, particularly the r/personalfinance subreddit, served as a primary source. This forum contains a vast number of posts where users detail their specific situations and seek tailored guidance, making it a rich repository of relevant scenarios."
+   },
+   {
+    "section": "3. Data Gathering",
+    "text": "However, acknowledging Reddit's changes to its Terms of Service and API access policies in mid-2023, all data sourcing for this dataset was strictly limited to content posted prior to these changes to ensure full compliance and ethical data handling."
+   },
+   {
+    "section": "3. Data Gathering",
+    "text": "The raw content sourced from this period required significant filtering. Subreddits like r/personalfinance contain substantive queries and general advice threads, simple factual questions, meta-discussions, responses extending previous queries, and other irrelevant posts. To isolate queries suitable for our reasoning benchmark, we implemented a filtering process using an LLM-as-a-jury approach. Multiple models, including Gemini 2.0 Flash, Phi-4 14B, and Gemma-3-27B, evaluated potential posts, filtering out noise and retaining only those queries that presented a clear personal finance problem requiring analysis and a reasoned response."
+   },
+   {
+    "section": "3. Data Gathering",
+    "text": "Finally, these filtered, high-quality queries were preliminarily categorised into the eight core personal finance domains defined in Section 2. This initial categorisation helped structure the input for the subsequent data generation pipeline."
+   },
+   {
+    "section": "4. Data Generation Methodology",
+    "text": "The dataset was constructed using a multi-stage pipeline to simulate the generation of contextually relevant and psychologically attuned financial advice. This process ensures that the benchmark tasks require models to go beyond surface-level understanding."
+   },
+   {
+    "section": "4. Data Generation Methodology",
+    "text": "Figure 1: A summary of the multi-stage process for generating dataset instances."
+   },
+   {
+    "section": "4. Data Generation Methodology",
+    "text": "Input Query Processing: User queries, representing diverse personal finance needs and scenarios, serve as the input."
+   },
+   {
+    "section": "4. Data Generation Methodology",
+    "text": "Parallel Analysis Streams: Each query undergoes simultaneous analysis:"
+   },
+   {
+    "section": "4. Data Generation Methodology",
+    "text": "Query Analysis: Standard NLP techniques identify the core financial topic, specific questions, and explicit constraints or details provided in the query."
+   },
+   {
+    "section": "4. Data Generation Methodology",
+    "text": "Psychological Intent Extraction: This phase analyses the intent, tone, sentiment and the level of certainty in the user's query to infer potential underlying psychological states, biases, or emotional drivers (e.g., anxiety about market volatility, overconfidence in a specific stock, procrastination in saving)."
+   },
+   {
+    "section": "4. Data Generation Methodology",
+    "text": "RAG-based Context Extraction: The outputs from Query analysis guide a Retrieval-Augmented Generation (RAG) process. Relevant factual information, financial principles, regulations (where applicable), and calculation methods are retrieved from a dedicated knowledge database that was iteratively improved through jury-based evaluation processes, leading to a final size of ~800k tokens. However, It is important to note that not every fact/piece of information is dumped into the reasoning chain. Instead, the reasoning chain tries to provide reference to the contextual information needed to answer the query."
+   },
+   {
+    "section": "4. Data Generation Methodology",
+    "text": "Response Generation: This core module synthesises the retrieved context from the RAG step and the insights from the Psychological Intent Extraction. The goal is to formulate a response that is not only factually accurate and relevant to the query's topic but also tailored to the user's inferred psychological state, potentially addressing biases or framing advice in a more behaviorally effective manner."
+   },
+   {
+    "section": "4. Data Generation Methodology",
+    "text": "Response Validation: Each generated response undergoes a validation check to assess its accuracy, relevance, coherence, safety, and appropriateness before being included in the final dataset."
+   },
+   {
+    "section": "More about \"Psychological Intent\"...",
+    "text": "It is proven that financial decisions are heavily influenced by human psychology, not just logic. Though these effects are not directly noticeable, the unseen influence of these factors can drastically change a person's relationship with money. Recognizing factors such as user anxiety about debt, frustration with market volatility, confidence levels, or whether they are primarily seeking information versus venting, allows this system to provide responses that are more empathetic, relevant, and effectively tailored. Hence, I believe that trying to infer the person's psychological intent, could help in directing the model to generate better, more personalised outputs."
+   },
+   {
+    "section": "More about \"Psychological Intent\"...",
+    "text": "Core Psychological Factors considered: As text is the only form of interaction with the model, the amount of psychological information that can be extracted from the query is heavily limited. However, there are still a few linguistic cues that can be used to infer the intent. They are:"
+   },
+   {
+    "section": "More about \"Psychological Intent\"...",
+    "text": "Overall Sentiment: Is the query primarily Positive, Negative, or Neutral?"
+   },
+   {
+    "section": "More about \"Psychological Intent\"...",
+    "text": "Primary Emotions: The one or two most prominent emotions expressed in the query. (Anger, Sadness, Fear, Surprise, Frustration, Confusion, Calmness, Gratitude, Disappointment, etc.)"
+   },
+   {
+    "section": "More about \"Psychological Intent\"...",
+    "text": "Communicative intent: The main purpose of the query. (Seeking Information, Expressing Opinion, Venting/Complaining, Seeking Help/Support, Sharing Experience, etc)"
+   },
+   {
+    "section": "More about \"Psychological Intent\"...",
+    "text": "Level of Certainty: The confidence/certainty the user projects about his statements or situations through the query. (High, Medium, Low, or Mixed)"
+   },
+   {
+    "section": "5. Quality Control & Evaluation",
+    "text": "To ensure the quality and relevance of the generated data at critical points within the pipeline, several evaluation strategies were employed:"
+   },
+   {
+    "section": "5. Quality Control & Evaluation",
+    "text": "Context Extraction Evaluation: The relevance of context chunks retrieved during the RAG-based Context Extraction stage was assessed using multiple Large Language Models (LLMs) acting as evaluation juries. These LLM juries evaluated the pertinence of the retrieved information relative to the analyzed query. Feedback from this stage, particularly highlighting context gaps, was also used iteratively to enrich the underlying knowledge base."
+   },
+   {
+    "section": "5. Quality Control & Evaluation",
+    "text": "Query Analysis Evaluation: The output of the Query Analysis phase was evaluated for completeness and accuracy. A multi-shot, reference-based scoring method was utilized, where an evaluation LLM compared the generated analysis against pre-defined ideal analysis samples for the given query type, ensuring key requirements and constraints were captured."
+   },
+   {
+    "section": "5. Quality Control & Evaluation",
+    "text": "Final Response Selection & Validation: Multiple candidate responses were often generated before inclusion in the dataset. The final response selection involved a comparative evaluation using a 5-shot scoring framework. Several LLMs, including GPT-4o-mini, Deepseek-v3-0324 (as of March 2024 checkpoint), and Gemini-2.0-Flash, served as distinct juries to compare the quality (e.g., accuracy, relevance, safety, actionability, adherence to inferred intent) of generated samples, with the highest-rated response typically being selected for the final dataset."
+   },
+   {
+    "section": "6. Expected Model Reasoning Process",
+    "text": "Evaluating models using this dataset should focus on their ability to execute a complex, multi-stage reasoning process mirroring the generation pipeline:"
+   },
+   {
+    "section": "6. Expected Model Reasoning Process",
+    "text": "Query Analysis Phase: Accurately decompose the user's request, identifying the primary financial goal, constraints, and explicitly stated information."
+   },
+   {
+    "section": "6. Expected Model Reasoning Process",
+    "text": "Context Processing Phase: Retrieve and synthesise relevant financial knowledge, facts, formulas, and potential regulations pertinent to the analysed query. This involves accessing and filtering information from its internal knowledge or a provided external source."
+   },
+   {
+    "section": "6. Expected Model Reasoning Process",
+    "text": "Psychological Intent Integration: Infer the user's potential underlying mindset, emotional state, or behavioural biases based on the query's nuances. Critically, the model must determine how this inference should dynamically shape the response."
+   },
+   {
+    "section": "6. Expected Model Reasoning Process",
+    "text": "Response Formulation Stage: Integrate the outputs of the previous stages. This involves not just stating facts but structuring the advice, explaining the reasoning, potentially performing calculations, and framing the communication effectively, considering the inferred psychological context. The model needs to decide on the appropriate level of detail, tone, and specific recommendations."
+   },
+   {
+    "section": "6. Expected Model Reasoning Process",
+    "text": "This structured reasoning process highlights the dataset's challenge: moving beyond simple Q&A to sophisticated, context-aware, and behaviorally-informed problem-solving."
+   },
+   {
+    "section": "7. Other Possible Use Cases from this Dataset",
+    "text": "Leveraging the query, query-category, and response columns, this dataset enables various applications and research directions:"
+   },
+   {
+    "section": "7. Other Possible Use Cases from this Dataset",
+    "text": "Financial Query Categorisation: Using the query and query-category columns, train and evaluate models for automatically classifying user financial questions into relevant domains. This is crucial for routing user requests in conversational AI systems or triggering specialised modules."
+   },
+   {
+    "section": "7. Other Possible Use Cases from this Dataset",
+    "text": "Benchmarking Financial Reasoning: Employing the full dataset (query, query-category, response) to benchmark the end-to-end reasoning capabilities of LLMs in the personal finance domain, assessing accuracy, relevance, personalisation, safety, and potentially the behavioral appropriateness of generated advice."
+   },
+   {
+    "section": "7. Other Possible Use Cases from this Dataset",
+    "text": "Analysis of User Needs: Analysing the distribution and nature of query text within each query-category to gain insights into common user concerns and questions in personal finance."
+   },
+   {
+    "section": "8. Next steps in building the dataset:",
+    "text": "While the current categories cover the fundamentals pretty well, this dataset doesn't currently dive deep into these following areas:"
+   },
+   {
+    "section": "8. Next steps in building the dataset:",
+    "text": "Specific or Niche Topics: I haven't gone deep into complex, specialized areas like international finance (for expats), advanced strategies for huge medical bills, ethical/sustainable investing details, or cutting-edge digital security for finance."
+   },
+   {
+    "section": "8. Next steps in building the dataset:",
+    "text": "SME based evaluation of Psychological Intent: The current linguistic cue based intent detection can be improved with the help of relevant subject matter experts. This can help in better personalization of the model's response."
+   },
+   {
+    "section": "8. Next steps in building the dataset:",
+    "text": "The Bigger Picture & Human Side: The dataset doesn't focus heavily on broader themes like making finance accessible for everyone (financial inclusion), the deep psychology behind our money habits (behavioural finance beyond the basics), or detailed plans for bouncing back from major financial crises."
+   },
+   {
+    "section": "8. Next steps in building the dataset:",
+    "text": "Major Life Milestones: While savings are covered, detailed planning for huge life steps isn't the main focus – things like the nitty-gritty of buying a home, mapping out college/university savings plans, or the specific financial shifts involved in marriage or having kids."
+   },
+   {
+    "section": "8. Next steps in building the dataset:",
+    "text": "Making More Money: The advice here is more about managing what you have, rather than strategies for increasing your income through career moves, starting a business, or advanced freelancing finance."
+   },
+   {
+    "section": "8. Next steps in building the dataset:",
+    "text": "Expanding into international domains: The current dataset is fairly limited to US-based personal finance advice, and needs to be expanded into different geographies. Some of the easiest places to start are India, the UK, Italy, New Zealand, Ireland and many more."
+   },
+   {
+    "section": "9. Limitations and Biases",
+    "text": "While striving for a robust benchmark, we be aware of inherent limitations:"
+   },
+   {
+    "section": "9. Limitations and Biases",
+    "text": "Model and Data Biases: The LLMs used in the generation pipeline and the underlying knowledge database may reflect biases in their training data. This could manifest as skewed financial viewpoints, a lack of representation for certain demographics, or outdated information if the knowledge base isn't continuously refreshed."
+   },
+   {
+    "section": "9. Limitations and Biases",
+    "text": "RAG Fidelity: The RAG process, while powerful, is not infallible. Retrieval might be incomplete or inaccurate, and the generation step might not perfectly adhere to the retrieved context."
+   },
+   {
+    "section": "9. Limitations and Biases",
+    "text": "Psychological Intent Subjectivity: Identifying psychological intent from text is inherently complex and subjective. The methods used for inference may not capture all nuances or could misinterpret user states. This area needs further improvement, with the study into better behavioral finance analysis and interpretations."
+   },
+   {
+    "section": "9. Limitations and Biases",
+    "text": "Query Representation: The input queries aim for diversity but may not encompass the full spectrum of user situations, financial literacy levels, or cultural backgrounds."
+   },
+   {
+    "section": "9. Limitations and Biases",
+    "text": "Regional & Contextual Specificity: Personal finance highly depends on local laws, regulations, and cultural norms. While efforts may be made to account for this, the dataset may not fully capture all necessary specificities for all regions."
+   },
+   {
+    "section": "9. Limitations and Biases",
+    "text": "Validation Scope: The response validation process aims to ensure quality but is subject to the validation criteria's limitations and potential human reviewer subjectivity."
+   },
+   {
+    "section": "10. Conclusion",
+    "text": "The Personal Finance CoTR V2 dataset offers a specialized benchmark for evaluating LLM reasoning in delivering personalized financial advice. With 7,000+ query-response pairs across eight finance domains, it uniquely integrates financial knowledge with psychological awareness. Future expansions could include cross-cultural applications, longitudinal planning scenarios, and more refined behavioral finance modeling. These advancements would benefit large-scale reasoning models by enhancing their capabilities in context-sensitive reasoning, bias recognition, and ethical navigation of complex financial scenarios—ultimately empowering individuals to achieve better financial outcomes while advancing AI reasoning in high-stakes domains."
+   },
+   {
+    "section": "Kuvera 8B",
+    "text": "This model is a fine-tuned version of Qwen/Qwen3-8B designed to answer personal finance queries, as presented in the paper Synthesizing Behaviorally-Grounded Reasoning Chains: A Data-Generation Framework for Personal Finance LLMs. It has been trained on a specialized dataset of real Reddit queries with synthetically curated responses, focusing on understanding both the financial necessities and the psychological context of the user."
+   },
+   {
+    "section": "Model Description",
+    "text": "The model aims to provide empathetic and practical advice for a wide range of personal finance topics. It leverages a base model's strong language understanding and generation capabilities, further enhanced by targeted fine-tuning on domain-specific data. A key feature of this model is its training to consider the emotional and psychological state of the person asking the query, alongside the purely financial aspects."
+   },
+   {
+    "section": "Intended Uses & Limitations",
+    "text": "Answering user questions about personal finance topics such as budgeting, saving, investing, debt management, and basic financial planning."
+   },
+   {
+    "section": "Intended Uses & Limitations",
+    "text": "Powering chatbots or virtual assistants focused on financial guidance."
+   },
+   {
+    "section": "Intended Uses & Limitations",
+    "text": "Providing initial information and suggestions for common financial dilemmas."
+   },
+   {
+    "section": "Intended Uses & Limitations",
+    "text": "Use in research settings to understand how language models can address nuanced financial queries."
+   },
+   {
+    "section": "Intended Uses & Limitations",
+    "text": "Not Financial Advice: The model's responses are for informational and educational purposes only and should not be considered professional financial advice. Users should always consult with a qualified financial advisor before making financial decisions."
+   },
+   {
+    "section": "Intended Uses & Limitations",
+    "text": "Synthetic Data: While the responses are curated to be helpful, they are synthetically generated. The model might not always capture the full complexity or the most up-to-date information for every individual situation."
+   },
+   {
+    "section": "Intended Uses & Limitations",
+    "text": "Potential for Bias: The training data, although curated, may contain inherent biases present in the original Reddit queries or in the synthetic response generation process."
+   },
+   {
+    "section": "Intended Uses & Limitations",
+    "text": "Knowledge Cutoff: The model's knowledge is limited to the information present in its training data and the knowledge cutoff of its base model. It may not be aware of very recent financial events or changes in regulations."
+   },
+   {
+    "section": "Intended Uses & Limitations",
+    "text": "Non-Reasoning Base: The base model is described as \"Non-reasoning.\" While fine-tuning on a specialized dataset can imbue some domain-specific reasoning capabilities, complex multi-step financial planning or deep inferential reasoning might be beyond its current scope."
+   },
+   {
+    "section": "Training Data",
+    "text": "The model was fine-tuned on the Akhil-Theerthala/Personal-Finance-Queries dataset, publicly available on Hugging Face."
+   },
+   {
+    "section": "Training Data",
+    "text": "Key Feature: The dataset generation process paid specific attention to the basic financial necessities and the psychological conditions of the recipient when crafting the responses."
+   },
+   {
+    "section": "Further Information & Collaboration",
+    "text": "Exploring Mixture of Experts (MoE) methods for further model development, where each \"expert\" focuses on evaluating a core aspect of the query like, psychological intent, general social biases, region-sepecific contexts, query breakdown, possible choices and concequences etc."
+   },
+   {
+    "section": "Further Information & Collaboration",
+    "text": "Call for Collaboration: I am a solo dude just randomly working on this project during my free time. If you are interested in this project, and want to expand the scope, then do ping me here, on Linkedin or just send me a mail."
+   }
+  ]
+ },
+ "project:themis-scales-moral-dilemma": {
+  "url": "https://huggingface.co/datasets/Akhil-Theerthala/Themis_Scales/raw/main/README.md",
+  "passages": [
+   {
+    "section": "Dataset Description",
+    "text": "This repository contains a seed dataset designed to explore the hypothesis that AI reasoning models can be guided to analyse and propose resolutions for moral dilemmas. The core objective is to demonstrate the potential of using a structured reasoning framework – specifically the Morality-as-Cooperation (MAC) theory – to navigate complex ethical situations."
+   },
+   {
+    "section": "Dataset Description",
+    "text": "This initial dataset serves as a proof-of-concept and a foundational resource. It aims to show that applying evolutionary and game-theoretic principles, as captured by MAC, can provide a structured and potentially universalizable approach to moral reasoning by AI."
+   },
+   {
+    "section": "Key questions asked to reason towards the resolution:",
+    "text": "What is the key conflict described? Who are the primary stakeholders? What are the key details provided?"
+   },
+   {
+    "section": "Key questions asked to reason towards the resolution:",
+    "text": "What are the potential positives and negatives for the key stakeholders involved?"
+   },
+   {
+    "section": "Key questions asked to reason towards the resolution:",
+    "text": "What is the emotional impact on each stakeholder based on the choices to be made?"
+   },
+   {
+    "section": "Key questions asked to reason towards the resolution:",
+    "text": "How do the common philosophical frameworks like Dentology or Utilitarianism weigh the choices to be made?"
+   },
+   {
+    "section": "Key questions asked to reason towards the resolution:",
+    "text": "Based on these central questions along with possible caveats for each dilemma, a resolution is formulated and evaluated. More details on the process are provided in the Dataset Creation Process section."
+   },
+   {
+    "section": "Dataset Objective",
+    "text": "To test the feasibility of using AI reasoning models for systematic moral dilemma resolution."
+   },
+   {
+    "section": "Dataset Objective",
+    "text": "To apply the Morality-as-Cooperation (MAC) framework as the primary structured approach for this reasoning process."
+   },
+   {
+    "section": "Dataset Objective",
+    "text": "To provide a foundational dataset for further expansion, refinement, and validation, aiming for more robust analysis and potential practical applications in AI ethics."
+   },
+   {
+    "section": "Central Framework: Morality-as-Cooperation (MAC)",
+    "text": "This dataset's reasoning process is primarily framed using the Morality-as-Cooperation (MAC) theory."
+   },
+   {
+    "section": "Central Framework: Morality-as-Cooperation (MAC)",
+    "text": "Core Concept: MAC, derived from game theory and evolutionary principles, proposes that what we call \"morality\" is essentially a collection of biological and cultural solutions to the problems of cooperation that have been recurrent throughout human social evolution."
+   },
+   {
+    "section": "Central Framework: Morality-as-Cooperation (MAC)",
+    "text": "Types of Cooperation (Morals): The theory identifies several distinct domains of cooperation, each with associated moral rules. These include obligations related to family (kinship), group coordination, reciprocity (social exchange), conflict resolution (displays of prowess or conciliation), fairness (division of resources), and property rights (respecting prior possession)."
+   },
+   {
+    "section": "Central Framework: Morality-as-Cooperation (MAC)",
+    "text": "Empirical Support: A significant 2019 study analysing ethnographic data from 60 diverse societies found cross-cultural support for the idea that behaviours promoting these types of cooperation are consistently considered morally good. (For those interested in the game-theoretic underpinnings, exploring concepts like the Prisoner's Dilemma, for instance via Veritaserum's video on the topic, can provide useful context)."
+   },
+   {
+    "section": "Why choose Morality-as-Cooperation?",
+    "text": "MaC is grounded in evolutionary game theory and biology. It seeks to explain why we have the moral feelings and beliefs we do, linking them to their adaptive function in promoting cooperation. While Utilitarianism and Deontology prescribe what is right, they often don't explain the origin of our moral psychology. MaC offers a potential scientific, descriptive basis for understanding our moral landscape."
+   },
+   {
+    "section": "Why choose Morality-as-Cooperation?",
+    "text": "It explicitly identifies multiple distinct \"domains\" of morality, each corresponding to a different type of cooperation problem (e.g., caring for kin, loyalty to groups, reciprocity, fairness in distribution, navigating hierarchies, respecting prior possession)."
+   },
+   {
+    "section": "Why choose Morality-as-Cooperation?",
+    "text": "Utilitarianism tries to boil everything down to utility, Deontology can lead to rigid adherence to rules even when consequences seem dire and each other philosophy based framework comes with their own caveats. Whereas MaC acknowledges that morality is complex and multi-faceted, arising from different evolutionary pressures. It dentifies the conflicting cooperative strategies or moral domains at play, improving the understanding of why the dilemma feels difficult (because fundamental, evolved cooperative strategies are in conflict)."
+   },
+   {
+    "section": "Auxillary Frameworks: Dentology and Utilitarianism",
+    "text": "Dentology or commonly known as duty-based ethics, is a philosophical framework that judges the morality of an action based on whether it adheres to a set of rules and duties, rather than on its consequences. It's a rule-based approach to ethics, meaning that the rightness or wrongness of an action is determined by whether it conforms to pre-defined moral laws or principles, guided by the person's duty/responsibilities."
+   },
+   {
+    "section": "Auxillary Frameworks: Dentology and Utilitarianism",
+    "text": "Utilitarianism is an ethical theory that argues the best actions are those that produce the greatest happiness for the greatest number of people, while minimizing pain. It essentially asks: what action will lead to the most overall good, considering everyone affected? and finds the answer that achieves exactly that, irrespective of the choices made."
+   },
+   {
+    "section": "Why Auxilliary Frameworks for Conflict resolution?",
+    "text": "MaC might explain \"why\" a conflict arose, but it doesn't automatically provide a simple algorithm for which cooperative principle should win when they clash. The resolution might still require judgment calls, potentially informed by other frameworks or values. It also fails to tackle/provide a proper framework for dilemmas that aren't stemming from the evolutionary roots. Hence, these auxilliary frameworks are needed to supplement the MaC based conflict resolution to reach a fruitful conclusion."
+   },
+   {
+    "section": "Dataset Creation Process",
+    "text": "The dataset was generated following a structured process visualised in the diagram below (referencing the provided image):"
+   },
+   {
+    "section": "Dataset Creation Process",
+    "text": "Requirement/Prompt generation: The requirements for each stage are listed and refined before starting the process. These refined requirements are then used to carefully craft the relevant prompts highlighting the instructions, probable use-cases and negative examples for each stage of the generation. In order to craft these prompts carefully, I've employed the use of Gemini-2.5-Pro and the resources from Together.ai and Anthropic."
+   },
+   {
+    "section": "Dataset Creation Process",
+    "text": "Data Synthesis: The process begins with input moral dilemmas, which can be sourced from real-life scenarios or synthetically generated examples."
+   },
+   {
+    "section": "Dataset Creation Process",
+    "text": "Conflict Identification and Analysis: This stage produces a basic report outlining the conflict parameters"
+   },
+   {
+    "section": "Dataset Creation Process",
+    "text": "Key Facts Extraction: Identifying the objective details and constraints of the dilemma."
+   },
+   {
+    "section": "Dataset Creation Process",
+    "text": "Stakeholder Analysis: Identifying all individuals or groups affected by the dilemma's outcome."
+   },
+   {
+    "section": "Dataset Creation Process",
+    "text": "Impact Assessment: Analysing the potential consequences (positive and negative) for each stakeholder under different choices."
+   },
+   {
+    "section": "Dataset Creation Process",
+    "text": "Contextualization: Noting unique details, underlying conflicts, and potentially implicated personal or societal values."
+   },
+   {
+    "section": "Dataset Creation Process",
+    "text": "Framework-based Resolution (Perspectives from MAC, Dentological and Utilitarian frameworks):"
+   },
+   {
+    "section": "Dataset Creation Process",
+    "text": "The identified conflict, stakeholders, and impacts are analysed through the lens of the MAC framework's cooperative domains."
+   },
+   {
+    "section": "Dataset Creation Process",
+    "text": "This involves assessing potential violations of cooperative principles, the severity of these violations, and the emotional/social impact from a cooperation-centric perspective."
+   },
+   {
+    "section": "Dataset Creation Process",
+    "text": "Along with the cooperation-centric analysis, the conflict is once-again analysed through Utilitarian and Dentological frameworks to better guide the user's dilemma."
+   },
+   {
+    "section": "Dataset Creation Process",
+    "text": "Response Generation: Based on the Conflict and perspective analysis, reasoned resolutions or approaches are generated (using multi-shot prompting techniques with LLMs)."
+   },
+   {
+    "section": "Dataset Creation Process",
+    "text": "Response Validation: The generated response is evaluated against a predefined rubric (currently under development) to assess its coherence, adherence to the framework, and ethical considerations."
+   },
+   {
+    "section": "Dataset Creation Process",
+    "text": "Final Response: The validated reasoning and proposed resolution form the final data entry."
+   },
+   {
+    "section": "Dataset Evaluation Summary",
+    "text": "Each major stage of the reasoning generation was evaluated through different LLM-juries, each with a 3-shot and 5-shot scoring on different aspects of the output generated. The majorly focused areas in this seed dataset include:"
+   },
+   {
+    "section": "Dataset Evaluation Summary",
+    "text": "Relevance: A jury evaluates the relevance of the generated outputs to the user query into three stages, High, Good, Bad. A High score is offered when the generated output is filled with no fluff/unnecessary information."
+   },
+   {
+    "section": "Dataset Evaluation Summary",
+    "text": "Depth of the suggestions: A jury evaluates/tries to estimate the depth of the provided response compared to the few-shot, manually crafted samples provided along with the prompt."
+   },
+   {
+    "section": "Dataset Evaluation Summary",
+    "text": "Helpfulness/Insightfulness: A jury (or in this case, the judge) evaluates how helpful the offered suggestion might be to the user query. For this initial study, this is a simple binary classification, where a response is said to be either helpful/not helpful."
+   },
+   {
+    "section": "Limitations",
+    "text": "This dataset is an initial exploration and carries significant limitations:"
+   },
+   {
+    "section": "Limitations",
+    "text": "Seed Dataset Size: The current number of samples is small and primarily serves as a proof-of-concept. It requires substantial expansion for developing reliable or practical applications."
+   },
+   {
+    "section": "Limitations",
+    "text": "Improvement in Validation Rubric: The method for validating the quality and ethical soundness of the generated responses relies on an incomplete rubric that needs significant development and testing."
+   },
+   {
+    "section": "Limitations",
+    "text": "Lack of Expert Validation: The current analysis has not been formally validated by Subject Matter Experts (SMEs) in fields like Anthropology or Ethics. Such validation is crucial for ensuring cultural sensitivity, contextual accuracy, and ethical robustness."
+   },
+   {
+    "section": "Limitations",
+    "text": "Inherent LLM Biases: The underlying Large Language Models used in the generation process may introduce their own biases into the reasoning and resolutions, reflecting limitations present in their training data."
+   },
+   {
+    "section": "Limitations",
+    "text": "Limited Philosphical Diversity: The analysis is currently limited to the MaC, Dentology and Utilitarian frameworks, neglecting other important ethical theories and perspectives like stoicism, common-good, golden-rule framework etc. Future steps should analyse each dilemma and choose which philosophical perspectives would closely conform with the query."
+   },
+   {
+    "section": "Future Work and Expansion",
+    "text": "Dataset Expansion: Significantly increase the size and diversity of the dataset (aiming for 1000+ samples), covering a wider range of moral dilemmas."
+   },
+   {
+    "section": "Future Work and Expansion",
+    "text": "Rubric Refinement: Develop a comprehensive, validated rubric for evaluating the quality, coherence, and ethical soundness of moral reasoning."
+   },
+   {
+    "section": "Future Work and Expansion",
+    "text": "Expert Consultation & Validation: Engage anthropologists, ethicists, and potentially relevant SMEs to review, validate, and guide the dataset's development and analysis framework."
+   },
+   {
+    "section": "Future Work and Expansion",
+    "text": "Bias Mitigation: Research and implement strategies to identify and mitigate biases inherited from the LLMs used in data generation."
+   },
+   {
+    "section": "Future Work and Expansion",
+    "text": "Incorporating Diverse Ethical Frameworks: Expand the analysis methodology to include other major moral philosophies (e.g., Deontology, Utilitarianism, Virtue Ethics, Stoicism, specific religious ethical systems) to provide a more holistic and comparative reasoning capability."
+   },
+   {
+    "section": "Future Work and Expansion",
+    "text": "Exploring Creative Solutions: Enhance the methodology to more explicitly encourage and evaluate potential solutions that lie outside the direct binary choices often presented in dilemmas (\"thinking outside the box\")."
+   },
+   {
+    "section": "Future Work and Expansion",
+    "text": "Practical Application Research: Once expanded and validated, explore potential downstream tasks and practical applications in areas like AI safety, ethical AI development, or educational tools."
+   }
+  ]
+ },
+ "project:localxiv": {
+  "url": "https://raw.githubusercontent.com/Akhil-Theerthala/LocalXiv/main/README.md",
+  "passages": [
+   {
+    "section": "LocalXiv",
+    "text": "LocalXiv turns arXiv and alphaXiv links into a paper library on your Mac. Adjust the reading layout, explore optional visual explanations, and export an EPUB for your Kindle. Keep the original paper beside the explanation so you can check what it actually says."
+   },
+   {
+    "section": "LocalXiv",
+    "text": "Free and open source. No AI account is needed to import, read, or export papers. Optional AI features use your own provider and API key."
+   },
+   {
+    "section": "From a paper link to a reading session",
+    "text": "Paste an arXiv or alphaXiv link, or search by title, author, or topic, and save the paper to your local library."
+   },
+   {
+    "section": "From a paper link to a reading session",
+    "text": "Read with your choice of font, text size, margins, line spacing, and a Light, Sepia, or Dark theme, including rendered equations."
+   },
+   {
+    "section": "From a paper link to a reading session",
+    "text": "Hover a citation, figure, table, or equation to see it where you are reading. Click it to go there, and press Back to return to the same paragraph."
+   },
+   {
+    "section": "From a paper link to a reading session",
+    "text": "Pick up where you stopped. Each paper reopens at its view, chapter, and paragraph, and the Library shows which papers are new, in progress, or read."
+   },
+   {
+    "section": "From a paper link to a reading session",
+    "text": "Use an Overview to explore a paper visually, or a Blog for a longer explanation whose citations show the passage they come from."
+   },
+   {
+    "section": "From a paper link to a reading session",
+    "text": "Export the paper or an available explanation as an EPUB, or send it to Kindle through Apple Mail."
+   },
+   {
+    "section": "From a paper link to a reading session",
+    "text": "The app includes Attention Is All You Need with a saved Overview and Blog. You can explore that example before connecting an AI provider."
+   },
+   {
+    "section": "From a paper link to a reading session",
+    "text": "This is a generated illustration, not a figure authored by the paper's researchers. It was generated on 2026-09-18 by the Overview workflow through the figure library with deepseek-flash in five requests, at 63 text runs per million square units. The bundled sample's saved Overview is older; see its source and generation provenance."
+   },
+   {
+    "section": "From a paper link to a reading session",
+    "text": "LocalXiv is an early preview. Conversion can be imperfect, and AI explanations can contain mistakes even after automated review."
+   },
+   {
+    "section": "Understand a paper",
+    "text": "Generated explanations are aids to reading. Check important claims against the source: each Blog citation shows its passage when you hover it, and on a wide window it opens the Paper beside the explanation. Every Overview and Blog names the model that made it and the date. Generation may take several minutes or fail, and support varies by provider and model."
+   },
+   {
+    "section": "Understand a paper",
+    "text": "To enable AI, choose LocalXiv → Settings… → AI, choose a provider, enter a model and API key, then click Test Connection and Save. Presets are available for OpenAI, OpenRouter, DeepSeek, Gemini, and Anthropic. Custom accepts other compatible API endpoints; compatibility is not guaranteed for every model."
+   },
+   {
+    "section": "Understand a paper",
+    "text": "Overview generation after import is opt-in. Blog generation is manual and works without an existing Overview. Blog figures are laid out by the application from a model-authored Scene panel, the same way the Overview is; a figure that still fails after bounded corrections is omitted. Language and length settings control the explanation."
+   },
+   {
+    "section": "Understand a paper",
+    "text": "An Overview is one dense column of up to four panels. The model extracts a digest of the paper and a scene tree of cards, groups, grids, steps, and bars; the application lays the scene out and routes the arrows. See the Overview scene layout design."
+   },
+   {
+    "section": "Built with GPT-6 Astra in Codex",
+    "text": "LocalXiv was developed primarily with GPT-6 Astra in Codex. That work spans the Mac reader, paper conversion and export, AI explanation workflows, tests, and release tooling. This repository contains the implementation and recorded verification work."
+   },
+   {
+    "section": "Built with GPT-6 Astra in Codex",
+    "text": "For visitors from the Product Hunt GPT-6 Astra Challenge, Astra's role is in building LocalXiv. The model used inside the app is selected separately in Settings → AI. You can use the reading and export workflow without connecting any model."
+   }
+  ]
+ },
+ "project:crowdfunding-social-signals": {
+  "url": "https://raw.githubusercontent.com/Akhil-Theerthala/Crowdfunding-Social-Media-Drivers/main/readme.md",
+  "passages": [
+   {
+    "section": "Project Description",
+    "text": "This project analyzes the impact of social media features on crowdfunding project success. It evaluates the influence of likes, shares, and other features, as well as the impact of social media post characteristics on project engagement."
+   },
+   {
+    "section": "File Structure",
+    "text": "Data: Code files for data processing and figures related to exploratory data analysis."
+   },
+   {
+    "section": "Modelling",
+    "text": "The project uses Latent Dirchlet Allocation (LDA) to extract topics from social media post text, which are then used as features in the model. The number of topics is determined using the,"
+   },
+   {
+    "section": "Modelling",
+    "text": "Coherence score, which is a measure of how well the topics are separated from each other;"
+   },
+   {
+    "section": "Modelling",
+    "text": "Topic Diveristy, which is a measure of how well the topics are distributed across the corpus; and"
+   },
+   {
+    "section": "Modelling",
+    "text": "Perplexity score, which is a measure of how well the model predicts the corpus. (In the project we used a logtransformed perplexity score, which explains the negative values in the table below. The closer the perplexity is to 1, the better the model.)"
+   },
+   {
+    "section": "Modelling",
+    "text": "The scores for different number of topics are presented in the following table:"
+   },
+   {
+    "section": "Modelling",
+    "text": "The final choice was the model with 12 topics, because of similar coherence, with higher topic diversity. The perplexity score was also comparitively better than the 13-topic model."
+   },
+   {
+    "section": "Modelling",
+    "text": "The project follows a two-step modelling approach. The first step involves generating baseline metrics using a custom class, where different models are tested on the same dataset."
+   },
+   {
+    "section": "Modelling",
+    "text": "The final fine-tuned models produced better results, which are presented in the following tables:"
+   },
+   {
+    "section": "Modelling",
+    "text": "The second step involves using the baseline metrics to select the best performing models and further tuning them using GridSearchCV."
+   },
+   {
+    "section": "Permutation Importance Plots",
+    "text": "The permutation importance plots show the importance of each feature in the model. This is done by shuffling the values of each feature and measuring the impact on the model's performance. The overall permutation importance is then normalized to get an overall measure of importance."
+   },
+   {
+    "section": "Permutation Importance Plots",
+    "text": "These importance figures are present in the respective folder under the name featureimportnace.png in the results folder."
+   },
+   {
+    "section": "Partial Dependence Plots",
+    "text": "The partial dependence plots show the impact of each feature on the model's prediction. This is done by varying the values of each feature and measuring the impact on the model's prediction. On a high level, this is similar to the permutation importance plots, but instead of measuring the impact on the model's performance, it measures the impact on the model's prediction."
+   },
+   {
+    "section": "Partial Dependence Plots",
+    "text": "The top-15 important features as identified by the permutation importance plots."
+   },
+   {
+    "section": "Partial Dependence Plots",
+    "text": "The text-complexity of the social media post, which includes the Lix score, the Automatic Readability score, and the entropy score."
+   },
+   {
+    "section": "Partial Dependence Plots",
+    "text": "These are saved in the corresponding folders can be accessed in the Results Folder."
+   }
+  ]
+ }
+}

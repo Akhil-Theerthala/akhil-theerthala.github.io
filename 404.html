@@ -1,30 +1,94 @@
 <!doctype html>
-<html lang="en" data-density="comfortable">
+<html lang="en" data-page="missing" data-root="/">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Page not found - Akhil Theerthala</title>
+    <meta name="description" content="This page could not be found." />
     <meta name="robots" content="noindex" />
-    <meta name="theme-color" content="#0d0f0e" />
-    <link rel="stylesheet" href="/portfolio.css" />
+    <meta property="og:title" content="Page not found - Akhil Theerthala" />
+    <meta property="og:description" content="This page could not be found." />
+    <meta property="og:type" content="website" />
+    
+    <meta property="og:site_name" content="Akhil Theerthala" />
+    <meta property="og:image" content="https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="The AT mark, the name Akhil Theerthala and the title Applied data scientist, beside a map of nine areas of his work, such as document AI and LLM evaluation." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@thesilvervein" />
+    <meta name="twitter:image" content="https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png" />
+    <meta name="twitter:image:alt" content="The AT mark, the name Akhil Theerthala and the title Applied data scientist, beside a map of nine areas of his work, such as document AI and LLM evaluation." />
+    <meta name="theme-color" content="#0c0f0d" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preload" href="/assets/fonts/plex-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/assets/css/site.css" />
+    <script>
+      (function () {
+        var d = document.documentElement, t;
+        try { t = localStorage.getItem("theme"); } catch (_) {}
+        // Dark is the site's own look; light is there for anyone who switches.
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.classList.add("js");
+        // If the site script never runs, show everything the reveal animation hides.
+        setTimeout(function () { if (!window.__siteReady) d.classList.remove("js"); }, 2500);
+      })();
+    </script>
+    
+    
+    <script defer src="/assets/js/site.js"></script>
   </head>
   <body>
-    <div class="reader-page">
-      <div class="calibration-field" aria-hidden="true"></div>
-      <main class="reader-page-main" id="main-content">
-        <article class="reader-article" id="article-top">
-          <p class="reader-eyebrow mono">404</p>
-          <h1 class="reader-title">This page is outside the map.</h1>
-          <div class="reader-divider"></div>
-          <p class="reader-footer-text">Continue with the portfolio, publications, writing archive, or contact details.</p>
-          <nav class="not-found-links" aria-label="Useful destinations">
-            <a class="reader-link" href="/">Home</a>
-            <a class="reader-link" href="/#research">Publications</a>
-            <a class="reader-link" href="/#writings">Writings</a>
-            <a class="reader-link" href="/#contact">Contact</a>
+    <div class="ground" aria-hidden="true"><i class="ground-cols"></i><i class="ground-ticks"></i><i class="ground-spot"></i><i class="ground-contour"></i><i class="ground-contour"></i></div>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <header class="site-nav">
+      <div class="wrap">
+        <a class="wordmark" href="/" aria-label="Akhil Theerthala, home"><svg class="wordmark-mark" viewBox="0 0 23 22" width="23" height="22" aria-hidden="true"><path fill="currentColor" d="M10 5H13L22 20H18.5L11.5 8.33L4.5 20H1Z"/><path class="accent" d="M2 2H21V5H13V20H10V5H2Z"/></svg>Akhil Theerthala</a>
+        <nav aria-label="Sections">
+          <ul class="nav-links">
+            <li><a href="/#about" data-section="about">About</a></li>
+            <li><a href="/#cv" data-section="cv">Experience</a></li>
+            <li><a href="/#work" data-section="work">Projects</a></li>
+            <li><a href="/#research" data-section="research">Papers</a></li>
+            <li><a href="/#writings" data-section="writings">Writing</a></li>
+            <li><a href="/#contact" data-section="contact">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="nav-actions">
+          <button class="icon-btn theme-toggle" type="button" aria-label="Switch between light and dark theme"><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg></button>
+          <a class="btn btn-primary btn-small" href="mailto:akhiltvsn@gmail.com">Email me</a>
+        </div>
+      </div>
+    </header>
+    <main id="main-content">
+      <section class="not-found">
+        <canvas data-map="ambient" aria-hidden="true"></canvas>
+        <div>
+          <h1>Page not found</h1>
+          <p>The link may be out of date.</p>
+          <nav aria-label="Useful destinations">
+            <a class="btn btn-primary" href="/">Home</a>
+            <a class="btn" href="/#research">Papers</a>
+            <a class="btn" href="/#writings">Writing</a>
+            <a class="btn" href="/#contact">Contact</a>
           </nav>
-        </article>
-      </main>
-    </div>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <p>© 2026 Akhil Theerthala, Bengaluru</p>
+        <nav aria-label="Profiles">
+          <a href="https://github.com/Akhil-Theerthala" target="_blank" rel="noreferrer">GitHub</a>
+          <a href="https://huggingface.co/Akhil-Theerthala" target="_blank" rel="noreferrer">Hugging Face</a>
+          <a href="https://scholar.google.com/citations?user=_H1O3ScAAAAJ&amp;hl=en" target="_blank" rel="noreferrer">Google Scholar</a>
+          <a href="https://www.linkedin.com/in/akhil-theerthala/" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="https://x.com/thesilvervein" target="_blank" rel="noreferrer">X</a>
+          <a href="/writing.html">All writing</a>
+        </nav>
+      </div>
+    </footer>
   </body>
 </html>

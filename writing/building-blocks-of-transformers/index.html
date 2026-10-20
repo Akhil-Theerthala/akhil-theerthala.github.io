@@ -1,33 +1,168 @@
 <!doctype html>
-<html lang="en" data-article-file="Building-Blocks-of-Transformers.md" data-content-prefix="../../" data-density="comfortable">
+<html lang="en" data-page="article" data-root="../../">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Building Blocks of Transformers - Akhil Theerthala</title>
-    <meta name="description" content="An essay by Akhil Theerthala on older learning notes." />
+    <meta name="description" content="How attention in a transformer works, explained with a story about a borrower and a lender, and where the query, key and value matrices come from." />
     <link rel="canonical" href="https://akhiltheerthala.com/writing/building-blocks-of-transformers/" />
     <meta property="og:title" content="Building Blocks of Transformers - Akhil Theerthala" />
-    <meta property="og:description" content="An essay by Akhil Theerthala on older learning notes." />
+    <meta property="og:description" content="How attention in a transformer works, explained with a story about a borrower and a lender, and where the query, key and value matrices come from." />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://akhiltheerthala.com/writing/building-blocks-of-transformers/" />
+    <meta property="og:site_name" content="Akhil Theerthala" />
     <meta property="og:image" content="https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="article:published_time" content="2024" />
+    <meta property="og:image:alt" content="The AT mark, the name Akhil Theerthala and the title Applied data scientist, beside a map of nine areas of his work, such as document AI and LLM evaluation." />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@thesilvervein" />
     <meta name="twitter:image" content="https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png" />
-    <meta name="theme-color" content="#0d0f0e" />
-    <link
-      rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%230d0f0e'/%3E%3Cpath d='M15 49 29 14h7l14 35h-8l-3-9H25l-3 9h-7Zm12-16h10l-5-14-5 14Z' fill='%23c8a66b'/%3E%3C/svg%3E"
-    />
-    <link rel="preload" href="../../assets/fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="../../assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="../../portfolio.css" />
-    <script defer src="../../assets/js/writing.js"></script>
+    <meta name="twitter:image:alt" content="The AT mark, the name Akhil Theerthala and the title Applied data scientist, beside a map of nine areas of his work, such as document AI and LLM evaluation." />
+    <meta name="theme-color" content="#0c0f0d" />
+    <link rel="icon" href="../../favicon.ico" sizes="48x48" />
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+    <link rel="preload" href="../../assets/fonts/plex-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="../../assets/css/site.css" />
+    <script>
+      (function () {
+        var d = document.documentElement, t;
+        try { t = localStorage.getItem("theme"); } catch (_) {}
+        // Dark is the site's own look; light is there for anyone who switches.
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.classList.add("js");
+        // If the site script never runs, show everything the reveal animation hides.
+        setTimeout(function () { if (!window.__siteReady) d.classList.remove("js"); }, 2500);
+      })();
+    </script>
+    <meta property="article:published_time" content="2024-03" />
+    <meta property="article:author" content="https://akhiltheerthala.com/" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Building Blocks of Transformers",
+  "description": "How attention in a transformer works, explained with a story about a borrower and a lender, and where the query, key and value matrices come from.",
+  "datePublished": "2024-03",
+  "url": "https://akhiltheerthala.com/writing/building-blocks-of-transformers/",
+  "mainEntityOfPage": "https://akhiltheerthala.com/writing/building-blocks-of-transformers/",
+  "image": "https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png",
+  "author": {
+    "@type": "Person",
+    "@id": "https://akhiltheerthala.com/#person",
+    "name": "Akhil Theerthala",
+    "url": "https://akhiltheerthala.com/"
+  }
+}
+    </script>
+    <script defer src="../../assets/js/site.js"></script>
   </head>
   <body>
+    <div class="ground" aria-hidden="true"><i class="ground-cols"></i><i class="ground-ticks"></i><i class="ground-spot"></i><i class="ground-contour"></i><i class="ground-contour"></i></div>
     <a class="skip-link" href="#main-content">Skip to main content</a>
-    <div id="root"></div>
+    <header class="site-nav">
+      <div class="wrap">
+        <a class="wordmark" href="../../" aria-label="Akhil Theerthala, home"><svg class="wordmark-mark" viewBox="0 0 23 22" width="23" height="22" aria-hidden="true"><path fill="currentColor" d="M10 5H13L22 20H18.5L11.5 8.33L4.5 20H1Z"/><path class="accent" d="M2 2H21V5H13V20H10V5H2Z"/></svg>Akhil Theerthala</a>
+        <nav aria-label="Sections">
+          <ul class="nav-links">
+            <li><a href="../../#about" data-section="about">About</a></li>
+            <li><a href="../../#cv" data-section="cv">Experience</a></li>
+            <li><a href="../../#work" data-section="work">Projects</a></li>
+            <li><a href="../../#research" data-section="research">Papers</a></li>
+            <li><a href="../../#writings" data-section="writings" aria-current="page">Writing</a></li>
+            <li><a href="../../#contact" data-section="contact">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="nav-actions">
+          <button class="icon-btn theme-toggle" type="button" aria-label="Switch between light and dark theme"><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg></button>
+          <a class="btn btn-primary btn-small" href="mailto:akhiltvsn@gmail.com">Email me</a>
+        </div>
+      </div>
+    </header>
+    <main id="main-content">
+      <div class="wrap page-top">
+        <p class="crumbs"><a href="../../#writings">Writing</a><span aria-hidden="true">/</span><span>Older Learning Notes</span></p>
+        <h1 class="page-title">Building Blocks of Transformers</h1>
+        
+        <p class="page-meta"><span class="dot" aria-hidden="true"></span><span>Akhil Theerthala</span><span>Mar 2024</span><span>11 min read</span></p>
+        <details class="toc-mobile"><summary>On this page</summary><ol><li><a href="#the-borrower-the-lender-and-the-transformer-a-simple-look-at-attention">The Borrower, the Lender, and the Transformer: A Simple Look at Attention</a></li><li><a href="#attention-mechanism">Attention Mechanism</a></li><li><a href="#my-narrative">My narrative.</a></li><li><a href="#how-is-this-even-relevant-to-the-attention-mechanism">How is this even relevant to the Attention mechanism?</a></li><li><a href="#how-does-the-model-get-these-q-k-v-these-aren-t-made-manually-right">How does the model get these Q, K,V? These aren’t made manually, right?</a></li><li><a href="#references">References</a></li></ol></details>
+      </div>
+      <div class="wrap reader no-aside">
+        <nav class="toc" aria-label="On this page"><p>On this page</p><ol><li><a href="#the-borrower-the-lender-and-the-transformer-a-simple-look-at-attention">The Borrower, the Lender, and the Transformer: A Simple Look at Attention</a></li><li><a href="#attention-mechanism">Attention Mechanism</a></li><li><a href="#my-narrative">My narrative.</a></li><li><a href="#how-is-this-even-relevant-to-the-attention-mechanism">How is this even relevant to the Attention mechanism?</a></li><li><a href="#how-does-the-model-get-these-q-k-v-these-aren-t-made-manually-right">How does the model get these Q, K,V? These aren’t made manually, right?</a></li><li><a href="#references">References</a></li></ol></nav>
+        <article class="prose" data-article-file="Building-Blocks-of-Transformers.md">
+<h2 id="the-borrower-the-lender-and-the-transformer-a-simple-look-at-attention">The Borrower, the Lender, and the Transformer: A Simple Look at Attention</h2>
+<p id="p-0">It’s been 5 years…and the Transformer architecture seems almost untouchable. During all this time, there was no significant change in the structure behind a transformer. However, the world, for sure, has changed a lot because of it. We are now seeing amazing things achieved with this architecture. Starting from having simple conversations, to now controlling the device settings, everything was made possible by the same design.
+<img src="https://miro.medium.com/v2/resize:fit:504/1*c-h_uHNX5vYNp_RInSiUSA.png" alt="Transformer Architecture. Source: “Attention is all you need.”" loading="lazy" decoding="async" />
+<strong><em>What’s the reason? Why does this architecture almost always work for anything?</em></strong>
+This was the question I had every time I used this architecture. I knew what attention was, I knew the basic idea behind this, but almost always the answer seemed to elude me. That’s when it hit me that the understanding I have was not enough. Through this article series, I plan to re-learn each and every aspect again from scratch. Trying to understand this better.</p>
+<h2 id="attention-mechanism">Attention Mechanism</h2>
+<p id="p-1">It’s now almost undeniable that the core advantage of a transformer comes from the so-called “Attention” mechanism. Almost all the articles introducing attention, refer back to the same machine translation <a href="https://arxiv.org/pdf/1409.0473.pdf" target="_blank" rel="noreferrer">paper from 2014</a>. (<em>P.S. It’s funny how this is referred to as a TV Show by Google.</em>)
+<img src="https://miro.medium.com/v2/resize:fit:616/1*sGJRtgIRH-oXkT9nAEiQcg.png" alt="The paper being referred to as TV program by google." loading="lazy" decoding="async" />
+The core idea that the paper presented was simple, since RNNs fail to keep remembering the long-term context, they suggested to add the context somewhere else, so that we can refer back to it when needed. Well, that’s what we do too. We note things down because we almost always can’t remember everything.
+During the lecture: “CS-25-V2: Introduction to Transformers”, <em>Andrej Karpathy</em> shared a few comments behind the person’s perspective. It was stated that the author, who was learning to speak English, almost always referred back to the previous words to understand the contextual meaning. Later on, that’s what led to the attention mechanism and transformer. Simple enough, right?
+You can understand “Why” the attention mechanism is needed. However, the most troubling part for me was always the “How”. It’s always this equation:
+<img src="https://miro.medium.com/v2/resize:fit:610/1*3g_1RWaF3up6eRdjzbG8_g.png" alt="Equation for Attention" loading="lazy" decoding="async" />
+You find some “affinity” between the <strong>Q</strong> (query) and <strong>K</strong>(Key) and then get a SoftMax from it, finally projecting the <strong>V</strong> (value) on it. You somehow get the context vector. The simple explanation of “looking back to remember the context” is now an equation. However, most of the discussions still explain this either from the perspective of the database or from the perspective of the model.
+However, what finally made me understand was the interpretation given by <em>Andrej Karpathy</em>, in the earlier mentioned lecture. In this he mentioned that he wants to interpret the attention mechanism like a conversation phase of the transformer. Inspired from that interpretation, I realised that this is also what happens when someone is trying to borrow money. Hence came this article.</p>
+<h2 id="my-narrative">My narrative.</h2>
+<p id="p-2">Before we go into the narrative, let’s set the setting. We have two people, <em>A</em> and <em>B</em>. The place they live in trades using coins. Because of some situations, A now needs 500 more coins than the 416 coins he has to buy his favourite phone. B, however, has saved 1000 coins.
+<img src="https://miro.medium.com/v2/resize:fit:698/1*fED04wFbSCbep90r9qJsnw.png" alt="Scene setting. Source: Me!" loading="lazy" decoding="async" />
+Now based on the setting, we can know that B can give twice the required amount of A. As in, A’s chances of getting 500 coins from B are 2.
+However, as data scientists, we speak probabilities. Hence, A’s probability of getting his needs satisfied from B = 2/2 =1.
+However, reality is not as beautiful. A and B are practically strangers. Hence B can at most give A 100 coins. Now, how much money can A expect?
+<img src="https://miro.medium.com/v2/resize:fit:1352/1*0qjMtuQ2Om0n--R-CmJ-lA.png" alt="1 times Amount b is willing to give, which is nothing but 100 coins." loading="lazy" decoding="async" />
+After the expected amount, A now has 500 coins.
+Now, let’s complicate the scene. A also has a friend C, who saved 250 coins, and is willing to give A 150 coins.
+<img src="https://miro.medium.com/v2/resize:fit:956/1*S2tbdrwx1GXUi09hmzSY8w.png" alt="Updated Scene setting A new person enters the picture. Source: Me!" loading="lazy" decoding="async" />
+Now, A’s chances to get his goal satisfied with the help of C is 0.5 and the probability of A’s goals being met from B and C are,
+<img src="https://miro.medium.com/v2/resize:fit:602/1*4II6ewAhxHQb-wAEJHarJQ.png" alt="" loading="lazy" decoding="async" />
+<img src="https://miro.medium.com/v2/resize:fit:942/1*OiRwyyJK_bbHbEd3gwJgtw.png" alt="" loading="lazy" decoding="async" /></p>
+<h2 id="how-is-this-even-relevant-to-the-attention-mechanism">How is this even relevant to the Attention mechanism?</h2>
+<p id="p-3">Well…replace the persons with words. The coins with the context bank of each word. The “context bank” of a word is nothing but the contribution of a word to the meaning of the sentence. This finally makes the amount each person is willing to give be the additional context that we add to the word.
+If you don’t want to speak about words, then we can also relate this to the images.</p>
+<ul>
+<li>Coins A wants → Additional information about the image patch.</li>
+<li>Coins B, C has → Contextual information that is relevant to the image.</li>
+<li>Coins A additionally gets → Additional context of the image obtained from the other patches.
+<img src="https://miro.medium.com/v2/resize:fit:1096/1*62lVMfYLNokbLL6Z1WcA3Q.png" alt="" loading="lazy" decoding="async" />
+Now going back to the original Q,K,V terms,
+<img src="https://miro.medium.com/v2/resize:fit:1400/1*sZ3r9kQH8U-9bGRAzEkJ2Q.png" alt="Original and narrative based explanations for Q,K,V." loading="lazy" decoding="async" /></li>
+</ul>
+<h2 id="how-does-the-model-get-these-q-k-v-these-aren-t-made-manually-right">How does the model get these Q, K,V? These aren’t made manually, right?</h2>
+<p id="p-4">The goal of having a model in itself is to avoid manual processing. Hence there is no way these 3 are made manually. (<em>You can work on it if you want, but it’s a very laborious task</em>). We instead try to get these from the inputs itself. To do this, we define 3 different weights, (query_weights, key_weights, value_weights), and let the model iteratively obtain weights.
+The following image finally explains what happens in attention:
+<img src="https://miro.medium.com/v2/resize:fit:1400/1*KU9aOEKnXnZswrcycqtmvQ.png" alt="Inside an attention block." loading="lazy" decoding="async" />
+That concludes my interpretation of attention. Of course, this is not the end. There is still much to discuss, like Multi-head Attention, Cross Attention, Global Attention, Soft attention, etc. However, what we discussed in this article is the basic building block. Whatever forms there are just obtained by changing a few details of the attention mechanism we discussed.
+If you want to get updates on these, feel free to give me a follow! Also, you can check out my other articles on my <a href="https://www.dao-of-data.com/" target="_blank" rel="noreferrer">site</a>.</p>
+<h2 id="references">References</h2>
+<ol>
+<li>“Attention is all you need” Paper. <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noreferrer">Link</a>.</li>
+<li>CS-25 Transformers United: V2 Introduction to Transformers. <a href="https://www.youtube.com/watch?v=XfpMkf4rD6E" target="_blank" rel="noreferrer">Link</a>.</li>
+<li>Chapter-11,Dive into Deep Learning book. <a href="https://d2l.ai/chapter_attention-mechanisms-and-transformers/index.html" target="_blank" rel="noreferrer">Link</a>.</li>
+<li>Stack Exchange Discussion regarding key, value and queries. <a href="https://stats.stackexchange.com/questions/421935/what-exactly-are-keys-queries-and-values-in-attention-mechanisms" target="_blank" rel="noreferrer">Link</a>.</li>
+</ol>
+
+          <div class="article-foot">
+            <p>Send questions or corrections to <a href="mailto:akhiltvsn@gmail.com">akhiltvsn@gmail.com</a>.</p>
+            <p><a href="../../writing.html">All writing</a></p>
+          </div>
+        </article>
+        
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <p>© 2026 Akhil Theerthala, Bengaluru</p>
+        <nav aria-label="Profiles">
+          <a href="https://github.com/Akhil-Theerthala" target="_blank" rel="noreferrer">GitHub</a>
+          <a href="https://huggingface.co/Akhil-Theerthala" target="_blank" rel="noreferrer">Hugging Face</a>
+          <a href="https://scholar.google.com/citations?user=_H1O3ScAAAAJ&amp;hl=en" target="_blank" rel="noreferrer">Google Scholar</a>
+          <a href="https://www.linkedin.com/in/akhil-theerthala/" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="https://x.com/thesilvervein" target="_blank" rel="noreferrer">X</a>
+          <a href="../../writing.html">All writing</a>
+        </nav>
+      </div>
+    </footer>
   </body>
 </html>

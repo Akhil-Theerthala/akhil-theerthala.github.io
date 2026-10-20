@@ -5,96 +5,72 @@ window.PORTFOLIO_DATA = {
   currentRole: "Senior Member Data Scientist, Perfios Software Solutions",
   location: "Bengaluru, India",
   email: "akhiltvsn@gmail.com",
-  intro:
-    "I build and evaluate ML systems for financial documents and language models, from data curation to production quality gates.",
-
   longIntro: [
-    "I am a Senior Member Data Scientist at Perfios Software Solutions, working on applied ML systems for financial document intelligence and finance-specific language models. My work sits between research and deployment: adapting VLMs for dense financial documents, building evaluation and quality gates, and translating prototypes into reliable systems for banks, lenders, insurers, and personal-finance workflows.",
-    "My research focus is data-centric and evaluation-centric AI: synthetic and semi-synthetic data curation, behavior-aware personal-finance supervision, agentic finance benchmarks, slice-based evaluation, and lightweight interpretability or steering for language models. I care about methods that improve reliability under real constraints: latency, auditability, cost, and failure transparency.",
+    "I am a Senior Member Data Scientist at Perfios Software Solutions in Bengaluru. I also build document-AI systems for banks, lenders, and insurers, such as document classifiers, table detection, and VLMs adapted to dense financial documents.",
+    "My research is on data curation and LLM evaluation. I build synthetic training data, such as personal-finance data grounded in behavioral finance. I also work on benchmarks for financial agents and on steering for language models. I look for methods that still work under real limits on latency, cost, and auditability.",
   ],
 
   researchFocus: [
     {
       title: "Data Curation for Reliable Models",
-      desc: "Synthetic and semi-synthetic dataset design, density-versus-diversity studies, and behavior-grounded supervision for low-resource or high-stakes domains.",
     },
     {
       title: "Financial AI and Agentic Systems",
-      desc: "Benchmarks and evaluation protocols for financial agents, underwriting workflows, personalization, and market-intelligence tasks.",
     },
     {
       title: "Document AI and VLM Adaptation",
-      desc: "Vision-language adaptation, table-structure understanding, legibility gating, and deployment-aware evaluation for financial documents.",
     },
     {
       title: "LLM Evaluation and Interpretability",
-      desc: "Reference-free quality scoring, LLM-jury evaluation, activation-space steering, and methods that make model behavior measurable and auditable.",
     },
   ],
-
-  stats: [],
 
   workExperience: [
     {
       date: "Apr 2025 - Present",
       title: "Senior Member Data Scientist",
       org: "Perfios Software Solutions",
-      summary:
-        "Leading research and production evaluation for reliable financial language and document-intelligence systems.",
       highlights: [
-        "Leading uncertainty-quantification research for financial LLMs by building a BFSI-specific benchmark, auditing cultural and demographic biases, measuring calibration across numerical-precision conditions, probing cues associated with miscalibration, and testing steering, context conditioning, and fine-tuning as mitigation methods.",
-        "Developing guardrails for LLM and agent applications in banking by mapping vulnerability surfaces, constructing adversarial and failure-mode evaluations, and testing output controls aligned with RBI's FREE-AI recommendations for safe, fair, explainable, and robust AI.",
-        "Developed and now monitor a reference-free document image-quality assessment service using ViT regression; the production system identifies low-quality documents at 92% precision before they enter HDB's downstream applications.",
+        "Leading uncertainty-quantification research for financial LLMs. I am building a BFSI-specific benchmark to audit cultural and demographic bias and to measure calibration under different levels of numerical precision. I also probe the cues behind miscalibration and test steering, context conditioning, and fine-tuning as mitigations.",
+        "Developing guardrails for LLM and agent applications in banking. I map where these applications are vulnerable and build adversarial and failure-mode evaluations. I also test output controls against the Reserve Bank of India's FREE-AI recommendations for safe, fair, explainable, and robust AI.",
+        "Built an agentic market-intelligence workflow for consumer banking products. It analyzes customer needs and competitive positioning to find gaps in the product line.",
+        "Developed and now monitor a reference-free document image-quality service built on ViT regression. In production, it flags low-quality documents at 92% precision before they reach HDB's downstream applications.",
+        "Adapted PaliGemma2 with LoRA for financial documents and reached a 0.85 TEDS score on internal benchmarks for structured document understanding.",
       ],
-      emphasis: ["92% precision"],
+      emphasis: ["92% precision", "0.85 TEDS"],
       recognition:
-        "Circle of Excellence award for research contributions to generative AI and financial document intelligence.",
-      desc: [
-        "Leading uncertainty-quantification research for financial LLMs by building a BFSI-specific benchmark, auditing cultural and demographic biases, measuring calibration across numerical-precision conditions, probing cues associated with miscalibration, and testing steering, context conditioning, and fine-tuning as mitigation methods.",
-        "Developing guardrails for LLM and agent applications in banking by mapping vulnerability surfaces, constructing adversarial and failure-mode evaluations, and testing output controls aligned with RBI's FREE-AI recommendations for safe, fair, explainable, and robust AI.",
-        "Developed and now monitor a reference-free document image-quality assessment service using ViT regression; the production system identifies low-quality documents at 92% precision before they enter HDB's downstream applications.",
-      ],
+        "Circle of Excellence award for research and contributions to generative AI and financial document intelligence.",
     },
     {
       date: "Aug 2025 - Present",
       title: "Research Volunteer",
       org: "FSIL & HCAI Labs, Georgia Tech",
-      summary:
-        "Contributing to open research on financial-agent evaluation and controllable language-model behavior.",
+      // Listed under "Other" on the homepage, collapsed by default.
+      other: true,
       highlights: [
-        "Co-authored FinForge, a semi-synthetic benchmark generation pipeline for financial agentic systems, accepted at the AAAI 2026 Agentic AI in Financial Services Workshop.",
-        "Contributed to the Role Steering of Language Models for Social Simulations project, published in the Social Simulations Workshop at COLM 2026.",
+        "Co-authored FinForge, a pipeline that generates semi-synthetic benchmarks for financial tasks. The paper was accepted at the AAAI 2026 Workshop on Agentic AI in Financial Services.",
+        "Contributed to the Role Steering of Language Models for Social Simulations paper at the COLM 2026 Social Simulations Workshop. I also contributed to the Data Attribution Should Guide Pretraining paper at the NeurIPS 2026 ATTRIB Workshop.",
+        "Contributing to Capabilibarav2, an HCAI Lab project on training-data attribution that traces which source documents influence a language model's outputs.",
       ],
       emphasis: [],
-      desc: [
-        "Co-authored FinForge, a semi-synthetic benchmark generation pipeline for financial agentic systems, accepted at the AAAI 2026 Agentic AI in Financial Services Workshop.",
-        "Contributed to the Role Steering of Language Models for Social Simulations project, published in the Social Simulations Workshop at COLM 2026.",
-      ],
     },
     {
       date: "Jun 2023 - Apr 2025",
       title: "Member Data Scientist",
       org: "Perfios Software Solutions",
-      summary:
-        "Built and optimized production document-AI systems for classification, table detection, and structure recognition.",
       highlights: [
-        "Distilled and quantized a multimodal document classifier into a lightweight student model, reducing latency from 8s to 200ms while preserving F1 parity in production-scale evaluation.",
-        "Improved generalized table detection accuracy by 27.6%, lifting downstream TSR module performance, via semi-synthetic data curation and systematic evaluation of YOLOv8 variants.",
-        "Integrated a semantic row-detection module (fine-tuned text encoders) into the production TSR pipeline with under 40ms added turnaround time, preserving existing throughput.",
+        "Distilled and quantized a multimodal document classifier into a small student model. Latency fell from 8s to 200ms with F1 unchanged in production-scale evaluation.",
+        "Improved generalized table detection accuracy by 27.6% with semi-synthetic data curation and a systematic study of YOLOv8 variants. The gain carried through to the downstream table-structure recognition (TSR) module.",
+        "Integrated a semantic row-detection module, built on fine-tuned text encoders, into the production TSR pipeline. It adds under 40ms of turnaround time and keeps throughput unchanged.",
       ],
       emphasis: ["8s to 200ms", "27.6%", "under 40ms"],
-      desc: [
-        "Distilled and quantized a multimodal document classifier into a lightweight student model, reducing latency from 8s to 200ms while preserving F1 parity in production-scale evaluation.",
-        "Improved generalized table detection accuracy by 27.6%, lifting downstream TSR module performance, via semi-synthetic data curation and systematic evaluation of YOLOv8 variants.",
-        "Integrated a semantic row-detection module (fine-tuned text encoders) into the production TSR pipeline with under 40ms added turnaround time, preserving existing throughput.",
-      ],
     },
   ],
 
   education: [
     {
       date: "Apr 2026 - Present",
-      title: "MSc, Data Science",
+      title: "MS, Data Science",
       org: "International Institute of Information Technology, Hyderabad",
     },
     {
@@ -247,30 +223,28 @@ window.PORTFOLIO_DATA = {
       slug: "localxiv",
       status: "Active",
       summary:
-        "A Mac app that turns arXiv and alphaXiv links into a local paper library you can read comfortably, explore with optional AI explanations, and send to a Kindle.",
-      // Draft from the LocalXiv README and release history. Rewrite in your own words.
+        "A free, open-source Mac app for reading arXiv and alphaXiv papers, with a local library, adjustable layouts, optional AI explanations, and EPUB export for Kindle.",
       story: {
         what: [
-          "LocalXiv is a reading app for research papers on the Mac. Paste an arXiv or alphaXiv link and it saves the paper to a library on your machine, renders it with adjustable fonts, text size, margins and equations, and exports it as an EPUB you can send to a Kindle.",
-          "Optional AI features sit beside the paper rather than replacing it: an Overview that explains the contribution visually, a longer Blog-style explanation with source citations, and chat for questions. They use your own provider and API key. Importing, reading and exporting need no AI account.",
+          "LocalXiv is a Mac app for reading research papers. When you paste an arXiv or alphaXiv link, the app saves the paper to a library on your machine. The reader renders the equations and lets you set the font, text size, and margins. You can export a paper as an EPUB and send it to a Kindle.",
+          "The AI features are optional. An Overview explains the paper's contribution visually, and a Blog gives a longer explanation that cites the source. You can also ask questions in a chat. These features use your own AI provider and API key. You can import, read, and export papers without an AI account.",
         ],
         why: [
-          "Generated explanations are only useful if you can check them. LocalXiv keeps the original paper beside every explanation, so any claim can be checked against what the paper actually says.",
+          "An AI explanation of a paper is useful only if you can check it. LocalXiv keeps the original paper beside every explanation, so you can check each claim against the source.",
         ],
         built: [
-          "A Swift/AppKit launcher, a WebKit reader and a local Python service, with SQLite storing the library and job records.",
-          "Conversion and AI generation run as separate jobs, so a failed explanation never invalidates a saved paper. When EPUB conversion fails, the app falls back to the retained original.",
-          "Overviews are laid out by the app, not drawn by the model: the model writes a digest and a scene tree of cards, groups, steps and bars, and the app places them and routes the arrows. A figure that still fails after bounded corrections is left out.",
-          "Developed primarily with GPT-6 Astra in Codex, for the Product Hunt GPT-6 Astra Challenge. The model used inside the app is chosen separately by each user.",
+          "The app has three parts: a Swift and AppKit launcher, a WebKit reader, and a local Python service. SQLite stores the library and the job records.",
+          "Paper conversion and AI generation run as separate jobs, so a failed explanation does not affect a saved paper. If EPUB conversion fails, the app uses the saved original instead.",
+          "The model does not draw the Overview figures. It writes a digest and a scene tree of cards, groups, steps, and bars. The app then places those parts and routes the arrows. If a figure still fails after a limited number of correction attempts, the app leaves it out.",
+          "I developed LocalXiv mostly with GPT-6 Astra in Codex. Each user picks the model that runs inside the app.",
         ],
         achieved: [
-          "Twelve public preview releases between 6 and 18 September 2026, from v0.0.1 to v0.0.14.",
-          "Launched on Product Hunt as part of the GPT-6 Astra Challenge.",
-          "Ships its own conversion tools: no Homebrew, Python or AI account is needed to import and read papers.",
-          "Recorded verification work for figure reliability in the repository.",
+          "I shipped twelve public preview releases, v0.0.1 to v0.0.14, between 6 and 18 September 2026.",
+          "LocalXiv launched on Product Hunt as an entry in the GPT-6 Astra Challenge.",
+          "The app ships its own conversion tools, so you can import and read papers without Homebrew or Python.",
         ],
         status: [
-          "Active early preview for Apple Silicon Macs on macOS 26 or newer. Releases are ad hoc signed and not yet notarised by Apple, conversion can be imperfect for unusual equations, tables and layouts, and AI explanations can contain mistakes.",
+          "LocalXiv is in early preview and runs on Apple Silicon Macs with macOS 26 or newer. Releases are ad hoc signed, and Apple has not notarized them yet. Conversion can be imperfect for unusual equations, tables, and layouts. AI explanations can contain mistakes.",
         ],
       },
       related: [
@@ -288,9 +262,14 @@ window.PORTFOLIO_DATA = {
         },
       ],
       kicker: "Open source · Mac app",
-      desc: "A reading app that turns arXiv and alphaXiv links into a paper library on your Mac, with adjustable layouts, optional AI overviews and explanations, and EPUB export for Kindle. Built primarily with GPT-6 Astra in Codex.",
       released: "2026-09",
-      href: "https://github.com/Akhil-Theerthala/LocalXiv",
+      // Extra structured data for the artifact page, from evidence.caption.
+      structuredData: {
+        operatingSystem: "macOS 26 or newer",
+        processorRequirements: "Apple Silicon",
+        license: "https://www.gnu.org/licenses/agpl-3.0.html",
+        offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+      },
       links: [
         {
           label: "GitHub",
@@ -307,23 +286,15 @@ window.PORTFOLIO_DATA = {
       ],
       evidence: {
         kind: "tool",
-        label: "Public preview",
         caption:
-          "Free under AGPL-3.0 for Apple Silicon Macs on macOS 26 or newer. Importing, reading, and exporting papers need no AI account.",
-        stages: [
-          "Paste an arXiv or alphaXiv link",
-          "Read with adjustable fonts and rendered equations",
-          "Explore an Overview, a Blog, or chat",
-          "Export an EPUB or send it to Kindle",
-        ],
+          "LocalXiv is free under the AGPL-3.0 license and runs on Apple Silicon Macs with macOS 26 or newer. You can import, read, and export papers without an AI account.",
       },
     },
     {
       title: "Density vs. Diversity: VLM Curation Datasets",
       kicker: "Open source · Hugging Face",
-      desc: "Two synthetic spatial-reasoning training sets built from GQA images at opposite curation extremes, ten questions per image against one, used to fine-tune six Qwen3‑VL models for a controlled comparison.",
+      desc: "Two synthetic spatial-reasoning training sets built from GQA images. One set has ten questions per image, and the other has one. I used them to fine-tune six Qwen3-VL models for a controlled comparison.",
       released: "2026-01",
-      href: "https://huggingface.co/datasets/Akhil-Theerthala/DesnityVsDiversity",
       links: [
         {
           label: "Dataset",
@@ -336,9 +307,8 @@ window.PORTFOLIO_DATA = {
       ],
       evidence: {
         kind: "dataset",
-        label: "Dataset record",
         caption:
-          "Train and validation sets for the density-versus-diversity study: the same question budget spent on 750 images or on 7,500.",
+          "Train and validation sets for the density-versus-diversity study. The two sets have the same question budget. The dense set spends it on 750 images, and the diverse set spends it on 7,500.",
         metrics: [
           { label: "Samples per set", value: "15k" },
           { label: "Dense images", value: "750" },
@@ -352,30 +322,29 @@ window.PORTFOLIO_DATA = {
       slug: "kuvera",
       status: "Maintained",
       summary:
-        "Open personal-finance reasoning datasets and the models fine-tuned on them, built to give advice that accounts for both the numbers and the person asking.",
-      // Draft from the Kuvera V2.1 dataset card, the model cards and the paper abstract. Rewrite in your own words.
+        "Open personal-finance reasoning datasets and the LLMs I fine-tuned on them. The models give advice that accounts for a person's financial situation and psychological state.",
       story: {
         what: [
-          "Kuvera is a line of open datasets and models for personal-finance advice. The latest dataset, Kuvera PersonalFinance V2.1, holds 18,846 records, each pairing a real personal-finance question with a reasoning chain and a response.",
-          "Five models have been fine-tuned on this data across two generations, from 4B to 14B parameters. The method is written up in Synthesizing Behaviorally-Grounded Reasoning Chains, published at the FinNLP Workshop, EMNLP 2025.",
+          "Kuvera is my line of open datasets and models for personal-finance advice. The latest dataset, Kuvera PersonalFinance V2.1, has 18,846 records. Each record pairs a real personal-finance question with a reasoning chain and a response.",
+          "I have fine-tuned five models on these datasets in two generations, from 4B to 14B parameters. I describe the method in my paper, Synthesizing Behaviorally-Grounded Reasoning Chains.",
         ],
         why: [
-          "Financial AI benchmarks concentrate on corporate finance, trading and general financial knowledge. Personal-finance planning gets little attention, and so do the behavioural biases, such as loss aversion, overconfidence and anchoring, that shape real decisions about money.",
-          "Personal-finance questions also need reasoning rather than retrieval. A useful answer weighs income, debt, risk tolerance and time horizon against each other and applies general principles to one person's situation, instead of repeating generic advice.",
+          "Most financial AI benchmarks cover corporate finance, trading, and general financial knowledge. Personal-finance planning gets little attention. So do behavioral biases such as loss aversion, overconfidence, and anchoring, which shape real decisions about money.",
+          "Personal-finance questions also need reasoning, not retrieval. A useful answer weighs income, debt, risk tolerance, and time horizon against each other. It applies general principles to one person's situation instead of repeating generic advice.",
         ],
         built: [
-          "Sourced real questions from r/personalfinance, limited to posts made before Reddit's mid-2023 API and terms changes, and filtered them with an LLM jury (Gemini 2.0 Flash, Phi-4 14B and Gemma-3-27B) to keep only posts that pose a problem needing a reasoned answer.",
-          "A multi-stage generation pipeline: query analysis and psychological-intent extraction (sentiment, emotions, communicative intent and certainty) run in parallel, then retrieval from a curated finance knowledge base of about 800k tokens, then response generation and validation.",
-          "LLM juries check each critical step: the relevance of retrieved context, the completeness of the query analysis, and a 5-shot comparative selection of the final response using GPT-4o-mini, DeepSeek-V3 and Gemini 2.0 Flash.",
-          "Two model generations: v0.1 (June 2025) fine-tuned a 14B LoRA on DeepSeek-R1-Distill-Qwen-14B and an 8B model on PersonalFinance_v2; v0.2 (July to August 2025) fine-tuned Gemma 3 4B and 12B and Qwen3-8B on the scaled-up V2.1 dataset.",
+          "I took real questions from r/personalfinance, using only posts made before Reddit changed its API and terms in mid-2023. An LLM jury of Gemini 2.0 Flash, Phi-4 14B, and Gemma-3-27B filtered the posts. The jury kept only the posts that pose a problem and need a reasoned answer.",
+          "The multi-stage generation pipeline starts with query analysis and psychological-intent extraction, which run in parallel. The intent step identifies sentiment, emotions, communicative intent, and certainty. Next, the pipeline retrieves context from a curated finance knowledge base of about 800k tokens. Last, it generates a response and validates it.",
+          "LLM juries check the critical steps: the relevance of the retrieved context and the completeness of the query analysis. For the final response, a jury of GPT-4o-mini, DeepSeek-V3, and Gemini 2.0 Flash makes a 5-shot comparative selection.",
+          "For v0.1, in June 2025, I fine-tuned a 14B LoRA on DeepSeek-R1-Distill-Qwen-14B and an 8B model on PersonalFinance_v2. For v0.2, from July to August 2025, I fine-tuned Gemma 3 4B, Gemma 3 12B, and Qwen3-8B on the larger V2.1 dataset.",
         ],
         achieved: [
-          "A fine-tuned Qwen3-8B matches much larger 14B to 32B baselines on factuality, fluency and personalisation while cutting cost by about 80%.",
-          "Published at the FinNLP Workshop, EMNLP 2025.",
-          "Kuvera PersonalFinance V2.1 released openly under Apache 2.0: 18,846 records across eight personal-finance domains, from debt and retirement to tax and estate planning.",
+          "A fine-tuned Qwen3-8B matches 14B to 32B baselines on factuality, fluency, and personalization, at about 80% lower cost.",
+          "The paper was published at the FinNLP Workshop, EMNLP 2025.",
+          "I released Kuvera PersonalFinance V2.1 under Apache 2.0. It covers eight personal-finance domains, including debt, retirement, tax, and estate planning.",
         ],
         status: [
-          "Maintained. I update the datasets and models irregularly as the generation pipeline improves.",
+          "I update the datasets and models when the generation pipeline improves, not on a fixed schedule.",
         ],
       },
       related: [
@@ -397,16 +366,12 @@ window.PORTFOLIO_DATA = {
         },
       ],
       kicker: "Open source · Hugging Face",
-      desc: "Curated behavior-aware supervision data for Indian personal-finance reasoning, fine-tuned 8B and 14B models, and evaluated personalization quality against larger baselines.",
-      metric: "HuggingFace",
-      stats: [
-        { label: "Dataset rows", value: "18.8k" },
-        { label: "Thematic categories", value: "8" },
-        { label: "Fine-tuned model", value: "8B" },
-        { label: "Lower operating cost", value: "80%" },
-      ],
       released: "2025-09",
-      href: "https://huggingface.co/datasets/Akhil-Theerthala/Kuvera-PersonalFinance-V2.1",
+      // Extra structured data for the artifact page, from story.achieved.
+      structuredData: {
+        license: "https://www.apache.org/licenses/LICENSE-2.0",
+        isAccessibleForFree: true,
+      },
       links: [
         {
           label: "Dataset",
@@ -423,49 +388,22 @@ window.PORTFOLIO_DATA = {
       ],
       evidence: {
         kind: "dataset",
-        label: "Dataset record",
         caption:
           "Kuvera PersonalFinance V2.1 contains 18.8k reasoning records across eight thematic categories.",
         metrics: [
           { label: "Rows", value: "18.8k" },
           { label: "Categories", value: "8" },
-          { label: "Model", value: "8B" },
-          { label: "Lower cost", value: "80%" },
+          { label: "Fine-tuned model", value: "8B" },
+          { label: "Lower cost than 14B to 32B models", value: "80%" },
         ],
         schema: ["category", "query", "chain_of_thought", "response"],
       },
     },
     {
-      title: "Reasoning Dataset Challenge",
-      kicker: "1st place, global competition",
-      desc: "Built a synthetic reasoning dataset and trained a 7B model that outperformed larger baselines through curation quality rather than model scale.",
-      metric: "1 / 150+ teams",
-      released: "2025-05",
-      href: "https://huggingface.co/Akhil-Theerthala",
-      links: [
-        {
-          label: "Hugging Face",
-          href: "https://huggingface.co/Akhil-Theerthala",
-        },
-      ],
-      evidence: {
-        kind: "result",
-        label: "Competition result",
-        caption:
-          "First-place reasoning dataset submission in a field of more than 150 teams.",
-        metrics: [
-          { label: "Placement", value: "1st" },
-          { label: "Teams", value: "150+" },
-        ],
-      },
-    },
-    {
       title: "Themis Scales: Moral Dilemma Resolution",
       kicker: "Open source · AI ethics dataset",
-      desc: "Created a 567-example seed dataset that structures moral-dilemma analysis through Morality-as-Cooperation, deontological, and utilitarian perspectives, with explicit limitations for further validation.",
-      metric: "567 dilemmas",
+      desc: "A seed dataset of 567 moral dilemmas, analyzed from Morality-as-Cooperation, deontological, and utilitarian perspectives. It is a proof of concept that lists its limitations and needs further validation.",
       released: "2025-04",
-      href: "https://huggingface.co/datasets/Akhil-Theerthala/Themis_Scales",
       links: [
         {
           label: "Dataset",
@@ -478,9 +416,8 @@ window.PORTFOLIO_DATA = {
       ],
       evidence: {
         kind: "dataset",
-        label: "Seed dataset record",
         caption:
-          "A proof-of-concept collection of 567 dilemmas across four categories, structured through three complementary ethical lenses.",
+          "A proof-of-concept collection of 567 dilemmas in four categories, analyzed from three ethical perspectives.",
         metrics: [
           { label: "Rows", value: "567" },
           { label: "Categories", value: "4" },
@@ -490,172 +427,266 @@ window.PORTFOLIO_DATA = {
         schema: ["category", "query", "chain_of_thought", "response"],
       },
     },
+    {
+      title: "Social Media Signals and Crowdfunding Success",
+      slug: "crowdfunding-social-signals",
+      kicker: "Research · B.Tech project",
+      desc: "My B.Tech research, which I extended after graduating, asked what drives engagement with crowdfunding posts on Facebook, and whether that engagement predicts a campaign's success. In the two models shown, the top feature can leak the outcome, and the text features were built with defects, so their low scores say little about text. A 2026 re-audit retired those methods, and I am rebuilding the study on archived Kickstarter pages.",
+      released: "2024-03",
+      links: [
+        {
+          label: "GitHub",
+          href: "https://github.com/Akhil-Theerthala/Crowdfunding-Social-Media-Drivers",
+        },
+      ],
+      // Permutation importances and partial-dependence directions from the
+      // repository's Results folder, with the defects the 2026 audit found.
+      evidence: {
+        kind: "drivers",
+        label: "What the original models ranked",
+        caption:
+          "Permutation importance, scaled so the top feature in each panel is 1. Effects come from the partial-dependence plots.",
+        panels: [
+          {
+            title: "Engagement on a Facebook post",
+            meta: "8,786 posts from the GoFundMe, Indiegogo and Kickstarter pages",
+            rows: [
+              { label: "Post views", value: 1, effect: "Strong rise", flag: "1" },
+              { label: "Page that posted it", value: 0.51, effect: "GoFundMe highest" },
+              { label: "Page likes at posting", value: 0.08, effect: "Small rise" },
+              { label: "Post age", value: 0.08, effect: "More likes, fewer comments" },
+              { label: "Video post", value: 0.06, effect: "Lower than links" },
+              { label: "Names a person", value: 0.02, effect: "Flat", flag: "3" },
+            ],
+            foot: "No text feature stands out: all 38, from topics and emotions to readability, score 0.02 or less.",
+          },
+          {
+            title: "Kickstarter campaign success",
+            meta: "549 of the 1,023 campaigns Kickstarter promoted, 54 of which failed",
+            noise: 0.29,
+            rows: [
+              { label: "Projects the creator backed", value: 1, effect: "Rises, then levels", flag: "2" },
+              { label: "Shares of the post", value: 0.52, effect: "Peaks near 15" },
+              { label: "Launch month", value: 0.47, effect: "October to December lower" },
+              { label: "Runs 2 weeks to 1 month", value: 0.43 },
+              { label: "Individual creator, not a team", value: 0.38 },
+              { label: "Comments on the post", value: 0.34, effect: "Mixed" },
+              { label: "Likes on the post", value: 0.32, effect: "Peaks near 50" },
+            ],
+            foot: "The notebook kept only campaigns its region map called North American, which left out Canada and nine US states. It then dropped the 80 campaigns that raised 10 times their goal or more, all of which had succeeded.",
+          },
+        ],
+        notes: [
+          { mark: "1", text: "Leak: post views is the largest of the post's view, reaction, comment and share counts, so it contains what the model predicts." },
+          { mark: "2", text: "Timing: backing counts were read from creator profiles after the campaigns ended, so they can include later backing." },
+          { mark: "3", text: "Text: zeros in the topic and emotion scores were replaced with small random values, entities were found in lowercased text, and the topic vocabulary was fitted on all posts before the split. With post views in the model, low text scores do not show that text is uninformative." },
+          { mark: "noise", text: "Noise: shuffling one feature raised accuracy by 0.29 on this scale, so the faded start of each success bar is within noise. The success scores come from 110 campaigns: 11 failed, and 27 were also in the training data." },
+          { mark: "", text: "The engagement scores compare log-scale predictions with raw counts, so the few posts with the largest counts drive them. Neither the bar sizes nor their order is exact." },
+        ],
+      },
+    },
+  ],
+
+  achievements: [
+    {
+      title: "1st place, Reasoning Dataset Creation Challenge",
+      date: "May 2025",
+      org: "Bespoke Labs, Hugging Face and Together.ai",
+      // The map lists the challenge entry as a work; this id ties the two.
+      id: "reasoning-dataset-challenge",
+      mark: ["1st", "of 150+ teams"],
+      detail:
+        "I built synthetic data pipelines from real personal-finance questions and fine-tuned 8B and 14B models. I released the datasets, LoRA adapters, and quantized weights on Hugging Face. These releases have more than 56k downloads, counting community GGUF versions.",
+      links: [
+        {
+          label: "Competition",
+          href: "https://huggingface.co/spaces/relbert/reasoning-dataset-competition",
+        },
+        {
+          label: "Write-up",
+          href: "writing/creating-a-reasoning-dataset-with-no-budget/",
+        },
+      ],
+    },
+    {
+      title: "Circle of Excellence award",
+      org: "Perfios Software Solutions",
+      detail: "For research and contributions to generative AI and financial document intelligence.",
+    },
   ],
 
   writings: [
     {
       file: "Density-Vs-Diversity.md",
       slug: "density-vs-diversity-in-data-selection",
+      // Writes up a project or experiment, so it is on the map.
+      onMap: true,
       title: "Density vs. Diversity in Data Selection",
       date: "Jan 2026",
-      year: "2026",
       category: "Research Notes",
       read: "12 min",
-      featured: true,
       excerpt:
-        "A controlled VLM data-curation study comparing dense questioning against diverse visual sampling under domain-data constraints.",
+        "A controlled study of data curation for fine-tuning vision-language models when domain images are scarce. It compares ten questions on each of 750 images with one question on each of 7,500.",
     },
     {
       file: "Creating-a-Reasoning-Dataset-with.md",
       slug: "creating-a-reasoning-dataset-with-no-budget",
+      // Writes up a project or experiment, so it is on the map.
+      onMap: true,
       title: "Creating a Reasoning Dataset with No Budget",
       date: "Apr 2025",
-      year: "2025",
       category: "Research Notes",
       read: "18 min",
-      featured: true,
       excerpt:
-        "A practical account of building a personal-finance reasoning dataset and winning a global reasoning-data challenge through curation.",
+        "How I chose a problem and built a personal-finance reasoning dataset. This work led to my first-place entry, out of more than 150 teams, in the Reasoning Dataset Creation Challenge.",
     },
     {
       file: "LazyInfer-Design-Notes.md",
       slug: "lazyinfer-design-notes-for-reliable-llm-pipelines",
+      // Writes up a project or experiment, so it is on the map.
+      onMap: true,
       title: "LazyInfer: Design Notes for Reliable LLM Pipelines",
       date: "Jan 2026",
-      year: "2026",
       category: "Technical Essays",
       read: "7 min",
       excerpt:
-        "Design notes for repeatable multi-stage LLM inference with YAML configuration, retries, checkpointing, and schema validation.",
+        "How LazyInfer runs repeatable multi-stage LLM inference over JSONL records, with YAML configuration, retries, checkpoints, and schema validation.",
     },
     {
       file: "From-Training-Language-Models-to.md",
       slug: "from-training-language-models-to-deepseek-r1",
       title: "From Training Language Models to DeepSeek-R1",
       date: "Feb 2025",
-      year: "2025",
       category: "Technical Essays",
       read: "14 min",
       excerpt:
-        "A guided overview of how training regimes evolved from supervised learning to modern reasoning models.",
+        "An overview of how reasoning models are trained. It covers chain-of-thought prompting, supervised and transfer learning, RLHF, and the training steps for DeepSeek-R1-Zero and DeepSeek-R1.",
     },
     {
       file: "7-Practical-PyTorch-Tips-for.md",
       slug: "7-practical-pytorch-tips",
       title: "7 Practical PyTorch Tips",
       date: "Feb 2025",
-      year: "2025",
       category: "Technical Essays",
       read: "8 min",
       excerpt:
-        "Production PyTorch practices for device placement, debugging, memory behavior, and model iteration.",
+        "Seven PyTorch lessons from two years of production work: module structure, experiment tracking, tensor shapes, .detach(), inference_mode(), device placement, and CPU-GPU syncs.",
     },
     {
       file: "Building-Blocks-of-Transformers.md",
       slug: "building-blocks-of-transformers",
+      description:
+        "How attention in a transformer works, explained with a story about a borrower and a lender, and where the query, key and value matrices come from.",
       title: "Building Blocks of Transformers",
       date: "Mar 2024",
-      year: "2024",
       category: "Older Learning Notes",
       read: "11 min",
     },
     {
       file: "Making-Sense-of-PyTorch’s-to-and.md",
       slug: "making-sense-of-pytorch-to-and-device-management",
+      description:
+        "The difference between torch.load with map_location and .to(device) in PyTorch, why the difference matters, and when to use each one.",
       title: "Making Sense of PyTorch's .to() and Device Management",
       date: "Aug 2023",
-      year: "2023",
       category: "Older Learning Notes",
       read: "5 min",
     },
     {
       file: "De-mystifying-Regular-Expressions.md",
       slug: "de-mystifying-regular-expressions",
+      description:
+        "Regular expressions taught through one date-matching example: direct search, disjunction, character sets, optional characters and position anchors.",
       title: "De-mystifying Regular Expressions",
       date: "Aug 2023",
-      year: "2023",
       category: "Older Learning Notes",
       read: "15 min",
     },
     {
       file: "Data-Lifecycle-in-Production.md",
       slug: "data-lifecycle-in-production",
+      description:
+        "What makes data good and useful for a production ML project, where to get it, how much to collect, and how to avoid bias and privacy problems.",
       title: "Data Lifecycle in Production",
       date: "Jun 2023",
-      year: "2023",
       category: "Older Learning Notes",
       read: "12 min",
     },
     {
       file: "Data-Processing-in-Production.md",
       slug: "data-processing-in-production",
+      description:
+        "Why data is hard to define and label, how to make labels consistent, how human-level performance sets a target, and how to track data pipelines and lineage.",
       title: "Data Processing in Production",
       date: "Feb 2023",
-      year: "2023",
       category: "Older Learning Notes",
       read: "20 min",
     },
     {
       file: "Error-Analysis-for-Machine-learning.md",
       slug: "error-analysis-for-machine-learning",
+      description:
+        "How to work with skewed datasets, such as a factory where 0.3% of goods have defects, and how to audit a model before production.",
       title: "Error Analysis for Machine Learning",
       date: "Jan 2023",
-      year: "2023",
       category: "Older Learning Notes",
       read: "6 min",
     },
     {
       file: "An-Overview-of-Modeling-for-ML.md",
       slug: "an-overview-of-modeling-for-ml",
+      description:
+        "Model-centric and data-centric AI development, why a low average test error is not enough, and how to set a baseline before you train a model.",
       title: "An Overview of Modeling for ML",
       date: "Jan 2023",
-      year: "2023",
       category: "Older Learning Notes",
       read: "12 min",
     },
     {
       file: "MLOps-Notes-2-Model-Deployment.md",
       slug: "mlops-notes-2-model-deployment",
+      description:
+        "Deployment patterns for ML systems, such as shadow mode, canary and blue-green, and how to monitor a model and a production pipeline.",
       title: "MLOps Notes 2: Model Deployment",
       date: "Jan 2023",
-      year: "2023",
       category: "Older Learning Notes",
       read: "10 min",
     },
     {
       file: "MLOps-Notes-1-The-Machine-Learning.md",
       slug: "mlops-notes-1-the-machine-learning-lifecycle",
+      description:
+        "Notes from the DeepLearning.AI MLOps course on the four phases of a production ML project: scoping, data, modelling and deployment.",
       title: "MLOps Notes 1: The Machine Learning Lifecycle",
       date: "Jan 2023",
-      year: "2023",
       category: "Older Learning Notes",
       read: "10 min",
     },
   ],
 
   collaborationInterests: [
-    "Data-centric and evaluation-centric AI for finance",
-    "Agentic finance benchmarks and tool-use evaluation",
-    "Document AI reliability, legibility, and VLM adaptation",
-    "Behavior-aware personal-finance language models",
+    "Data curation and LLM evaluation for finance",
+    "Benchmarks and tool-use evaluation for financial agents",
+    "Legibility checks and VLM adaptation for document AI",
+    "Personal-finance LLMs that account for behavioral biases",
   ],
 
   now: [
     {
-      label: "Right now",
-      text: "Senior Data Scientist @ Perfios, working on document quality assessment and personalization.",
+      label: "Now",
+      text: "Calibrated LLM safeguards and agentic workflows for consumer-finance market intelligence at Perfios.",
     },
     {
       label: "Reading",
-      text: "Interpretability and evals of LLMs / agentic systems.",
+      text: "Interpretability and evaluation of LLMs and agentic systems.",
     },
     {
       label: "Research",
-      text: "Working on uncertainty quantification in LLMs.",
+      text: "Training-data attribution, with Georgia Tech's HCAI Lab.",
     },
     {
-      label: "Side quest",
-      text: "MSc in Data Science @ IIIT Hyderabad.",
+      label: "Studying",
+      text: "MS in Data Science, IIIT Hyderabad.",
     },
   ],
 
@@ -663,17 +694,14 @@ window.PORTFOLIO_DATA = {
     {
       label: "GitHub",
       href: "https://github.com/Akhil-Theerthala",
-      handle: "Code and tools",
     },
     {
       label: "Hugging Face",
       href: "https://huggingface.co/Akhil-Theerthala",
-      handle: "Datasets and models",
     },
     {
       label: "Google Scholar",
       href: "https://scholar.google.com/citations?user=_H1O3ScAAAAJ&hl=en",
-      handle: "Publications and citations",
     },
   ],
 
@@ -681,35 +709,14 @@ window.PORTFOLIO_DATA = {
     {
       label: "Email",
       href: "mailto:akhiltvsn@gmail.com",
-      handle: "akhiltvsn@gmail.com",
     },
     {
       label: "LinkedIn",
       href: "https://www.linkedin.com/in/akhil-theerthala/",
-      handle: "Professional profile",
     },
     {
-      label: "X / Twitter",
+      label: "X",
       href: "https://x.com/thesilvervein",
-      handle: "Research and build notes",
-    },
-  ],
-
-  socials: [
-    {
-      label: "LinkedIn",
-      href: "https://www.linkedin.com/in/akhil-theerthala/",
-      handle: "linkedin.com/in/akhil-theerthala",
-    },
-    {
-      label: "X / Twitter",
-      href: "https://x.com/thesilvervein",
-      handle: "x.com/thesilvervein",
-    },
-    {
-      label: "Email",
-      href: "mailto:akhiltvsn@gmail.com",
-      handle: "akhiltvsn@gmail.com",
     },
   ],
 };

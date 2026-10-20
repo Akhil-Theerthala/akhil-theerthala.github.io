@@ -1,33 +1,164 @@
 <!doctype html>
-<html lang="en" data-article-file="LazyInfer-Design-Notes.md" data-content-prefix="../../" data-density="comfortable">
+<html lang="en" data-page="article" data-root="../../">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LazyInfer: Design Notes for Reliable LLM Pipelines - Akhil Theerthala</title>
-    <meta name="description" content="Design notes for repeatable multi-stage LLM inference with YAML configuration, retries, checkpointing, and schema validation." />
+    <meta name="description" content="How LazyInfer runs repeatable multi-stage LLM inference over JSONL records, with YAML configuration, retries, checkpoints, and schema validation." />
     <link rel="canonical" href="https://akhiltheerthala.com/writing/lazyinfer-design-notes-for-reliable-llm-pipelines/" />
     <meta property="og:title" content="LazyInfer: Design Notes for Reliable LLM Pipelines - Akhil Theerthala" />
-    <meta property="og:description" content="Design notes for repeatable multi-stage LLM inference with YAML configuration, retries, checkpointing, and schema validation." />
+    <meta property="og:description" content="How LazyInfer runs repeatable multi-stage LLM inference over JSONL records, with YAML configuration, retries, checkpoints, and schema validation." />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://akhiltheerthala.com/writing/lazyinfer-design-notes-for-reliable-llm-pipelines/" />
+    <meta property="og:site_name" content="Akhil Theerthala" />
     <meta property="og:image" content="https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="article:published_time" content="2026" />
+    <meta property="og:image:alt" content="The AT mark, the name Akhil Theerthala and the title Applied data scientist, beside a map of nine areas of his work, such as document AI and LLM evaluation." />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@thesilvervein" />
     <meta name="twitter:image" content="https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png" />
-    <meta name="theme-color" content="#0d0f0e" />
-    <link
-      rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%230d0f0e'/%3E%3Cpath d='M15 49 29 14h7l14 35h-8l-3-9H25l-3 9h-7Zm12-16h10l-5-14-5 14Z' fill='%23c8a66b'/%3E%3C/svg%3E"
-    />
-    <link rel="preload" href="../../assets/fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="../../assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="../../portfolio.css" />
-    <script defer src="../../assets/js/writing.js"></script>
+    <meta name="twitter:image:alt" content="The AT mark, the name Akhil Theerthala and the title Applied data scientist, beside a map of nine areas of his work, such as document AI and LLM evaluation." />
+    <meta name="theme-color" content="#0c0f0d" />
+    <link rel="icon" href="../../favicon.ico" sizes="48x48" />
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+    <link rel="preload" href="../../assets/fonts/plex-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="../../assets/css/site.css" />
+    <script>
+      (function () {
+        var d = document.documentElement, t;
+        try { t = localStorage.getItem("theme"); } catch (_) {}
+        // Dark is the site's own look; light is there for anyone who switches.
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.classList.add("js");
+        // If the site script never runs, show everything the reveal animation hides.
+        setTimeout(function () { if (!window.__siteReady) d.classList.remove("js"); }, 2500);
+      })();
+    </script>
+    <meta property="article:published_time" content="2026-01" />
+    <meta property="article:author" content="https://akhiltheerthala.com/" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "LazyInfer: Design Notes for Reliable LLM Pipelines",
+  "description": "How LazyInfer runs repeatable multi-stage LLM inference over JSONL records, with YAML configuration, retries, checkpoints, and schema validation.",
+  "datePublished": "2026-01",
+  "url": "https://akhiltheerthala.com/writing/lazyinfer-design-notes-for-reliable-llm-pipelines/",
+  "mainEntityOfPage": "https://akhiltheerthala.com/writing/lazyinfer-design-notes-for-reliable-llm-pipelines/",
+  "image": "https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png",
+  "author": {
+    "@type": "Person",
+    "@id": "https://akhiltheerthala.com/#person",
+    "name": "Akhil Theerthala",
+    "url": "https://akhiltheerthala.com/"
+  }
+}
+    </script>
+    <script defer src="../../assets/js/site.js"></script>
   </head>
   <body>
+    <div class="ground" aria-hidden="true"><i class="ground-cols"></i><i class="ground-ticks"></i><i class="ground-spot"></i><i class="ground-contour"></i><i class="ground-contour"></i></div>
     <a class="skip-link" href="#main-content">Skip to main content</a>
-    <div id="root"></div>
+    <header class="site-nav">
+      <div class="wrap">
+        <a class="wordmark" href="../../" aria-label="Akhil Theerthala, home"><svg class="wordmark-mark" viewBox="0 0 23 22" width="23" height="22" aria-hidden="true"><path fill="currentColor" d="M10 5H13L22 20H18.5L11.5 8.33L4.5 20H1Z"/><path class="accent" d="M2 2H21V5H13V20H10V5H2Z"/></svg>Akhil Theerthala</a>
+        <nav aria-label="Sections">
+          <ul class="nav-links">
+            <li><a href="../../#about" data-section="about">About</a></li>
+            <li><a href="../../#cv" data-section="cv">Experience</a></li>
+            <li><a href="../../#work" data-section="work">Projects</a></li>
+            <li><a href="../../#research" data-section="research">Papers</a></li>
+            <li><a href="../../#writings" data-section="writings" aria-current="page">Writing</a></li>
+            <li><a href="../../#contact" data-section="contact">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="nav-actions">
+          <button class="icon-btn theme-toggle" type="button" aria-label="Switch between light and dark theme"><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg></button>
+          <a class="btn btn-primary btn-small" href="mailto:akhiltvsn@gmail.com">Email me</a>
+        </div>
+      </div>
+    </header>
+    <main id="main-content">
+      <div class="wrap page-top">
+        <p class="crumbs"><a href="../../#writings">Writing</a><span aria-hidden="true">/</span><span>Technical Essays</span></p>
+        <h1 class="page-title">LazyInfer: Design Notes for Reliable LLM Pipelines</h1>
+        <p class="page-lede">How LazyInfer runs repeatable multi-stage LLM inference over JSONL records, with YAML configuration, retries, checkpoints, and schema validation.</p>
+        <p class="page-meta"><span class="dot" aria-hidden="true"></span><span>Akhil Theerthala</span><span>Jan 2026</span><span>7 min read</span></p>
+        <details class="toc-mobile"><summary>On this page</summary><ol><li><a href="#lazyinfer-design-notes-for-reliable-llm-pipelines">LazyInfer: Design Notes for Reliable LLM Pipelines</a></li><li><a href="#1-problem-statement">1. Problem statement</a></li><li><a href="#2-core-design-principles">2. Core design principles</a></li><li><a href="#3-pipeline-model">3. Pipeline model</a></li><li><a href="#4-reliability-mechanisms">4. Reliability mechanisms</a></li><li><a href="#5-why-this-matters-for-research-workflows">5. Why this matters for research workflows</a></li><li><a href="#6-takeaway">6. Takeaway</a></li></ol></details>
+      </div>
+      <div class="wrap reader">
+        <nav class="toc" aria-label="On this page"><p>On this page</p><ol><li><a href="#lazyinfer-design-notes-for-reliable-llm-pipelines">LazyInfer: Design Notes for Reliable LLM Pipelines</a></li><li><a href="#1-problem-statement">1. Problem statement</a></li><li><a href="#2-core-design-principles">2. Core design principles</a></li><li><a href="#3-pipeline-model">3. Pipeline model</a></li><li><a href="#4-reliability-mechanisms">4. Reliability mechanisms</a></li><li><a href="#5-why-this-matters-for-research-workflows">5. Why this matters for research workflows</a></li><li><a href="#6-takeaway">6. Takeaway</a></li></ol></nav>
+        <article class="prose" data-article-file="LazyInfer-Design-Notes.md">
+<h2 id="lazyinfer-design-notes-for-reliable-llm-pipelines">LazyInfer: Design Notes for Reliable LLM Pipelines</h2>
+<p id="p-0">LazyInfer started from a recurring operational gap: experimentation code for LLM calls is easy to write once, but hard to run reliably at scale across thousands of records. This note documents the design choices behind a lightweight framework for repeatable multi-stage inference on JSONL workloads.</p>
+<h2 id="1-problem-statement">1. Problem statement</h2>
+<p id="p-1">Most ad-hoc scripts fail in predictable ways:</p>
+<ul>
+<li>retries are inconsistent,</li>
+<li>rate limiting is patched in late,</li>
+<li>outputs are hard to validate,</li>
+<li>and interrupted runs lose progress.</li>
+</ul>
+<p id="p-2">For research and applied teams, this slows iteration and weakens reproducibility.</p>
+<h2 id="2-core-design-principles">2. Core design principles</h2>
+<p id="p-3">LazyInfer follows four principles:</p>
+<ul>
+<li><strong>Declarative configuration:</strong> pipeline logic in YAML, not scattered across scripts.</li>
+<li><strong>Operational safety:</strong> retries, backoff, and rate limits as first-class behavior.</li>
+<li><strong>Structured outputs:</strong> schema validation on every stage.</li>
+<li><strong>Resumeability:</strong> checkpointing so long runs can recover cleanly.</li>
+</ul>
+<h2 id="3-pipeline-model">3. Pipeline model</h2>
+<p id="p-4">Each run treats data as staged transformations:</p>
+<ol>
+<li>load JSONL records,</li>
+<li>execute stage prompts/tools,</li>
+<li>validate structured outputs,</li>
+<li>persist intermediate and final artifacts.</li>
+</ol>
+<p id="p-5">This turns prompt workflows into reproducible jobs rather than one-off notebooks.</p>
+<h2 id="4-reliability-mechanisms">4. Reliability mechanisms</h2>
+<p id="p-6">Key mechanisms that mattered most in practice:</p>
+<ul>
+<li>bounded retries with typed failure states,</li>
+<li>async execution with request throttling,</li>
+<li>checkpoint writes after stage completion,</li>
+<li>and strict schema checks with clear reject reasons.</li>
+</ul>
+<p id="p-7">These choices made behavior more debuggable and easier to benchmark.</p>
+<h2 id="5-why-this-matters-for-research-workflows">5. Why this matters for research workflows</h2>
+<p id="p-8">Benchmark and dataset work often needs repeated generation passes with small prompt or model changes. A stable execution layer reduces noise between runs and lets teams attribute differences to method changes instead of pipeline instability.</p>
+<p id="p-9">It also makes it easier to hand off experiments between collaborators because configuration and outputs are standardized.</p>
+<h2 id="6-takeaway">6. Takeaway</h2>
+<p id="p-10">LazyInfer is less about novelty and more about reliability discipline: declarative stages, structured validation, and restart-safe execution. That combination closes the gap between prototype prompting and production-grade experimental workflows.</p>
+
+          <div class="article-foot">
+            <p>Send questions or corrections to <a href="mailto:akhiltvsn@gmail.com">akhiltvsn@gmail.com</a>.</p>
+            <p><a href="../../writing.html">All writing</a></p>
+          </div>
+        </article>
+        <aside class="side-map" aria-label="This page on the homepage map">
+          <h2>On the homepage map</h2>
+          <div class="mini-map"><canvas data-map="mini" data-source="essay:lazyinfer-design-notes-for-reliable-llm-pipelines" aria-label="The homepage map, with this page's project highlighted"></canvas></div>
+          <p class="mini-readout" aria-live="polite">Hover over or tap a point to see its title.</p>
+          <div class="nearby" data-nearby="essay:lazyinfer-design-notes-for-reliable-llm-pipelines"><h3>Related work</h3><ol></ol></div>
+        </aside>
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <p>© 2026 Akhil Theerthala, Bengaluru</p>
+        <nav aria-label="Profiles">
+          <a href="https://github.com/Akhil-Theerthala" target="_blank" rel="noreferrer">GitHub</a>
+          <a href="https://huggingface.co/Akhil-Theerthala" target="_blank" rel="noreferrer">Hugging Face</a>
+          <a href="https://scholar.google.com/citations?user=_H1O3ScAAAAJ&amp;hl=en" target="_blank" rel="noreferrer">Google Scholar</a>
+          <a href="https://www.linkedin.com/in/akhil-theerthala/" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="https://x.com/thesilvervein" target="_blank" rel="noreferrer">X</a>
+          <a href="../../writing.html">All writing</a>
+        </nav>
+      </div>
+    </footer>
   </body>
 </html>

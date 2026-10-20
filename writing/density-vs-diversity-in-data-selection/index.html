@@ -1,33 +1,199 @@
 <!doctype html>
-<html lang="en" data-article-file="Density-Vs-Diversity.md" data-content-prefix="../../" data-density="comfortable">
+<html lang="en" data-page="article" data-root="../../">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Density vs. Diversity in Data Selection - Akhil Theerthala</title>
-    <meta name="description" content="A controlled VLM data-curation study comparing dense questioning against diverse visual sampling under domain-data constraints." />
+    <meta name="description" content="A controlled study of data curation for fine-tuning vision-language models when domain images are scarce. It compares ten questions on each of 750 images with one question on each of 7,500." />
     <link rel="canonical" href="https://akhiltheerthala.com/writing/density-vs-diversity-in-data-selection/" />
     <meta property="og:title" content="Density vs. Diversity in Data Selection - Akhil Theerthala" />
-    <meta property="og:description" content="A controlled VLM data-curation study comparing dense questioning against diverse visual sampling under domain-data constraints." />
+    <meta property="og:description" content="A controlled study of data curation for fine-tuning vision-language models when domain images are scarce. It compares ten questions on each of 750 images with one question on each of 7,500." />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://akhiltheerthala.com/writing/density-vs-diversity-in-data-selection/" />
+    <meta property="og:site_name" content="Akhil Theerthala" />
     <meta property="og:image" content="https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="article:published_time" content="2026" />
+    <meta property="og:image:alt" content="The AT mark, the name Akhil Theerthala and the title Applied data scientist, beside a map of nine areas of his work, such as document AI and LLM evaluation." />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@thesilvervein" />
     <meta name="twitter:image" content="https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png" />
-    <meta name="theme-color" content="#0d0f0e" />
-    <link
-      rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%230d0f0e'/%3E%3Cpath d='M15 49 29 14h7l14 35h-8l-3-9H25l-3 9h-7Zm12-16h10l-5-14-5 14Z' fill='%23c8a66b'/%3E%3C/svg%3E"
-    />
-    <link rel="preload" href="../../assets/fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="../../assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="../../portfolio.css" />
-    <script defer src="../../assets/js/writing.js"></script>
+    <meta name="twitter:image:alt" content="The AT mark, the name Akhil Theerthala and the title Applied data scientist, beside a map of nine areas of his work, such as document AI and LLM evaluation." />
+    <meta name="theme-color" content="#0c0f0d" />
+    <link rel="icon" href="../../favicon.ico" sizes="48x48" />
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+    <link rel="preload" href="../../assets/fonts/plex-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="../../assets/css/site.css" />
+    <script>
+      (function () {
+        var d = document.documentElement, t;
+        try { t = localStorage.getItem("theme"); } catch (_) {}
+        // Dark is the site's own look; light is there for anyone who switches.
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.classList.add("js");
+        // If the site script never runs, show everything the reveal animation hides.
+        setTimeout(function () { if (!window.__siteReady) d.classList.remove("js"); }, 2500);
+      })();
+    </script>
+    <meta property="article:published_time" content="2026-01" />
+    <meta property="article:author" content="https://akhiltheerthala.com/" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Density vs. Diversity in Data Selection",
+  "description": "A controlled study of data curation for fine-tuning vision-language models when domain images are scarce. It compares ten questions on each of 750 images with one question on each of 7,500.",
+  "datePublished": "2026-01",
+  "url": "https://akhiltheerthala.com/writing/density-vs-diversity-in-data-selection/",
+  "mainEntityOfPage": "https://akhiltheerthala.com/writing/density-vs-diversity-in-data-selection/",
+  "image": "https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png",
+  "author": {
+    "@type": "Person",
+    "@id": "https://akhiltheerthala.com/#person",
+    "name": "Akhil Theerthala",
+    "url": "https://akhiltheerthala.com/"
+  }
+}
+    </script>
+    <script defer src="../../assets/js/site.js"></script>
   </head>
   <body>
+    <div class="ground" aria-hidden="true"><i class="ground-cols"></i><i class="ground-ticks"></i><i class="ground-spot"></i><i class="ground-contour"></i><i class="ground-contour"></i></div>
     <a class="skip-link" href="#main-content">Skip to main content</a>
-    <div id="root"></div>
+    <header class="site-nav">
+      <div class="wrap">
+        <a class="wordmark" href="../../" aria-label="Akhil Theerthala, home"><svg class="wordmark-mark" viewBox="0 0 23 22" width="23" height="22" aria-hidden="true"><path fill="currentColor" d="M10 5H13L22 20H18.5L11.5 8.33L4.5 20H1Z"/><path class="accent" d="M2 2H21V5H13V20H10V5H2Z"/></svg>Akhil Theerthala</a>
+        <nav aria-label="Sections">
+          <ul class="nav-links">
+            <li><a href="../../#about" data-section="about">About</a></li>
+            <li><a href="../../#cv" data-section="cv">Experience</a></li>
+            <li><a href="../../#work" data-section="work">Projects</a></li>
+            <li><a href="../../#research" data-section="research">Papers</a></li>
+            <li><a href="../../#writings" data-section="writings" aria-current="page">Writing</a></li>
+            <li><a href="../../#contact" data-section="contact">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="nav-actions">
+          <button class="icon-btn theme-toggle" type="button" aria-label="Switch between light and dark theme"><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg></button>
+          <a class="btn btn-primary btn-small" href="mailto:akhiltvsn@gmail.com">Email me</a>
+        </div>
+      </div>
+    </header>
+    <main id="main-content">
+      <div class="wrap page-top">
+        <p class="crumbs"><a href="../../#writings">Writing</a><span aria-hidden="true">/</span><span>Research Notes</span></p>
+        <h1 class="page-title">Density vs. Diversity in Data Selection</h1>
+        <p class="page-lede">A controlled study of data curation for fine-tuning vision-language models when domain images are scarce. It compares ten questions on each of 750 images with one question on each of 7,500.</p>
+        <p class="page-meta"><span class="dot" aria-hidden="true"></span><span>Akhil Theerthala</span><span>Jan 2026</span><span>12 min read</span></p>
+        <details class="toc-mobile"><summary>On this page</summary><ol><li><a href="#i-the-problem">I. The problem</a></li><li><a href="#ii-why-is-this-useful">II. Why is this useful?</a></li><li><a href="#iii-the-setup">III. The Setup</a></li><li><a href="#a-the-data-curation" class="sub">A. The Data Curation</a></li><li><a href="#b-the-training-regime" class="sub">B. The Training Regime.</a></li><li><a href="#iv-the-results">IV. The Results</a></li><li><a href="#v-conclusion">V. Conclusion</a></li><li><a href="#what-s-next" class="sub">What&#39;s next?</a></li><li><a href="#what-didn-t-work" class="sub">What didn&#39;t work?</a></li></ol></details>
+      </div>
+      <div class="wrap reader">
+        <nav class="toc" aria-label="On this page"><p>On this page</p><ol><li><a href="#i-the-problem">I. The problem</a></li><li><a href="#ii-why-is-this-useful">II. Why is this useful?</a></li><li><a href="#iii-the-setup">III. The Setup</a></li><li><a href="#a-the-data-curation" class="sub">A. The Data Curation</a></li><li><a href="#b-the-training-regime" class="sub">B. The Training Regime.</a></li><li><a href="#iv-the-results">IV. The Results</a></li><li><a href="#v-conclusion">V. Conclusion</a></li><li><a href="#what-s-next" class="sub">What&#39;s next?</a></li><li><a href="#what-didn-t-work" class="sub">What didn&#39;t work?</a></li></ol></nav>
+        <article class="prose" data-article-file="Density-Vs-Diversity.md">
+<p id="p-0">The more I see the impact and expansion of agentic applications of LLMs, the more I foresee a future in which people will be increasingly concerned with developing a custom model that suits their needs. This may be due to various factors, ranging from cost savings from API calls to issues related to data privacy and domain expertise. This shift requires rigorous cost-effectiveness studies to fine-tune these models. Various works, such as <a href="https://arxiv.org/abs/2506.04178" target="_blank" rel="noreferrer">OpenThoughts</a>, <a href="https://arxiv.org/abs/2510.12225" target="_blank" rel="noreferrer">HoneyBee</a>, and others, have made substantial contributions to the development of these strategies. </p>
+<p id="p-1">However, there remains a gap in these recipes for image-text-to-text fine-tuning, as large, diverse image datasets are often scarce, especially in domains such as robotics, banking, and manufacturing. Hence, we must conduct a rigorous study of this &quot;number of images&quot; argument. And that&#39;s what I have done for the last few days. </p>
+<figure>
+  <img loading="lazy" src="https://cdn-uploads.huggingface.co/production/uploads/676c67da7bad1587f2d046e2/XcN0Q2_Kue4sv3VTXsjoo.png">
+  <figcaption>Density Vs Diversity strategy for data curation. Image generated using NanoBanana Pro</figcaption>
+</figure>
+
+<h2 id="i-the-problem">I. The problem</h2>
+<p id="p-2">Based on current mainstream works, there are two approaches to improving language models&#39; ability to answer questions about images. One approach, the diversity approach, aims to help the model interpret image encodings by presenting a vast set of images and associated questions. </p>
+<p id="p-3">Whereas the other, the density approach, asks various questions about the same image, forcing the model to interpret the same image encoding in different ways. In practice, a combination of these two steps is used to train VLMs. The core question of this blog post is to answer which of the two approaches is suitable, or more specifically, which of the two extremes is ideal. </p>
+<h2 id="ii-why-is-this-useful">II. Why is this useful?</h2>
+<p id="p-4">Before we do the analysis, one might ask: <em>Why bother with Density? Diversity is safer and generally performs better. Why not just scrape more images?</em></p>
+<p id="p-5">However, the trade-off lies in the <strong>economics</strong> of the data. </p>
+<ol>
+<li>Most real-world domains don&#39;t have a massive amount of image data available, which increases the cost of curating a considerable number of diverse images for the task. In these &quot;Data Poor&quot; domains, the standard advice (&quot;just get more data&quot;) is useless. If the density strategy works—even if it&#39;s just on par with Diversity—it unlocks a massive opportunity.</li>
+<li>Similarly, the token costs of generating queries from 7500 images are considerably higher than generating queries from 750 images. In these cases, handling textual entities is less computationally expensive than handling image embeddings and is often faster.</li>
+<li>Finally, there&#39;s the philosophical question of &quot;Seeing more things&quot; Vs &quot;Seeing the same thing deeply&quot;. The belief is that asking a variety of questions on the same image will lead to better reasoning than forcing the model to look at various photos. (This is also a surprisingly popular strategy in data curation.)</li>
+</ol>
+<p id="p-6">The goal of this work is to do a preliminary investigation towards this hypothesis. To establish an initial hypothesis, I set up the environment and studied the two extremes of curation strategies.</p>
+<hr>
+<h2 id="iii-the-setup">III. The Setup</h2>
+<p id="p-7">To test this, I conducted a controlled experiment using images from the GQA dataset as the seed to generate synthetic datasets for spatial interpretation. </p>
+<h3 id="a-the-data-curation">A. The Data Curation</h3>
+<figure>
+  <img loading="lazy" src="https://cdn-uploads.huggingface.co/production/uploads/676c67da7bad1587f2d046e2/wfm645VlDdinA23NIyIZ1.png">
+  <figcaption>The multi-stage data generation process.</figcaption>
+</figure>
+
+<p id="p-8">Out of the ~37k images from the GQA training set, a smaller set of images containing at least seven different objects is chosen. Using this as the main seed, two samples of 7500 images and 750 images are selected. </p>
+<p id="p-9">To clearly separate the two extremes of Density and Diversity, the density approach generates 10 questions per image, whereas the diversity approach asks one key question per image. For each image, a detailed scene description is generated, which is then used to create answer plans and questions, as well as the reasoning and answers. To address stability and response constraints, each question is accompanied by two synthetically generated answers. </p>
+<p id="p-10">All the questions generated in the synthetic data can be sorted into the following topics:</p>
+<ul>
+<li><strong>Spatial_Topology</strong>: Question involving relative positions, distances, orientation,  alignment or layout.</li>
+<li><strong>Object_Interaction_Physics</strong>: Question regarding stability or physical properties inferred from visuals and support, containment, or contact. (e.g., &#39;What supports object X?&#39;)</li>
+<li><strong>Visibility_Occlusion</strong>: Question about what is visible, partially visible, or occluded from the viewpoint, and line-of-sight or viewing angles from different perspectives.</li>
+<li><strong>Functional_Reasoning</strong>: Question about how objects might be used together based on proximity, and about accessibility or affordance.</li>
+<li><strong>Comparative_Attribute</strong>: Question comparing size, height, or state between two specific objects and differentiating two similar objects based on context.
+In the dense approach, the ten questions include two questions from each category.</li>
+</ul>
+<p id="p-11">With this, we obtain two datasets, each containing 15k samples, at the extremes of the investigation. A similar strategy was used to develop a test set, whose answers are generated and selected via majority voting among <code>Qwen3-VL-235B</code>, <code>GPT5-mini</code>, and <code>Gemini-Flash</code>.</p>
+<h3 id="b-the-training-regime">B. The Training Regime.</h3>
+<p id="p-12">The core challenge of the problem at hand is not changing how the model &quot;sees&quot;, but rather how the language model interprets what it sees. Hence, across all fine-tuning regimes, the vision-encoding towers are frozen. Following this, I have opted for a LoRA fine-tuning regime, as it&#39;s more suitable than full-SFT for the scale of the study. Each model was trained for two epochs with a learning rate of <code>1e-5</code> and a cosine learning rate scheduler with a minimum learning rate of <code>1e-6</code>.</p>
+<p id="p-13">To investigate the impact, six models are fine-tuned from three backbones: <code>Qwen3-VL-4B-Instruct</code>, <code>Qwen3-VL-8B-Instruct</code>, and <code>Qwen3-VL-8B-Thinking</code>. </p>
+<hr>
+<h2 id="iv-the-results">IV. The Results</h2>
+<figure>
+  <img loading="lazy" src="https://cdn-uploads.huggingface.co/production/uploads/676c67da7bad1587f2d046e2/Ym8vQSJAjbz37Ff7tQeET.png">
+  <figcaption>Evaluation results on the in-domain test set (3.2k images) and the RealWorldQA benchmark. </figcaption>
+</figure>
+
+<p id="p-14">Using the provided setup, the models are trained and evaluated on 3.2k images and the RealWorld QA benchmark. The evaluation of the trained models is split into two phases. </p>
+<ul>
+<li><strong>Phase-1: Test-set performance</strong> </br> In this phase, the models are evaluated on a test-set generated and validated by the SOTA models. This is done to understand how well the model interprets and learns from the training dataset strategies.</li>
+<li><strong>Phase-2: RealWorldQA Benchmark</strong></br> In this phase, the model is evaluated on a benchmark that requires understanding the real-world images and interpreting them. For this phase, the RealworldQA benchmark is selected primarily due to its availability.</li>
+</ul>
+<p id="p-15">In summary, the diversity strategy clearly outperforms the dense strategy (by at least 3.2%). However, when combined with the robustness tests, a strangely intriguing picture emerges.</p>
+<p id="p-16">According to the RealWorldQA results, the Diverse strategy performs consistently across modalities, with each performing within 1% of the other. Based on this, it&#39;s possible that a diverse visual dataset may also serve as a form of regularization for language-side adaptation of VLMs. By requiring the model to process thousands of distinct visual contexts, it prevents the model from becoming overfit to any single &quot;style&quot; of image. This is consistent with the hypothesis that when the model encounters the chaotic real world, it can rely on a stable, generalized representation.</p>
+<p id="p-17">However, the results of the dense strategy are interesting. Only the in-domain results show that increasing model scale improves test-set performance. The OOD, though, shows a different picture. The non-reasoning models perform similarly well on the RealWorldQA benchmark. Yet, the drop in the reasoning model&#39;s performance is consistent with a failure to induce transferable reasoning abstractions under dense curation rather than the expected improvement in reasoning capabilities.
+This challenges the assumption that increasing question variety alone is sufficient to improve transferable reasoning. However, this could also be a side effect of the smaller sample size, which may lead to overfitting. </p>
+<p id="p-18">It is also clear that, as a result of the LoRA effect, the model learned less than intended while forgetting even less information relevant to the inherent real-world information</p>
+<hr>
+<h2 id="v-conclusion">V. Conclusion</h2>
+<p id="p-19">So, can we train on 750 images instead of 7500? 
+The answer is yes, but with caveats. Density appears to be an efficiency trade-off rather than a strict substitute. You can obtain a model that performs within 5% of the ideal model trained on diverse, curated data. However, it&#39;s not a magic wand. For non-reasoning models, the density strategy works really well. However, reasoning models carry a risk of logical collapse and require careful treatment. </p>
+<h3 id="what-s-next">What&#39;s next?</h3>
+<p id="p-20">Since the results establish the <em>feasibility</em> of dense curation under constrained data budgets, the goal now is to examine the problem at a larger scale. Since 750/7500 images are not a sufficiently large sample to establish generalised &quot;facts&quot;, the next steps of the work should focus on a 25k-image range with at least 50k training samples. </p>
+<p id="p-21">Additionally, the study only limits the results to the extremes. A more nuanced examination of different density scales should also be conducted to obtain a clearer picture. What if, just like the batch size, density also has a too-small-to-too-large trade-off? If so, what&#39;s the optimal approach, and how does performance vary with scale? These questions have to be involved. </p>
+<p id="p-22">Tangentially, the effect of synthetic diversity, such as image augmentation, must also be studied, as it provides clear benefits for data-poor domains. </p>
+<h3 id="what-didn-t-work">What didn&#39;t work?</h3>
+<p id="p-23">During the process, I&#39;ve tried many interesting approaches. Starting with various ranks and alphas for LoRA. More specifically, because I had access to Hugging Face hardware, I trained LoRAs with four ranks: 128, 64, 32, and 16, mostly with <code>rank=alpha</code>. On a high level, here are the key observations:</p>
+<ul>
+<li>The ranks 128 and 64 significantly degraded the models&#39; language coherence. I often found token repetition and language mixing.</li>
+<li>The rank 16 was taking too long to converge, and sometimes (especially in the 8B case), not being stuck around CE losses of 1.45-1.5. </li>
+<li>The generally accepted learning rates of 1e-4 to 2e-4 were surprisingly high and indicated classic overfitting during training. The current training uses a learning rate of 1e-5 with a cosine scheduler with a minimum learning rate of <code>1e-6</code>.</li>
+</ul>
+<p id="p-24">In addition, I found that generating questions directly from images (rather than using the process described above) was suboptimal. Almost all models, from Qwen3-VL-235B and Gemma3 to GPT-5-mini, focused on the same visual parts of the image, despite varying decoding conditions. This suggests the presence of strong encoder-level priors in the representation of visual salience. For models using SigLIP-2 encoders, this may indicate a shared attention bias that limits question diversity. However, isolating encoder effects from decoder behaviour requires controlled ablations (e.g., encoder swapping or frozen-encoder probing), which we leave for future work.</p>
+<hr>
+
+          <div class="article-foot">
+            <p>Send questions or corrections to <a href="mailto:akhiltvsn@gmail.com">akhiltvsn@gmail.com</a>.</p>
+            <p><a href="../../writing.html">All writing</a></p>
+          </div>
+        </article>
+        <aside class="side-map" aria-label="This page on the homepage map">
+          <h2>On the homepage map</h2>
+          <div class="mini-map"><canvas data-map="mini" data-source="essay:density-vs-diversity-in-data-selection" aria-label="The homepage map, with this page's project highlighted"></canvas></div>
+          <p class="mini-readout" aria-live="polite">Hover over or tap a point to see its title.</p>
+          <div class="nearby" data-nearby="essay:density-vs-diversity-in-data-selection"><h3>Related work</h3><ol></ol></div>
+        </aside>
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <p>© 2026 Akhil Theerthala, Bengaluru</p>
+        <nav aria-label="Profiles">
+          <a href="https://github.com/Akhil-Theerthala" target="_blank" rel="noreferrer">GitHub</a>
+          <a href="https://huggingface.co/Akhil-Theerthala" target="_blank" rel="noreferrer">Hugging Face</a>
+          <a href="https://scholar.google.com/citations?user=_H1O3ScAAAAJ&amp;hl=en" target="_blank" rel="noreferrer">Google Scholar</a>
+          <a href="https://www.linkedin.com/in/akhil-theerthala/" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="https://x.com/thesilvervein" target="_blank" rel="noreferrer">X</a>
+          <a href="../../writing.html">All writing</a>
+        </nav>
+      </div>
+    </footer>
   </body>
 </html>

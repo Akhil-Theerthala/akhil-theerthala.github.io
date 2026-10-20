@@ -1,102 +1,150 @@
 <!doctype html>
-<html lang="en" data-density="comfortable">
+<html lang="en" data-page="artifact" data-root="../../">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LocalXiv - Akhil Theerthala</title>
-    <meta name="description" content="A Mac app that turns arXiv and alphaXiv links into a local paper library you can read comfortably, explore with optional AI explanations, and send to a Kindle." />
+    <meta name="description" content="A free, open-source Mac app for reading arXiv and alphaXiv papers, with a local library, adjustable layouts, optional AI explanations, and EPUB export for Kindle." />
     <link rel="canonical" href="https://akhiltheerthala.com/artifacts/localxiv/" />
     <meta property="og:title" content="LocalXiv - Akhil Theerthala" />
-    <meta property="og:description" content="A Mac app that turns arXiv and alphaXiv links into a local paper library you can read comfortably, explore with optional AI explanations, and send to a Kindle." />
+    <meta property="og:description" content="A free, open-source Mac app for reading arXiv and alphaXiv papers, with a local library, adjustable layouts, optional AI explanations, and EPUB export for Kindle." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://akhiltheerthala.com/artifacts/localxiv/" />
+    <meta property="og:site_name" content="Akhil Theerthala" />
     <meta property="og:image" content="https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="The AT mark, the name Akhil Theerthala and the title Applied data scientist, beside a map of nine areas of his work, such as document AI and LLM evaluation." />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@thesilvervein" />
     <meta name="twitter:image" content="https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png" />
-    <meta name="theme-color" content="#0d0f0e" />
-    <link
-      rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%230d0f0e'/%3E%3Cpath d='M15 49 29 14h7l14 35h-8l-3-9H25l-3 9h-7Zm12-16h10l-5-14-5 14Z' fill='%23c8a66b'/%3E%3C/svg%3E"
-    />
-    <link rel="preload" href="../../assets/fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="../../assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="../../portfolio.css" />
+    <meta name="twitter:image:alt" content="The AT mark, the name Akhil Theerthala and the title Applied data scientist, beside a map of nine areas of his work, such as document AI and LLM evaluation." />
+    <meta name="theme-color" content="#0c0f0d" />
+    <link rel="icon" href="../../favicon.ico" sizes="48x48" />
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+    <link rel="preload" href="../../assets/fonts/plex-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="../../assets/css/site.css" />
+    <script>
+      (function () {
+        var d = document.documentElement, t;
+        try { t = localStorage.getItem("theme"); } catch (_) {}
+        // Dark is the site's own look; light is there for anyone who switches.
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.classList.add("js");
+        // If the site script never runs, show everything the reveal animation hides.
+        setTimeout(function () { if (!window.__siteReady) d.classList.remove("js"); }, 2500);
+      })();
+    </script>
+    
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   "name": "LocalXiv",
-  "description": "A Mac app that turns arXiv and alphaXiv links into a local paper library you can read comfortably, explore with optional AI explanations, and send to a Kindle.",
+  "description": "A free, open-source Mac app for reading arXiv and alphaXiv papers, with a local library, adjustable layouts, optional AI explanations, and EPUB export for Kindle.",
   "url": "https://akhiltheerthala.com/artifacts/localxiv/",
   "datePublished": "2026-09",
   "sameAs": [
     "https://github.com/Akhil-Theerthala/LocalXiv",
-    "https://www.producthunt.com/products/localxiv",
-    "https://github.com/Akhil-Theerthala/LocalXiv/releases/latest"
+    "https://www.producthunt.com/products/localxiv"
   ],
   "author": {
     "@type": "Person",
+    "@id": "https://akhiltheerthala.com/#person",
     "name": "Akhil Theerthala",
     "url": "https://akhiltheerthala.com/"
+  },
+  "downloadUrl": "https://github.com/Akhil-Theerthala/LocalXiv/releases/latest",
+  "operatingSystem": "macOS 26 or newer",
+  "processorRequirements": "Apple Silicon",
+  "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
   }
 }
     </script>
+    <script defer src="../../assets/js/site.js"></script>
   </head>
   <body>
+    <div class="ground" aria-hidden="true"><i class="ground-cols"></i><i class="ground-ticks"></i><i class="ground-spot"></i><i class="ground-contour"></i><i class="ground-contour"></i></div>
     <a class="skip-link" href="#main-content">Skip to main content</a>
-    <div class="reader-page artifact-page">
-      <div class="calibration-field" aria-hidden="true"></div>
-      <header class="artifact-page-top">
-        <a class="artifact-page-home serif" href="../../">Akhil Theerthala</a>
-        <a class="artifact-page-back" href="../../#work">All artifacts</a>
-      </header>
-      <main class="reader-page-main" id="main-content">
-        <article class="reader-article artifact-story">
-          <p class="artifact-meta mono">Sep 2026 · Open source · Mac app</p>
-          <h1 class="reader-title">LocalXiv</h1>
-          <p class="artifact-story-summary">A Mac app that turns arXiv and alphaXiv links into a local paper library you can read comfortably, explore with optional AI explanations, and send to a Kindle.</p>
-          <p class="artifact-status artifact-status--active"><span class="sr-only">Status: </span>Active</p>
-          <div class="link-buttons">
-          <a class="btn" href="https://github.com/Akhil-Theerthala/LocalXiv" target="_blank" rel="noreferrer">GitHub<span class="sr-only"> (opens in a new tab)</span></a>
+    <header class="site-nav">
+      <div class="wrap">
+        <a class="wordmark" href="../../" aria-label="Akhil Theerthala, home"><svg class="wordmark-mark" viewBox="0 0 23 22" width="23" height="22" aria-hidden="true"><path fill="currentColor" d="M10 5H13L22 20H18.5L11.5 8.33L4.5 20H1Z"/><path class="accent" d="M2 2H21V5H13V20H10V5H2Z"/></svg>Akhil Theerthala</a>
+        <nav aria-label="Sections">
+          <ul class="nav-links">
+            <li><a href="../../#about" data-section="about">About</a></li>
+            <li><a href="../../#cv" data-section="cv">Experience</a></li>
+            <li><a href="../../#work" data-section="work" aria-current="page">Projects</a></li>
+            <li><a href="../../#research" data-section="research">Papers</a></li>
+            <li><a href="../../#writings" data-section="writings">Writing</a></li>
+            <li><a href="../../#contact" data-section="contact">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="nav-actions">
+          <button class="icon-btn theme-toggle" type="button" aria-label="Switch between light and dark theme"><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg></button>
+          <a class="btn btn-primary btn-small" href="mailto:akhiltvsn@gmail.com">Email me</a>
+        </div>
+      </div>
+    </header>
+    <main id="main-content">
+      <div class="wrap page-top">
+        <p class="crumbs"><a href="../../#work">Projects</a><span aria-hidden="true">/</span><span>Open source · Mac app</span></p>
+        <h1 class="page-title">LocalXiv</h1>
+        <p class="page-lede">A free, open-source Mac app for reading arXiv and alphaXiv papers, with a local library, adjustable layouts, optional AI explanations, and EPUB export for Kindle.</p>
+        <p class="page-meta"><span class="status"><i aria-hidden="true"></i><span class="sr-only">Status: </span>Active</span><span>Released Sep 2026</span></p>
+        <div class="project-links">
+          <a class="btn btn-primary" href="https://github.com/Akhil-Theerthala/LocalXiv" target="_blank" rel="noreferrer">GitHub<span class="sr-only"> (opens in a new tab)</span></a>
           <a class="btn" href="https://www.producthunt.com/products/localxiv" target="_blank" rel="noreferrer">Product Hunt<span class="sr-only"> (opens in a new tab)</span></a>
           <a class="btn" href="https://github.com/Akhil-Theerthala/LocalXiv/releases/latest" target="_blank" rel="noreferrer">Download<span class="sr-only"> (opens in a new tab)</span></a>
-          </div>
-          <div class="reader-body artifact-story-body">
-          <h2>What it is</h2>
-          <p>LocalXiv is a reading app for research papers on the Mac. Paste an arXiv or alphaXiv link and it saves the paper to a library on your machine, renders it with adjustable fonts, text size, margins and equations, and exports it as an EPUB you can send to a Kindle.</p>
-          <p>Optional AI features sit beside the paper rather than replacing it: an Overview that explains the contribution visually, a longer Blog-style explanation with source citations, and chat for questions. They use your own provider and API key. Importing, reading and exporting need no AI account.</p>
-          <h2>Why it was needed</h2>
-          <p>Generated explanations are only useful if you can check them. LocalXiv keeps the original paper beside every explanation, so any claim can be checked against what the paper actually says.</p>
-          <h2>What I built</h2>
-          <ul>
-            <li>A Swift/AppKit launcher, a WebKit reader and a local Python service, with SQLite storing the library and job records.</li>
-            <li>Conversion and AI generation run as separate jobs, so a failed explanation never invalidates a saved paper. When EPUB conversion fails, the app falls back to the retained original.</li>
-            <li>Overviews are laid out by the app, not drawn by the model: the model writes a digest and a scene tree of cards, groups, steps and bars, and the app places them and routes the arrows. A figure that still fails after bounded corrections is left out.</li>
-            <li>Developed primarily with GPT-6 Astra in Codex, for the Product Hunt GPT-6 Astra Challenge. The model used inside the app is chosen separately by each user.</li>
-          </ul>
-          <h2>What it achieved</h2>
-          <ul>
-            <li>Twelve public preview releases between 6 and 18 September 2026, from v0.0.1 to v0.0.14.</li>
-            <li>Launched on Product Hunt as part of the GPT-6 Astra Challenge.</li>
-            <li>Ships its own conversion tools: no Homebrew, Python or AI account is needed to import and read papers.</li>
-            <li>Recorded verification work for figure reliability in the repository.</li>
-          </ul>
-          <h2>Status</h2>
-          <p>Active early preview for Apple Silicon Macs on macOS 26 or newer. Releases are ad hoc signed and not yet notarised by Apple, conversion can be imperfect for unusual equations, tables and layouts, and AI explanations can contain mistakes.</p>
-          <h2>Related</h2>
+        </div>
+        <div class="artifact-media"><figure class="cover"><img src="../../assets/media/localxiv-cover.webp" width="1920" height="1200" decoding="async" alt="LocalXiv on macOS: Attention Is All You Need open in the dark reader with its contents sidebar, and the paper's Overview figure in a second window." /></figure></div>
+      </div>
+      <div class="wrap reader">
+        <nav class="toc" aria-label="On this page"><p>On this page</p><ol><li><a href="#what">What it is</a></li><li><a href="#why">Why it was needed</a></li><li><a href="#built">What I built</a></li><li><a href="#achieved">What it achieved</a></li><li><a href="#status">Status</a></li><li><a href="#related">Related</a></li></ol></nav>
+        <article class="prose">
+          <h2 id="what">What it is</h2>
+          <p>LocalXiv is a Mac app for reading research papers. When you paste an arXiv or alphaXiv link, the app saves the paper to a library on your machine. The reader renders the equations and lets you set the font, text size, and margins. You can export a paper as an EPUB and send it to a Kindle.</p>
+          <p>The AI features are optional. An Overview explains the paper&#39;s contribution visually, and a Blog gives a longer explanation that cites the source. You can also ask questions in a chat. These features use your own AI provider and API key. You can import, read, and export papers without an AI account.</p>
+          <h2 id="why">Why it was needed</h2>
+          <p>An AI explanation of a paper is useful only if you can check it. LocalXiv keeps the original paper beside every explanation, so you can check each claim against the source.</p>
+          <h2 id="built">What I built</h2>
+          <ul><li>The app has three parts: a Swift and AppKit launcher, a WebKit reader, and a local Python service. SQLite stores the library and the job records.</li><li>Paper conversion and AI generation run as separate jobs, so a failed explanation does not affect a saved paper. If EPUB conversion fails, the app uses the saved original instead.</li><li>The model does not draw the Overview figures. It writes a digest and a scene tree of cards, groups, steps, and bars. The app then places those parts and routes the arrows. If a figure still fails after a limited number of correction attempts, the app leaves it out.</li><li>I developed LocalXiv mostly with GPT-6 Astra in Codex. Each user picks the model that runs inside the app.</li></ul>
+          <h2 id="achieved">What it achieved</h2>
+          <ul><li>I shipped twelve public preview releases, v0.0.1 to v0.0.14, between 6 and 18 September 2026.</li><li>LocalXiv launched on Product Hunt as an entry in the GPT-6 Astra Challenge.</li><li>The app ships its own conversion tools, so you can import and read papers without Homebrew or Python.</li></ul>
+          <h2 id="status">Status</h2>
+          <p>LocalXiv is in early preview and runs on Apple Silicon Macs with macOS 26 or newer. Releases are ad hoc signed, and Apple has not notarized them yet. Conversion can be imperfect for unusual equations, tables, and layouts. AI explanations can contain mistakes.</p>
+          <h2 id="related">Related</h2>
           <ul>
             <li><a href="https://github.com/Akhil-Theerthala/LocalXiv/blob/main/docs/verification/2026-09-16-svg-reliability.md" target="_blank" rel="noreferrer">Verification notes: SVG figure reliability<span class="sr-only"> (opens in a new tab)</span></a></li>
             <li><a href="https://github.com/Akhil-Theerthala/Xiv2Pub" target="_blank" rel="noreferrer">Xiv2Pub: arXiv papers to EPUB<span class="sr-only"> (opens in a new tab)</span></a></li>
             <li><a href="https://github.com/Akhil-Theerthala/VisLearn-Paper" target="_blank" rel="noreferrer">VisLearn-Paper: a visual paper interpreter<span class="sr-only"> (opens in a new tab)</span></a></li>
           </ul>
-          </div>
-          <p class="reader-footer-text">
-            Questions or feedback: <a class="reader-link" href="mailto:akhiltvsn@gmail.com">akhiltvsn@gmail.com</a>
-          </p>
+          <div class="article-foot"><p>Send questions or feedback to <a href="mailto:akhiltvsn@gmail.com">akhiltvsn@gmail.com</a>.</p></div>
         </article>
-      </main>
-    </div>
+        <aside class="side-map" aria-label="This page on the homepage map">
+          <h2>On the homepage map</h2>
+          <div class="mini-map"><canvas data-map="mini" data-source="project:localxiv" aria-label="The homepage map, with this page's project highlighted"></canvas></div>
+          <p class="mini-readout" aria-live="polite">Hover over or tap a point to see its title.</p>
+          <div class="nearby" data-nearby="project:localxiv"><h3>Related work</h3><ol></ol></div>
+        </aside>
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <p>© 2026 Akhil Theerthala, Bengaluru</p>
+        <nav aria-label="Profiles">
+          <a href="https://github.com/Akhil-Theerthala" target="_blank" rel="noreferrer">GitHub</a>
+          <a href="https://huggingface.co/Akhil-Theerthala" target="_blank" rel="noreferrer">Hugging Face</a>
+          <a href="https://scholar.google.com/citations?user=_H1O3ScAAAAJ&amp;hl=en" target="_blank" rel="noreferrer">Google Scholar</a>
+          <a href="https://www.linkedin.com/in/akhil-theerthala/" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="https://x.com/thesilvervein" target="_blank" rel="noreferrer">X</a>
+          <a href="../../writing.html">All writing</a>
+        </nav>
+      </div>
+    </footer>
   </body>
 </html>

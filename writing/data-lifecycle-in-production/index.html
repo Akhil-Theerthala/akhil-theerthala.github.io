@@ -1,33 +1,163 @@
 <!doctype html>
-<html lang="en" data-article-file="Data-Lifecycle-in-Production.md" data-content-prefix="../../" data-density="comfortable">
+<html lang="en" data-page="article" data-root="../../">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Data Lifecycle in Production - Akhil Theerthala</title>
-    <meta name="description" content="An essay by Akhil Theerthala on older learning notes." />
+    <meta name="description" content="What makes data good and useful for a production ML project, where to get it, how much to collect, and how to avoid bias and privacy problems." />
     <link rel="canonical" href="https://akhiltheerthala.com/writing/data-lifecycle-in-production/" />
     <meta property="og:title" content="Data Lifecycle in Production - Akhil Theerthala" />
-    <meta property="og:description" content="An essay by Akhil Theerthala on older learning notes." />
+    <meta property="og:description" content="What makes data good and useful for a production ML project, where to get it, how much to collect, and how to avoid bias and privacy problems." />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://akhiltheerthala.com/writing/data-lifecycle-in-production/" />
+    <meta property="og:site_name" content="Akhil Theerthala" />
     <meta property="og:image" content="https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="article:published_time" content="2023" />
+    <meta property="og:image:alt" content="The AT mark, the name Akhil Theerthala and the title Applied data scientist, beside a map of nine areas of his work, such as document AI and LLM evaluation." />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@thesilvervein" />
     <meta name="twitter:image" content="https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png" />
-    <meta name="theme-color" content="#0d0f0e" />
-    <link
-      rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%230d0f0e'/%3E%3Cpath d='M15 49 29 14h7l14 35h-8l-3-9H25l-3 9h-7Zm12-16h10l-5-14-5 14Z' fill='%23c8a66b'/%3E%3C/svg%3E"
-    />
-    <link rel="preload" href="../../assets/fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="../../assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="../../portfolio.css" />
-    <script defer src="../../assets/js/writing.js"></script>
+    <meta name="twitter:image:alt" content="The AT mark, the name Akhil Theerthala and the title Applied data scientist, beside a map of nine areas of his work, such as document AI and LLM evaluation." />
+    <meta name="theme-color" content="#0c0f0d" />
+    <link rel="icon" href="../../favicon.ico" sizes="48x48" />
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+    <link rel="preload" href="../../assets/fonts/plex-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="../../assets/css/site.css" />
+    <script>
+      (function () {
+        var d = document.documentElement, t;
+        try { t = localStorage.getItem("theme"); } catch (_) {}
+        // Dark is the site's own look; light is there for anyone who switches.
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.classList.add("js");
+        // If the site script never runs, show everything the reveal animation hides.
+        setTimeout(function () { if (!window.__siteReady) d.classList.remove("js"); }, 2500);
+      })();
+    </script>
+    <meta property="article:published_time" content="2023-06" />
+    <meta property="article:author" content="https://akhiltheerthala.com/" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Data Lifecycle in Production",
+  "description": "What makes data good and useful for a production ML project, where to get it, how much to collect, and how to avoid bias and privacy problems.",
+  "datePublished": "2023-06",
+  "url": "https://akhiltheerthala.com/writing/data-lifecycle-in-production/",
+  "mainEntityOfPage": "https://akhiltheerthala.com/writing/data-lifecycle-in-production/",
+  "image": "https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png",
+  "author": {
+    "@type": "Person",
+    "@id": "https://akhiltheerthala.com/#person",
+    "name": "Akhil Theerthala",
+    "url": "https://akhiltheerthala.com/"
+  }
+}
+    </script>
+    <script defer src="../../assets/js/site.js"></script>
   </head>
   <body>
+    <div class="ground" aria-hidden="true"><i class="ground-cols"></i><i class="ground-ticks"></i><i class="ground-spot"></i><i class="ground-contour"></i><i class="ground-contour"></i></div>
     <a class="skip-link" href="#main-content">Skip to main content</a>
-    <div id="root"></div>
+    <header class="site-nav">
+      <div class="wrap">
+        <a class="wordmark" href="../../" aria-label="Akhil Theerthala, home"><svg class="wordmark-mark" viewBox="0 0 23 22" width="23" height="22" aria-hidden="true"><path fill="currentColor" d="M10 5H13L22 20H18.5L11.5 8.33L4.5 20H1Z"/><path class="accent" d="M2 2H21V5H13V20H10V5H2Z"/></svg>Akhil Theerthala</a>
+        <nav aria-label="Sections">
+          <ul class="nav-links">
+            <li><a href="../../#about" data-section="about">About</a></li>
+            <li><a href="../../#cv" data-section="cv">Experience</a></li>
+            <li><a href="../../#work" data-section="work">Projects</a></li>
+            <li><a href="../../#research" data-section="research">Papers</a></li>
+            <li><a href="../../#writings" data-section="writings" aria-current="page">Writing</a></li>
+            <li><a href="../../#contact" data-section="contact">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="nav-actions">
+          <button class="icon-btn theme-toggle" type="button" aria-label="Switch between light and dark theme"><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg></button>
+          <a class="btn btn-primary btn-small" href="mailto:akhiltvsn@gmail.com">Email me</a>
+        </div>
+      </div>
+    </header>
+    <main id="main-content">
+      <div class="wrap page-top">
+        <p class="crumbs"><a href="../../#writings">Writing</a><span aria-hidden="true">/</span><span>Older Learning Notes</span></p>
+        <h1 class="page-title">Data Lifecycle in Production</h1>
+        
+        <p class="page-meta"><span class="dot" aria-hidden="true"></span><span>Akhil Theerthala</span><span>Jun 2023</span><span>12 min read</span></p>
+        <details class="toc-mobile"><summary>On this page</summary><ol><li><a href="#the-what">The “What?”</a></li><li><a href="#the-good-data-and-bad-data" class="sub">The Good Data and Bad Data</a></li><li><a href="#what-is-useful-then" class="sub">What is useful, then?</a></li><li><a href="#the-how">The “How?”</a></li><li><a href="#the-sources" class="sub">The sources</a></li><li><a href="#how-much-data-should-we-collect" class="sub">How much data should we collect?</a></li><li><a href="#how-can-things-go-wrong">How can things go wrong?</a></li><li><a href="#references">References</a></li></ol></details>
+      </div>
+      <div class="wrap reader no-aside">
+        <nav class="toc" aria-label="On this page"><p>On this page</p><ol><li><a href="#the-what">The “What?”</a></li><li><a href="#the-good-data-and-bad-data" class="sub">The Good Data and Bad Data</a></li><li><a href="#what-is-useful-then" class="sub">What is useful, then?</a></li><li><a href="#the-how">The “How?”</a></li><li><a href="#the-sources" class="sub">The sources</a></li><li><a href="#how-much-data-should-we-collect" class="sub">How much data should we collect?</a></li><li><a href="#how-can-things-go-wrong">How can things go wrong?</a></li><li><a href="#references">References</a></li></ol></nav>
+        <article class="prose" data-article-file="Data-Lifecycle-in-Production.md">
+<h2 id="the-what">The “What?”</h2>
+<p id="p-0">When you recall the machine learning lifecycle, remember that the first step after defining the project is to question what data would help us successfully achieve the intended goals. In this phase, our only goal is to identify and determine the good and useful data, which we then use to create machine learning models.
+Wait a minute…how do we determine the criteria for “ <strong>good</strong>” and “ <strong>useful</strong>”? We can either ignore these remarks and move on or carefully examine them. In production, it helps to have a firm grasp of the meaning of these adjectives that pop up from time to time.</p>
+<h3 id="the-good-data-and-bad-data">The Good Data and Bad Data</h3>
+<p id="p-1">Suppose we are trying to predict the economic fluctuations of a country. To this example, what would you think when I insist on adding a feature which is the number of times I sneeze a day? You start seeing me as a crazy person. Why? Cause my sneeze is irrelevant to the economic fluctuations of a country.
+When we are trying to predict economic fluctuations, the number of times I sneeze is a garbage value. Now the value for the same feature is different when I try to analyze the state of my cold. The feature remains the same in the two cases, but you see me as a madman, whereas you perfectly agree with me in the other. This is basically how we determine a feature to be <strong><em>good</em></strong> or <strong><em>bad</em></strong>.
+A good feature or good data is relevant to the project we are working on. Bad data is the exact opposite.
+Imagine if I insist on adding multiple such features to our project. Our model will not be something that predicts economic fluctuations. It will be something that predicts garbage. This is how the phrase “ <strong>Garbage In, Garbage Out</strong>” came out.
+This is one of the interesting descriptions that I found regarding Good Data and Bad data:
+<img src="https://miro.medium.com/v2/resize:fit:1400/0*ISpka35m6zWqBt3P.png" alt="" loading="lazy" decoding="async" /></p>
+<h3 id="what-is-useful-then">What is useful, then?</h3>
+<p id="p-2">There was another keyword that was used for the data that we needed to collect. <strong>U_seful._</strong> How do you know if a feature is important for the project?
+Whatever the case, once we start working on a project in a production setting, it is aimed at a certain group of customers who will benefit from the product. Because of this, we need to think about the user when we collect information or develop services. What can the user provide? What is the type of service we are offering? Is it just augmenting the process, or is it automating the task?
+When we consider the user aspects, the data we need will change. For example, when building an application that recommends his health routine to the user. If he asks for recommendations for his daily workouts, we tend to collect his gym goals, the frequency of his workout, the time he plans to spend in the gym, any health conditions, etc.
+You won’t need his daily wake-up time to recommend him his workouts. However, if the user’s goal is to maintain a healthy lifestyle, you won’t need the time he plans to spend in the gym or others. Rather, you would like to know the amount of sleep he is getting, his drinking and smoking habits, his target sleep time, his diet etc. Depending on the user’s needs and criteria, the data that is to be collected should be changed.</p>
+<h2 id="the-how">The “How?”</h2>
+<p id="p-3">Since we have discussed what data we need to collect, it is time to discuss the “how” of the data collection process. We have many questions here, But for now, let’s focus on the most basic questions you need to answer to start your machine learning project.</p>
+<ul>
+<li>How to acquire the data that we need?</li>
+<li>How much data should we collect?</li>
+</ul>
+<h3 id="the-sources">The sources</h3>
+<p id="p-4">The sources for data acquisition can be widely categorized into two categories, User-generated and System-acquired. At the root level, the user-generated data is obtained from surveys, polls, case studies, Q&amp;A forums, images, videos, etc. This data is highly diverse and can have multiple inconsistencies hidden in it. There is a common saying that is accepted by data professionals, which states that “ <em>If it is even remotely possible for users to input the wrong data, they are going to do it.</em>” Hence user-input data requires heavy-duty checking and processing.
+On the other hand, is the <strong>system-generated</strong> data. It is the data that is automatically generated or stored by the systems that users utilize. This includes various types of logs, system outputs, online sales records, website traffic, etc. Because this gives us the ability to store everything that we can, this kind of data is generally huge, and the required data can be difficult to find within all the noise that has been collected. The rise of internet usage in the last two decades has made it easy for organizations to collect system-generated data.
+Other than these two types, there is another source involved. This source is called <strong>Third-party</strong> data. This is where most of the online free data sources on Kaggle and others come into play. Third-party data is the data collected by other companies or organizations from users that are not the direct clients or users of the company and its services.</p>
+<h3 id="how-much-data-should-we-collect">How much data should we collect?</h3>
+<p id="p-5">This is a very interesting question, as no clear guidelines exist on how much data one should collect. In practical applications, it is done iteratively. This process is described in one of the previous articles in the ML lifecycle series, which you can read here. We tune the amount of data based on the results we acquire from modeling it. Most of the time, projects begin with a small amount of data and will slowly expand depending on the project’s needs. However, one initial benchmark can be estimated based on how the model is intended to be used.
+For example, if the sole purpose of the model is to recommend online courses, you need to collect data related to the person’s job and career goals. Suppose it concerns a bigger topic, like recommending videos on YouTube or other video streaming platforms. In that case, your data should include everything that can help you determine the users’ interests, not their background, which is probably not very useful here.</p>
+<h2 id="how-can-things-go-wrong">How can things go wrong?</h2>
+<p id="p-6">In the above discussion, I have stated a few things about what data you must collect and how to collect it. However, these are not the only things you should consider. Especially in a professional space, you should ensure that the data you collect is unbiased and considers the user’s privacy and security by complying with applicable privacy principles and regulations.
+These ethical guidelines differ slightly from company to company, but most have the same essence. The main points are as follows,</p>
+<ul>
+<li>The data should not incorporate any bias on people, especially towards sensitive characteristics like race, gender, nationality, political or religious beliefs, etc.</li>
+<li>The data collected should avoid incorporating sensitive personally identifiable information.</li>
+<li>The data collected should guarantee security regarding whatever sensitive information it contains.
+More detailed guidelines regarding the principles can be found in each company’s ethical guidelines. For example, you can check out Google’s AI principles <a href="https://ai.google/responsibility/principles/" target="_blank" rel="noreferrer">here</a>.
+You can start your data collection process based on the information given in this article. Generally, data collection is a very important aspect of any machine learning or data science project, as depending on the quality of the data collected, the speed remaining phases in the project lifecycle can be affected. Hence it is important to ensure that the data collected maintains its consistency regarding the format or units of the features and other basic principles.
+However, expecting a perfect outcome right after collecting the data is a dream. Hence, followed by data collection comes another critical phase of the data lifecycle, which is <strong>Data Validation.</strong> The data validation process will be described in detail, along with an example using the TFDV (Tensorflow data validation) framework in the following article of the <strong>Data Lifecycle in Production series.</strong></li>
+</ul>
+<h2 id="references">References</h2>
+<ol>
+<li><a href="https://pair.withgoogle.com/chapter/user-needs/" target="_blank" rel="noreferrer">User Needs and Defining Success, People + AI Guidebook, Google</a></li>
+<li><a href="https://pair.withgoogle.com/chapter/data-collection/" target="_blank" rel="noreferrer">Data Collection + Evaluation, People + AI Guidebook, Google</a></li>
+<li><a href="https://developers.google.com/machine-learning/guides/rules-of-ml#ml_phase_ii_feature_engineering" target="_blank" rel="noreferrer">Best Practices for ML Engineering</a></li>
+<li><a href="https://ai.googleblog.com/2018/09/introducing-inclusive-images-competition.html" target="_blank" rel="noreferrer">Inclusive Images Competition</a></li>
+</ol>
+
+          <div class="article-foot">
+            <p>Send questions or corrections to <a href="mailto:akhiltvsn@gmail.com">akhiltvsn@gmail.com</a>.</p>
+            <p><a href="../../writing.html">All writing</a></p>
+          </div>
+        </article>
+        
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <p>© 2026 Akhil Theerthala, Bengaluru</p>
+        <nav aria-label="Profiles">
+          <a href="https://github.com/Akhil-Theerthala" target="_blank" rel="noreferrer">GitHub</a>
+          <a href="https://huggingface.co/Akhil-Theerthala" target="_blank" rel="noreferrer">Hugging Face</a>
+          <a href="https://scholar.google.com/citations?user=_H1O3ScAAAAJ&amp;hl=en" target="_blank" rel="noreferrer">Google Scholar</a>
+          <a href="https://www.linkedin.com/in/akhil-theerthala/" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="https://x.com/thesilvervein" target="_blank" rel="noreferrer">X</a>
+          <a href="../../writing.html">All writing</a>
+        </nav>
+      </div>
+    </footer>
   </body>
 </html>

@@ -1,33 +1,147 @@
 <!doctype html>
-<html lang="en" data-article-file="Error-Analysis-for-Machine-learning.md" data-content-prefix="../../" data-density="comfortable">
+<html lang="en" data-page="article" data-root="../../">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Error Analysis for Machine Learning - Akhil Theerthala</title>
-    <meta name="description" content="An essay by Akhil Theerthala on older learning notes." />
+    <meta name="description" content="How to work with skewed datasets, such as a factory where 0.3% of goods have defects, and how to audit a model before production." />
     <link rel="canonical" href="https://akhiltheerthala.com/writing/error-analysis-for-machine-learning/" />
     <meta property="og:title" content="Error Analysis for Machine Learning - Akhil Theerthala" />
-    <meta property="og:description" content="An essay by Akhil Theerthala on older learning notes." />
+    <meta property="og:description" content="How to work with skewed datasets, such as a factory where 0.3% of goods have defects, and how to audit a model before production." />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://akhiltheerthala.com/writing/error-analysis-for-machine-learning/" />
+    <meta property="og:site_name" content="Akhil Theerthala" />
     <meta property="og:image" content="https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="article:published_time" content="2023" />
+    <meta property="og:image:alt" content="The AT mark, the name Akhil Theerthala and the title Applied data scientist, beside a map of nine areas of his work, such as document AI and LLM evaluation." />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@thesilvervein" />
     <meta name="twitter:image" content="https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png" />
-    <meta name="theme-color" content="#0d0f0e" />
-    <link
-      rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%230d0f0e'/%3E%3Cpath d='M15 49 29 14h7l14 35h-8l-3-9H25l-3 9h-7Zm12-16h10l-5-14-5 14Z' fill='%23c8a66b'/%3E%3C/svg%3E"
-    />
-    <link rel="preload" href="../../assets/fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="../../assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="../../portfolio.css" />
-    <script defer src="../../assets/js/writing.js"></script>
+    <meta name="twitter:image:alt" content="The AT mark, the name Akhil Theerthala and the title Applied data scientist, beside a map of nine areas of his work, such as document AI and LLM evaluation." />
+    <meta name="theme-color" content="#0c0f0d" />
+    <link rel="icon" href="../../favicon.ico" sizes="48x48" />
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+    <link rel="preload" href="../../assets/fonts/plex-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="../../assets/css/site.css" />
+    <script>
+      (function () {
+        var d = document.documentElement, t;
+        try { t = localStorage.getItem("theme"); } catch (_) {}
+        // Dark is the site's own look; light is there for anyone who switches.
+        d.dataset.theme = t === "light" ? "light" : "dark";
+        d.classList.add("js");
+        // If the site script never runs, show everything the reveal animation hides.
+        setTimeout(function () { if (!window.__siteReady) d.classList.remove("js"); }, 2500);
+      })();
+    </script>
+    <meta property="article:published_time" content="2023-01" />
+    <meta property="article:author" content="https://akhiltheerthala.com/" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Error Analysis for Machine Learning",
+  "description": "How to work with skewed datasets, such as a factory where 0.3% of goods have defects, and how to audit a model before production.",
+  "datePublished": "2023-01",
+  "url": "https://akhiltheerthala.com/writing/error-analysis-for-machine-learning/",
+  "mainEntityOfPage": "https://akhiltheerthala.com/writing/error-analysis-for-machine-learning/",
+  "image": "https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png",
+  "author": {
+    "@type": "Person",
+    "@id": "https://akhiltheerthala.com/#person",
+    "name": "Akhil Theerthala",
+    "url": "https://akhiltheerthala.com/"
+  }
+}
+    </script>
+    <script defer src="../../assets/js/site.js"></script>
   </head>
   <body>
+    <div class="ground" aria-hidden="true"><i class="ground-cols"></i><i class="ground-ticks"></i><i class="ground-spot"></i><i class="ground-contour"></i><i class="ground-contour"></i></div>
     <a class="skip-link" href="#main-content">Skip to main content</a>
-    <div id="root"></div>
+    <header class="site-nav">
+      <div class="wrap">
+        <a class="wordmark" href="../../" aria-label="Akhil Theerthala, home"><svg class="wordmark-mark" viewBox="0 0 23 22" width="23" height="22" aria-hidden="true"><path fill="currentColor" d="M10 5H13L22 20H18.5L11.5 8.33L4.5 20H1Z"/><path class="accent" d="M2 2H21V5H13V20H10V5H2Z"/></svg>Akhil Theerthala</a>
+        <nav aria-label="Sections">
+          <ul class="nav-links">
+            <li><a href="../../#about" data-section="about">About</a></li>
+            <li><a href="../../#cv" data-section="cv">Experience</a></li>
+            <li><a href="../../#work" data-section="work">Projects</a></li>
+            <li><a href="../../#research" data-section="research">Papers</a></li>
+            <li><a href="../../#writings" data-section="writings" aria-current="page">Writing</a></li>
+            <li><a href="../../#contact" data-section="contact">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="nav-actions">
+          <button class="icon-btn theme-toggle" type="button" aria-label="Switch between light and dark theme"><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg></button>
+          <a class="btn btn-primary btn-small" href="mailto:akhiltvsn@gmail.com">Email me</a>
+        </div>
+      </div>
+    </header>
+    <main id="main-content">
+      <div class="wrap page-top">
+        <p class="crumbs"><a href="../../#writings">Writing</a><span aria-hidden="true">/</span><span>Older Learning Notes</span></p>
+        <h1 class="page-title">Error Analysis for Machine Learning</h1>
+        
+        <p class="page-meta"><span class="dot" aria-hidden="true"></span><span>Akhil Theerthala</span><span>Jan 2023</span><span>6 min read</span></p>
+        <details class="toc-mobile"><summary>On this page</summary><ol><li><a href="#working-with-skewed-datasets">Working with Skewed Datasets.</a></li><li><a href="#performance-auditing">Performance Auditing</a></li></ol></details>
+      </div>
+      <div class="wrap reader no-aside">
+        <nav class="toc" aria-label="On this page"><p>On this page</p><ol><li><a href="#working-with-skewed-datasets">Working with Skewed Datasets.</a></li><li><a href="#performance-auditing">Performance Auditing</a></li></ol></nav>
+        <article class="prose" data-article-file="Error-Analysis-for-Machine-learning.md">
+<h2 id="working-with-skewed-datasets">Working with Skewed Datasets.</h2>
+<p id="p-0">Till now, we have seen the models generated on standard datasets. Other than these, we also have models where we need to work on skewed datasets and perform error analysis. We might develop a model for a factory where 99.7% of produced goods have no defects and only 0.3% have flaws. Or we could build a medical diagnosis system where 99% of the patients don’t have the disease.
+In these cases, we don’t use accuracy. Instead, we will build a Confusion matrix and calculate Precision and Recall for the predictions. The confusion matrix typically is a 2x2 matrix that generally has the model predictions along one axis and the true labels along the other axis. The following image describes a typical confusion matrix.
+<img src="https://miro.medium.com/v2/resize:fit:654/1*naTNypqwo5VU_nwOp9csrg.png" alt="A confusion matrix" loading="lazy" decoding="async" />
+Using the values in the confusion matrix, we might also form different metrics and use them. Some of the metrics are precision and recall.
+<strong>Precision</strong>: The proportion of true predictions that are actually true.
+<img src="https://miro.medium.com/v2/resize:fit:542/1*xQ5bQVttDer1cPc3AykyNQ.png" alt="" loading="lazy" decoding="async" />
+<strong>Recall:</strong> The proportion of actual true predictions that are identified correctly.
+<img src="https://miro.medium.com/v2/resize:fit:370/1*x9EnZegFHcmRN0dNepTmcA.png" alt="Definition of recall" loading="lazy" decoding="async" />
+The formula for Recall.
+Since we have to constantly monitor these 2 metrics each and every time, some hybrid metrics, which alert when even one is not suitable, are defined by combining these two metrics. One of the standard metrics is the f-beta score, the weighted harmonic mean of precision and recall, reaching its optimal value at 1 and its worst value at 0.
+The most commonly used f-beta score is the f-1 score, where we give equal weights to precision and recall.
+<img src="https://miro.medium.com/v2/resize:fit:464/1*T5-K6H1FM75DPt4-Vj3x4w.png" alt="F1 score for models based on skewed datasets." loading="lazy" decoding="async" />
+The formula for F1 score.
+So far, we have only seen the metrics for binary classification problems. But there are different ways to use these metrics for multi-class metrics. One way is to find the metrics independently for each class and use them to evaluate the model, i.e., consider each class as a binary classification.</p>
+<h2 id="performance-auditing">Performance Auditing</h2>
+<p id="p-1">Even when the model is performing well in training metrics and error analysis, it is recommended to do one final performance audit before sending it to production. There are many ways an audit might be performed.
+One framework to audit your model is as follows.</p>
+<ol>
+<li>Brainstorming the ways the model can go wrong like</li>
+<li>Performance on the subsets of data,</li>
+<li>How common are specific errors?</li>
+<li>Performance on rare classes, etc.,</li>
+<li>After identifying how the model can go wrong, you can establish metrics to assess performance against these issues.</li>
+<li>After establishing these metrics, we can manually evaluate them or use different automated MLOps tools for auditing this performance.<blockquote>
+<p>Until now, this manual process is preferred, however, in the recent times there are emerging MLOps tools that helps us easily identify different kinds of errors. At the end it is up to the preference of the users.
+With this, we have finished going through the error analysis of the machine learning models. Now, there is one last step left to explore in the modeling phase of a project, which is the <strong>data-driven</strong> approach to modeling. I am working on this article currently, and you can expect it before the same time, next week.</p>
+</blockquote>
+</li>
+</ol>
+
+          <div class="article-foot">
+            <p>Send questions or corrections to <a href="mailto:akhiltvsn@gmail.com">akhiltvsn@gmail.com</a>.</p>
+            <p><a href="../../writing.html">All writing</a></p>
+          </div>
+        </article>
+        
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <p>© 2026 Akhil Theerthala, Bengaluru</p>
+        <nav aria-label="Profiles">
+          <a href="https://github.com/Akhil-Theerthala" target="_blank" rel="noreferrer">GitHub</a>
+          <a href="https://huggingface.co/Akhil-Theerthala" target="_blank" rel="noreferrer">Hugging Face</a>
+          <a href="https://scholar.google.com/citations?user=_H1O3ScAAAAJ&amp;hl=en" target="_blank" rel="noreferrer">Google Scholar</a>
+          <a href="https://www.linkedin.com/in/akhil-theerthala/" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="https://x.com/thesilvervein" target="_blank" rel="noreferrer">X</a>
+          <a href="../../writing.html">All writing</a>
+        </nav>
+      </div>
+    </footer>
   </body>
 </html>

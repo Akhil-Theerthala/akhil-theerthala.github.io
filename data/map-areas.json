@@ -1,0 +1,33 @@
+{
+  "about": "The homepage map: areas of AI work, and the works placed around each area's name. scripts/build-map.py places them from the passage embeddings. A work is a paper or project from portfolio-data.js, an essay that is the work itself (set its kind to project), or a production system taken from a role highlight (role index plus the start of the highlight). Write-ups listed under a work count as that work.",
+  "areas": [
+    "Financial reasoning",
+    "LLM evaluation",
+    "Vision-language models",
+    "Data curation pipelines",
+    "Document AI",
+    "AI-assisted reading",
+    "Computational social science"
+  ],
+  "works": [
+    {"id": "paper:synthesizing-behaviorally-grounded-reasoning-chains-a", "area": "Financial reasoning", "short": "Behaviorally grounded reasoning"},
+    {"id": "project:kuvera", "area": "Financial reasoning", "short": "Kuvera"},
+    {"id": "work:market-intelligence", "area": "Financial reasoning", "short": "Market-intelligence agents", "title": "Agentic market intelligence for consumer banking products", "role": [0, "Built an agentic market-intelligence workflow"]},
+    {"id": "paper:finforge-semi-synthetic-financial-benchmark-generation", "area": "LLM evaluation", "short": "FinForge", "roleHighlights": [[1, "Co-authored FinForge"]]},
+    {"id": "work:llm-calibration", "area": "LLM evaluation", "short": "Financial LLM calibration", "title": "Uncertainty quantification for financial LLMs", "role": [0, "Leading uncertainty-quantification research"]},
+    {"id": "work:banking-guardrails", "area": "LLM evaluation", "short": "Banking guardrails", "title": "Guardrails for banking LLM and agent applications", "role": [0, "Developing guardrails"]},
+    {"id": "project:themis-scales-moral-dilemma", "area": "Computational social science", "short": "Themis Scales"},
+    {"id": "project:density-vs-diversity-vlm", "area": "Vision-language models", "short": "Density vs. Diversity", "writeups": ["essay:density-vs-diversity-in-data-selection"]},
+    {"id": "project:reasoning-dataset-challenge", "area": "Data curation pipelines", "short": "Reasoning Dataset Challenge", "writeups": ["essay:creating-a-reasoning-dataset-with-no-budget"]},
+    {"id": "paper:data-attribution-should-guide-pretraining", "area": "Data curation pipelines", "short": "Data attribution"},
+    {"id": "essay:lazyinfer-design-notes-for-reliable-llm-pipelines", "area": "Data curation pipelines", "short": "LazyInfer", "kind": "project"},
+    {"id": "paper:role-steering-of-language-models-for", "area": "Computational social science", "short": "Role steering", "roleHighlights": [[1, "Contributed to the Role Steering"]]},
+    {"id": "work:document-quality-gate", "area": "Document AI", "short": "Document quality gate", "title": "Reference-free document image-quality gate", "role": [0, "Developed and now monitor"]},
+    {"id": "work:classifier-distillation", "area": "Document AI", "short": "Classifier distillation", "title": "Distilled multimodal document classifier", "role": [2, "Distilled and quantized"]},
+    {"id": "work:table-detection", "area": "Document AI", "short": "Table detection", "title": "Generalized table detection", "role": [2, "Improved generalized table detection"]},
+    {"id": "work:row-detection", "area": "Document AI", "short": "Semantic row detection", "title": "Semantic row detection for table structure", "role": [2, "Integrated a semantic row-detection"]},
+    {"id": "work:document-vlm", "area": "Document AI", "short": "Document VLM adaptation", "title": "PaliGemma2 adapted to financial documents", "role": [0, "Adapted PaliGemma2"]},
+    {"id": "project:localxiv", "area": "AI-assisted reading", "short": "LocalXiv"},
+    {"id": "project:crowdfunding-social-signals", "area": "Computational social science", "short": "Crowdfunding signals"}
+  ]
+}

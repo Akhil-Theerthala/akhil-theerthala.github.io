@@ -1,5 +1,10 @@
 .venv
 __pycache__/
 node_modules/
+.directions/
+.taste-skill/
 
 Recommended_changes.md
+.DS_Store
+profile_photo.png
+data/lazy_infer.md

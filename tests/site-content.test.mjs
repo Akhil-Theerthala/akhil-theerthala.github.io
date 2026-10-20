@@ -14,9 +14,7 @@ const data = loadData();
 
 test("the current role is a selected-impact record", () => {
   const role = data.workExperience[0];
-  assert.equal(typeof role.summary, "string");
-  assert.ok(role.summary.length > 30);
-  assert.equal(role.highlights.length, 3);
+  assert.ok(role.highlights.length >= 3);
   assert.equal(typeof role.recognition, "string");
   assert.match(role.highlights.join(" "), /92% precision/);
 });
@@ -31,9 +29,6 @@ test("publications carry verified citation metadata", () => {
   }
 
   assert.ok(data.publications.every((publication) => !("status" in publication)));
-  const sections = fs.readFileSync("portfolio-sections.jsx", "utf8");
-  assert.doesNotMatch(sections, /\.status\b/);
-  assert.match(sections, /formatVenue\(p\.venue\)/);
 
   const roleSteering = data.publications.find((publication) =>
     publication.title.startsWith("Role Steering"),
@@ -70,8 +65,8 @@ test("artifact evidence contains only approved verified values", () => {
       "LocalXiv",
       "Density vs. Diversity: VLM Curation Datasets",
       "Kuvera Personal Finance Datasets and LLMs",
-      "Reasoning Dataset Challenge",
       "Themis Scales: Moral Dilemma Resolution",
+      "Social Media Signals and Crowdfunding Success",
     ],
   );
 
@@ -144,77 +139,63 @@ test("artifact evidence contains only approved verified values", () => {
   );
 });
 
-test("writing slugs are unique and exactly two records are featured", () => {
+test("writing slugs are unique and the project write-ups are on the map", () => {
   const slugs = data.writings.map((item) => item.slug);
   assert.equal(new Set(slugs).size, slugs.length);
   assert.ok(slugs.every((slug) => /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)));
   assert.deepEqual(
     Array.from(
       data.writings
-        .filter((item) => item.featured)
+        .filter((item) => item.onMap)
         .map((item) => item.file),
     ),
-    ["Density-Vs-Diversity.md", "Creating-a-Reasoning-Dataset-with.md"],
+    ["Density-Vs-Diversity.md", "Creating-a-Reasoning-Dataset-with.md", "LazyInfer-Design-Notes.md"],
   );
 });
 
-test("credibility components expose accessible, non-duplicative contracts", () => {
-  const sections = fs.readFileSync("portfolio-sections.jsx", "utf8");
+const index = fs.readFileSync("index.html", "utf8");
 
-  assert.doesNotMatch(sections, /PublicationCitation|className="citation/);
-  assert.match(sections, /<ul className="tag-list" aria-label="Topics">/);
-  assert.doesNotMatch(sections, /className="tag"/);
-  assert.match(sections, /function ArtifactEvidence\(/);
-  assert.match(sections, /title="Public Artifacts"/);
-  assert.match(sections, /<dialog/);
-  assert.match(sections, /\.showModal\(\)/);
-  assert.match(sections, /aria-haspopup="dialog"/);
-  assert.doesNotMatch(sections, /className="artifact-trigger"/);
-  assert.match(sections, /function ExperienceEntry\(/);
-  assert.match(sections, /experience\.highlights/);
-  assert.match(sections, /filter\(\(item\) => !item\.featured\)/);
-  assert.match(sections, /<details className="older-writing-archive"/);
-  assert.match(sections, /\{data\.location\}/);
-  assert.doesNotMatch(sections, />Hyderabad, India</);
-});
+test("the homepage leads with applied work, then research", () => {
+  const order = ["top", "about", "cv", "work", "achievements", "research", "writings", "education", "contact"];
+  const ids = [...index.matchAll(/<section class="[^"]*" id="([a-z]+)"/g)].map((match) => match[1]);
+  assert.deepEqual(ids, order);
 
-test("the production app uses the fixed approved visual tokens", () => {
-  const app = fs.readFileSync("portfolio-app.jsx", "utf8");
-
-  assert.doesNotMatch(app, /TweaksPanel|useTweaks|TWEAK_DEFAULTS/);
-  assert.match(app, /const APPROVED_ACCENT = "#c8a66b"/);
-});
-
-test("links carry no arrow glyphs; destinations are buttons", () => {
-  for (const file of ["portfolio-sections.jsx", "writing-app.jsx", "404.html"]) {
-    const source = fs.readFileSync(file, "utf8");
-    assert.doesNotMatch(source, /[↗→↑←]/, `${file} still renders an arrow`);
-    assert.doesNotMatch(source, /link-arrow|item-arrow|social-arrow|profile-link-arrow|className="arrow"/);
-  }
-  const sections = fs.readFileSync("portfolio-sections.jsx", "utf8");
-  assert.match(sections, /\(opens in a new tab\)/);
-});
-
-test("the page leads with applied work, then research", () => {
-  const app = fs.readFileSync("portfolio-app.jsx", "utf8");
-  const sections = fs.readFileSync("portfolio-sections.jsx", "utf8");
-  const index = fs.readFileSync("index.html", "utf8");
-  const order = ["About", "Experience", "Projects", "Publications", "Writings", "Education"];
-
-  const rendered = [...app.matchAll(/<(About|Experience|Projects|Publications|Writings|Education) data=/g)]
-    .map((match) => match[1]);
-  assert.deepEqual(rendered, order);
-
-  const navIds = [...app.matchAll(/\{ id: "([a-z]+)", label:/g)].map((match) => match[1]);
-  assert.deepEqual(navIds, ["about", "cv", "work", "research", "writings", "education", "contact"]);
+  const navIds = [...index.matchAll(/data-section="([a-z]+)"/g)].map((match) => match[1]);
+  assert.deepEqual(navIds, ["about", "cv", "work", "research", "writings", "contact"]);
 
   assert.match(index, /<title>Akhil Theerthala - Applied Data Scientist<\/title>/);
   assert.doesNotMatch(index, /Applied AI Researcher/);
   assert.equal(data.role, "Applied Data Scientist");
-  assert.doesNotMatch(sections, /Research interests|researchFocus/);
   assert.equal(data.researchProfiles[0].label, "GitHub");
   assert.match(
-    sections.replace(/\s+/g, " "),
+    index.replace(/\s+/g, " "),
     /Open to applied ML work, research collaborations, and fellowship conversations about reliable AI systems in finance and document intelligence\./,
   );
+  assert.ok(index.includes(data.location));
+  assert.doesNotMatch(index, />Hyderabad, India</);
+});
+
+test("links carry no arrow glyphs and external links announce new tabs", () => {
+  for (const link of index.matchAll(/<a\b[^>]*>([\s\S]*?)<\/a>/g)) {
+    assert.doesNotMatch(link[1], /[↗→↑←]/, `link text still has an arrow: ${link[1]}`);
+  }
+  assert.match(index, /\(opens in a new tab\)/);
+  assert.doesNotMatch(fs.readFileSync("404.html", "utf8"), /[↗→↑←]/);
+});
+
+test("every role highlight, publication and project is on the page", () => {
+  for (const role of data.workExperience) {
+    for (const highlight of role.highlights) {
+      const words = highlight.split(" ").slice(0, 6).join(" ");
+      assert.ok(index.includes(words), `missing highlight: ${words}`);
+    }
+  }
+  for (const publication of data.publications) {
+    assert.match(index, new RegExp(`id="paper-[a-z0-9-]+"[\\s\\S]*?${publication.venue.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`));
+    if (publication.bibtex) assert.ok(index.includes("Copy BibTeX"));
+  }
+  for (const project of data.projects) {
+    assert.ok(index.includes(`>${project.title.replaceAll("&", "&amp;")}</h3>`), project.title);
+  }
+  assert.match(index, /<details><summary>Abstract<\/summary>/);
 });
