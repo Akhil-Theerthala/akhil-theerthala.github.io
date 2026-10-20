@@ -280,3 +280,13 @@ test("every page carries the mark and its icons", () => {
     assert.equal(fs.existsSync(icon), true, icon);
   }
 });
+
+test("the map renderer draws the graph from the shared layout, not islands", () => {
+  const renderer = read("src/map.js");
+  assert.match(renderer, /from "\.\/graph-layout\.js"/);
+  assert.doesNotMatch(renderer, /\.near\b|\.angle\b|drawIslands|orbits/);
+  const site = read("src/site.js");
+  assert.doesNotMatch(site, /\.near\b/);
+  assert.match(site, /onHoverArea/);
+  assert.match(read("assets/css/site.css"), /\.map-tooltip-links/);
+});

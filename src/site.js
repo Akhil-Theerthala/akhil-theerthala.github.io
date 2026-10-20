@@ -6,6 +6,7 @@ import {
   loadMap,
   mulberry,
   roundRect,
+  showAreaTooltip,
   showTooltip,
   sourceHref,
   withAlpha,
@@ -178,6 +179,7 @@ function home(data) {
         ? { left: w * 0.46, top: h * 0.1, right: Math.max(48, (w - 1312) / 2 + 16), bottom: h * 0.17 }
         : { left: 24, top: 28, right: 24, bottom: 28 },
     onHover: (index, touch) => showTooltip(tooltip, view, index, touch),
+    onHoverArea: (area) => showAreaTooltip(tooltip, view, area),
   });
 
   $$("[data-kind]").forEach((chip) =>
@@ -341,7 +343,8 @@ function miniMap(canvas, data) {
   const nearby = $(`[data-nearby="${CSS.escape(canvas.dataset.source)}"] ol`);
   if (nearby && work >= 0) {
     const own = data.works[work];
-    const related = [...own.near, ...data.works.map((_, w) => w).filter((w) => w !== work && data.works[w].area === own.area)];
+    // The curated links first, then the works that share this one's area.
+    const related = [...own.links, ...data.works.map((_, w) => w).filter((w) => w !== work && data.works[w].area === own.area)];
     nearby.innerHTML = [...new Set(related)]
       .slice(0, 4)
       .map((w) => data.works[w])

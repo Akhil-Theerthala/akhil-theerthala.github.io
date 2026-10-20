@@ -1008,6 +1008,19 @@ button {
   color: var(--accent-text);
 }
 
+/* The curated links of the hovered work, one per line. */
+.map-tooltip-links {
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--ink-2);
+  font-size: 12px;
+}
+
+.map-tooltip-links li {
+  margin-top: 2px;
+}
+
 /* ---------- Sections ---------- */
 
 .section {

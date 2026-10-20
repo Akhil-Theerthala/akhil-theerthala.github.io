@@ -1,6 +1,11 @@
 // Canvas renderer for the map of work in assets/data/map.json.
-// Areas are fields of AI work, drawn as contoured islands around their names;
-// works are the papers, projects and production systems placed around them.
+// Areas are fields of AI work, drawn as hubs; works are the papers, projects
+// and production systems, each joined to every area it belongs to and to the
+// works it is linked with. src/graph-layout.js places them.
+
+import { createGraph, mulberry } from "./graph-layout.js";
+
+export { mulberry };
 
 const reducedMotion = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -37,6 +42,8 @@ export const sourceHref = (root, source, anchor = "") => {
 export const workOf = (data, sourceId) => data.works.findIndex((work) => work.sources.includes(sourceId));
 
 const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+const SEED = 7;
+const DRAG_START = 4;
 
 export class MapView {
   constructor(canvas, data, options = {}) {
@@ -62,25 +69,19 @@ export class MapView {
     this.start = performance.now();
     this.animating = this.options.animateIn && !reducedMotion();
     if (!this.animating) this.start = -1e6;
+    this.press = null;
+    this.dragging = -1;
+    this.skipClick = false;
 
+    // The works that call each area home, and the curated pairs.
     this.members = data.areas.map((_, a) =>
-      data.works.map((work, w) => (work.area === a ? w : -1)).filter((w) => w >= 0),
+      data.works.map((work, w) => (work.homes.some(([home]) => home === a) ? w : -1)).filter((w) => w >= 0),
     );
-    this.links = [];
-    const seen = new Set();
-    data.works.forEach((work, w) =>
-      work.near.forEach((n) => {
-        const key = `${Math.min(w, n)}-${Math.max(w, n)}`;
-        if (!seen.has(key)) {
-          seen.add(key);
-          this.links.push([w, n]);
-        }
-      }),
-    );
+    this.pairs = data.links.map(([a, b]) => [a, b]);
 
     this.resize();
     new ResizeObserver(() => this.resize()).observe(canvas);
-    // Orbits are sized from the names, so measure again once Plex Mono loads.
+    // Hub spacing is measured from the names, so measure again once Plex Mono loads.
     document.fonts?.ready.then(() => this.resize());
     this.bindEvents();
     addEventListener("themechange", () => {
@@ -117,10 +118,6 @@ export class MapView {
     this.requestDraw();
   }
 
-  toScreen(x, y) {
-    return [this.box.x + x * this.box.w, this.box.y + y * this.box.h];
-  }
-
   // The name's lines and box, shared by layout and drawing.
   nameLines(area) {
     const words = area.name.toUpperCase().split(" ");
@@ -134,49 +131,40 @@ export class MapView {
     return Math.round(11 * Math.max(0.85, this.unit));
   }
 
-  // Resting positions: each work on an elliptical orbit that clears its
-  // area's name, then nudged apart where neighbouring works would touch.
-  layout() {
-    const u = this.unit;
+  nameBox(area) {
     const { ctx } = this;
     const size = this.nameSize();
     ctx.font = `500 ${size}px "IBM Plex Mono", monospace`;
-    this.centres = this.data.areas.map((area) => this.toScreen(area.x, area.y));
-    this.orbits = this.data.areas.map((area, a) => {
-      const lines = this.nameLines(area);
-      const width = Math.max(...lines.map((line) => spaced(ctx, line))) + 16;
-      const height = lines.length * (size + 4) + 10;
-      const extra = Math.max(0, this.members[a].length - 2) * 6 * u;
-      return [Math.max(width / 2 + 24 * u, 56 * u) + extra, Math.max(height / 2 + 28 * u, 46 * u) + extra];
-    });
-    this.nodes = this.data.works.map((work) => {
-      const [cx, cy] = this.centres[work.area];
-      const [rx, ry] = this.orbits[work.area];
-      return { x: cx + Math.cos(work.angle) * rx, y: cy + Math.sin(work.angle) * ry };
-    });
-    const gap = 30 * this.unit;
-    for (let pass = 0; pass < 40; pass++) {
-      for (let i = 0; i < this.nodes.length; i++) {
-        for (let j = i + 1; j < this.nodes.length; j++) {
-          const a = this.nodes[i];
-          const b = this.nodes[j];
-          const dx = a.x - b.x;
-          const dy = a.y - b.y;
-          const d = Math.hypot(dx, dy) || 0.01;
-          if (d < gap) {
-            const push = (gap - d) / 2;
-            a.x += (dx / d) * push;
-            a.y += (dy / d) * push;
-            b.x -= (dx / d) * push;
-            b.y -= (dy / d) * push;
-          }
-        }
-      }
+    const lines = this.nameLines(area);
+    const width = Math.max(...lines.map((line) => spaced(ctx, line))) + 16;
+    const height = lines.length * (size + 4) + 10;
+    return { lines, width, height };
+  }
+
+  // Where each hub's name box sits: under its core.
+  nameOffset(a) {
+    return this.hubs[a].r + 24 * this.unit;
+  }
+
+  // Resting positions come from the shared layout. While the map animates in,
+  // the works are seen settling from the middle of their homes.
+  layout() {
+    const named = this.options.labels !== "none";
+    const hubBoxes = named
+      ? this.data.areas.map((area) => {
+          const { width, height } = this.nameBox(area);
+          return { w: width, h: height };
+        })
+      : null;
+    if (this.dragging >= 0) {
+      this.dragging = -1;
+      this.press = null;
     }
-    for (const node of this.nodes) {
-      node.x = Math.max(12, Math.min(this.width - 12, node.x));
-      node.y = Math.max(12, Math.min(this.height - 12, node.y));
-    }
+    this.graph = createGraph(this.data, this.box, { seed: SEED, hubBoxes });
+    this.hubs = this.graph.hubs;
+    this.graph.settle();
+    if (this.animating && performance.now() - this.start < 2000) this.graph.start();
+    this.live = this.graph.nodes.map(({ x, y }) => ({ x, y }));
   }
 
   setKinds(kinds) {
@@ -208,13 +196,24 @@ export class MapView {
     return this.kinds.has(this.data.works[w].kind);
   }
 
-  // Works lit by the hovered work, the hovered area, a search or a focus;
+  // Works lit by the hovered work, the hovered hub, a search or a focus;
   // everything else dims while anything is lit.
   litWorks() {
-    if (this.hover >= 0) return new Set([this.hover, ...this.data.works[this.hover].near]);
+    const { works } = this.data;
+    if (this.hover >= 0) return new Set([this.hover, ...works[this.hover].links]);
     if (this.hoverArea >= 0) return new Set(this.members[this.hoverArea]);
     if (this.matches) return this.matches;
-    if (this.highlight >= 0) return new Set([this.highlight, ...this.data.works[this.highlight].near]);
+    if (this.highlight >= 0) return new Set([this.highlight, ...works[this.highlight].links]);
+    return null;
+  }
+
+  // Hubs lit alongside: the homes of the lit work, or the hovered hub.
+  litAreas() {
+    const { works } = this.data;
+    if (this.hover >= 0) return new Set(works[this.hover].homes.map(([a]) => a));
+    if (this.hoverArea >= 0) return new Set([this.hoverArea]);
+    if (this.matches) return null;
+    if (this.highlight >= 0) return new Set(works[this.highlight].homes.map(([a]) => a));
     return null;
   }
 
@@ -225,21 +224,24 @@ export class MapView {
     ctx.clearRect(0, 0, this.width, this.height);
     const elapsed = now - this.start;
     const settling = this.animating && elapsed < 2000;
-    const idle = this.options.idle && !reducedMotion();
+    const motion = !reducedMotion();
+    const idle = this.options.idle && motion;
     const lit = this.litWorks();
+    const litAreas = this.litAreas();
     const u = this.unit;
     const t = (delay, length = 900) =>
       settling ? easeOut(Math.min(1, Math.max(0, (elapsed - delay) / length))) : 1;
 
-    // Live positions: works leave their area's name and settle on its ring.
+    // Live physics: two steps a frame while the map animates in, so it settles
+    // in about a second and a half, then one while anything reheats it.
+    if (motion && this.graph.heat > 0) {
+      this.graph.step();
+      if (settling) this.graph.step();
+    }
     const time = now * 0.0005;
-    this.live = this.nodes.map((node, w) => {
-      const work = data.works[w];
-      const [cx, cy] = this.centres[work.area];
-      const k = t(250 + work.area * 70 + w * 25);
-      let x = cx + (node.x - cx) * k;
-      let y = cy + (node.y - cy) * k;
-      if (idle) {
+    this.live = this.graph.nodes.map((node, w) => {
+      let { x, y } = node;
+      if (idle && node.pinned === false) {
         x += Math.sin(time * 1.3 + w) * 1.2;
         y += Math.cos(time + w * 1.7) * 1.2;
       }
@@ -247,30 +249,12 @@ export class MapView {
     });
 
     if (this.options.frame) this.drawFrame(t(0, 600));
-    this.drawIslands(t, lit);
-    this.drawLinks(t(900, 700), lit);
-
-    // Spokes from each name to its works.
-    data.works.forEach((work, w) => {
-      if (!this.shown(w)) return;
-      const [cx, cy] = this.centres[work.area];
-      const node = this.live[w];
-      const d = Math.hypot(node.x - cx, node.y - cy) || 1;
-      const [rx, ry] = this.orbits[work.area];
-      const from = Math.min(d, d * 0.62, Math.hypot(rx - 24 * u, ry - 28 * u));
-      ctx.strokeStyle = withAlpha(colours.area[work.area], lit && !lit.has(w) ? 0.12 : 0.4);
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(cx + ((node.x - cx) / d) * from, cy + ((node.y - cy) / d) * from);
-      ctx.lineTo(node.x, node.y);
-      ctx.stroke();
-    });
-
+    this.drawEdges(t(300, 700), lit);
     const labelAlpha = t(1100, 700);
-    this.drawAreaNames(labelAlpha, lit);
+    this.drawHubs(labelAlpha, lit, litAreas);
 
     // Circles for papers, squares for projects, diamonds for production
-    // systems, all in their area's colour.
+    // systems, all in the colour of the work's area.
     data.works.forEach((work, w) => {
       if (!this.shown(w)) return;
       const node = this.live[w];
@@ -293,77 +277,94 @@ export class MapView {
     ctx.globalAlpha = 1;
 
     this.drawWorkNames(labelAlpha, lit);
-    return settling || idle;
+    return settling || idle || (motion && this.graph.heat > 0);
   }
 
-  // Each area is an island: a soft fill and contour rings around its name.
-  drawIslands(t, lit) {
+  // A spoke from each hub to every work that calls it home, thicker for the
+  // heavier home, and a gold dash between curated-linked works.
+  drawEdges(alpha, lit) {
     const { ctx, colours, data } = this;
-    const u = this.unit;
-    data.areas.forEach((_, a) => {
-      const k = t(a * 70, 1000);
-      if (!k) return;
-      const [cx, cy] = this.centres[a];
-      const colour = colours.area[a];
-      const [rx, ry] = this.orbits[a];
-      const dim = lit && !this.members[a].some((w) => lit.has(w)) ? 0.35 : 1;
-      ctx.globalAlpha = k * dim;
-      const reach = Math.max(rx, ry) + 60 * u;
-      const glow = ctx.createRadialGradient(cx, cy, 0, cx, cy, reach);
-      glow.addColorStop(0, withAlpha(colour, 0.12));
-      glow.addColorStop(1, withAlpha(colour, 0));
-      ctx.fillStyle = glow;
-      ctx.beginPath();
-      ctx.arc(cx, cy, reach, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.lineWidth = 1;
-      // The works ride the first ring; the outer rings fade like contours.
-      [
-        [0, 0.26],
-        [20 * u, 0.17],
-        [40 * u, 0.1],
-        [60 * u, 0.05],
-      ].forEach(([offset, alpha], ring) => {
-        ctx.strokeStyle = withAlpha(colour, alpha);
+    const dimmed = (a, b) => lit && !(lit.has(a) && lit.has(b) && (a === this.hover || b === this.hover || a === this.highlight || b === this.highlight || this.hoverArea >= 0));
+    data.works.forEach((work, w) => {
+      if (!this.shown(w)) return;
+      const node = this.live[w];
+      for (const [a, weight] of work.homes) {
+        const hub = this.hubs[a];
+        const d = Math.hypot(node.x - hub.x, node.y - hub.y) || 1;
+        const dim = lit && !(lit.has(w) && (this.hover === w || this.highlight === w || this.hoverArea === a || this.matches));
+        ctx.strokeStyle = withAlpha(colours.area[a], (dim ? 0.06 : 0.2 + 0.5 * weight) * alpha);
+        ctx.lineWidth = 0.8 + 2.4 * weight;
         ctx.beginPath();
-        for (let step = 0; step <= 96; step++) {
-          const angle = (step / 96) * Math.PI * 2;
-          // A little wobble, so the rings read as contour lines.
-          const wobble = ring ? 1 + 0.03 * Math.sin(angle * 3 + a * 1.7 + ring) + 0.018 * Math.cos(angle * 5 + a) : 1;
-          const grow = 0.85 + 0.15 * k;
-          const x = cx + Math.cos(angle) * (rx + offset) * grow * wobble;
-          const y = cy + Math.sin(angle) * (ry + offset) * grow * wobble;
-          if (step) ctx.lineTo(x, y);
-          else ctx.moveTo(x, y);
-        }
+        ctx.moveTo(hub.x + ((node.x - hub.x) / d) * hub.r, hub.y + ((node.y - hub.y) / d) * hub.r);
+        ctx.lineTo(node.x, node.y);
         ctx.stroke();
-      });
+      }
     });
-    ctx.globalAlpha = 1;
-  }
-
-  // Dashed arcs between works in different areas whose text reads alike.
-  drawLinks(alpha, lit) {
-    const { ctx, colours } = this;
-    for (const [a, b] of this.links) {
+    for (const [a, b] of this.pairs) {
       if (!this.shown(a) || !this.shown(b)) continue;
       const p = this.live[a];
       const q = this.live[b];
       const ends = [this.hover, this.highlight];
       const active = ends.includes(a) || ends.includes(b);
-      const mx = (p.x + q.x) / 2;
-      const my = (p.y + q.y) / 2;
-      ctx.strokeStyle = active
-        ? withAlpha(colours.accent, 0.85)
-        : withAlpha(colours.ink, (lit ? 0.06 : 0.16) * alpha);
+      ctx.strokeStyle = withAlpha(colours.accent, (active ? 0.85 : dimmed(a, b) ? 0.06 : 0.3) * alpha);
       ctx.lineWidth = active ? 1.5 : 1;
       ctx.setLineDash(active ? [] : [3, 4]);
       ctx.beginPath();
       ctx.moveTo(p.x, p.y);
-      ctx.quadraticCurveTo(mx - (q.y - p.y) * 0.18, my + (q.x - p.x) * 0.18, q.x, q.y);
+      ctx.lineTo(q.x, q.y);
       ctx.stroke();
     }
     ctx.setLineDash([]);
+  }
+
+  // Each hub: a halo, a ring, a solid core sized by its works, and its name
+  // in spaced capitals under the core.
+  drawHubs(alpha, lit, litAreas) {
+    const { ctx, colours, data } = this;
+    const u = this.unit;
+    const named = this.options.labels !== "none" && alpha > 0;
+    this.areaRects = [];
+    this.hubRects = [];
+    data.areas.forEach((area, a) => {
+      const hub = this.hubs[a];
+      const colour = colours.area[a];
+      const dim = (litAreas && !litAreas.has(a)) || (lit && !litAreas && !this.members[a].some((w) => lit.has(w)));
+      ctx.globalAlpha = dim ? 0.35 : 1;
+      const halo = ctx.createRadialGradient(hub.x, hub.y, 2, hub.x, hub.y, 46 * u);
+      halo.addColorStop(0, withAlpha(colour, 0.28));
+      halo.addColorStop(1, withAlpha(colour, 0));
+      ctx.fillStyle = halo;
+      ctx.beginPath();
+      ctx.arc(hub.x, hub.y, 46 * u, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = withAlpha(colour, 0.35);
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(hub.x, hub.y, 20 * u, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.fillStyle = colour;
+      ctx.beginPath();
+      ctx.arc(hub.x, hub.y, hub.r, 0, Math.PI * 2);
+      ctx.fill();
+      this.hubRects.push([hub.x - hub.r - 4, hub.y - hub.r - 4, hub.r * 2 + 8, hub.r * 2 + 8]);
+      if (!named) return;
+      const { lines, width, height } = this.nameBox(area);
+      const size = this.nameSize();
+      const cy = hub.y + this.nameOffset(a);
+      ctx.globalAlpha = alpha * (dim ? 0.4 : 1);
+      ctx.fillStyle = withAlpha(colours.bg, 0.82);
+      roundRect(ctx, hub.x - width / 2, cy - height / 2, width, height, 6);
+      ctx.fill();
+      ctx.strokeStyle = withAlpha(colour, this.hoverArea === a ? 0.9 : 0.45);
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.font = `500 ${size}px "IBM Plex Mono", monospace`;
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = this.hoverArea === a ? colours.ink : colours.ink2;
+      lines.forEach((line, i) => spaced(ctx, line, hub.x, cy + (i - (lines.length - 1) / 2) * (size + 4)));
+      this.areaRects[a] = [hub.x - width / 2, cy - height / 2, width, height];
+    });
+    ctx.globalAlpha = 1;
   }
 
   // Registration marks at the plot's corners and its two axes.
@@ -397,39 +398,10 @@ export class MapView {
     ctx.restore();
   }
 
-  // Area names in spaced capitals at each island's centre, on two lines
-  // when long.
-  drawAreaNames(alpha, lit) {
-    const { ctx, colours, data } = this;
-    this.areaRects = [];
-    if (this.options.labels === "none" || !alpha) return;
-    const size = this.nameSize();
-    ctx.font = `500 ${size}px "IBM Plex Mono", monospace`;
-    ctx.textBaseline = "middle";
-    this.areaRects = data.areas.map((area, a) => {
-      const lines = this.nameLines(area);
-      const [cx, cy] = this.centres[a];
-      const width = Math.max(...lines.map((line) => spaced(ctx, line))) + 16;
-      const height = lines.length * (size + 4) + 10;
-      const dim = lit && !this.members[a].some((w) => lit.has(w));
-      ctx.globalAlpha = alpha * (dim ? 0.4 : 1);
-      ctx.fillStyle = withAlpha(colours.bg, 0.82);
-      roundRect(ctx, cx - width / 2, cy - height / 2, width, height, 6);
-      ctx.fill();
-      ctx.strokeStyle = withAlpha(colours.area[a], this.hoverArea === a ? 0.9 : 0.45);
-      ctx.lineWidth = 1;
-      ctx.stroke();
-      ctx.fillStyle = this.hoverArea === a ? colours.ink : colours.ink2;
-      lines.forEach((line, i) => spaced(ctx, line, cx, cy + (i - (lines.length - 1) / 2) * (size + 4)));
-      return [cx - width / 2, cy - height / 2, width, height];
-    });
-    ctx.globalAlpha = 1;
-  }
-
-  // Work names sit outside the orbit, on the side the work faces. Each
-  // label tries eight spots, then four more two rows out, and slides sideways
-  // to stay in the plot; the most hemmed-in labels are placed first, and none
-  // covers a node or a name.
+  // Work names sit beside their node, on the side away from the work's hub.
+  // Each label tries eight spots, then four more two rows out, and slides
+  // sideways to stay in the plot; the most hemmed-in labels are placed first,
+  // and none covers a node, a hub or a name.
   drawWorkNames(alpha, lit) {
     const { ctx, colours, data } = this;
     if (!alpha) return;
@@ -443,7 +415,7 @@ export class MapView {
     const overlaps = ([x, y, w, h], [ox, oy, ow, oh]) =>
       !(x + w < ox - 2 || ox + ow < x - 2 || y + h < oy - 1 || oy + oh < y - 1);
     const nodeRects = this.live.map(({ x, y }) => [x - 9, y - 9, 18, 18]);
-    const fixed = [...this.areaRects];
+    const fixed = [...this.areaRects.filter(Boolean), ...this.hubRects];
 
     const wanted = data.works
       .map((work, w) => ({ work, w, active: w === this.hover || w === this.highlight }))
@@ -451,12 +423,12 @@ export class MapView {
       .map((item) => {
         const { work, w } = item;
         const node = this.live[w];
-        const [cx, cy] = this.centres[work.area];
+        const hub = this.hubs[work.area];
         const width = ctx.measureText(work.short).width + 12;
         const height = size + 9;
         const gap = 12;
-        const side = node.x - cx >= -4 ? 1 : -1;
-        const below = node.y >= cy;
+        const side = node.x - hub.x >= -4 ? 1 : -1;
+        const below = node.y >= hub.y;
         const beside = (s, dy = 0) => [s > 0 ? node.x + gap : node.x - gap - width, node.y - height / 2 + dy, width, height];
         const under = (flip) => [node.x - width / 2, below !== flip ? node.y + gap + 4 : node.y - gap - 4 - height, width, height];
         const fit = ([x, y, rw, rh]) => [Math.min(Math.max(x, left), this.width - rw - 2), y, rw, rh];
@@ -522,8 +494,12 @@ export class MapView {
     return best;
   }
 
+  // The hub whose core or name box is under the point.
   areaAt(x, y) {
-    return this.areaRects.findIndex(([rx, ry, rw, rh]) => x >= rx && x <= rx + rw && y >= ry && y <= ry + rh);
+    const inside = ([rx, ry, rw, rh]) => x >= rx && x <= rx + rw && y >= ry && y <= ry + rh;
+    const core = this.hubs.findIndex((hub) => Math.hypot(hub.x - x, hub.y - y) <= hub.r + 4);
+    if (core >= 0) return core;
+    return (this.areaRects || []).findIndex((rect) => rect && inside(rect));
   }
 
   bindEvents() {
@@ -532,29 +508,69 @@ export class MapView {
       const rect = canvas.getBoundingClientRect();
       return { x: event.clientX - rect.left, y: event.clientY - rect.top };
     };
+    canvas.addEventListener("pointerdown", (event) => {
+      if (event.pointerType === "touch" || event.button !== 0) return;
+      const { x, y } = local(event);
+      const work = this.nearest(x, y);
+      this.press = work >= 0 ? { work, x, y, id: event.pointerId } : null;
+    });
     canvas.addEventListener("pointermove", (event) => {
       if (event.pointerType === "touch") return;
       const { x, y } = local(event);
+      if (this.press && this.dragging < 0 && Math.hypot(x - this.press.x, y - this.press.y) > DRAG_START) {
+        this.dragging = this.press.work;
+        canvas.setPointerCapture?.(this.press.id);
+        canvas.style.cursor = "grabbing";
+      }
+      if (this.dragging >= 0) {
+        this.graph.pin(this.dragging, x, y);
+        this.setHover(this.dragging);
+        this.requestDraw();
+        return;
+      }
       const work = this.nearest(x, y);
-      this.hoverArea = work < 0 ? this.areaAt(x, y) : -1;
+      this.setHoverArea(work < 0 ? this.areaAt(x, y) : -1);
       canvas.style.cursor = work >= 0 ? "pointer" : "";
       this.setHover(work);
       this.requestDraw();
     });
+    const finish = () => {
+      if (this.dragging >= 0) {
+        this.graph.release(this.dragging);
+        if (reducedMotion()) this.graph.settle();
+        this.dragging = -1;
+        this.skipClick = true;
+        canvas.style.cursor = "pointer";
+        this.requestDraw();
+      }
+      this.press = null;
+    };
+    canvas.addEventListener("pointerup", finish);
+    canvas.addEventListener("pointercancel", finish);
     canvas.addEventListener("pointerleave", () => {
-      this.hoverArea = -1;
+      if (this.dragging >= 0) return;
+      this.setHoverArea(-1);
       this.setHover(-1);
       this.requestDraw();
     });
     canvas.addEventListener("click", (event) => {
+      if (this.skipClick) {
+        this.skipClick = false;
+        return;
+      }
       const { x, y } = local(event);
-      const work = this.nearest(x, y, event.pointerType === "touch" ? 26 : 18);
+      const touch = event.pointerType === "touch";
+      const work = this.nearest(x, y, touch ? 26 : 18);
       if (work < 0) {
         this.setHover(-1);
+        // On touch, a tap on a hub shows what it is.
+        if (touch) this.setHoverArea(this.areaAt(x, y));
+        this.requestDraw();
         return;
       }
       // On touch, the first tap shows the work and the second opens it.
-      if (event.pointerType === "touch" && this.hover !== work) {
+      if (touch && this.hover !== work) {
+        this.setHoverArea(-1);
         this.setHover(work, true);
         return;
       }
@@ -566,6 +582,13 @@ export class MapView {
     if (work === this.hover) return;
     this.hover = work;
     this.options.onHover?.(work, touch);
+    this.requestDraw();
+  }
+
+  setHoverArea(area) {
+    if (area === this.hoverArea) return;
+    this.hoverArea = area;
+    this.options.onHoverArea?.(area);
     this.requestDraw();
   }
 
@@ -584,27 +607,49 @@ export class MapView {
 
 const kindLabel = { paper: "Paper", project: "Project", role: "Production system" };
 
+function placeTooltip(tooltip, view, x, y) {
+  const parent = tooltip.offsetParent || tooltip.parentElement;
+  const bounds = parent.getBoundingClientRect();
+  const canvasBounds = view.canvas.getBoundingClientRect();
+  const px = x + canvasBounds.left - bounds.left;
+  const py = y + canvasBounds.top - bounds.top;
+  tooltip.classList.add("on");
+  const width = tooltip.offsetWidth;
+  const height = tooltip.offsetHeight;
+  const left = px + 22 + width > bounds.width ? px - width - 22 : px + 22;
+  const top = Math.min(Math.max(8, py - height / 2), bounds.height - height - 8);
+  tooltip.style.transform = `translate3d(${Math.max(8, left)}px, ${top}px, 0)`;
+}
+
 export function showTooltip(tooltip, view, w, touch) {
   if (!tooltip) return;
   if (w < 0) {
     tooltip.classList.remove("on");
     return;
   }
-  const work = view.data.works[w];
-  const area = view.data.areas[work.area].name;
-  tooltip.innerHTML = `<b><i style="background:${view.colours.area[work.area]}"></i>${escape(area)} · ${escape(kindLabel[work.kind])}</b><strong>${escape(work.title)}</strong><span>${escape(clip(work.summary, 150))}</span><small>${work.meta ? `${escape(work.meta)}. ` : ""}${touch ? "Tap again to open." : "Click to open."}</small>`;
-  const parent = tooltip.offsetParent || tooltip.parentElement;
-  const bounds = parent.getBoundingClientRect();
-  const canvasBounds = view.canvas.getBoundingClientRect();
+  const { data } = view;
+  const work = data.works[w];
+  const homes = work.homes.map(([a, weight]) => `${escape(data.areas[a].name)} ${Math.round(weight * 100)}%`).join(" · ");
+  const links = data.links
+    .filter(([a, b]) => a === w || b === w)
+    .map(([a, b, why]) => `<li>↔ ${escape(data.works[a === w ? b : a].short)}: ${escape(why)}</li>`)
+    .join("");
+  tooltip.innerHTML = `<b><i style="background:${view.colours.area[work.area]}"></i>${homes} · ${escape(kindLabel[work.kind])}</b><strong>${escape(work.title)}</strong><span>${escape(clip(work.summary, 150))}</span>${links ? `<ul class="map-tooltip-links">${links}</ul>` : ""}<small>${work.meta ? `${escape(work.meta)}. ` : ""}${touch ? "Tap again to open." : "Click to open."}</small>`;
   const node = view.live[w];
-  const x = node.x + canvasBounds.left - bounds.left;
-  const y = node.y + canvasBounds.top - bounds.top;
-  tooltip.classList.add("on");
-  const width = tooltip.offsetWidth;
-  const height = tooltip.offsetHeight;
-  const left = x + 22 + width > bounds.width ? x - width - 22 : x + 22;
-  const top = Math.min(Math.max(8, y - height / 2), bounds.height - height - 8);
-  tooltip.style.transform = `translate3d(${Math.max(8, left)}px, ${top}px, 0)`;
+  placeTooltip(tooltip, view, node.x, node.y);
+}
+
+export function showAreaTooltip(tooltip, view, a) {
+  if (!tooltip) return;
+  if (a < 0) {
+    tooltip.classList.remove("on");
+    return;
+  }
+  const area = view.data.areas[a];
+  const count = area.size === 1 ? "1 work" : `${area.size} works`;
+  tooltip.innerHTML = `<b><i style="background:${view.colours.area[a]}"></i>${escape(area.name)}</b><strong>${escape(area.description || area.name)}</strong><span>${count}</span>`;
+  const hub = view.hubs[a];
+  placeTooltip(tooltip, view, hub.x, hub.y);
 }
 
 function shape(ctx, kind, x, y, r) {
@@ -667,14 +712,4 @@ export function roundRect(ctx, x, y, w, h, r) {
   ctx.arcTo(x, y + h, x, y, r);
   ctx.arcTo(x, y, x + w, y, r);
   ctx.closePath();
-}
-
-export function mulberry(seed) {
-  return () => {
-    seed |= 0;
-    seed = (seed + 0x6d2b79f5) | 0;
-    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
 }
