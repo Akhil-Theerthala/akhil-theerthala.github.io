@@ -290,3 +290,9 @@ test("the map renderer draws the graph from the shared layout, not islands", () 
   assert.match(site, /onHoverArea/);
   assert.match(read("assets/css/site.css"), /\.map-tooltip-links/);
 });
+
+test("the social card is drawn from the shared layout, not islands", () => {
+  const card = read("scripts/render-social-card.mjs");
+  assert.match(card, /from "\.\.\/src\/graph-layout\.js"/);
+  assert.doesNotMatch(card, /\.angle\b|ellipse/);
+});

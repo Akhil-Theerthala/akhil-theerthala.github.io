@@ -6,6 +6,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { projectRoot } from "./lib/content.mjs";
+import { createGraph } from "../src/graph-layout.js";
 
 const width = 1200;
 const height = 630;
@@ -29,51 +30,68 @@ const glows = token("glows");
 const areaColours = [0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) => token(`a${i}`));
 
 // Map box, matching the hero's text-left, map-right layout.
-const box = { left: 600, top: 70, right: 50, bottom: 70 };
+const box = { x: 600, y: 70, w: width - 600 - 50, h: height - 70 - 70 };
 const map = JSON.parse(fs.readFileSync(path.join(projectRoot, "assets/data/map.json"), "utf8"));
-const toScreen = (x, y) => [
-  box.left + x * (width - box.left - box.right),
-  box.top + y * (height - box.top - box.bottom),
-];
 
 const fontData = (file) =>
   fs.readFileSync(path.join(projectRoot, "assets/fonts", file)).toString("base64");
 
-// The same drawing as src/map.js at card size: each area an island of
-// contour rings around its name, its works on the innermost ring.
+// The same drawing as src/map.js at card size: each area a hub with its
+// name under the core, each work hung from its homes by the shared layout,
+// gold dashes between curated-linked works.
 const nameLines = (name) => {
   const words = name.toUpperCase().split(" ");
   const half = Math.ceil(words.length / 2);
   return words.length > 1 && name.length > 12 ? [words.slice(0, half).join(" "), words.slice(half).join(" ")] : [words.join(" ")];
 };
-const shapes = [];
-const names = [];
-map.areas.forEach((area, a) => {
-  const [cx, cy] = toScreen(area.x, area.y);
+// Plex Mono at 11px with 1.2px tracking is about 7.8px per character.
+const hubBoxes = map.areas.map((area) => {
   const lines = nameLines(area.name);
-  const members = map.works.filter((work) => work.area === a);
-  const extra = Math.max(0, members.length - 2) * 4;
-  // Plex Mono at 11px with 1.2px tracking is about 7.8px per character.
-  const rx = Math.max((Math.max(...lines.map((line) => line.length)) * 7.8 + 16) / 2 + 16, 40) + extra;
-  const ry = Math.max((lines.length * 15 + 10) / 2 + 20, 34) + extra;
-  const colour = areaColours[a];
-  [[0, 0.3], [14, 0.18], [28, 0.1], [44, 0.05]].forEach(([offset, alpha]) =>
-    shapes.push(`<ellipse cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" rx="${(rx + offset).toFixed(1)}" ry="${(ry + offset).toFixed(1)}" fill="none" stroke="${colour}" stroke-opacity="${alpha}"/>`),
-  );
-  for (const work of members) {
-    const x = cx + Math.cos(work.angle) * rx;
-    const y = cy + Math.sin(work.angle) * ry;
-    const r = work.kind === "role" ? 5 : 6;
-    const node = work.kind === "paper"
-      ? `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}"/>`
-      : work.kind === "role"
-        ? `<path d="M${x} ${y - r * 1.15}L${x + r * 1.15} ${y}L${x} ${y + r * 1.15}L${x - r * 1.15} ${y}Z"/>`
-        : `<rect x="${(x - r * 0.9).toFixed(1)}" y="${(y - r * 0.9).toFixed(1)}" width="${r * 1.8}" height="${r * 1.8}" rx="2"/>`;
-    shapes.push(`<g fill="${colour}" stroke="${bg}" stroke-width="2">${node}</g>`);
-  }
-  names.push(`<span class="area" style="left:${cx.toFixed(1)}px;top:${cy.toFixed(1)}px;border-color:${colour}">${lines.join("<br />")}</span>`);
+  return { w: Math.max(...lines.map((line) => line.length)) * 7.8 + 16, h: lines.length * 15 + 10 };
 });
-const circles = shapes.join("");
+const unit = Math.max(0.45, Math.min(1.25, Math.min(box.w, box.h) / 620));
+const graph = createGraph(map, box, { seed: 7, hubBoxes });
+const nodes = graph.settle();
+const accent = token("accent");
+const at = (n) => n.toFixed(1);
+const shapes = [];
+const defs = [];
+const names = [];
+map.works.forEach((work, w) => {
+  const node = nodes[w];
+  for (const [a, weight] of work.homes) {
+    const hub = graph.hubs[a];
+    const d = Math.hypot(node.x - hub.x, node.y - hub.y) || 1;
+    const sx = hub.x + ((node.x - hub.x) / d) * hub.r;
+    const sy = hub.y + ((node.y - hub.y) / d) * hub.r;
+    shapes.push(`<line x1="${at(sx)}" y1="${at(sy)}" x2="${at(node.x)}" y2="${at(node.y)}" stroke="${areaColours[a]}" stroke-width="${(0.8 + 2.4 * weight).toFixed(2)}" stroke-opacity="${(0.2 + 0.5 * weight).toFixed(2)}"/>`);
+  }
+});
+for (const [a, b] of map.links) {
+  shapes.push(`<line x1="${at(nodes[a].x)}" y1="${at(nodes[a].y)}" x2="${at(nodes[b].x)}" y2="${at(nodes[b].y)}" stroke="${accent}" stroke-dasharray="3 4" stroke-opacity="0.35"/>`);
+}
+map.areas.forEach((area, a) => {
+  const hub = graph.hubs[a];
+  const colour = areaColours[a];
+  defs.push(`<radialGradient id="halo${a}"><stop offset="0" stop-color="${colour}" stop-opacity="0.28"/><stop offset="1" stop-color="${colour}" stop-opacity="0"/></radialGradient>`);
+  shapes.push(
+    `<circle cx="${at(hub.x)}" cy="${at(hub.y)}" r="${at(46 * unit)}" fill="url(#halo${a})"/>`,
+    `<circle cx="${at(hub.x)}" cy="${at(hub.y)}" r="${at(20 * unit)}" fill="none" stroke="${colour}" stroke-opacity="0.35"/>`,
+    `<circle cx="${at(hub.x)}" cy="${at(hub.y)}" r="${at(hub.r)}" fill="${colour}"/>`,
+  );
+  names.push(`<span class="area" style="left:${at(hub.x)}px;top:${at(hub.y + hub.r + 24 * unit)}px;border-color:${colour}">${nameLines(area.name).join("<br />")}</span>`);
+});
+map.works.forEach((work, w) => {
+  const { x, y } = nodes[w];
+  const r = work.kind === "role" ? 5 : 6;
+  const node = work.kind === "paper"
+    ? `<circle cx="${at(x)}" cy="${at(y)}" r="${r}"/>`
+    : work.kind === "role"
+      ? `<path d="M${at(x)} ${at(y - r * 1.15)}L${at(x + r * 1.15)} ${at(y)}L${at(x)} ${at(y + r * 1.15)}L${at(x - r * 1.15)} ${at(y)}Z"/>`
+      : `<rect x="${at(x - r * 0.9)}" y="${at(y - r * 0.9)}" width="${r * 1.8}" height="${r * 1.8}" rx="2"/>`;
+  shapes.push(`<g fill="${areaColours[work.area]}" stroke="${bg}" stroke-width="2">${node}</g>`);
+});
+const circles = `<defs>${defs.join("")}</defs>${shapes.join("")}`;
 const labels = names.join("");
 
 const html = `<!doctype html>
