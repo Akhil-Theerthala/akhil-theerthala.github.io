@@ -325,6 +325,7 @@ function miniMap(canvas, data) {
   const view = new MapView(canvas, data, {
     labels: "none",
     animateIn: false,
+    drag: false,
     focusWork: work,
     onHover: (w, touch) => {
       if (w < 0) {

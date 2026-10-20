@@ -57,6 +57,7 @@ export class MapView {
       idle: false,
       frame: false,
       focusWork: -1,
+      drag: true,
       ...options,
     };
     this.root = document.documentElement.dataset.root || "";
@@ -509,7 +510,8 @@ export class MapView {
       return { x: event.clientX - rect.left, y: event.clientY - rect.top };
     };
     canvas.addEventListener("pointerdown", (event) => {
-      if (event.pointerType === "touch" || event.button !== 0) return;
+      this.skipClick = false;
+      if (!this.options.drag || event.pointerType === "touch" || event.button !== 0) return;
       const { x, y } = local(event);
       const work = this.nearest(x, y);
       this.press = work >= 0 ? { work, x, y, id: event.pointerId } : null;
@@ -534,18 +536,23 @@ export class MapView {
       this.setHover(work);
       this.requestDraw();
     });
+    // Ends a drag; returns whether one was in progress. Only a pointerup is
+    // followed by a click, so only that path swallows the click.
     const finish = () => {
-      if (this.dragging >= 0) {
+      const dragged = this.dragging >= 0;
+      if (dragged) {
         this.graph.release(this.dragging);
         if (reducedMotion()) this.graph.settle();
         this.dragging = -1;
-        this.skipClick = true;
         canvas.style.cursor = "pointer";
         this.requestDraw();
       }
       this.press = null;
+      return dragged;
     };
-    canvas.addEventListener("pointerup", finish);
+    canvas.addEventListener("pointerup", () => {
+      if (finish()) this.skipClick = true;
+    });
     canvas.addEventListener("pointercancel", finish);
     canvas.addEventListener("pointerleave", () => {
       if (this.dragging >= 0) return;
@@ -621,10 +628,11 @@ function placeTooltip(tooltip, view, x, y) {
   tooltip.style.transform = `translate3d(${Math.max(8, left)}px, ${top}px, 0)`;
 }
 
+// Both tooltips share one element, so hiding one kind leaves the other kind showing.
 export function showTooltip(tooltip, view, w, touch) {
   if (!tooltip) return;
   if (w < 0) {
-    tooltip.classList.remove("on");
+    if (view.hoverArea < 0) tooltip.classList.remove("on");
     return;
   }
   const { data } = view;
@@ -642,7 +650,7 @@ export function showTooltip(tooltip, view, w, touch) {
 export function showAreaTooltip(tooltip, view, a) {
   if (!tooltip) return;
   if (a < 0) {
-    tooltip.classList.remove("on");
+    if (view.hover < 0) tooltip.classList.remove("on");
     return;
   }
   const area = view.data.areas[a];

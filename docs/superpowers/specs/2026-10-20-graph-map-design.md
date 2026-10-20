@@ -182,8 +182,10 @@ hubs, then works, then labels.
 
 - Edges: a spoke from the hub's core edge to the work, in the hub's colour,
   width 0.8 to 3.2 px and opacity 0.2 to 0.7 by weight. A curated link as a
-  1 px gold dash between the two works. When something is lit, edges not
-  touching a lit node fall to 0.06 opacity; a lit link turns solid.
+  1 px gold dash between the two works. When something is lit, only the
+  spokes of the hovered or focused work, the spokes of a hovered hub's works
+  and the links touching lit works stay bright; every other edge falls to
+  0.06 opacity, and a lit link turns solid.
 - Hub: a radial halo in the area colour fading to transparent over about 46 px
   at unit 1, a 1 px ring at 20 px, a solid core whose radius is 6 px plus
   1.2 px per work of the area, and the name box below the core, drawn with the
