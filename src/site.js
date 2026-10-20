@@ -596,6 +596,8 @@ function densityDiversity(element) {
 
   function frame(now) {
     const { ctx, w, h } = fitCanvas(canvas);
+    // Before layout the canvas has no size; the resize observer below redraws once it does.
+    if (!w || !h) return;
     const colours = cssColours();
     const t = reducedMotion() ? 1 : Math.min(1, (now - start) / 900);
     const e = 1 - Math.pow(1 - t, 3);
