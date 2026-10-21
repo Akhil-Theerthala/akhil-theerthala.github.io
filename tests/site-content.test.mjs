@@ -156,7 +156,7 @@ test("writing slugs are unique and the project write-ups are on the map", () => 
 const index = fs.readFileSync("index.html", "utf8");
 
 test("the homepage leads with applied work, then research", () => {
-  const order = ["top", "about", "cv", "work", "achievements", "research", "writings", "education", "contact"];
+  const order = ["top", "cv", "work", "achievements", "research", "writings", "education", "contact"];
   const ids = [...index.matchAll(/<section class="[^"]*" id="([a-z]+)"/g)].map((match) => match[1]);
   assert.deepEqual(ids, order);
 

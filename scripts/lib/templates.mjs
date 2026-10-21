@@ -116,8 +116,8 @@ const pageSection = { article: "writings", writing: "writings", artifact: "work"
 
 function nav(root, page) {
   const home = page === "home" ? "" : root || "./";
-  // On the homepage the hero carries the gold button; the header's turns gold
-  // only once that one has scrolled away (src/site.js).
+  // The header's button is gold except while the contact block's own email
+  // button is on screen (src/site.js).
   return `    <header class="site-nav">
       <div class="wrap">
         <a class="wordmark" href="${root || "./"}" aria-label="Akhil Theerthala, home">${mark}<span class="wordmark-text">Akhil Theerthala</span></a>
@@ -128,7 +128,7 @@ function nav(root, page) {
         </nav>
         <div class="nav-actions">
           <button class="icon-btn theme-toggle" type="button" aria-label="Switch between light and dark theme">${icon.sun}${icon.moon}</button>
-          <a class="btn${page === "home" ? "" : " btn-primary"} btn-small nav-cta" href="mailto:akhiltvsn@gmail.com">Email me</a>
+          <a class="btn btn-primary btn-small nav-cta" href="mailto:akhiltvsn@gmail.com">Email me</a>
           <button class="icon-btn nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Menu">${icon.menu}${icon.close}</button>
         </div>
       </div>
@@ -419,17 +419,44 @@ function essayRow(article) {
   return `<li><a href="writing/${article.slug}/"><span>${e(article.title)}</span><span class="meta">${e(article.date)}</span><span class="meta read">${e(article.read)}</span></a></li>`;
 }
 
-// Three facts a visitor weighs first, each linking to its proof further down.
-function heroProof(data) {
-  // Publications are listed newest first; name the venues in the order they happened.
-  const venues = [...new Set(data.publications.map((publication) => publication.venue.split(", ").pop()))].reverse();
-  const list = venues.length > 1 ? `${venues.slice(0, -1).join(", ")} and ${venues.at(-1)}` : venues[0];
-  const [challenge] = data.achievements;
-  return [
-    `<a href="#research">Workshop papers at <b>${e(list)}</b></a>`,
-    `<a href="#achievements"><b>${e(challenge.mark.join(" "))}</b> in the ${e(challenge.title.replace(/^1st place, /, ""))}</a>`,
-    `<a href="#achievements"><b>${e(challenge.downloads)}</b> downloads on Hugging Face</a>`,
-  ].join("\n            ");
+// About lives in a dialog over the map, opened from the name, the chip and
+// the nav. The close button comes first so opening it focuses that, not a link.
+function aboutDialog(data, profiles) {
+  return `<dialog class="about-dialog" id="about" aria-labelledby="about-title">
+          <div class="card-body">
+            <button class="icon-btn card-close" type="button" aria-label="Close" data-close-about autofocus>${icon.close}</button>
+            <div class="card-side">
+              <figure class="card-portrait">
+                <picture>
+                  <source type="image/webp" srcset="assets/media/profile-480.webp 480w, assets/media/profile-960.webp 960w" sizes="(max-width: 720px) 96px, 272px" />
+                  <img src="assets/media/profile-960.webp" width="960" height="995" loading="lazy" decoding="async" alt="${e(data.name)}" />
+                </picture>
+                <figcaption>${e(data.location)}</figcaption>
+              </figure>
+              <dl class="card-now">
+                ${data.now.map((item) => `<div><dt>${e(item.label)}</dt><dd>${e(item.text)}</dd></div>`).join("\n                ")}
+              </dl>
+            </div>
+            <div class="card-main">
+              <div class="card-head">
+                <p class="kicker">About</p>
+                <h2 id="about-title">${e(data.name)}</h2>
+                <p class="card-role">${e(data.currentRole)} · ${e(data.location)}</p>
+              </div>
+              <div class="card-text">
+                ${data.longIntro.map((paragraph) => `<p>${e(paragraph)}</p>`).join("\n                ")}
+              </div>
+              <h3 class="card-sub">Research interests</h3>
+              <ul class="card-interests">
+                ${data.researchFocus.map((focus) => `<li>${e(focus.title)}</li>`).join("\n                ")}
+              </ul>
+              <div class="card-actions">
+                <a class="btn btn-primary" href="mailto:${e(data.email)}">Email me</a>
+                ${profiles.map((profile) => linkButton(profile)).join("\n                ")}
+              </div>
+            </div>
+          </div>
+        </dialog>`;
 }
 
 export function homeBody(data, samples, map) {
@@ -440,24 +467,10 @@ export function homeBody(data, samples, map) {
 
   return `      <section class="hero" id="top" aria-label="Introduction and map of work">
         <div class="hero-intro">
-          <h1>Akhil Theerthala</h1>
-          <p class="hero-lede">Applied data scientist at Perfios. I build reliable AI systems for finance. My core work is calibrated LLM safeguards and agentic workflows for consumer-finance market intelligence.</p>
-          <p class="hero-proof">
-            ${heroProof(data)}
-          </p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="mailto:${e(data.email)}">Email me</a>
-            <a class="btn" href="data/Akhil_Theerthala_Resume.pdf" target="_blank" rel="noreferrer">Download CV<span class="sr-only"> (PDF, opens in a new tab)</span></a>
-          </div>
-          <div class="map-search">
-            <label for="map-search-input">Search the papers, datasets and projects</label>
-            <div class="map-search-field">
-              ${icon.search}
-              <input id="map-search-input" type="search" autocomplete="off" spellcheck="false" placeholder="Try steering, FinForge or Reddit" aria-controls="map-search-results" aria-autocomplete="list" />
-              <kbd aria-hidden="true">/</kbd>
-            </div>
-            <ul class="search-results" id="map-search-results" role="listbox" hidden></ul>
-          </div>
+          <p class="hero-kicker">Applied data scientist · Perfios</p>
+          <h1><button class="hero-name" type="button" aria-expanded="false" aria-controls="about" data-open-about>${e(data.name)}</button></h1>
+          <p class="hero-lede">I build AI that finance can rely on: calibrated LLM safeguards, document intelligence, and the data that trains them.</p>
+          <button class="about-chip" type="button" aria-expanded="false" aria-controls="about" data-open-about><img src="assets/media/profile-480.webp" alt="" width="30" height="30" />About me</button>
         </div>
         <div class="map-stage">
           <canvas class="map-canvas" data-map="hero" aria-label="A map of ${map.works.length} works in ${map.areas.length} areas of AI: ${e(map.areas.map((area) => area.name).join(", "))}."></canvas>
@@ -468,33 +481,17 @@ export function homeBody(data, samples, map) {
           <div class="map-legend">
             ${[["paper", "Papers"], ["project", "Projects"], ["role", "Production systems"]].map(([kind, label]) => `<button class="chip" type="button" aria-pressed="true" data-kind="${kind}"><i data-shape="${kind}" aria-hidden="true"></i>${label} <small>${workCounts[kind]}</small></button>`).join("\n            ")}
           </div>
-        </div>
-      </section>
-
-      <section class="section" id="about">
-        <div class="wrap about">
-          <div class="about-side">
-            <figure class="portrait reveal">
-              <picture>
-                <source type="image/webp" srcset="assets/media/profile-480.webp 480w, assets/media/profile-960.webp 960w" sizes="(max-width: 980px) 420px, 34vw" />
-                <img src="assets/media/profile-960.webp" width="960" height="995" loading="lazy" decoding="async" alt="Akhil Theerthala" />
-              </picture>
-              <figcaption>${e(data.location)}</figcaption>
-            </figure>
-            <div class="profiles">
-              ${profiles.map((profile) => linkButton(profile, "btn btn-small")).join("\n              ")}
+          <div class="map-search">
+            <label class="sr-only" for="map-search-input">Search the papers, datasets and projects</label>
+            <div class="map-search-field">
+              ${icon.search}
+              <input id="map-search-input" type="search" autocomplete="off" spellcheck="false" placeholder="Search the map" aria-controls="map-search-results" aria-autocomplete="list" />
+              <kbd aria-hidden="true">/</kbd>
             </div>
-          </div>
-          <div class="about-body">
-            <h2 class="reveal">About</h2>
-            <div class="about-text reveal" style="--i:1">
-              ${data.longIntro.map((paragraph) => `<p>${e(paragraph)}</p>`).join("\n              ")}
-            </div>
-            <dl class="now">
-              ${data.now.map((item, i) => `<div class="reveal" style="--i:${i}"><dt><i aria-hidden="true"></i>${e(item.label)}</dt><dd>${e(item.text)}</dd></div>`).join("\n              ")}
-            </dl>
+            <ul class="search-results" id="map-search-results" role="listbox" hidden></ul>
           </div>
         </div>
+        ${aboutDialog(data, profiles)}
       </section>
 
       <section class="section" id="cv">

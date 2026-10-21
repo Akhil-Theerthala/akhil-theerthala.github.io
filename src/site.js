@@ -96,10 +96,10 @@ if (nav && menuToggle) {
   matchMedia("(min-width: 981px)").addEventListener("change", (event) => event.matches && setMenu(false));
 }
 
-// The header's "Email me" is gold only while no other email button is on
-// screen: the hero's on the way in, the contact block's at the end.
+// The header's "Email me" is gold except while the contact block's own email
+// button is on screen.
 const navCta = $(".site-nav .nav-cta");
-const emailBlocks = $$(".hero-actions, .contact-actions");
+const emailBlocks = $$(".contact-actions");
 if (navCta && emailBlocks.length) {
   const visible = new Set();
   const watcher = new IntersectionObserver(
@@ -132,6 +132,44 @@ if (page === "home") {
     { rootMargin: "-45% 0px -50% 0px" },
   );
   $$("main > section[id]").forEach((section) => observer.observe(section));
+}
+
+/* ---------- About dialog ---------- */
+
+// About lives in a dialog over the map. The name, the chip and the nav's
+// About link open it; arriving at /#about from an inner page opens it too.
+const about = $("dialog#about");
+if (about) {
+  const triggers = [...$$("[data-open-about]"), ...$$('.nav-links a[data-section="about"]')];
+  const expanded = (on) =>
+    $$("[data-open-about][aria-expanded]").forEach((trigger) => trigger.setAttribute("aria-expanded", String(on)));
+  const open = () => {
+    if (about.open) return;
+    about.showModal();
+    expanded(true);
+  };
+  triggers.forEach((trigger) =>
+    trigger.addEventListener("click", (event) => {
+      event.preventDefault();
+      open();
+    }),
+  );
+  $("[data-close-about]", about).addEventListener("click", () => about.close());
+  // A click on the backdrop lands on the dialog itself, never on its contents.
+  // So does a click on the dialog's own scrollbar, so check the point too.
+  about.addEventListener("click", (event) => {
+    if (event.target !== about) return;
+    const rect = about.getBoundingClientRect();
+    const inside = event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom;
+    if (!inside) about.close();
+  });
+  about.addEventListener("close", () => {
+    expanded(false);
+    if (location.hash === "#about") history.replaceState(null, "", location.pathname + location.search);
+  });
+  const fromHash = () => location.hash === "#about" && open();
+  fromHash();
+  addEventListener("hashchange", fromHash);
 }
 
 /* ---------- Reveal ---------- */

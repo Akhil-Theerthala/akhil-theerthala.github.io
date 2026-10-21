@@ -12,16 +12,16 @@ window.PORTFOLIO_DATA = {
 
   researchFocus: [
     {
-      title: "Data Curation for Reliable Models",
+      title: "Data curation for reliable models",
     },
     {
-      title: "Financial AI and Agentic Systems",
+      title: "Financial AI and agentic systems",
     },
     {
-      title: "Document AI and VLM Adaptation",
+      title: "Document AI and VLM adaptation",
     },
     {
-      title: "LLM Evaluation and Interpretability",
+      title: "LLM evaluation and interpretability",
     },
   ],
 
