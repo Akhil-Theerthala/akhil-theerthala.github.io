@@ -1,0 +1,32 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "serve",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve"
+      ],
+      "port": 3000
+    },
+    {
+      "name": "portfolio",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "serve"
+      ],
+      "port": 4173
+    },
+    {
+      "name": "graph",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "cd /Users/silver/Developer/akhil-theerthala.github.io/.claude/worktrees/graph-map && PORTFOLIO_PORT=4174 npm run serve"
+      ],
+      "port": 4174
+    }
+  ]
+}
