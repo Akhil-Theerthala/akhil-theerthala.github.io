@@ -469,13 +469,13 @@ export function homeBody(data, samples, map) {
         <div class="hero-intro">
           <p class="hero-kicker">Applied data scientist · Perfios</p>
           <h1><button class="hero-name" type="button" aria-expanded="false" aria-controls="about" data-open-about>${e(data.name)}</button></h1>
-          <p class="hero-lede">I build AI that finance can rely on: calibrated LLM safeguards, document intelligence, and the data that trains them.</p>
+          <p class="hero-lede">I build calibrated LLM safeguards and document-AI systems for finance, and the data that trains them.</p>
           <button class="about-chip" type="button" aria-expanded="false" aria-controls="about" data-open-about><img src="assets/media/profile-480.webp" alt="" width="30" height="30" />About me</button>
         </div>
         <div class="map-stage">
           <canvas class="map-canvas" data-map="hero" aria-label="A map of ${map.works.length} works in ${map.areas.length} areas of AI: ${e(map.areas.map((area) => area.name).join(", "))}."></canvas>
           <div class="map-tooltip" role="status" aria-live="polite"></div>
-          <noscript><p>The map needs JavaScript. Everything on it is listed further down this page.</p></noscript>
+          <noscript><p>The map needs JavaScript. Everything on it also appears further down this page.</p></noscript>
         </div>
         <div class="map-controls">
           <div class="map-legend">
@@ -554,7 +554,7 @@ ${data.projects.map((project, index) => projectHtml(project, samples, index)).jo
             <canvas data-map="ambient" aria-hidden="true"></canvas>
             <div class="contact-main">
               <h2>Get in touch</h2>
-              <p>Open to applied ML work, research collaborations, and fellowship conversations about reliable AI systems in finance and document intelligence.</p>
+              <p>Open to applied ML work, research collaborations, and fellowships in financial AI and document AI.</p>
               <a class="contact-email" href="mailto:${e(data.email)}">${e(data.email)}</a>
               <div class="contact-actions">
                 <button class="btn btn-primary copy-btn" type="button" data-copy="${e(data.email)}" data-copied-label="Email copied">Copy email</button>

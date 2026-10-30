@@ -43,7 +43,7 @@ const authorRef = (data) => ({ "@type": "Person", "@id": personId, name: data.na
 
 // Search results show this under the homepage link. The Person record reuses it.
 const homeDescription =
-  "Akhil Theerthala is an applied data scientist at Perfios, Bengaluru. He builds reliable AI for finance: calibrated LLM safeguards and market-intelligence agents.";
+  "Akhil Theerthala is an applied data scientist at Perfios, Bengaluru. He builds calibrated LLM safeguards and market-intelligence agents for finance.";
 
 const markdown = new Marked({
   renderer: {

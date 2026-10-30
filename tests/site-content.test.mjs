@@ -169,7 +169,7 @@ test("the homepage leads with applied work, then research", () => {
   assert.equal(data.researchProfiles[0].label, "GitHub");
   assert.match(
     index.replace(/\s+/g, " "),
-    /Open to applied ML work, research collaborations, and fellowship conversations about reliable AI systems in finance and document intelligence\./,
+    /Open to applied ML work, research collaborations, and fellowships in financial AI and document AI\./,
   );
   assert.ok(index.includes(data.location));
   assert.doesNotMatch(index, />Hyderabad, India</);

@@ -6,7 +6,7 @@ window.PORTFOLIO_DATA = {
   location: "Bengaluru, India",
   email: "akhiltvsn@gmail.com",
   longIntro: [
-    "I am a Senior Member Data Scientist at Perfios Software Solutions in Bengaluru. I also build document-AI systems for banks, lenders, and insurers, such as document classifiers, table detection, and VLMs adapted to dense financial documents.",
+    "I am a Senior Member Data Scientist at Perfios Software Solutions in Bengaluru. I build document-AI systems for banks, lenders, and insurers, such as document classifiers, table detection, and VLMs adapted to dense financial documents.",
     "My research is on data curation and LLM evaluation. I build synthetic training data, such as personal-finance data grounded in behavioral finance. I also work on benchmarks for financial agents and on steering for language models. I look for methods that still work under real limits on latency, cost, and auditability.",
   ],
 
@@ -242,7 +242,7 @@ window.PORTFOLIO_DATA = {
           "The app ships its own conversion tools, so you can import and read papers without Homebrew or Python.",
         ],
         status: [
-          "LocalXiv is in early preview and runs on Apple Silicon Macs with macOS 26 or newer. Releases are ad hoc signed, and Apple has not notarized them yet. Conversion can be imperfect for unusual equations, tables, and layouts. AI explanations can contain mistakes.",
+          "LocalXiv is in early preview and runs on Apple Silicon Macs with macOS 26 or newer. I sign releases ad hoc, and Apple has not notarized them yet. Conversion can be imperfect for unusual equations, tables, and layouts. AI explanations can contain mistakes.",
         ],
       },
       related: [
@@ -429,7 +429,7 @@ window.PORTFOLIO_DATA = {
       title: "Social Media Signals and Crowdfunding Success",
       slug: "crowdfunding-social-signals",
       kicker: "Research · B.Tech project",
-      desc: "My B.Tech research, which I extended after graduating, asked what drives engagement with crowdfunding posts on Facebook, and whether that engagement predicts a campaign's success. In the two models shown, the top feature can leak the outcome, and the text features were built with defects, so their low scores say little about text. A 2026 re-audit retired those methods, and I am rebuilding the study on archived Kickstarter pages.",
+      desc: "My B.Tech research, which I extended after graduating, asked what drives engagement with crowdfunding posts on Facebook, and whether that engagement predicts a campaign's success. In the two models shown, the top feature can leak the outcome. The text features also had defects, so their low scores say little about text. I re-audited the study in 2026, retired those methods, and am rebuilding it on archived Kickstarter pages.",
       released: "2024-03",
       links: [
         {
@@ -476,8 +476,8 @@ window.PORTFOLIO_DATA = {
         ],
         notes: [
           { mark: "1", text: "Leak: post views is the largest of the post's view, reaction, comment and share counts, so it contains what the model predicts." },
-          { mark: "2", text: "Timing: backing counts were read from creator profiles after the campaigns ended, so they can include later backing." },
-          { mark: "3", text: "Text: zeros in the topic and emotion scores were replaced with small random values, entities were found in lowercased text, and the topic vocabulary was fitted on all posts before the split. With post views in the model, low text scores do not show that text is uninformative." },
+          { mark: "2", text: "Timing: I collected backing counts from creator profiles after the campaigns ended, so they can include later backing." },
+          { mark: "3", text: "Text: the notebook replaced zeros in the topic and emotion scores with small random values, found entities in lowercased text, and fitted the topic vocabulary on all posts before the split. With post views in the model, low text scores do not show that text is uninformative." },
           { mark: "noise", text: "Noise: shuffling one feature raised accuracy by 0.29 on this scale, so the faded start of each success bar is within noise. The success scores come from 110 campaigns: 11 failed, and 27 were also in the training data." },
           { mark: "", text: "The engagement scores compare log-scale predictions with raw counts, so the few posts with the largest counts drive them. Neither the bar sizes nor their order is exact." },
         ],

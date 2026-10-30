@@ -41,7 +41,7 @@ test("the homepage ships its content in the HTML, not only via JavaScript", () =
   const index = read("index.html");
   for (const text of [
     "Akhil Theerthala",
-    "I build AI that finance can rely on",
+    "I build calibrated LLM safeguards and document-AI systems for finance",
     "Senior Member Data Scientist",
     "Projects",
     "LocalXiv",
