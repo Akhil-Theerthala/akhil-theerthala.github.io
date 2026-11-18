@@ -18,8 +18,9 @@ export function loadMap(root) {
   return mapPromise;
 }
 
-export function cssColours() {
-  const style = getComputedStyle(document.documentElement);
+// Read from the element itself: inside a sheet, --bg is the sheet's colour.
+export function cssColours(element = document.documentElement) {
+  const style = getComputedStyle(element);
   const get = (name) => style.getPropertyValue(name).trim();
   return {
     area: [0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) => get(`--a${i}`)),
@@ -27,6 +28,8 @@ export function cssColours() {
     ink: get("--ink"),
     ink2: get("--ink-2"),
     accent: get("--accent"),
+    // Gold that holds on paper as well as on black, for the links between works.
+    link: get("--trim"),
     muted: get("--muted"),
     bg: get("--bg"),
   };
@@ -45,6 +48,7 @@ export const workOf = (data, sourceId) => data.works.findIndex((work) => work.so
 const easeOut = (t) => 1 - Math.pow(1 - t, 3);
 const SEED = 7;
 const DRAG_START = 4;
+const TOUCH_DRAG_START = 8;
 
 export class MapView {
   constructor(canvas, data, options = {}) {
@@ -67,12 +71,13 @@ export class MapView {
     this.hoverArea = -1;
     this.matches = null;
     this.highlight = this.options.focusWork;
-    this.colours = cssColours();
-    this.start = performance.now();
+    this.colours = cssColours(canvas);
+    // The works settle into place the first time the map is properly in view.
     this.animating = this.options.animateIn && !reducedMotion();
-    if (!this.animating) this.start = -1e6;
+    this.start = this.animating ? Infinity : -1e6;
     this.press = null;
     this.dragging = -1;
+    this.dragHub = -1;
     this.skipClick = false;
 
     // The works that call each area home, and the curated pairs.
@@ -87,15 +92,19 @@ export class MapView {
     document.fonts?.ready.then(() => this.resize());
     this.bindEvents();
     addEventListener("themechange", () => {
-      this.colours = cssColours();
+      this.colours = cssColours(canvas);
       this.requestDraw();
     });
     this.visible = true;
     document.addEventListener("visibilitychange", () => this.requestDraw());
-    new IntersectionObserver(([entry]) => {
-      this.visible = entry.isIntersecting;
-      if (this.visible) this.requestDraw();
-    }).observe(canvas);
+    new IntersectionObserver(
+      ([entry]) => {
+        this.visible = entry.isIntersecting;
+        if (this.start === Infinity && entry.intersectionRatio >= 0.3) this.start = performance.now();
+        if (this.visible) this.requestDraw();
+      },
+      { threshold: [0, 0.3] },
+    ).observe(canvas);
   }
 
   resize() {
@@ -130,7 +139,7 @@ export class MapView {
   }
 
   nameSize() {
-    return Math.round(11 * Math.max(0.85, this.unit));
+    return Math.round(12 * Math.max(0.85, this.unit));
   }
 
   nameBox(area) {
@@ -143,9 +152,9 @@ export class MapView {
     return { lines, width, height };
   }
 
-  // Where each hub's name box sits: under its core.
-  nameOffset(a) {
-    return this.hubs[a].r + 24 * this.unit;
+  // The hatched disc around a hub's core.
+  discRadius(a) {
+    return Math.max(this.hubs[a].r + 7, 20 * this.unit);
   }
 
   // Resting positions come from the shared layout. While the map animates in,
@@ -158,14 +167,12 @@ export class MapView {
           return { w: width, h: height };
         })
       : null;
-    if (this.dragging >= 0) {
-      this.dragging = -1;
-      this.press = null;
-    }
+    this.dragging = this.dragHub = -1;
+    this.press = null;
     this.graph = createGraph(this.data, this.box, { seed: SEED, hubBoxes });
     this.hubs = this.graph.hubs;
     this.graph.settle();
-    if (this.animating && performance.now() - this.start < 2000) this.graph.start();
+    if (this.animating && !(performance.now() - this.start >= 2000)) this.graph.start();
     this.live = this.graph.nodes.map(({ x, y }) => ({ x, y }));
   }
 
@@ -224,7 +231,8 @@ export class MapView {
     const { ctx, colours, data } = this;
     if (!this.box) return false;
     ctx.clearRect(0, 0, this.width, this.height);
-    const elapsed = now - this.start;
+    const waiting = this.start === Infinity;
+    const elapsed = waiting ? 0 : now - this.start;
     const settling = this.animating && elapsed < 2000;
     const motion = !reducedMotion();
     const idle = this.options.idle && motion;
@@ -234,11 +242,14 @@ export class MapView {
     const t = (delay, length = 900) =>
       settling ? easeOut(Math.min(1, Math.max(0, (elapsed - delay) / length))) : 1;
 
-    // Live physics: two steps a frame while the map animates in, so it settles
-    // in about a second and a half, then one while anything reheats it.
-    if (motion && this.graph.heat > 0) {
+    // Physics: two steps a frame while the map animates in, so it settles in
+    // about a second and a half, then one a frame while a reader has hold of it.
+    if (motion && !waiting && this.graph.heat > 0) {
       this.graph.step();
-      if (settling) this.graph.step();
+      if (settling && !this.graph.live) this.graph.step();
+      // A throttled tab gets few frames, so once the entrance is over by the
+      // clock the works go straight to their places.
+      if (!settling && !this.graph.live) this.graph.settle();
     }
     const time = now * 0.0005;
     this.live = this.graph.nodes.map((node, w) => {
@@ -269,7 +280,7 @@ export class MapView {
       ctx.stroke();
       ctx.fill();
       if (w === this.hover || w === this.highlight || this.matches?.has(w)) {
-        ctx.strokeStyle = colours.accent;
+        ctx.strokeStyle = colours.link;
         ctx.lineWidth = 1.5;
         ctx.beginPath();
         ctx.arc(node.x, node.y, size + 6, 0, Math.PI * 2);
@@ -279,7 +290,7 @@ export class MapView {
     ctx.globalAlpha = 1;
 
     this.drawWorkNames(labelAlpha, lit);
-    return settling || idle || (motion && this.graph.heat > 0);
+    return (settling && !waiting) || idle || (motion && !waiting && this.graph.heat > 0);
   }
 
   // A spoke from each hub to every work that calls it home, thicker for the
@@ -294,8 +305,8 @@ export class MapView {
         const hub = this.hubs[a];
         const d = Math.hypot(node.x - hub.x, node.y - hub.y) || 1;
         const dim = lit && !(lit.has(w) && (this.hover === w || this.highlight === w || this.hoverArea === a || this.matches));
-        ctx.strokeStyle = withAlpha(colours.area[a], (dim ? 0.06 : 0.2 + 0.5 * weight) * alpha);
-        ctx.lineWidth = 0.8 + 2.4 * weight;
+        ctx.strokeStyle = withAlpha(colours.area[a], (dim ? 0.08 : 0.28 + 0.5 * weight) * alpha);
+        ctx.lineWidth = 0.75 + 1.75 * weight;
         ctx.beginPath();
         ctx.moveTo(hub.x + ((node.x - hub.x) / d) * hub.r, hub.y + ((node.y - hub.y) / d) * hub.r);
         ctx.lineTo(node.x, node.y);
@@ -308,7 +319,7 @@ export class MapView {
       const q = this.live[b];
       const ends = [this.hover, this.highlight];
       const active = ends.includes(a) || ends.includes(b);
-      ctx.strokeStyle = withAlpha(colours.accent, (active ? 0.85 : dimmed(a, b) ? 0.06 : 0.3) * alpha);
+      ctx.strokeStyle = withAlpha(colours.link, (active ? 1 : dimmed(a, b) ? 0.12 : 0.9) * alpha);
       ctx.lineWidth = active ? 1.5 : 1;
       ctx.setLineDash(active ? [] : [3, 4]);
       ctx.beginPath();
@@ -319,8 +330,9 @@ export class MapView {
     ctx.setLineDash([]);
   }
 
-  // Each hub: a halo, a ring, a solid core sized by its works, and its name
-  // in spaced capitals under the core.
+  // Each hub: a hatched disc with a fine rim, a solid core sized by its works,
+  // and its name in spaced capitals under the core. The hatch differs by
+  // area, so areas are told apart by more than their ink.
   drawHubs(alpha, lit, litAreas) {
     const { ctx, colours, data } = this;
     const u = this.unit;
@@ -331,33 +343,37 @@ export class MapView {
       const hub = this.hubs[a];
       const colour = colours.area[a];
       const dim = (litAreas && !litAreas.has(a)) || (lit && !litAreas && !this.members[a].some((w) => lit.has(w)));
+      const held = this.dragHub === a;
+      const disc = this.discRadius(a);
       ctx.globalAlpha = dim ? 0.35 : 1;
-      const halo = ctx.createRadialGradient(hub.x, hub.y, 2, hub.x, hub.y, 46 * u);
-      halo.addColorStop(0, withAlpha(colour, 0.28));
-      halo.addColorStop(1, withAlpha(colour, 0));
-      ctx.fillStyle = halo;
+      ctx.fillStyle = colours.bg;
       ctx.beginPath();
-      ctx.arc(hub.x, hub.y, 46 * u, 0, Math.PI * 2);
+      ctx.arc(hub.x, hub.y, disc, 0, Math.PI * 2);
       ctx.fill();
-      ctx.strokeStyle = withAlpha(colour, 0.35);
-      ctx.lineWidth = 1;
+      hatch(ctx, hub.x, hub.y, disc, a, withAlpha(colour, 0.55));
+      ctx.strokeStyle = withAlpha(colour, held || this.hoverArea === a ? 1 : 0.7);
+      ctx.lineWidth = held ? 1.5 : 1;
       ctx.beginPath();
-      ctx.arc(hub.x, hub.y, 20 * u, 0, Math.PI * 2);
+      ctx.arc(hub.x, hub.y, disc, 0, Math.PI * 2);
       ctx.stroke();
+      ctx.fillStyle = colours.bg;
+      ctx.beginPath();
+      ctx.arc(hub.x, hub.y, hub.r + 2.5, 0, Math.PI * 2);
+      ctx.fill();
       ctx.fillStyle = colour;
       ctx.beginPath();
       ctx.arc(hub.x, hub.y, hub.r, 0, Math.PI * 2);
       ctx.fill();
-      this.hubRects.push([hub.x - hub.r - 4, hub.y - hub.r - 4, hub.r * 2 + 8, hub.r * 2 + 8]);
+      this.hubRects.push([hub.x - disc - 2, hub.y - disc - 2, disc * 2 + 4, disc * 2 + 4]);
       if (!named) return;
       const { lines, width, height } = this.nameBox(area);
       const size = this.nameSize();
-      const cy = hub.y + this.nameOffset(a);
+      const cy = hub.y + disc + 6 + height / 2;
       ctx.globalAlpha = alpha * (dim ? 0.4 : 1);
-      ctx.fillStyle = withAlpha(colours.bg, 0.82);
-      roundRect(ctx, hub.x - width / 2, cy - height / 2, width, height, 6);
+      ctx.fillStyle = withAlpha(colours.bg, 0.9);
+      roundRect(ctx, hub.x - width / 2, cy - height / 2, width, height, 2);
       ctx.fill();
-      ctx.strokeStyle = withAlpha(colour, this.hoverArea === a ? 0.9 : 0.45);
+      ctx.strokeStyle = withAlpha(colour, this.hoverArea === a ? 1 : 0.6);
       ctx.lineWidth = 1;
       ctx.stroke();
       ctx.font = `500 ${size}px "IBM Plex Mono", monospace`;
@@ -472,8 +488,8 @@ export class MapView {
       placed.push(spot);
       const [x, y, width, height] = spot;
       ctx.globalAlpha = alpha * (!lit || lit.has(w) ? 1 : 0.35);
-      ctx.fillStyle = withAlpha(colours.bg, active ? 0.94 : 0.74);
-      roundRect(ctx, x, y, width, height, 6);
+      ctx.fillStyle = withAlpha(colours.bg, active ? 0.94 : 0.78);
+      roundRect(ctx, x, y, width, height, 2);
       ctx.fill();
       ctx.fillStyle = active ? colours.ink : withAlpha(colours.ink, 0.86);
       ctx.fillText(work.short, x + 6, y + height / 2 + 0.5);
@@ -499,7 +515,7 @@ export class MapView {
   // The hub whose core or name box is under the point.
   areaAt(x, y) {
     const inside = ([rx, ry, rw, rh]) => x >= rx && x <= rx + rw && y >= ry && y <= ry + rh;
-    const core = this.hubs.findIndex((hub) => Math.hypot(hub.x - x, hub.y - y) <= hub.r + 4);
+    const core = this.hubs.findIndex((hub, a) => Math.hypot(hub.x - x, hub.y - y) <= this.discRadius(a) + 2);
     if (core >= 0) return core;
     return (this.areaRects || []).findIndex((rect) => rect && inside(rect));
   }
@@ -510,53 +526,124 @@ export class MapView {
       const rect = canvas.getBoundingClientRect();
       return { x: event.clientX - rect.left, y: event.clientY - rect.top };
     };
+    // What a press lands on: a work first, then a hub or its name.
+    const under = (x, y, touch) => {
+      const work = this.nearest(x, y, touch ? 26 : 18);
+      return { work, hub: work < 0 ? this.areaAt(x, y) : -1 };
+    };
+    // What a press can take hold of. A finger has to land on a work or on a
+    // hub's disc: the names are large on a phone, and a swipe that starts on
+    // one should still scroll the page.
+    const grab = (x, y, touch) => {
+      if (!touch) return under(x, y, false);
+      const work = this.nearest(x, y, 18);
+      const hub = work < 0 ? this.hubs.findIndex((hub, a) => Math.hypot(hub.x - x, hub.y - y) <= this.discRadius(a) + 6) : -1;
+      return { work, hub };
+    };
+    const held = () => this.dragging >= 0 || this.dragHub >= 0;
+
+    // A finger that lands on a work or a hub moves it; anywhere else on the
+    // map it scrolls the page as usual.
+    canvas.addEventListener(
+      "touchstart",
+      (event) => {
+        if (!this.options.drag || event.touches.length !== 1) return;
+        const { x, y } = local(event.touches[0]);
+        const { work, hub } = grab(x, y, true);
+        if ((work >= 0 || hub >= 0) && event.cancelable) event.preventDefault();
+      },
+      { passive: false },
+    );
+
     canvas.addEventListener("pointerdown", (event) => {
       this.skipClick = false;
-      if (!this.options.drag || event.pointerType === "touch" || event.button !== 0) return;
+      this.press = null;
+      if (!this.options.drag || event.button !== 0) return;
+      const touch = event.pointerType === "touch";
       const { x, y } = local(event);
-      const work = this.nearest(x, y);
-      this.press = work >= 0 ? { work, x, y, id: event.pointerId } : null;
+      const { work, hub } = grab(x, y, touch);
+      if (work >= 0 || hub >= 0) this.press = { work, hub, x, y, id: event.pointerId, touch };
     });
     canvas.addEventListener("pointermove", (event) => {
-      if (event.pointerType === "touch") return;
+      const touch = event.pointerType === "touch";
+      if (touch && !this.press && !held()) return;
       const { x, y } = local(event);
-      if (this.press && this.dragging < 0 && Math.hypot(x - this.press.x, y - this.press.y) > DRAG_START) {
-        this.dragging = this.press.work;
-        canvas.setPointerCapture?.(this.press.id);
+      const press = this.press;
+      if (press && !held() && Math.hypot(x - press.x, y - press.y) > (press.touch ? TOUCH_DRAG_START : DRAG_START)) {
+        this.dragging = press.work;
+        this.dragHub = press.hub;
+        canvas.setPointerCapture?.(press.id);
         canvas.style.cursor = "grabbing";
+        this.options.onDragStart?.();
       }
-      if (this.dragging >= 0) {
-        this.graph.pin(this.dragging, x, y);
-        this.setHover(this.dragging);
+      if (held()) {
+        if (this.dragging >= 0) {
+          this.graph.pin(this.dragging, x, y);
+          this.setHover(this.dragging);
+        } else {
+          this.graph.pinHub(this.dragHub, x, y);
+          this.setHoverArea(this.dragHub);
+        }
+        // With reduced motion the neighbours follow at once, with no trailing.
+        if (reducedMotion()) for (let i = 0; i < 40; i++) this.graph.step();
         this.requestDraw();
         return;
       }
-      const work = this.nearest(x, y);
-      this.setHoverArea(work < 0 ? this.areaAt(x, y) : -1);
-      canvas.style.cursor = work >= 0 ? "pointer" : "";
+      if (touch) return;
+      const { work, hub } = under(x, y, false);
+      this.setHoverArea(hub);
+      canvas.style.cursor = work >= 0 ? "pointer" : hub >= 0 && this.options.drag ? "grab" : "";
       this.setHover(work);
       this.requestDraw();
     });
     // Ends a drag; returns whether one was in progress. Only a pointerup is
     // followed by a click, so only that path swallows the click.
     const finish = () => {
-      const dragged = this.dragging >= 0;
+      const dragged = held();
       if (dragged) {
-        this.graph.release(this.dragging);
+        if (this.dragging >= 0) this.graph.release(this.dragging);
+        else this.graph.releaseHub(this.dragHub);
         if (reducedMotion()) this.graph.settle();
-        this.dragging = -1;
-        canvas.style.cursor = "pointer";
+        const touch = this.press?.touch;
+        canvas.style.cursor = this.dragging >= 0 ? "pointer" : "grab";
+        this.dragging = this.dragHub = -1;
+        if (touch) {
+          this.setHover(-1);
+          this.setHoverArea(-1);
+        }
         this.requestDraw();
       }
       this.press = null;
       return dragged;
     };
+    // A tap: the first on a work or a hub shows what it is, and a second on
+    // the same work opens it.
+    const tap = (work, hub) => {
+      if (work < 0) {
+        this.setHover(-1);
+        this.setHoverArea(hub);
+      } else if (this.hover !== work) {
+        this.setHoverArea(-1);
+        this.setHover(work, true);
+      } else {
+        this.open(work);
+      }
+      this.requestDraw();
+    };
     canvas.addEventListener("pointerup", () => {
-      if (finish()) this.skipClick = true;
+      const press = this.press;
+      if (finish()) {
+        this.skipClick = true;
+      } else if (press?.touch) {
+        // The touch was claimed for a possible drag, so no click follows it.
+        this.skipClick = true;
+        tap(press.work, press.hub);
+      }
     });
     canvas.addEventListener("pointercancel", finish);
-    canvas.addEventListener("pointerleave", () => {
-      if (this.dragging >= 0) return;
+    canvas.addEventListener("pointerleave", (event) => {
+      // A lifted finger also "leaves"; what its tap showed stays until the next tap.
+      if (held() || event?.pointerType === "touch") return;
       this.setHoverArea(-1);
       this.setHover(-1);
       this.requestDraw();
@@ -568,18 +655,11 @@ export class MapView {
       }
       const { x, y } = local(event);
       const touch = event.pointerType === "touch";
-      const work = this.nearest(x, y, touch ? 26 : 18);
+      const { work, hub } = under(x, y, touch);
+      if (touch) return tap(work, hub);
       if (work < 0) {
         this.setHover(-1);
-        // On touch, a tap on a hub shows what it is.
-        if (touch) this.setHoverArea(this.areaAt(x, y));
         this.requestDraw();
-        return;
-      }
-      // On touch, the first tap shows the work and the second opens it.
-      if (touch && this.hover !== work) {
-        this.setHoverArea(-1);
-        this.setHover(work, true);
         return;
       }
       this.open(work);
@@ -636,6 +716,8 @@ export function showTooltip(tooltip, view, w, touch) {
     if (view.hoverArea < 0) tooltip.classList.remove("on");
     return;
   }
+  // Nothing is read while a body is being dragged.
+  if (view.dragging >= 0 || view.dragHub >= 0) return tooltip.classList.remove("on");
   const { data } = view;
   const work = data.works[w];
   const homes = work.homes.map(([a, weight]) => `${escape(data.areas[a].name)} ${Math.round(weight * 100)}%`).join(" · ");
@@ -654,11 +736,46 @@ export function showAreaTooltip(tooltip, view, a) {
     if (view.hover < 0) tooltip.classList.remove("on");
     return;
   }
+  if (view.dragging >= 0 || view.dragHub >= 0) return tooltip.classList.remove("on");
   const area = view.data.areas[a];
   const count = area.size === 1 ? "1 work" : `${area.size} works`;
   tooltip.innerHTML = `<b><i style="background:${view.colours.area[a]}"></i>${escape(area.name)}</b><strong>${escape(area.description || area.name)}</strong><span>${count}</span>`;
   const hub = view.hubs[a];
   placeTooltip(tooltip, view, hub.x, hub.y);
+}
+
+// Fine rules clipped to a disc, in one of six directions or weaves.
+function hatch(ctx, x, y, r, style, colour) {
+  const gap = 4.5;
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, Math.PI * 2);
+  ctx.clip();
+  ctx.strokeStyle = colour;
+  ctx.fillStyle = colour;
+  ctx.lineWidth = 1;
+  // Angles of the rules, by area: one direction, two for a weave, none for dots.
+  const angles = [[45], [-45], [0], [90], [45, -45], []][style % 6];
+  for (const angle of angles) {
+    const [cos, sin] = [Math.cos((angle * Math.PI) / 180), Math.sin((angle * Math.PI) / 180)];
+    ctx.beginPath();
+    for (let offset = -r; offset <= r; offset += gap) {
+      ctx.moveTo(x - sin * offset - cos * r, y + cos * offset - sin * r);
+      ctx.lineTo(x - sin * offset + cos * r, y + cos * offset + sin * r);
+    }
+    ctx.stroke();
+  }
+  if (!angles.length) {
+    ctx.beginPath();
+    for (let dy = -r, row = 0; dy <= r; dy += gap, row++) {
+      for (let dx = -r + (row % 2 ? gap / 2 : 0); dx <= r; dx += gap) {
+        ctx.moveTo(x + dx + 0.9, y + dy);
+        ctx.arc(x + dx, y + dy, 0.9, 0, Math.PI * 2);
+      }
+    }
+    ctx.fill();
+  }
+  ctx.restore();
 }
 
 function shape(ctx, kind, x, y, r) {

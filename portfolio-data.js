@@ -9,6 +9,8 @@ window.PORTFOLIO_DATA = {
   email: "akhiltvsn@gmail.com",
   // Shown in the top line of the home page. Change it when the content changes.
   updated: "2026-11-18",
+  // The length of data/Akhil_Theerthala_Resume.pdf, shown beside its link.
+  resumePages: 2,
   longIntro: [
     "I am a Senior Member Data Scientist at Perfios Software Solutions in Bengaluru. I build document-AI systems for banks, lenders, and insurers, such as document classifiers, table detection, and VLMs adapted to dense financial documents.",
     "My research is on data curation and LLM evaluation. I build synthetic training data, such as personal-finance data grounded in behavioral finance. I also work on benchmarks for financial agents and on steering for language models. I look for methods that still work under real limits on latency, cost, and auditability.",

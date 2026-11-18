@@ -245,10 +245,33 @@ test("every page is one sheet with the shared top line and border", () => {
     assert.match(html, /<button class="icon-btn theme-toggle" type="button"/, file);
     assert.doesNotMatch(html, /class="ground"|class="site-nav"/, file);
   }
-  // Dark is pure black, with no glow or grain over it.
+  // The dark ground is pure black under a fine grain, with nothing drawn on it.
   const css = read("assets/css/site.css");
   assert.match(css.slice(css.indexOf("\n:root {"), css.indexOf(':root[data-theme="light"]')), /--bg: #000000;/);
-  assert.doesNotMatch(css, /--glows|--grain|\.ground/);
+  assert.doesNotMatch(css, /--glows|\.ground/);
+  // Card stock: a grained ground with a matte sheet for each text area, one
+  // per section on the home page and one for the whole of any other page.
+  assert.match(css, /html \{\s*background: var\(--grain\), var\(--bg\);/);
+  assert.match(
+    css,
+    /\[data-page="home"\] \.head,\s*\[data-page="home"\] main > section,\s*\[data-page="home"\] \.foot-grid,\s*:root:not\(\[data-page="home"\]\) main \{\s*--bg: var\(--card\);\s*--surface: var\(--card-band\);[^}]*background: var\(--card-finish\), var\(--card\);\s*box-shadow: var\(--card-shadow\);/,
+  );
+  // The ground is plain: grain only, with no shapes or washes behind the sheets.
+  assert.doesNotMatch(css, /--motif|body::before/);
+  // Texture comes from the stylesheet alone: no image files and no blending or blur layers.
+  assert.doesNotMatch(css, /mix-blend-mode|backdrop-filter/);
+  for (const theme of [/\n:root \{[\s\S]*?\n\}/, /\n:root\[data-theme="light"\] \{[\s\S]*?\n\}/]) {
+    const block = theme.exec(css)[0];
+    for (const token of ["card", "card-band", "card-shadow", "grain", "card-finish"]) {
+      assert.match(block, new RegExp(`--${token}: `), token);
+    }
+  }
+  // The map draws against its own sheet, not the ground behind it.
+  assert.match(read("src/map.js"), /this\.colours = cssColours\(canvas\);/);
+  // Print drops the sheets.
+  const print = css.slice(css.indexOf("@media print"));
+  // A sheet restates its own colours, so the dark theme's bands cannot reach paper.
+  assert.match(print, /:root:not\(\[data-page="home"\]\) main \{[^}]*--bg: #ffffff;\s*--surface: #f0ece2;\s*padding: 0;\s*background: none;\s*box-shadow: none;/);
 });
 
 test("papers say what the contribution was, and unreleased ones say so", () => {
@@ -304,13 +327,40 @@ test("the map has its own page, with the legend and the search under it", () => 
   const controls = page.indexOf('<div class="map-controls">');
   const search = page.indexOf('<div class="map-search">');
   assert.ok(controls > 0 && search > controls, "the search is not in the map controls");
-  // The home page points to it and says how many works it holds.
-  const index = read("index.html");
-  assert.ok(index.includes(`<a href="map.html">the map of all ${map.works.length} works</a>`));
-  assert.ok(index.includes(`The other ${map.works.length - data.projects.length} are drawn on`));
-  assert.doesNotMatch(index, /data-map=/);
   // From any page but the home page, a link to a home-page row spells out the home page.
   assert.match(read("src/map.js"), /dataset\.page === "home" \? href : \(root \|\| "\.\/"\) \+ href/);
+});
+
+test("Selected work opens on the map, with the projects' table closed under it", () => {
+  const index = read("index.html");
+  const map = JSON.parse(read("assets/data/map.json"));
+  const section = index.slice(index.indexOf('<section id="work"'), index.indexOf('<section id="research"'));
+  const figure = section.indexOf('<figure class="work-map">');
+  const button = section.indexOf('aria-expanded="false" aria-controls="work-table"');
+  const table = section.indexOf('<div class="tbl" id="work-table" role="table"');
+  assert.ok(figure > 0 && button > figure && table > button, "the order is map, button, table");
+  assert.equal((index.match(/data-map="home"/g) || []).length, 1);
+  assert.ok(section.includes(`A map of ${map.works.length} works in ${map.areas.length} areas of AI`));
+  assert.ok(section.includes(`Show the ${data.projects.length} projects as a table`));
+  assert.ok(section.includes(`These and ${map.works.length - data.projects.length} more works are drawn on <a href="map.html">the map</a>.`));
+  // A phone gets the table and no map.
+  const phone = read("assets/css/site.css");
+  const phoneBlock = phone.slice(phone.indexOf("@media (max-width: 640px)"), phone.indexOf("@media print"));
+  assert.match(phoneBlock, /\.work-map,\s*\.disclose \{\s*display: none;/);
+  assert.match(phoneBlock, /\.js #work:not\(\[data-table="open"\]\) \.tbl \{\s*display: block;/);
+  assert.match(section, /<a href="map\.html">Search the map<\/a>/);
+  for (const project of data.projects) assert.ok(section.includes(project.short || project.title), project.title);
+  // The table is closed only while the script runs, and print shows it.
+  const css = read("assets/css/site.css");
+  assert.match(css, /\.js #work:not\(\[data-table="open"\]\) \.tbl \{\s*display: none;/);
+  assert.match(css, /html:not\(\.js\) \.work-map,\s*html:not\(\.js\) \.disclose \{\s*display: none;/);
+  assert.match(css.slice(css.indexOf("@media print")), /\.js #work:not\(\[data-table="open"\]\) \.tbl \{\s*display: block;/);
+  // A map point or a link that lands on a closed row opens the table first.
+  const site = read("src/site.js");
+  assert.match(site, /if \(target\.closest\("#work-table"\)\) openWorkTable\(true\);/);
+  assert.match(site, /addEventListener\("hashchange", fromHash\);/);
+  // The map's data is not fetched until the section is near.
+  assert.match(site, /rootMargin: "800px 0px"/);
 });
 
 test("the map renderer draws the graph from the shared layout, not islands", () => {

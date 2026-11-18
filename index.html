@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-page="home" data-root="">
+<html lang="en" data-page="home" data-root="" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -19,7 +19,7 @@
     <meta name="twitter:creator" content="@thesilvervein" />
     <meta name="twitter:image" content="https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png" />
     <meta name="twitter:image:alt" content="The AT mark, the name Akhil Theerthala and the title Applied data scientist, beside a map of six areas of his work, such as document AI and data curation." />
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content="#f8f5ed" />
     <link rel="icon" href="favicon.ico" sizes="48x48" />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
@@ -27,10 +27,13 @@
     <link rel="stylesheet" href="assets/css/site.css" />
     <script>
       (function () {
-        var d = document.documentElement, t;
-        try { t = localStorage.getItem("theme"); } catch (_) {}
-        // Dark is the site's own look; light is there for anyone who switches.
-        d.dataset.theme = t === "light" ? "light" : "dark";
+        var d = document.documentElement, t = null;
+        // The page follows the system setting. The switch stores an override
+        // that lasts until the system agrees with it. The old "theme" key
+        // pinned a theme for good, so it is dropped.
+        try { t = localStorage.getItem("theme-override"); localStorage.removeItem("theme"); } catch (_) {}
+        var dark = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches;
+        d.dataset.theme = t === "light" || t === "dark" ? t : dark ? "dark" : "light";
         d.classList.add("js");
         // If the site script never runs, show everything the script would have opened.
         setTimeout(function () { if (!window.__siteReady) d.classList.remove("js"); }, 2500);
@@ -327,7 +330,7 @@
             <dt>Based in</dt><dd>Bengaluru, India</dd>
             <dt>Studying</dt><dd>MS in Data Science, IIIT Hyderabad</dd>
             <dt>Email</dt><dd><a href="mailto:akhiltvsn@gmail.com">akhiltvsn@gmail.com</a></dd>
-            <dt>Résumé</dt><dd><a href="data/Akhil_Theerthala_Resume.pdf" target="_blank" rel="noreferrer">Download the PDF<span class="sr-only"> (opens in a new tab)</span></a></dd>
+            <dt>Résumé</dt><dd><a href="data/Akhil_Theerthala_Resume.pdf" target="_blank" rel="noreferrer">PDF, 2 pages<span class="sr-only"> (opens in a new tab)</span></a></dd>
             <dt>Elsewhere</dt>
             <dd class="links">
               <a href="https://github.com/Akhil-Theerthala" target="_blank" rel="noreferrer">GitHub<span class="sr-only"> (opens in a new tab)</span></a>
@@ -395,7 +398,17 @@
 
         <section id="work" aria-labelledby="work-h">
           <h2 class="sec-h" id="work-h" data-region="section-header">Selected work</h2>
-          <div class="tbl" role="table" aria-labelledby="work-h" data-region="table">
+          <figure class="work-map">
+            <div class="map-wrap" data-region="figure">
+              <div class="map-stage">
+                <canvas class="map-canvas" data-map="home" role="img" aria-label="A map of 15 works in 6 areas of AI: Financial reasoning, Document AI, Evaluation &amp; interpretability, Data curation, Computational social science, Research tooling. The table after it lists the projects."></canvas>
+                <div class="map-tooltip" role="status" aria-live="polite"></div>
+              </div>
+            </div>
+            <figcaption data-region="caption">15 papers, projects and production systems, each joined to the areas of AI it belongs to. Drag any point, and select a work to open it. <a href="map.html">Search the map</a>.</figcaption>
+          </figure>
+          <p class="disclose"><button class="btn btn-small" type="button" aria-expanded="false" aria-controls="work-table">Show the 5 projects as a table<svg class="plus" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M1 5.5h9"/><path d="M5.5 1v9"/></svg></button></p>
+          <div class="tbl" id="work-table" role="table" aria-labelledby="work-h" data-region="table">
             <div class="tr th" role="row"><span role="columnheader">Released</span><span role="columnheader">Project</span><span role="columnheader" class="num">Results</span></div>
             <div class="tr" role="row" data-row id="project-localxiv">
               <span class="when" role="cell">Sep 2026</span>
@@ -424,7 +437,7 @@
             </div>
             <div class="tr total" role="row">
               <span class="when" role="cell">Total</span>
-              <span class="what" role="cell"><span>The other 10 are drawn on <a href="map.html">the map of all 15 works</a>.</span></span>
+              <span class="what" role="cell"><span>These and 10 more works are drawn on <a href="map.html">the map</a>.</span></span>
               <span class="fig" role="cell"><span class="amt"><b>5 shown</b></span></span>
             </div>
           </div>
@@ -513,8 +526,6 @@
           <p class="foot-pitch">Open to applied ML work, research collaborations, and fellowships in financial AI and document AI.</p>
           <div class="actions">
             <a class="btn btn-primary" href="mailto:akhiltvsn@gmail.com">Email me</a>
-            <button class="btn copy-btn" type="button" data-copy="akhiltvsn@gmail.com" data-copied-label="Address copied">Copy address</button>
-            <span class="sr-only" role="status"></span>
             <a class="btn" href="data/Akhil_Theerthala_Resume.pdf" target="_blank" rel="noreferrer">Download résumé<span class="sr-only"> (PDF, opens in a new tab)</span></a>
           </div>
           <p class="small">The layout regions are drawn from this page's own structure, the way a document-layout model labels a page. No model runs here.</p>

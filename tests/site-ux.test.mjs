@@ -79,10 +79,16 @@ test("the home page has one filled button, and it is the email", () => {
   const index = read("index.html");
   assert.equal((index.match(/btn-primary/g) || []).length, 1);
   assert.ok(index.includes(`<a class="btn btn-primary" href="mailto:${data.email}">Email me</a>`));
-  // The copy button reports to a status region for screen readers.
-  assert.match(index, /data-copied-label="Address copied">Copy address<\/button>\s*<span class="sr-only" role="status"><\/span>/);
-  assert.match(script, /role="status"/);
-  assert.match(index, /Download résumé<span class="sr-only"> \(PDF, opens in a new tab\)<\/span>/);
+  // The foot has two actions: write, or take the résumé. Nothing copies.
+  const actions = index.slice(index.indexOf('<div class="actions">'), index.indexOf('<p class="small">'));
+  assert.equal((actions.match(/class="btn/g) || []).length, 2);
+  assert.match(actions, /Download résumé<span class="sr-only"> \(PDF, opens in a new tab\)<\/span>/);
+  assert.doesNotMatch(index, /Copy address|data-copy/);
+  assert.doesNotMatch(script, /clipboard|execCommand/);
+  assert.doesNotMatch(css, /copy-btn/);
+  // The résumé's link beside the name says what the file is.
+  assert.ok(index.includes(`>PDF, ${data.resumePages} pages<span class="sr-only"> (opens in a new tab)</span></a>`));
+  assert.doesNotMatch(index, /Download the PDF/);
 });
 
 test("roles are buttons that open their own detail", () => {
@@ -98,7 +104,7 @@ test("roles are buttons that open their own detail", () => {
 
 test("tables keep their semantics and stack on a phone", () => {
   const index = read("index.html");
-  const tables = index.match(/<div class="tbl[^"]*" role="table" aria-labelledby="[a-z]+-h" data-region="table">/g) || [];
+  const tables = index.match(/<div class="tbl[^"]*"(?: id="work-table")? role="table" aria-labelledby="[a-z]+-h" data-region="table">/g) || [];
   assert.equal(tables.length, 5);
   assert.ok((index.match(/role="columnheader"/g) || []).length >= 14);
   assert.equal((index.match(/class="tr total" role="row"/g) || []).length, 4);
@@ -113,9 +119,11 @@ test("the layout regions are drawn from the page and stay still for reduced moti
   const index = read("index.html");
   assert.match(index, /<div class="sheet" id="sheet" data-regions="off">/);
   assert.match(index, /<div class="regions" aria-hidden="true"><\/div>/);
-  for (const region of ["page-header", "title", "text", "key-value", "section-header", "table", "page-footer"]) {
+  for (const region of ["page-header", "title", "text", "key-value", "section-header", "figure", "caption", "table", "page-footer"]) {
     assert.ok(index.includes(`data-region="${region}"`), region);
   }
+  // A closed table has no box, so it is left out until it opens.
+  assert.match(script, /if \(!rect\.width && !rect\.height\) return;/);
   assert.match(index, /No model runs here\./);
   // The intro plays once per visit, and not at all for reduced motion.
   assert.match(script, /sessionStorage\.getItem\("regions-intro"\)/);
@@ -125,6 +133,66 @@ test("the layout regions are drawn from the page and stay still for reduced moti
   const base = rule(".rg");
   assert.doesNotMatch(base, /clip-path/);
   assert.match(css, /@media \(prefers-reduced-motion: no-preference\) \{\s*\.rg \{\s*clip-path: inset\(0 100% 100% 0\);/);
+});
+
+test("the theme follows the system setting, and light is the fallback", () => {
+  for (const file of ["index.html", ...innerPages]) {
+    const html = read(file);
+    // With no script the attribute stands, so the page is light.
+    assert.match(html, /<html lang="en" data-page="[a-z]+" data-root="[^"]*" data-theme="light">/, file);
+    assert.match(html, /matchMedia\("\(prefers-color-scheme: dark\)"\)\.matches/, file);
+    assert.match(html, /d\.dataset\.theme = t === "light" \|\| t === "dark" \? t : dark \? "dark" : "light";/, file);
+    // The old key pinned a theme for good; it is read by nothing now.
+    assert.match(html, /localStorage\.removeItem\("theme"\)/, file);
+    assert.doesNotMatch(html, /localStorage\.getItem\("theme"\)/, file);
+  }
+  // A change of the system setting reaches an open page, and the switch's
+  // override is dropped once the system agrees with it.
+  assert.match(script, /scheme\.addEventListener\("change"/);
+  assert.match(script, /if \(theme === systemTheme\(\)\) localStorage\.removeItem\(OVERRIDE\);/);
+  assert.match(script, /dispatchEvent\(new Event\("themechange"\)\)/);
+});
+
+test("map areas hold 3:1 on the page and keep clear of rose and gold", () => {
+  const hue = (hex) => {
+    const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
+    const [max, min] = [Math.max(r, g, b), Math.min(r, g, b)];
+    const d = max - min || 1;
+    const h = max === r ? ((g - b) / d) % 6 : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+    return (h * 60 + 360) % 360;
+  };
+  const apart = (a, b) => Math.min(Math.abs(a - b), 360 - Math.abs(a - b));
+  for (const theme of ["dark", "light"]) {
+    const token = tokens(theme);
+    for (let i = 0; i < 9; i++) {
+      const colour = token(`a${i}`);
+      // The map is drawn on a sheet.
+      for (const ground of ["bg", "surface", "card"]) {
+        const ratio = contrast(colour, token(ground));
+        assert.ok(ratio >= 3, `${theme}: --a${i} on --${ground} is ${ratio.toFixed(2)}`);
+      }
+      // Stone is a grey, so its hue carries nothing.
+      if (i === 7) continue;
+      assert.ok(apart(hue(colour), hue(token("region"))) >= 12, `${theme}: --a${i} reads as the region rose`);
+      assert.ok(apart(hue(colour), hue(token("trim"))) >= 12, `${theme}: --a${i} reads as the gold`);
+    }
+    // The dashes between linked works are gold that holds on this ground.
+    assert.ok(contrast(token("trim"), token("bg")) >= 3, `${theme}: link dashes`);
+  }
+  const renderer = read("src/map.js");
+  assert.match(renderer, /link: get\("--trim"\)/);
+  assert.doesNotMatch(renderer, /createRadialGradient/);
+});
+
+test("a change of theme cross-fades the whole page, and swaps at once for reduced motion", () => {
+  assert.match(script, /if \(!document\.startViewTransition \|\| reducedMotion\(\)\) return applyTheme\(next\);/);
+  assert.match(script, /document\.startViewTransition\(\(\) => applyTheme\(next\)\);/);
+  // The system setting and the switch go through the same function.
+  assert.equal((script.match(/setTheme\(/g) || []).length, 3);
+  assert.match(
+    css,
+    /@media \(prefers-reduced-motion: no-preference\) \{\s*::view-transition-old\(root\),\s*::view-transition-new\(root\) \{\s*animation-duration: 320ms;/,
+  );
 });
 
 test("the theme switch holds transitions for the swap", () => {
@@ -153,7 +221,8 @@ test("small labels are at least 13px", () => {
 test("text and figures hold their contrast in both themes", () => {
   for (const theme of ["dark", "light"]) {
     const token = tokens(theme);
-    const grounds = ["bg", "surface", "surface-2"].map(token);
+    // The ground, its bands, and a sheet with its own bands.
+    const grounds = ["bg", "surface", "surface-2", "card", "card-band"].map(token);
     for (const ground of grounds) {
       for (const name of ["ink", "muted", "accent-text"]) {
         const ratio = contrast(token(name), ground);

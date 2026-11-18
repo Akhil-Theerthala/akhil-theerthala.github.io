@@ -15,65 +15,64 @@ const themeColour = () =>
   $('meta[name="theme-color"]')?.setAttribute("content", getComputedStyle(html).getPropertyValue("--bg").trim());
 themeColour();
 
-$(".theme-toggle")?.addEventListener("click", () => {
-  const next = html.dataset.theme === "dark" ? "light" : "dark";
-  // Every colour changes at once, so transitions are held for the swap.
+// The page follows the system setting. The switch stores an override, which
+// is dropped as soon as the system and the override agree again.
+const OVERRIDE = "theme-override";
+const scheme = matchMedia("(prefers-color-scheme: dark)");
+const systemTheme = () => (scheme.matches ? "dark" : "light");
+const override = () => {
+  try {
+    const value = localStorage.getItem(OVERRIDE);
+    return value === "light" || value === "dark" ? value : null;
+  } catch {
+    return null;
+  }
+};
+const keep = (theme) => {
+  try {
+    if (theme === systemTheme()) localStorage.removeItem(OVERRIDE);
+    else localStorage.setItem(OVERRIDE, theme);
+  } catch {}
+};
+
+function applyTheme(next) {
+  // Every colour changes at once. Each element's own transitions are held for
+  // the swap, so nothing smears: the fade, where there is one, is of the page
+  // as a whole.
   html.classList.add("no-transitions");
   html.dataset.theme = next;
-  try {
-    localStorage.setItem("theme", next);
-  } catch {}
   themeColour();
   dispatchEvent(new Event("themechange"));
   void html.offsetWidth;
   requestAnimationFrame(() => html.classList.remove("no-transitions"));
-});
-
-/* ---------- Copy buttons ---------- */
-
-// The clipboard API needs a secure context and permission; a selected
-// textarea with execCommand covers the rest.
-async function copyText(text) {
-  try {
-    await navigator.clipboard.writeText(text);
-    return true;
-  } catch {
-    const area = Object.assign(document.createElement("textarea"), { value: text });
-    area.setAttribute("readonly", "");
-    area.style.cssText = "position:fixed;opacity:0;pointer-events:none";
-    document.body.append(area);
-    area.select();
-    const copied = document.execCommand("copy");
-    area.remove();
-    return copied;
-  }
 }
 
-$$("[data-copy]").forEach((button) => {
-  const label = button.textContent;
-  // A status region beside the button tells a screen reader what happened.
-  const next = button.nextElementSibling;
-  const status = next?.matches('[role="status"]') ? next : null;
-  button.addEventListener("click", async () => {
-    if (await copyText(button.dataset.copy)) {
-      button.textContent = button.dataset.copiedLabel || "Copied";
-      button.dataset.copied = "true";
-    } else {
-      button.textContent = "Couldn't copy";
-    }
-    if (status) status.textContent = button.textContent;
-    setTimeout(() => {
-      button.textContent = label;
-      delete button.dataset.copied;
-      if (status) status.textContent = "";
-    }, 1800);
-  });
+function setTheme(next) {
+  if (html.dataset.theme === next) return;
+  // The page cross-fades from one theme to the other as a single picture.
+  // Without view transitions, or with reduced motion, it swaps at once.
+  if (!document.startViewTransition || reducedMotion()) return applyTheme(next);
+  document.startViewTransition(() => applyTheme(next));
+}
+
+$(".theme-toggle")?.addEventListener("click", () => {
+  const next = html.dataset.theme === "dark" ? "light" : "dark";
+  keep(next);
+  setTheme(next);
+});
+
+scheme.addEventListener("change", () => {
+  const chosen = override();
+  if (chosen) keep(chosen);
+  setTheme(override() || systemTheme());
 });
 
 /* ---------- Pages ---------- */
 
 if (page === "home") {
   roles();
+  workTable();
+  homeMap();
   regions();
 }
 
@@ -93,6 +92,80 @@ function roles() {
       button.setAttribute("aria-expanded", String(button.getAttribute("aria-expanded") !== "true"));
     }),
   );
+}
+
+/* ---------- Home: the projects' table under the map ---------- */
+
+function openWorkTable(open) {
+  const section = $("#work");
+  const button = $(".disclose button", section);
+  if (!section || !button) return;
+  section.dataset.table = open ? "open" : "closed";
+  button.setAttribute("aria-expanded", String(open));
+  button.firstChild.textContent = button.firstChild.textContent.replace(/^(Show|Hide)/, open ? "Hide" : "Show");
+}
+
+// A row inside the closed table has to be shown before the page can go to it.
+function goTo(target, smooth = true) {
+  if (target.closest("#work-table")) openWorkTable(true);
+  target.scrollIntoView({ behavior: smooth && !reducedMotion() ? "smooth" : "auto", block: "center" });
+  const row = target.closest("[data-row]");
+  if (!row) return;
+  row.classList.add("flash");
+  setTimeout(() => row.classList.toggle("flash", false), 1800);
+}
+
+function workTable() {
+  const button = $("#work .disclose button");
+  if (!button) return;
+  button.addEventListener("click", () => openWorkTable(button.getAttribute("aria-expanded") !== "true"));
+  // Links from the map page and from search land on rows that may be closed.
+  const fromHash = () => {
+    const target = location.hash.length > 1 && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (target && target.closest("#work-table")) goTo(target, false);
+  };
+  addEventListener("hashchange", fromHash);
+  fromHash();
+}
+
+/* ---------- Home: the map in Selected work ---------- */
+
+function homeMap() {
+  const canvas = $('canvas[data-map="home"]');
+  if (!canvas) return;
+  const tooltip = $(".map-tooltip", canvas.parentElement);
+  const hideTooltip = () => tooltip.classList.toggle("on", false);
+  const start = (data) => {
+    const view = new MapView(canvas, data, {
+      inset: (w) =>
+        w > 720
+          ? { left: 44, top: 40, right: 44, bottom: 48 }
+          : { left: 20, top: 24, right: 20, bottom: 30 },
+      onHover: (index, touch) => showTooltip(tooltip, view, index, touch),
+      onHoverArea: (area) => showAreaTooltip(tooltip, view, area),
+      onDragStart: hideTooltip,
+      // Works on this page open in place; the rest go to their own page.
+      onOpen: (work) => {
+        const target = work.href.startsWith("#") && document.getElementById(work.href.slice(1));
+        if (!target) return false;
+        hideTooltip();
+        goTo(target);
+        history.replaceState(null, "", work.href);
+        return true;
+      },
+    });
+  };
+  // The map's data is fetched once the section is near.
+  new IntersectionObserver(
+    (entries, observer) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      observer.disconnect();
+      loadMap(root)
+        .then(start)
+        .catch((error) => console.warn("Map unavailable:", error));
+    },
+    { rootMargin: "800px 0px" },
+  ).observe(canvas);
 }
 
 /* ---------- Home: layout regions ---------- */
@@ -126,7 +199,10 @@ function regions() {
     };
     $$("[data-region]", sheet).forEach((element) => {
       const rect = element.getBoundingClientRect();
-      if (element.dataset.region !== "table") return add("rg", rect, PAD, element.dataset.region);
+      // A closed table has no box to draw.
+      if (!rect.width && !rect.height) return;
+      // A figure's tag sits at its far corner, clear of the heading above it.
+      if (element.dataset.region !== "table") return add("rg", rect, PAD, element.dataset.region, element.dataset.region === "figure");
       const rows = $$("[data-row]", element);
       const heads = $$('[role="columnheader"]', element);
       const stacked = getComputedStyle(rows[0]).gridTemplateColumns.split(" ").length < 2;
@@ -182,6 +258,7 @@ function mapPage(data) {
         : { left: 24, top: 28, right: 24, bottom: 28 },
     onHover: (index, touch) => showTooltip(tooltip, view, index, touch),
     onHoverArea: (area) => showAreaTooltip(tooltip, view, area),
+    onDragStart: () => tooltip.classList.toggle("on", false),
   });
 
   $$("[data-kind]").forEach((chip) =>

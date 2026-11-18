@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-page="map" data-root="">
+<html lang="en" data-page="map" data-root="" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -19,7 +19,7 @@
     <meta name="twitter:creator" content="@thesilvervein" />
     <meta name="twitter:image" content="https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png" />
     <meta name="twitter:image:alt" content="The AT mark, the name Akhil Theerthala and the title Applied data scientist, beside a map of six areas of his work, such as document AI and data curation." />
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content="#f8f5ed" />
     <link rel="icon" href="favicon.ico" sizes="48x48" />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
@@ -27,10 +27,13 @@
     <link rel="stylesheet" href="assets/css/site.css" />
     <script>
       (function () {
-        var d = document.documentElement, t;
-        try { t = localStorage.getItem("theme"); } catch (_) {}
-        // Dark is the site's own look; light is there for anyone who switches.
-        d.dataset.theme = t === "light" ? "light" : "dark";
+        var d = document.documentElement, t = null;
+        // The page follows the system setting. The switch stores an override
+        // that lasts until the system agrees with it. The old "theme" key
+        // pinned a theme for good, so it is dropped.
+        try { t = localStorage.getItem("theme-override"); localStorage.removeItem("theme"); } catch (_) {}
+        var dark = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches;
+        d.dataset.theme = t === "light" || t === "dark" ? t : dark ? "dark" : "light";
         d.classList.add("js");
         // If the site script never runs, show everything the script would have opened.
         setTimeout(function () { if (!window.__siteReady) d.classList.remove("js"); }, 2500);

@@ -65,7 +65,7 @@ export function layout({
     "The AT mark, the name Akhil Theerthala and the title Applied data scientist, beside a map of six areas of his work, such as document AI and data curation.";
   const home = page === "home";
   return `<!doctype html>
-<html lang="en" data-page="${page}" data-root="${root}">
+<html lang="en" data-page="${page}" data-root="${root}" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -85,7 +85,7 @@ export function layout({
     <meta name="twitter:creator" content="@thesilvervein" />
     <meta name="twitter:image" content="${siteImage}" />
     <meta name="twitter:image:alt" content="${siteImageAlt}" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content="#f8f5ed" />
     <link rel="icon" href="${root}favicon.ico" sizes="48x48" />
     <link rel="icon" href="${root}favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="${root}apple-touch-icon.png" />
@@ -93,10 +93,13 @@ export function layout({
     <link rel="stylesheet" href="${root}assets/css/site.css" />
     <script>
       (function () {
-        var d = document.documentElement, t;
-        try { t = localStorage.getItem("theme"); } catch (_) {}
-        // Dark is the site's own look; light is there for anyone who switches.
-        d.dataset.theme = t === "light" ? "light" : "dark";
+        var d = document.documentElement, t = null;
+        // The page follows the system setting. The switch stores an override
+        // that lasts until the system agrees with it. The old "theme" key
+        // pinned a theme for good, so it is dropped.
+        try { t = localStorage.getItem("theme-override"); localStorage.removeItem("theme"); } catch (_) {}
+        var dark = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches;
+        d.dataset.theme = t === "light" || t === "dark" ? t : dark ? "dark" : "light";
         d.classList.add("js");
         // If the site script never runs, show everything the script would have opened.
         setTimeout(function () { if (!window.__siteReady) d.classList.remove("js"); }, 2500);
@@ -177,8 +180,6 @@ function footer(root, page, data) {
           <p class="foot-pitch">Open to applied ML work, research collaborations, and fellowships in financial AI and document AI.</p>
           <div class="actions">
             <a class="btn btn-primary" href="mailto:${e(data.email)}">Email me</a>
-            <button class="btn copy-btn" type="button" data-copy="${e(data.email)}" data-copied-label="Address copied">Copy address</button>
-            <span class="sr-only" role="status"></span>
             <a class="btn" href="data/Akhil_Theerthala_Resume.pdf" target="_blank" rel="noreferrer">Download résumé<span class="sr-only"> (PDF, opens in a new tab)</span></a>
           </div>
           <p class="small">The layout regions are drawn from this page's own structure, the way a document-layout model labels a page. No model runs here.</p>
@@ -194,14 +195,16 @@ const linkButton = (link, cls = "btn", of = "") =>
 /* ---------- Tables ---------- */
 
 // One table: a labelled section, a head strip, banded rows and an optional closing row.
-function table({ id, title, columns, rows, total = "", two = false, regions = true }) {
+// "before" is drawn between the heading and the table, and "tableId" names the
+// table for a button that opens it.
+function table({ id, title, columns, rows, total = "", two = false, regions = true, before = "", tableId = "" }) {
   const region = (name) => (regions ? ` data-region="${name}"` : "");
   const heads = columns
     .map((column, index) => `<span role="columnheader"${index === 2 ? ' class="num"' : ""}>${column}</span>`)
     .join("");
   return `        <section id="${id}" aria-labelledby="${id}-h">
           <h2 class="sec-h" id="${id}-h"${region("section-header")}>${title}</h2>
-          <div class="tbl${two ? " two" : ""}" role="table" aria-labelledby="${id}-h"${region("table")}>
+${before}          <div class="tbl${two ? " two" : ""}"${tableId ? ` id="${tableId}"` : ""} role="table" aria-labelledby="${id}-h"${region("table")}>
             <div class="tr th" role="row">${heads}</div>
 ${rows.join("\n")}
 ${total}
@@ -312,6 +315,24 @@ function paperRow(publication, me) {
   });
 }
 
+// Selected work opens on the map of every work. The projects' table sits
+// under it, closed until asked for; without the script the table is the
+// whole section.
+function workMap(data, map) {
+  const areas = map.areas.map((area) => area.name).join(", ");
+  return `          <figure class="work-map">
+            <div class="map-wrap" data-region="figure">
+              <div class="map-stage">
+                <canvas class="map-canvas" data-map="home" role="img" aria-label="A map of ${map.works.length} works in ${map.areas.length} areas of AI: ${e(areas)}. The table after it lists the projects."></canvas>
+                <div class="map-tooltip" role="status" aria-live="polite"></div>
+              </div>
+            </div>
+            <figcaption data-region="caption">${map.works.length} papers, projects and production systems, each joined to the areas of AI it belongs to. Drag any point, and select a work to open it. <a href="map.html">Search the map</a>.</figcaption>
+          </figure>
+          <p class="disclose"><button class="btn btn-small" type="button" aria-expanded="false" aria-controls="work-table">Show the ${data.projects.length} projects as a table${icon.plus}</button></p>
+`;
+}
+
 export function homeBody(data, map) {
   const roles = data.workExperience;
   const papers = data.publications;
@@ -331,7 +352,7 @@ export function homeBody(data, map) {
             <dt>Based in</dt><dd>${e(data.location)}</dd>
             ${studying ? `<dt>Studying</dt><dd>${e(studying.text.replace(/\.$/, ""))}</dd>` : ""}
             <dt>Email</dt><dd><a href="mailto:${e(data.email)}">${e(data.email)}</a></dd>
-            <dt>Résumé</dt><dd><a href="data/Akhil_Theerthala_Resume.pdf" target="_blank" rel="noreferrer">Download the PDF<span class="sr-only"> (opens in a new tab)</span></a></dd>
+            <dt>Résumé</dt><dd><a href="data/Akhil_Theerthala_Resume.pdf" target="_blank" rel="noreferrer">PDF, ${data.resumePages} pages<span class="sr-only"> (opens in a new tab)</span></a></dd>
             <dt>Elsewhere</dt>
             <dd class="links">
               ${profileLinks(data).map((link) => `<a href="${e(link.href)}" target="_blank" rel="noreferrer">${e(link.label.replace("Google ", ""))}<span class="sr-only"> (opens in a new tab)</span></a>`).join("\n              ")}
@@ -351,9 +372,11 @@ ${table({
   id: "work",
   title: "Selected work",
   columns: ["Released", "Project", "Results"],
+  before: workMap(data, map),
+  tableId: "work-table",
   rows: data.projects.map(projectRow),
   total: totalRow(
-    `The other ${map.works.length - data.projects.length} are drawn on <a href="map.html">the map of all ${map.works.length} works</a>.`,
+    `These and ${map.works.length - data.projects.length} more works are drawn on <a href="map.html">the map</a>.`,
     `${data.projects.length} shown`,
   ),
 })}

@@ -86,6 +86,68 @@ test("the mini map cannot be dragged", () => {
   assert.equal(view.dragging, -1);
 });
 
+test("a hub can be dragged with the mouse and comes back when let go", () => {
+  const view = new MapView(canvas(800, 600), data, { animateIn: false, onOpen: () => true });
+  const a = 3;
+  const home = { x: view.hubs[a].x, y: view.hubs[a].y };
+  view.canvas.fire("pointerdown", { clientX: home.x, clientY: home.y });
+  view.canvas.fire("pointermove", { clientX: home.x + 90, clientY: home.y + 60 });
+  assert.equal(view.dragHub, a);
+  assert.deepEqual({ x: view.hubs[a].x, y: view.hubs[a].y }, { x: home.x + 90, y: home.y + 60 });
+  view.canvas.fire("pointerup");
+  assert.equal(view.dragHub, -1);
+  view.graph.settle();
+  assert.equal(view.graph.heat, 0);
+  assert.deepEqual({ x: view.hubs[a].x, y: view.hubs[a].y }, home);
+});
+
+test("a finger drags a work, and taps preview it and then open it", () => {
+  const opened = [];
+  const hovered = [];
+  const view = new MapView(canvas(800, 600), data, {
+    animateIn: false,
+    onOpen: (work) => (opened.push(work.short), true),
+    onHover: (work, touch) => hovered.push([work, touch]),
+  });
+  const w = 9;
+  const touch = { pointerType: "touch" };
+  // A finger that lands on a work claims the gesture; one on empty map does not.
+  let claimed = 0;
+  const start = (x, y) => view.canvas.fire("touchstart", { touches: [{ clientX: x, clientY: y }], cancelable: true, preventDefault: () => (claimed += 1) });
+  start(view.live[w].x, view.live[w].y);
+  assert.equal(claimed, 1);
+  start(4, 4);
+  assert.equal(claimed, 1);
+  // A hub's disc is claimed; its name under it is not, so a swipe that starts
+  // on a name still scrolls the page.
+  view.draw(0);
+  const a = 3;
+  start(view.hubs[a].x, view.hubs[a].y);
+  assert.equal(claimed, 2);
+  const [nx, ny, nw, nh] = view.areaRects[a];
+  start(nx + nw / 2, ny + nh - 3);
+  assert.equal(claimed, 2);
+
+  // First tap shows the work, second opens it.
+  view.canvas.fire("pointerdown", { ...at(view, w), ...touch });
+  view.canvas.fire("pointerup", touch);
+  assert.deepEqual(hovered.at(-1), [w, true]);
+  assert.deepEqual(opened, []);
+  view.canvas.fire("pointerdown", { ...at(view, w), ...touch });
+  view.canvas.fire("pointerup", touch);
+  assert.deepEqual(opened, [data.works[w].short]);
+
+  // A drag moves it and opens nothing.
+  const from = at(view, w);
+  view.canvas.fire("pointerdown", { ...from, ...touch });
+  view.canvas.fire("pointermove", { clientX: from.clientX + 60, clientY: from.clientY + 40, ...touch });
+  assert.equal(view.dragging, w);
+  assert.deepEqual([view.graph.nodes[w].x, view.graph.nodes[w].y], [from.clientX + 60, from.clientY + 40]);
+  view.canvas.fire("pointerup", touch);
+  assert.equal(view.dragging, -1);
+  assert.equal(opened.length, 1);
+});
+
 const fakeTooltip = () => {
   const classes = new Set(["on"]);
   return { classList: { add: (c) => classes.add(c), remove: (c) => classes.delete(c), contains: (c) => classes.has(c) } };
