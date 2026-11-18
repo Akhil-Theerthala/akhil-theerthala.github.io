@@ -34,7 +34,8 @@ export function cssColours() {
 
 export const sourceHref = (root, source, anchor = "") => {
   const href = source.href + anchor;
-  if (href.startsWith("#") && document.documentElement.dataset.page === "home") return href;
+  // A bare fragment means the home page, so every other page spells that out.
+  if (href.startsWith("#")) return document.documentElement.dataset.page === "home" ? href : (root || "./") + href;
   return root + href;
 };
 
@@ -408,7 +409,7 @@ export class MapView {
     if (!alpha) return;
     const full = this.options.labels !== "none" && this.box.w >= 420;
     const size = Math.round(12.5 * Math.max(0.9, this.unit));
-    ctx.font = `600 ${size}px "IBM Plex Sans", sans-serif`;
+    ctx.font = `600 ${size}px "Atkinson Hyperlegible Next", sans-serif`;
     ctx.textBaseline = "middle";
     ctx.textAlign = "left";
     // Labels may use the gutter left of the plot, but stay clear of the hero text.

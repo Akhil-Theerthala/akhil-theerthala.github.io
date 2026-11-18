@@ -53,7 +53,7 @@ function checkLocalReferences(file, html) {
 
 const data = loadData();
 const siteUrl = `https://${read("CNAME").trim()}`;
-const pages = ["index.html", "writing.html", "404.html"];
+const pages = ["index.html", "writing.html", "map.html", "404.html"];
 const slugs = new Set();
 
 for (const article of data.writings) {

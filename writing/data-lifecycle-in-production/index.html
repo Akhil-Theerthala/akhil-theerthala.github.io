@@ -14,16 +14,16 @@
     <meta property="og:image" content="https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="The AT mark, the name Akhil Theerthala and the title Applied data scientist, beside a map of nine areas of his work, such as document AI and LLM evaluation." />
+    <meta property="og:image:alt" content="The AT mark, the name Akhil Theerthala and the title Applied data scientist, beside a map of six areas of his work, such as document AI and data curation." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:creator" content="@thesilvervein" />
     <meta name="twitter:image" content="https://akhiltheerthala.com/assets/social/akhil-theerthala-og.png" />
-    <meta name="twitter:image:alt" content="The AT mark, the name Akhil Theerthala and the title Applied data scientist, beside a map of nine areas of his work, such as document AI and LLM evaluation." />
-    <meta name="theme-color" content="#0c0f0d" />
+    <meta name="twitter:image:alt" content="The AT mark, the name Akhil Theerthala and the title Applied data scientist, beside a map of six areas of his work, such as document AI and data curation." />
+    <meta name="theme-color" content="#000000" />
     <link rel="icon" href="../../favicon.ico" sizes="48x48" />
     <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
-    <link rel="preload" href="../../assets/fonts/plex-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../../assets/fonts/atkinson-next-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="../../assets/css/site.css" />
     <script>
       (function () {
@@ -32,7 +32,7 @@
         // Dark is the site's own look; light is there for anyone who switches.
         d.dataset.theme = t === "light" ? "light" : "dark";
         d.classList.add("js");
-        // If the site script never runs, show everything the reveal animation hides.
+        // If the site script never runs, show everything the script would have opened.
         setTimeout(function () { if (!window.__siteReady) d.classList.remove("js"); }, 2500);
       })();
     </script>
@@ -59,39 +59,30 @@
     <script defer src="../../assets/js/site.js"></script>
   </head>
   <body>
-    <div class="ground" aria-hidden="true"><i class="ground-cols"></i><i class="ground-ticks"></i><i class="ground-spot"></i><i class="ground-contour"></i><i class="ground-contour"></i></div>
     <a class="skip-link" href="#main-content">Skip to main content</a>
-    <header class="site-nav">
-      <div class="wrap">
-        <a class="wordmark" href="../../" aria-label="Akhil Theerthala, home"><svg class="wordmark-mark" viewBox="0 0 23 22" width="23" height="22" aria-hidden="true"><path fill="currentColor" d="M10 5H13L22 20H18.5L11.5 8.33L4.5 20H1Z"/><path class="accent" d="M2 2H21V5H13V20H10V5H2Z"/></svg><span class="wordmark-text">Akhil Theerthala</span></a>
-        <nav aria-label="Sections">
-          <ul class="nav-links" id="site-menu">
-            <li><a href="../../#about" data-section="about">About</a></li>
-            <li><a href="../../#cv" data-section="cv">Experience</a></li>
-            <li><a href="../../#work" data-section="work">Projects</a></li>
-            <li><a href="../../#research" data-section="research">Papers</a></li>
-            <li><a href="../../#writings" data-section="writings" aria-current="page">Writing</a></li>
-            <li><a href="../../#contact" data-section="contact">Contact</a></li>
-          </ul>
+    <div class="sheet" id="sheet">
+      <header class="top" id="top">
+        <nav class="doc" aria-label="Site">
+          <a class="home-link" href="../../">Akhil Theerthala</a>
+          <a href="../../writing.html" aria-current="page">Writing</a>
+          <a href="../../map.html">Map</a>
         </nav>
-        <div class="nav-actions">
+        <div class="controls">
           <button class="icon-btn theme-toggle" type="button" aria-label="Switch between light and dark theme"><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg></button>
-          <a class="btn btn-primary btn-small nav-cta" href="mailto:akhiltvsn@gmail.com">Email me</a>
-          <button class="icon-btn nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Menu"><svg class="menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg><svg class="close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
         </div>
-      </div>
-    </header>
-    <main id="main-content">
-      <div class="wrap page-top">
-        <p class="crumbs"><a href="../../#writings">Writing</a><span aria-hidden="true">/</span><span>Older Learning Notes</span></p>
-        <h1 class="page-title">Data Lifecycle in Production</h1>
-        
-        <p class="page-meta"><span class="dot" aria-hidden="true"></span><span>Akhil Theerthala</span><span>Jun 2023</span><span>12 min read</span></p>
-        <details class="toc-mobile"><summary>On this page</summary><ol><li><a href="#the-what">The “What?”</a></li><li><a href="#the-good-data-and-bad-data" class="sub">The Good Data and Bad Data</a></li><li><a href="#what-is-useful-then" class="sub">What is useful, then?</a></li><li><a href="#the-how">The “How?”</a></li><li><a href="#the-sources" class="sub">The sources</a></li><li><a href="#how-much-data-should-we-collect" class="sub">How much data should we collect?</a></li><li><a href="#how-can-things-go-wrong">How can things go wrong?</a></li><li><a href="#references">References</a></li></ol></details>
-      </div>
-      <div class="wrap reader no-aside">
-        <nav class="toc" aria-label="On this page"><p>On this page</p><ol><li><a href="#the-what">The “What?”</a></li><li><a href="#the-good-data-and-bad-data" class="sub">The Good Data and Bad Data</a></li><li><a href="#what-is-useful-then" class="sub">What is useful, then?</a></li><li><a href="#the-how">The “How?”</a></li><li><a href="#the-sources" class="sub">The sources</a></li><li><a href="#how-much-data-should-we-collect" class="sub">How much data should we collect?</a></li><li><a href="#how-can-things-go-wrong">How can things go wrong?</a></li><li><a href="#references">References</a></li></ol></nav>
-        <article class="prose" data-article-file="Data-Lifecycle-in-Production.md">
+      </header>
+      <div class="ribbon" aria-hidden="true"></div>
+      <main id="main-content">
+        <div class="page-top">
+          <p class="crumbs"><a href="../../#writings">Writing</a><span aria-hidden="true">/</span><span>Older Learning Notes</span></p>
+          <h1 class="page-title">Data Lifecycle in Production</h1>
+          
+          <p class="page-meta"><span>Akhil Theerthala</span><span>Jun 2023</span><span>12 min read</span></p>
+          <details class="toc-mobile"><summary>On this page</summary><ol><li><a href="#the-what">The “What?”</a></li><li><a href="#the-good-data-and-bad-data" class="sub">The Good Data and Bad Data</a></li><li><a href="#what-is-useful-then" class="sub">What is useful, then?</a></li><li><a href="#the-how">The “How?”</a></li><li><a href="#the-sources" class="sub">The sources</a></li><li><a href="#how-much-data-should-we-collect" class="sub">How much data should we collect?</a></li><li><a href="#how-can-things-go-wrong">How can things go wrong?</a></li><li><a href="#references">References</a></li></ol></details>
+        </div>
+        <div class="reader">
+          <nav class="toc" aria-label="On this page"><p>On this page</p><ol><li><a href="#the-what">The “What?”</a></li><li><a href="#the-good-data-and-bad-data" class="sub">The Good Data and Bad Data</a></li><li><a href="#what-is-useful-then" class="sub">What is useful, then?</a></li><li><a href="#the-how">The “How?”</a></li><li><a href="#the-sources" class="sub">The sources</a></li><li><a href="#how-much-data-should-we-collect" class="sub">How much data should we collect?</a></li><li><a href="#how-can-things-go-wrong">How can things go wrong?</a></li><li><a href="#references">References</a></li></ol></nav>
+          <article class="prose" data-article-file="Data-Lifecycle-in-Production.md">
 <h2 id="the-what">The “What?”</h2>
 <p id="p-0">When you recall the machine learning lifecycle, remember that the first step after defining the project is to question what data would help us successfully achieve the intended goals. In this phase, our only goal is to identify and determine the good and useful data, which we then use to create machine learning models.
 Wait a minute…how do we determine the criteria for “ <strong>good</strong>” and “ <strong>useful</strong>”? We can either ignore these remarks and move on or carefully examine them. In production, it helps to have a firm grasp of the meaning of these adjectives that pop up from time to time.</p>
@@ -139,26 +130,28 @@ However, expecting a perfect outcome right after collecting the data is a dream.
 <li><a href="https://ai.googleblog.com/2018/09/introducing-inclusive-images-competition.html" target="_blank" rel="noreferrer">Inclusive Images Competition</a></li>
 </ol>
 
-          <div class="article-foot">
-            <p>Send questions or corrections to <a href="mailto:akhiltvsn@gmail.com">akhiltvsn@gmail.com</a>.</p>
-            <p><a href="../../writing.html">All writing</a></p>
-          </div>
-        </article>
-        
-      </div>
-    </main>
-    <footer class="site-footer">
-      <div class="wrap">
-        <p>© 2026 Akhil Theerthala, Bengaluru</p>
-        <nav aria-label="Profiles">
-          <a href="https://github.com/Akhil-Theerthala" target="_blank" rel="noreferrer">GitHub</a>
-          <a href="https://huggingface.co/Akhil-Theerthala" target="_blank" rel="noreferrer">Hugging Face</a>
-          <a href="https://scholar.google.com/citations?user=_H1O3ScAAAAJ&amp;hl=en" target="_blank" rel="noreferrer">Google Scholar</a>
-          <a href="https://www.linkedin.com/in/akhil-theerthala/" target="_blank" rel="noreferrer">LinkedIn</a>
-          <a href="https://x.com/thesilvervein" target="_blank" rel="noreferrer">X</a>
-          <a href="../../writing.html">All writing</a>
-        </nav>
-      </div>
-    </footer>
+            <div class="article-foot">
+              <p>Send questions or corrections to <a href="mailto:akhiltvsn@gmail.com">akhiltvsn@gmail.com</a>.</p>
+              <p><a href="../../writing.html">All writing</a></p>
+            </div>
+          </article>
+        </div>
+      </main>
+      <footer class="foot">
+        <div class="ribbon" aria-hidden="true"></div>
+        <div class="foot-line">
+          <p>© 2026 Akhil Theerthala, Bengaluru</p>
+          <nav aria-label="Profiles">
+            <a href="https://github.com/Akhil-Theerthala" target="_blank" rel="noreferrer">GitHub<span class="sr-only"> (opens in a new tab)</span></a>
+            <a href="https://huggingface.co/Akhil-Theerthala" target="_blank" rel="noreferrer">Hugging Face<span class="sr-only"> (opens in a new tab)</span></a>
+            <a href="https://scholar.google.com/citations?user=_H1O3ScAAAAJ&amp;hl=en" target="_blank" rel="noreferrer">Google Scholar<span class="sr-only"> (opens in a new tab)</span></a>
+            <a href="https://www.linkedin.com/in/akhil-theerthala/" target="_blank" rel="noreferrer">LinkedIn<span class="sr-only"> (opens in a new tab)</span></a>
+            <a href="https://x.com/thesilvervein" target="_blank" rel="noreferrer">X<span class="sr-only"> (opens in a new tab)</span></a>
+            <a href="../../writing.html">All writing</a>
+          </nav>
+        </div>
+      </footer>
+      
+    </div>
   </body>
 </html>

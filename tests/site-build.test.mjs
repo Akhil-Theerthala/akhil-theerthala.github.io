@@ -22,7 +22,7 @@ function loadData() {
 }
 
 const data = loadData();
-const pages = ["index.html", "writing.html", "404.html"];
+const pages = ["index.html", "writing.html", "map.html", "404.html"];
 
 test("pages are static HTML with one local script and no React runtime", () => {
   for (const file of pages) {
@@ -43,19 +43,22 @@ test("the homepage ships its content in the HTML, not only via JavaScript", () =
     "Akhil Theerthala",
     "I build calibrated LLM safeguards and document-AI systems for finance",
     "Senior Member Data Scientist",
-    "Projects",
+    "Selected work",
     "LocalXiv",
     "Papers",
-    "Get in touch",
+    "Email me",
   ]) {
     assert.ok(index.includes(text), `homepage HTML is missing "${text}"`);
   }
-  assert.match(index, /<noscript>/);
-  // Content hidden for the reveal animation comes back if the script never runs.
+  // Role details are in the HTML and collapse only while the script is there to open them.
+  assert.doesNotMatch(index, /<ul class="more"[^>]*\bhidden\b/);
   assert.match(index, /classList\.add\("js"\)/);
   assert.match(index, /if \(!window\.__siteReady\) d\.classList\.remove\("js"\)/);
   assert.match(read("src/site.js"), /window\.__siteReady = true/);
-  assert.match(read("assets/css/site.css"), /prefers-reduced-motion: reduce[\s\S]*\.js \.reveal/);
+  const css = read("assets/css/site.css");
+  assert.match(css, /\.js \.what > button\[aria-expanded="false"\] ~ \.more \{\s*display: none;/);
+  // Print opens every role again.
+  assert.match(css.slice(css.indexOf("@media print")), /\.js \.what > button\[aria-expanded="false"\] ~ \.more \{\s*display: grid;/);
 });
 
 test("the map data is real, complete and linked to pages that exist", () => {
@@ -142,8 +145,8 @@ test("every writing has a pre-rendered canonical route", () => {
     assert.ok(html.includes(`data-article-file="${escapeHtml(article.file)}"`));
     assert.match(html, /\.\.\/\.\.\/assets\/js\/site\.js/);
     assert.match(html, /<p id="p-0">/, `${article.slug} body is not pre-rendered`);
-    if (article.onMap) assert.match(html, /data-map="mini"/);
-    else assert.doesNotMatch(html, /data-map="mini"/);
+    // Essays are one reading column with its contents list, and nothing beside it.
+    assert.doesNotMatch(html, /data-map=|class="side-map"/);
   }
 });
 
@@ -181,9 +184,9 @@ test("the site ships local fonts and complete discovery metadata", () => {
   const css = read("assets/css/site.css");
   for (const file of pages) assert.doesNotMatch(read(file), /fonts\.googleapis\.com|fonts\.gstatic\.com/);
   for (const [family, file] of [
-    ["IBM Plex Sans", "plex-sans-latin.woff2"],
+    ["Atkinson Hyperlegible Next", "atkinson-next-latin.woff2"],
+    ["Atkinson Hyperlegible Next", "atkinson-next-latin-italic.woff2"],
     ["IBM Plex Mono", "plex-mono-latin-400.woff2"],
-    ["IBM Plex Serif", "plex-serif-latin-400.woff2"],
   ]) {
     assert.match(css, new RegExp(`font-family:\\s*"${family}"`));
     assert.match(css, new RegExp(`fonts/${file}`));
@@ -202,6 +205,7 @@ test("the site ships local fonts and complete discovery metadata", () => {
 
   const sitemap = read("sitemap.xml");
   assert.match(sitemap, /https:\/\/akhiltheerthala\.com\//);
+  assert.match(sitemap, /https:\/\/akhiltheerthala\.com\/map\.html/);
   for (const article of data.writings) assert.ok(sitemap.includes(`https://akhiltheerthala.com/writing/${article.slug}/`));
   assert.match(read("robots.txt"), /Sitemap: https:\/\/akhiltheerthala\.com\/sitemap\.xml/);
 
@@ -232,53 +236,81 @@ test("production commands are unchanged and media is reserved", () => {
   assert.equal(fs.existsSync("assets/media/profile-960.webp"), true);
 });
 
-test("every page sits on the ground layer", () => {
+test("every page is one sheet with the shared top line and border", () => {
   for (const file of [...pages, "writing/density-vs-diversity-in-data-selection/index.html", "artifacts/kuvera/index.html"]) {
-    assert.match(read(file), /<div class="ground" aria-hidden="true">/, file);
+    const html = read(file);
+    assert.match(html, /<div class="sheet" id="sheet"/, file);
+    assert.match(html, /<header class="top" id="top"/, file);
+    assert.match(html, /<div class="ribbon" aria-hidden="true"><\/div>/, file);
+    assert.match(html, /<button class="icon-btn theme-toggle" type="button"/, file);
+    assert.doesNotMatch(html, /class="ground"|class="site-nav"/, file);
   }
+  // Dark is pure black, with no glow or grain over it.
+  const css = read("assets/css/site.css");
+  assert.match(css.slice(css.indexOf("\n:root {"), css.indexOf(':root[data-theme="light"]')), /--bg: #000000;/);
+  assert.doesNotMatch(css, /--glows|--grain|\.ground/);
 });
 
-test("papers are split by authorship and unreleased ones get a typeset first page", () => {
+test("papers say what the contribution was, and unreleased ones say so", () => {
   const index = read("index.html");
-  const first = index.indexOf("First-author work");
-  const major = index.indexOf("Major contributions");
-  assert.ok(first > 0 && major > first, "first-author work comes before major contributions");
-  for (const publication of data.publications) {
-    const at = index.indexOf(`>${escapeHtml(publication.title)}`);
-    const own = publication.authors[0] === data.name;
-    assert.ok(own ? at > first && at < major : at > major, publication.title);
-  }
-  const unreleased = data.publications.filter((publication) => !publication.arxiv);
-  assert.equal((index.match(/class="pub-thumb draft"/g) || []).length, unreleased.length);
-  assert.match(index, /Unreleased/);
-
-  // Released papers say what the contribution was, never an author position.
-  const roles = [...index.matchAll(/class="pub-role">([^<]*)</g)].map((match) => match[1]);
-  const released = data.publications.filter((publication) => publication.arxiv);
-  assert.deepEqual(
-    roles.sort(),
-    Array.from(released, (publication) => (publication.authors[0] === data.name ? "First author" : "Major contribution")).sort(),
-  );
-  assert.doesNotMatch(index, /Sole author| of \d+ authors/);
+  const rows = data.publications.map((publication) => {
+    const slug = publication.slug || publication.title.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").split("-").slice(0, 6).join("-");
+    const start = index.indexOf(`id="paper-${slug}"`);
+    assert.ok(start > 0, publication.title);
+    return index.slice(start, index.indexOf('<div class="tr', start));
+  });
+  data.publications.forEach((publication, i) => {
+    assert.ok(rows[i].includes(escapeHtml(publication.short || publication.title)), publication.title);
+    assert.ok(rows[i].includes(escapeHtml(publication.venue)), publication.venue);
+    if (!publication.arxiv) {
+      // No final author list yet, so no authorship label and no link.
+      assert.match(rows[i], /<span class="ref">Unreleased<\/span>/);
+      assert.doesNotMatch(rows[i], /First author|Major contribution|<a /);
+      return;
+    }
+    assert.ok(rows[i].includes(`href="${publication.arxiv}"`), publication.title);
+    assert.ok(rows[i].includes(`arXiv ${publication.arxiv.split("/abs/")[1]}`), publication.title);
+    const label = publication.authors[0] === data.name ? "First author" : "Major contribution";
+    assert.ok(rows[i].includes(`<span class="sub">${label}. `), `${publication.title}: ${label}`);
+  });
+  // Never an author position.
+  assert.doesNotMatch(index, /[Ss]ole author| of \d+ authors/);
 });
 
 test("LocalXiv is shown with its own cover image", () => {
-  for (const file of ["index.html", "artifacts/localxiv/index.html"]) {
-    assert.match(read(file), /localxiv-cover\.webp" width="1920" height="1200"/, file);
-  }
+  assert.match(read("artifacts/localxiv/index.html"), /localxiv-cover\.webp" width="1920" height="1200"/);
   assert.equal(fs.existsSync("assets/media/localxiv-cover.webp"), true);
 });
 
-test("every page carries the mark and its icons", () => {
+test("every page carries the site icons", () => {
   for (const file of pages) {
     const html = read(file);
-    assert.match(html, /<svg class="wordmark-mark" viewBox="0 0 23 22"/, file);
     assert.match(html, /rel="icon" href="[^"]*favicon\.svg" type="image\/svg\+xml"/, file);
     assert.match(html, /rel="apple-touch-icon" href="[^"]*apple-touch-icon\.png"/, file);
   }
   for (const icon of ["favicon.svg", "favicon.ico", "apple-touch-icon.png"]) {
     assert.equal(fs.existsSync(icon), true, icon);
   }
+});
+
+test("the map has its own page, with the legend and the search under it", () => {
+  const page = read("map.html");
+  const map = JSON.parse(read("assets/data/map.json"));
+  assert.match(page, /<html lang="en" data-page="map"/);
+  assert.match(page, /<canvas class="map-canvas" data-map="page"/);
+  assert.match(page, /<noscript>/);
+  assert.ok(page.includes(`A map of ${map.works.length} works in ${map.areas.length} areas of AI`));
+  assert.equal((page.match(/class="chip" type="button" aria-pressed="true" data-kind="/g) || []).length, 3);
+  const controls = page.indexOf('<div class="map-controls">');
+  const search = page.indexOf('<div class="map-search">');
+  assert.ok(controls > 0 && search > controls, "the search is not in the map controls");
+  // The home page points to it and says how many works it holds.
+  const index = read("index.html");
+  assert.ok(index.includes(`<a href="map.html">the map of all ${map.works.length} works</a>`));
+  assert.ok(index.includes(`The other ${map.works.length - data.projects.length} are drawn on`));
+  assert.doesNotMatch(index, /data-map=/);
+  // From any page but the home page, a link to a home-page row spells out the home page.
+  assert.match(read("src/map.js"), /dataset\.page === "home" \? href : \(root \|\| "\.\/"\) \+ href/);
 });
 
 test("the map renderer draws the graph from the shared layout, not islands", () => {

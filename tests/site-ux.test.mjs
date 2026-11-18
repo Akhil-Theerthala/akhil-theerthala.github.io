@@ -12,8 +12,9 @@ function loadData() {
 }
 
 const data = loadData();
-const pages = ["index.html", "writing.html", "404.html", "artifacts/localxiv/index.html"];
+const innerPages = ["writing.html", "map.html", "404.html", "artifacts/localxiv/index.html", "writing/7-practical-pytorch-tips/index.html"];
 const css = read("assets/css/site.css");
+const script = read("src/site.js");
 
 // The first rule block written for a selector, on its own line.
 function rule(selector) {
@@ -42,188 +43,139 @@ const contrast = (a, b) => {
   return (hi + 0.05) / (lo + 0.05);
 };
 
-test("the header offers section navigation on small screens", () => {
-  for (const file of pages) {
-    const html = read(file);
-    assert.match(html, /<button class="icon-btn nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu"/, file);
-    assert.match(html, /<ul class="nav-links" id="site-menu">/, file);
-  }
-  const small = css.slice(css.indexOf("@media (max-width: 980px)"));
-  assert.match(small, /\.nav-toggle \{[^}]*display: inline-grid/);
-  assert.match(small, /\.site-nav\.menu-open nav \{/);
-  assert.doesNotMatch(small, /\.nav-links \{\s*display: none;/);
-  const script = read("src/site.js");
-  assert.match(script, /nav-toggle/);
-  assert.match(script, /menu-open/);
-  assert.match(script, /"Escape"[\s\S]*menu-open|menu-open[\s\S]*"Escape"/);
-});
-
-// The hero intro between its opening tag and the map stage.
-function heroIntro(index) {
-  const start = index.indexOf('<div class="hero-intro">');
-  assert.ok(start > 0, "no hero intro");
-  return index.slice(start, index.indexOf('<div class="map-stage">', start));
+// The token block of one theme.
+function tokens(theme) {
+  const start = theme === "dark" ? css.indexOf("\n:root {") : css.indexOf('\n:root[data-theme="light"] {');
+  const block = css.slice(start, css.indexOf("\n}", start));
+  return (name) => property(block, `--${name}`);
 }
 
-// The About dialog, which sits inside the hero section.
-function aboutDialog(index) {
-  const start = index.indexOf('<dialog class="about-dialog" id="about" aria-labelledby="about-title">');
-  assert.ok(start > 0, "no About dialog");
-  const end = index.indexOf("</dialog>", start);
-  const heroEnd = index.indexOf("</section>", index.indexOf('<section class="hero"'));
-  assert.ok(end < heroEnd, "the About dialog is outside the hero section");
-  return index.slice(start, end);
-}
+test("the home page's top line names the document and holds its two controls", () => {
+  const index = read("index.html");
+  const header = index.slice(index.indexOf('<header class="top"'), index.indexOf("</header>"));
+  assert.match(header, /<strong>Curriculum vitae<\/strong><span>Updated /);
+  assert.match(header, /<button class="switch" type="button" role="switch" aria-checked="false" id="regions-switch">/);
+  assert.match(header, /<button class="icon-btn theme-toggle" type="button" aria-label="Switch between light and dark theme">/);
+  // No section menu: the page is short enough to scroll.
+  assert.doesNotMatch(index, /nav-toggle|nav-links|site-menu/);
+});
 
-const firstWords = (text, n = 6) => text.split(" ").slice(0, n).join(" ");
-
-test("the header carries the one gold email button on every page", () => {
-  for (const file of ["index.html", "writing.html"]) {
+test("inner pages link home and to the two indexes", () => {
+  for (const file of innerPages) {
     const html = read(file);
-    const header = html.slice(html.indexOf('<header class="site-nav">'), html.indexOf("</header>"));
-    assert.match(header, /<a class="btn btn-primary btn-small nav-cta" href="mailto:/, file);
+    const header = html.slice(html.indexOf('<header class="top"'), html.indexOf("</header>"));
+    assert.match(header, /<nav class="doc" aria-label="Site">/, file);
+    assert.match(header, /<a class="home-link" href="[^"]*">Akhil Theerthala<\/a>/, file);
+    assert.match(header, /href="[^"]*writing\.html"/, file);
+    assert.match(header, /href="[^"]*map\.html"/, file);
+    // The regions layer belongs to the home page alone.
+    assert.doesNotMatch(html, /regions-switch|data-region=/, file);
   }
-  const index = read("index.html");
-  assert.doesNotMatch(heroIntro(index), /class="btn/);
-  // The script dims the header button only while the contact block's is on screen.
-  const script = read("src/site.js");
-  assert.match(script, /\.contact-actions/);
-  assert.doesNotMatch(script, /hero-actions/);
+  assert.match(read("writing.html"), /writing\.html" aria-current="page">Writing/);
+  assert.match(read("map.html"), /map\.html" aria-current="page">Map/);
 });
 
-test("the hero intro is a kicker, the name, one lede and an About chip", () => {
+test("the home page has one filled button, and it is the email", () => {
   const index = read("index.html");
-  const intro = heroIntro(index);
-  const parts = [
-    '<p class="hero-kicker">',
-    '<h1><button class="hero-name" type="button" aria-expanded="false" aria-controls="about" data-open-about>Akhil Theerthala</button></h1>',
-    '<p class="hero-lede">',
-    '<button class="about-chip" type="button" aria-expanded="false" aria-controls="about" data-open-about>',
-  ];
-  let at = 0;
-  for (const part of parts) {
-    const next = intro.indexOf(part, at);
-    assert.ok(next > at, `missing or out of order: ${part}`);
-    at = next;
-  }
-  assert.match(intro, /<img src="assets\/media\/profile-480\.webp" alt="" width="30" height="30" \/>About me<\/button>/);
-  for (const gone of ["hero-proof", "hero-actions", "Download CV", "downloads on Hugging Face", "map-search"]) {
-    assert.ok(!intro.includes(gone), `${gone} is still in the hero intro`);
-  }
-  assert.doesNotMatch(index, /hero-proof|hero-actions/);
-  // The search moved into the legend row under the map.
-  const controls = index.indexOf('<div class="map-controls">');
-  const search = index.indexOf('<div class="map-search">');
-  assert.ok(controls > 0 && search > controls && search < index.indexOf("</section>", controls), "the search is not in the map controls");
-  assert.match(rule(".search-results"), /bottom: calc\(100% \+ 8px\)/);
+  assert.equal((index.match(/btn-primary/g) || []).length, 1);
+  assert.ok(index.includes(`<a class="btn btn-primary" href="mailto:${data.email}">Email me</a>`));
+  // The copy button reports to a status region for screen readers.
+  assert.match(index, /data-copied-label="Address copied">Copy address<\/button>\s*<span class="sr-only" role="status"><\/span>/);
+  assert.match(script, /role="status"/);
+  assert.match(index, /Download résumé<span class="sr-only"> \(PDF, opens in a new tab\)<\/span>/);
 });
 
-test("About is a dialog that the name, the chip and the nav open", () => {
+test("roles are buttons that open their own detail", () => {
   const index = read("index.html");
-  assert.doesNotMatch(index, /<section class="section" id="about">/);
-  const dialog = aboutDialog(index);
-  // The close button comes first, so opening the dialog focuses it rather than a link.
-  assert.match(dialog, /<div class="card-body">\s*<button class="icon-btn card-close" type="button" aria-label="Close" data-close-about autofocus>/);
-  assert.match(dialog, /<h2 id="about-title">Akhil Theerthala<\/h2>/);
-  assert.ok(dialog.includes(`${data.currentRole} · ${data.location}`), "the role line is missing");
-  assert.match(dialog, /<img src="assets\/media\/profile-960\.webp" width="960" height="995" loading="lazy" decoding="async" alt="Akhil Theerthala" \/>/);
-  assert.ok(dialog.includes(`<figcaption>${data.location}</figcaption>`));
-  for (const paragraph of data.longIntro) assert.ok(dialog.includes(firstWords(paragraph, 8)), firstWords(paragraph, 8));
-  for (const item of data.now) {
-    assert.ok(dialog.includes(`<dt>${item.label}</dt>`), item.label);
-    assert.ok(dialog.includes(firstWords(item.text, 4)), item.text);
-  }
-  assert.match(dialog, /<h3 class="card-sub">Research interests<\/h3>/);
-  for (const focus of data.researchFocus) {
-    assert.ok(dialog.includes(`<li>${focus.title}</li>`), focus.title);
-    // Sentence case: only acronyms stay capitalised after the first word.
-    const rest = focus.title.split(" ").slice(1);
-    assert.ok(rest.every((word) => word === word.toLowerCase() || word === word.toUpperCase()), `${focus.title} is title case`);
-  }
-  const profiles = [...data.researchProfiles, ...data.contactLinks.filter((link) => link.label !== "Email")];
-  for (const profile of profiles) assert.ok(dialog.includes(`href="${profile.href.replaceAll("&", "&amp;")}"`), profile.label);
-  assert.equal((dialog.match(/btn-primary/g) || []).length, 1);
-  assert.ok(dialog.includes(`<a class="btn btn-primary" href="mailto:${data.email}">Email me</a>`));
-  // No CV, no proof lines: the papers and achievements sections carry those.
-  for (const gone of ["Resume.pdf", "Download CV", "downloads", "Workshop papers", "1st of"]) {
-    assert.ok(!dialog.includes(gone), `${gone} is in the dialog`);
-  }
-  const script = read("src/site.js");
-  assert.match(script, /showModal\(\)/);
-  assert.match(script, /data-open-about/);
-  assert.match(script, /data-section="about"/);
-  assert.match(script, /location\.hash === "#about"/);
-  // A click on the dialog's own scrollbar also targets the dialog, so the
-  // backdrop check must test the point against the dialog's box.
-  const aboutBlock = script.slice(script.indexOf('$("dialog#about")'), script.indexOf("hashchange"));
-  assert.match(aboutBlock, /about\.getBoundingClientRect\(\)/);
-  // Styles: a dialog over a blurred map, still for reduced motion.
-  assert.match(rule(".about-dialog::backdrop"), /backdrop-filter: blur/);
-  assert.match(css, /prefers-reduced-motion: reduce[^}]*\{[^}]*\.about-dialog\[open\]/);
+  data.workExperience.forEach((role, i) => {
+    assert.ok(index.includes(`<button type="button" aria-expanded="false" aria-controls="role-${i}">${role.title.replaceAll("&", "&amp;")}`), role.title);
+    assert.ok(index.includes(`<ul class="more" id="role-${i}">`), `role-${i}`);
+  });
+  assert.match(script, /aria-expanded/);
+  // The whole row is the target.
+  assert.match(css, /\.what > a::after,\s*\.what > button::after \{[^}]*inset: 0;/);
 });
 
-test("the site's own page is a project's primary button", () => {
+test("tables keep their semantics and stack on a phone", () => {
   const index = read("index.html");
-  for (const project of data.projects.filter((item) => item.story)) {
-    const start = index.indexOf(`href="artifacts/${project.slug}/"`);
-    assert.ok(start > 0, project.slug);
-    const article = index.slice(index.lastIndexOf("<article", start), index.indexOf("</article>", start));
-    const primary = /class="btn btn-primary" href="([^"]+)"/.exec(article);
-    assert.equal(primary?.[1], `artifacts/${project.slug}/`, project.title);
-    assert.equal((article.match(/btn-primary/g) || []).length, 1, project.title);
+  const tables = index.match(/<div class="tbl[^"]*" role="table" aria-labelledby="[a-z]+-h" data-region="table">/g) || [];
+  assert.equal(tables.length, 5);
+  assert.ok((index.match(/role="columnheader"/g) || []).length >= 14);
+  assert.equal((index.match(/class="tr total" role="row"/g) || []).length, 4);
+  const phone = css.slice(css.indexOf("@media (max-width: 640px)"));
+  assert.match(phone, /\.tr \{\s*grid-template-columns: minmax\(0, 1fr\);/);
+  // The head strip leaves the layout but stays for screen readers.
+  assert.match(phone, /\.th \{[^}]*clip-path: inset\(50%\);/);
+  assert.doesNotMatch(phone, /\.th \{[^}]*display: none/);
+});
+
+test("the layout regions are drawn from the page and stay still for reduced motion", () => {
+  const index = read("index.html");
+  assert.match(index, /<div class="sheet" id="sheet" data-regions="off">/);
+  assert.match(index, /<div class="regions" aria-hidden="true"><\/div>/);
+  for (const region of ["page-header", "title", "text", "key-value", "section-header", "table", "page-footer"]) {
+    assert.ok(index.includes(`data-region="${region}"`), region);
   }
-  const achievement = index.slice(index.indexOf('id="achievement-reasoning-dataset-challenge"'), index.indexOf("</li>", index.indexOf('id="achievement-reasoning-dataset-challenge"')));
-  const primary = /class="btn btn-small btn-primary" href="([^"]+)"/.exec(achievement);
-  assert.equal(primary?.[1], "writing/creating-a-reasoning-dataset-with-no-budget/");
+  assert.match(index, /No model runs here\./);
+  // The intro plays once per visit, and not at all for reduced motion.
+  assert.match(script, /sessionStorage\.getItem\("regions-intro"\)/);
+  assert.match(script, /if \(seen \|\| reducedMotion\(\)\) return;/);
+  assert.match(script, /new ResizeObserver\(build\)\.observe\(sheet\)/);
+  // The drawn-in reveal exists only inside the motion query.
+  const base = rule(".rg");
+  assert.doesNotMatch(base, /clip-path/);
+  assert.match(css, /@media \(prefers-reduced-motion: no-preference\) \{\s*\.rg \{\s*clip-path: inset\(0 100% 100% 0\);/);
 });
 
-test("paper actions keep arXiv and the copy buttons but drop the DOI button", () => {
-  const index = read("index.html");
-  assert.doesNotMatch(index, /class="btn btn-small" href="https:\/\/doi\.org\//);
-  for (const publication of data.publications.filter((item) => item.arxiv)) {
-    assert.ok(index.includes(`class="btn btn-small btn-primary" href="${publication.arxiv}"`), publication.title);
-    assert.ok(index.includes(`"sameAs": "https://doi.org/${publication.doi}"`), publication.title);
-  }
-  assert.equal((index.match(/data-copied-label="BibTeX copied"/g) || []).length, 3);
+test("the theme switch holds transitions for the swap", () => {
+  assert.match(script, /classList\.add\("no-transitions"\)/);
+  assert.match(script, /requestAnimationFrame\(\(\) => html\.classList\.remove\("no-transitions"\)\)/);
+  assert.match(css, /\.no-transitions \*,[\s\S]*?transition: none !important;/);
+  // Press feedback and hover fills are opt-in.
+  assert.match(css, /@media \(prefers-reduced-motion: no-preference\) \{\s*\.btn,\s*\.switch,\s*\.icon-btn \{/);
+  assert.match(css, /@media \(hover: hover\) and \(pointer: fine\)/);
 });
 
-test("the Georgia Tech research role sits in the main timeline", () => {
-  assert.ok(data.workExperience.every((role) => !role.other));
-  const index = read("index.html");
-  assert.doesNotMatch(index, /<details class="other-roles">/);
-  const timeline = index.slice(index.indexOf('<ol class="timeline">'), index.indexOf("</ol>", index.indexOf('<ol class="timeline">')));
-  assert.match(timeline, /Research Volunteer <span>FSIL &amp; HCAI Labs, Georgia Tech<\/span>/);
-});
-
-test("small labels are at least 13px and lightly tracked", () => {
-  const labels = [
-    ".kicker", ".hero-kicker", ".card-now dt", ".card-sub", ".role time", ".metrics dt", ".map-link", ".pub-venue",
-    ".pub-group-head", ".drivers-title", ".window-bar", ".card-portrait figcaption", ".chip small", ".tags li",
-    ".drivers-value", ".drivers-foot", ".drivers-notes", ".drivers-effect", ".drivers-meta", ".pub-role", ".map-search kbd",
-  ];
+test("small labels are at least 13px", () => {
+  const labels = [".th", ".when", ".sub", ".more", ".amt b", ".tr.total", ".small", ".foot-line", ".rt", ".chip small", ".map-search kbd", ".window-bar", ".dataset", ".crumbs", ".page-meta", ".toc"];
   for (const selector of labels) {
     const block = rule(selector);
     const size = property(block, "font-size");
     if (size && !size.startsWith("var(")) assert.ok(toRem(size) >= 0.8125, `${selector} is ${size}`);
-    const tracking = property(block, "letter-spacing");
-    if (tracking) assert.ok(toRem(tracking) <= 0.04, `${selector} tracks ${tracking}`);
+    assert.equal(property(block, "text-transform"), undefined, `${selector} is uppercase`);
   }
-  // Only the shortest labels stay in capitals.
-  for (const selector of [".kicker", ".metrics dt", ".map-link", ".pub-venue", ".drivers-title"]) {
-    assert.equal(property(rule(selector), "text-transform"), undefined, `${selector} is still uppercase`);
+  for (const step of ["--step-xs", "--step-s"]) {
+    assert.ok(toRem(property(rule(":root"), step)) >= 0.8125, step);
   }
-  assert.ok(toRem(property(rule(".pub-authors"), "max-width").replace("ch", "em")) <= 72);
+  assert.match(rule(".search-results"), /bottom: calc\(100% \+ 8px\)/);
 });
 
-test("secondary buttons keep a visible ring in the light theme", () => {
-  const light = css.slice(css.indexOf(':root[data-theme="light"] {'));
-  const lightBlock = light.slice(0, light.indexOf("}"));
-  const ring = property(lightBlock, "--ring");
-  const bg = property(lightBlock, "--bg");
-  assert.ok(ring, "the light theme has no --ring token");
-  assert.match(ring, /^#[0-9a-f]{6}$/i);
-  assert.ok(contrast(ring, bg) >= 3, `light ring contrast is ${contrast(ring, bg).toFixed(2)}`);
-  assert.match(property(rule(":root"), "--ring"), /^var\(--line-2\)$|^#[0-9a-f]{6}$/i);
+test("text and figures hold their contrast in both themes", () => {
+  for (const theme of ["dark", "light"]) {
+    const token = tokens(theme);
+    const grounds = ["bg", "surface", "surface-2"].map(token);
+    for (const ground of grounds) {
+      for (const name of ["ink", "muted", "accent-text"]) {
+        const ratio = contrast(token(name), ground);
+        assert.ok(ratio >= 4.5, `${theme}: --${name} on ${ground} is ${ratio.toFixed(2)}`);
+      }
+    }
+    assert.ok(contrast(token("on-head"), token("head")) >= 4.5, `${theme}: table head`);
+    assert.ok(contrast(token("on-solid"), token("solid")) >= 4.5, `${theme}: filled button`);
+    assert.ok(contrast(token("on-region"), token("region")) >= 4.5, `${theme}: region tag`);
+    assert.ok(contrast(token("region"), token("bg")) >= 3, `${theme}: region outline`);
+    assert.ok(contrast(token("focus"), token("bg")) >= 3, `${theme}: focus ring`);
+  }
+  assert.equal(tokens("dark")("bg"), "#000000");
+});
+
+test("secondary buttons keep a visible ring in both themes", () => {
+  for (const theme of ["dark", "light"]) {
+    const token = tokens(theme);
+    const ring = token("ring");
+    assert.match(ring, /^#[0-9a-f]{6}$/i, `${theme} has no --ring colour`);
+    assert.ok(contrast(ring, token("bg")) >= 3, `${theme} ring contrast is ${contrast(ring, token("bg")).toFixed(2)}`);
+  }
   assert.match(property(rule(".btn"), "--btn-ring"), /var\(--ring\)/);
   assert.match(rule(".chip"), /var\(--ring\)/);
 });

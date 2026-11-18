@@ -1,5 +1,5 @@
 // Renders assets/social/akhil-theerthala-og.png (1200x630) from assets/data/map.json:
-// the hero's embedding map in the carbon theme, drawn as static SVG and
+// the map of work in the dark theme, drawn as static SVG and
 // screenshotted with headless Chrome. Set CHROME_BIN to point at a Chrome binary.
 import { spawn } from "node:child_process";
 import fs from "node:fs";
@@ -23,10 +23,6 @@ const token = (name) => {
 const bg = token("bg");
 const ink = token("ink");
 const ink2 = token("ink-2");
-const gridX = token("grid-x");
-const gridY = token("grid-y");
-const tick = token("tick");
-const glows = token("glows");
 const areaColours = [0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) => token(`a${i}`));
 
 // Map box, matching the hero's text-left, map-right layout.
@@ -100,10 +96,9 @@ const html = `<!doctype html>
 <meta charset="utf-8" />
 <style>
 @font-face {
-  font-family: "IBM Plex Sans";
-  src: url(data:font/woff2;base64,${fontData("plex-sans-latin.woff2")}) format("woff2");
-  font-weight: 100 700;
-  font-stretch: 85% 100%;
+  font-family: "Atkinson Hyperlegible Next";
+  src: url(data:font/woff2;base64,${fontData("atkinson-next-latin.woff2")}) format("woff2");
+  font-weight: 200 800;
   font-display: block;
 }
 @font-face {
@@ -113,23 +108,9 @@ const html = `<!doctype html>
   font-display: block;
 }
 html, body { margin: 0; width: ${width}px; height: ${height}px; overflow: hidden; }
-/* The site's ledger ground: 32px rules, column lines and plus marks. */
-html {
-  background:
-    linear-gradient(to bottom, ${gridY} 1px, transparent 1px) 0 0 / 100% 32px,
-    linear-gradient(to right, ${gridX} 1px, transparent 1px) 72px 0 / 88px 100%,
-    ${glows},
-    ${bg};
-}
-body::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(to right, ${tick} 5px, transparent 5px 84px, ${tick} 84px) 72px 0 / 88px 100%;
-  -webkit-mask: linear-gradient(to bottom, #000 1px, transparent 1px) 0 0 / 100% 128px;
-}
-body { position: relative; font-family: "IBM Plex Sans", sans-serif; -webkit-font-smoothing: antialiased; }
+/* The site's ground: plain black. */
+html { background: ${bg}; }
+body { position: relative; font-family: "Atkinson Hyperlegible Next", sans-serif; -webkit-font-smoothing: antialiased; }
 svg { position: absolute; inset: 0; }
 .area {
   position: absolute;
@@ -150,10 +131,9 @@ h1 {
   margin: 0;
   color: ${ink};
   font-size: 96px;
-  font-weight: 620;
-  font-stretch: 92%;
-  line-height: 0.92;
-  letter-spacing: -0.045em;
+  font-weight: 760;
+  line-height: 0.94;
+  letter-spacing: -0.035em;
 }
 p { margin: 26px 0 0; color: ${ink2}; font-size: 30px; line-height: 1.3; }
 </style>
@@ -162,7 +142,7 @@ p { margin: 26px 0 0; color: ${ink2}; font-size: 30px; line-height: 1.3; }
 <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">${circles}</svg>
 ${labels}
 <div class="intro">
-  <svg class="mark" viewBox="0 0 23 22" width="69" height="66" aria-hidden="true"><path fill="${ink}" d="M10 5H13L22 20H18.5L11.5 8.33L4.5 20H1Z"/><path fill="${token("mark-gold")}" d="M2 2H21V5H13V20H10V5H2Z"/></svg>
+  <svg class="mark" viewBox="0 0 23 22" width="69" height="66" aria-hidden="true"><path fill="${ink}" d="M10 5H13L22 20H18.5L11.5 8.33L4.5 20H1Z"/><path fill="${token("accent")}" d="M2 2H21V5H13V20H10V5H2Z"/></svg>
   <h1>Akhil<br />Theerthala</h1>
   <p>Applied data scientist</p>
 </div>

@@ -156,12 +156,12 @@ test("writing slugs are unique and the project write-ups are on the map", () => 
 const index = fs.readFileSync("index.html", "utf8");
 
 test("the homepage leads with applied work, then research", () => {
-  const order = ["top", "cv", "work", "achievements", "research", "writings", "education", "contact"];
-  const ids = [...index.matchAll(/<section class="[^"]*" id="([a-z]+)"/g)].map((match) => match[1]);
-  assert.deepEqual(ids, order);
-
-  const navIds = [...index.matchAll(/data-section="([a-z]+)"/g)].map((match) => match[1]);
-  assert.deepEqual(navIds, ["about", "cv", "work", "research", "writings", "contact"]);
+  const ids = [...index.matchAll(/<section id="([a-z]+)"/g)].map((match) => match[1]);
+  assert.deepEqual(ids, ["cv", "work", "research", "writings", "education"]);
+  // The name block and the foot keep the ids that older links point to.
+  for (const anchor of ['<header class="top" id="top"', '<div class="head" id="about"', '<footer class="foot" id="contact"']) {
+    assert.ok(index.includes(anchor), anchor);
+  }
 
   assert.match(index, /<title>Akhil Theerthala - Applied Data Scientist<\/title>/);
   assert.doesNotMatch(index, /Applied AI Researcher/);
@@ -173,6 +173,32 @@ test("the homepage leads with applied work, then research", () => {
   );
   assert.ok(index.includes(data.location));
   assert.doesNotMatch(index, />Hyderabad, India</);
+});
+
+test("the Georgia Tech research role is closed everywhere", () => {
+  const role = data.workExperience.find((item) => item.title === "Research Volunteer");
+  assert.equal(role.date, "Aug 2025 - Sep 2026");
+  assert.ok(role.highlights.every((item) => !/^Contributing/.test(item)));
+  assert.ok(data.now.every((item) => !/Georgia Tech|HCAI/.test(item.text)));
+  assert.match(index, /<span>Aug 2025<\/span> <span>to Sep 2026<\/span>/);
+  assert.match(index, /FSIL &amp; HCAI Labs, Georgia Tech\./);
+  // A past lab is not a current affiliation.
+  assert.doesNotMatch(index, /"@type": "ResearchOrganization"/);
+  assert.match(index, /"affiliation": \{\s*"@type": "CollegeOrUniversity"/);
+});
+
+test("figures in the Results column come from the data", () => {
+  for (const item of [...data.workExperience, ...data.projects]) {
+    for (const result of item.results || []) {
+      assert.ok(index.includes(`<b>${result.value}</b> ${result.label}</span>`), `${result.value} ${result.label}`);
+    }
+  }
+  assert.deepEqual(
+    Array.from(data.workExperience[0].results, (result) => `${result.value} ${result.label}`),
+    ["5 projects", "3 tech talks", "1 award"],
+  );
+  assert.match(data.updated, /^\d{4}-\d{2}-\d{2}$/);
+  assert.match(index, /<span>Updated \d{1,2} [A-Z][a-z]+ \d{4}<\/span>/);
 });
 
 test("links carry no arrow glyphs and external links announce new tabs", () => {
@@ -189,13 +215,13 @@ test("every role highlight, publication and project is on the page", () => {
       const words = highlight.split(" ").slice(0, 6).join(" ");
       assert.ok(index.includes(words), `missing highlight: ${words}`);
     }
+    if (role.recognition) assert.ok(index.includes(role.recognition), role.recognition);
   }
   for (const publication of data.publications) {
     assert.match(index, new RegExp(`id="paper-[a-z0-9-]+"[\\s\\S]*?${publication.venue.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`));
-    if (publication.bibtex) assert.ok(index.includes("Copy BibTeX"));
   }
   for (const project of data.projects) {
-    assert.ok(index.includes(`>${project.title.replaceAll("&", "&amp;")}</h3>`), project.title);
+    const name = (project.short || project.title).replaceAll("&", "&amp;");
+    assert.ok(index.includes(`>${name}<`), project.title);
   }
-  assert.match(index, /<details><summary>Abstract<\/summary>/);
 });

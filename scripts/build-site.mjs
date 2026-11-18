@@ -19,6 +19,7 @@ import {
   escapeHtml,
   homeBody,
   layout,
+  mapBody,
   notFoundBody,
   writingIndexBody,
 } from "./lib/templates.mjs";
@@ -76,7 +77,8 @@ async function renderArticle(article) {
   }
   const toc = tokens
     .filter((token) => token.type === "heading" && token.depth <= 3)
-    .map((token) => ({ id: token.hid, depth: token.depth, text: plainText(token.text) }));
+    // "1\\. Keep" is how Markdown writes a heading that starts with a number; the list shows "1. Keep".
+    .map((token) => ({ id: token.hid, depth: token.depth, text: plainText(token.text).replace(/\\(?=[.)])/g, "") }));
   const html = markdown.parser(tokens).replace(/<img(?![^>]*loading=)/g, '<img loading="lazy"');
   return { html, toc };
 }
@@ -120,13 +122,10 @@ function personData(data) {
           "@type": "CollegeOrUniversity",
           name: "Indian Institute of Technology, Kharagpur",
         },
-        affiliation: [
-          {
-            "@type": "CollegeOrUniversity",
-            name: "International Institute of Information Technology, Hyderabad",
-          },
-          { "@type": "ResearchOrganization", name: "FSIL and HCAI Labs, Georgia Tech" },
-        ],
+        affiliation: {
+          "@type": "CollegeOrUniversity",
+          name: "International Institute of Information Technology, Hyderabad",
+        },
         knowsAbout: data.researchFocus.map((focus) => focus.title),
         sameAs: [...new Set(sameAs)],
       },
@@ -203,7 +202,8 @@ async function buildPages() {
       root: "",
       page: "home",
       structuredData: personData(data),
-      body: homeBody(data, samples, map),
+      data,
+      body: homeBody(data, map),
     }),
   );
 
@@ -235,6 +235,7 @@ async function buildPages() {
           image: `${siteUrl}/assets/social/akhil-theerthala-og.png`,
           author: authorRef(data),
         },
+        data,
         body: articleBody(article, html, toc),
       }),
     );
@@ -251,6 +252,7 @@ async function buildPages() {
         root: "../../",
         page: "artifact",
         structuredData: artifactData(project, data, canonical),
+        data,
         body: artifactBody(project, samples, data),
       }),
     );
@@ -274,7 +276,21 @@ async function buildPages() {
         if (file && slugs[file]) location.replace("writing/" + slugs[file] + "/");
       })();
     </script>`,
+      data,
       body: writingIndexBody(data),
+    }),
+  );
+
+  await write(
+    "map.html",
+    layout({
+      title: "Map of Work - Akhil Theerthala",
+      description: `A map of ${map.works.length} papers, projects and production systems by Akhil Theerthala, grouped by the areas of AI they belong to.`,
+      canonical: `${siteUrl}/map.html`,
+      root: "",
+      page: "map",
+      data,
+      body: mapBody(map),
     }),
   );
 
@@ -286,6 +302,7 @@ async function buildPages() {
       root: "/",
       page: "missing",
       noindex: true,
+      data,
       body: notFoundBody(),
     }),
   );
@@ -293,6 +310,7 @@ async function buildPages() {
   const urls = [
     `${siteUrl}/`,
     `${siteUrl}/writing.html`,
+    `${siteUrl}/map.html`,
     ...data.projects.filter((project) => project.story).map((project) => `${siteUrl}/artifacts/${project.slug}/`),
     ...data.writings.map((article) => `${siteUrl}/writing/${article.slug}/`),
   ];

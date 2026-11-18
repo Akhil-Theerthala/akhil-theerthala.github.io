@@ -3,8 +3,12 @@ window.PORTFOLIO_DATA = {
   name: "Akhil Theerthala",
   role: "Applied Data Scientist",
   currentRole: "Senior Member Data Scientist, Perfios Software Solutions",
+  // The same role as one short line, for the facts on the home page.
+  currentRoleShort: "Senior Member Data Scientist, Perfios",
   location: "Bengaluru, India",
   email: "akhiltvsn@gmail.com",
+  // Shown in the top line of the home page. Change it when the content changes.
+  updated: "2026-11-18",
   longIntro: [
     "I am a Senior Member Data Scientist at Perfios Software Solutions in Bengaluru. I build document-AI systems for banks, lenders, and insurers, such as document classifiers, table detection, and VLMs adapted to dense financial documents.",
     "My research is on data curation and LLM evaluation. I build synthetic training data, such as personal-finance data grounded in behavioral finance. I also work on benchmarks for financial agents and on steering for language models. I look for methods that still work under real limits on latency, cost, and auditability.",
@@ -30,6 +34,12 @@ window.PORTFOLIO_DATA = {
       date: "Apr 2025 - Present",
       title: "Senior Member Data Scientist",
       org: "Perfios Software Solutions",
+      summary: "Uncertainty and guardrails for financial LLMs, and document-quality models in production.",
+      results: [
+        { value: "5", label: "projects" },
+        { value: "3", label: "tech talks" },
+        { value: "1", label: "award" },
+      ],
       highlights: [
         "Leading uncertainty-quantification research for financial LLMs. I am building a BFSI-specific benchmark to audit cultural and demographic bias and to measure calibration under different levels of numerical precision. I also probe the cues behind miscalibration and test steering, context conditioning, and fine-tuning as mitigations.",
         "Developing guardrails for LLM and agent applications in banking. I map where these applications are vulnerable and build adversarial and failure-mode evaluations. I also test output controls against the Reserve Bank of India's FREE-AI recommendations for safe, fair, explainable, and robust AI.",
@@ -42,13 +52,15 @@ window.PORTFOLIO_DATA = {
         "Circle of Excellence award for research and contributions to generative AI and financial document intelligence.",
     },
     {
-      date: "Aug 2025 - Present",
+      date: "Aug 2025 - Sep 2026",
       title: "Research Volunteer",
       org: "FSIL & HCAI Labs, Georgia Tech",
+      summary: "Financial benchmarks, role steering and training-data attribution.",
+      results: [{ value: "3", label: "papers" }],
       highlights: [
         "Co-authored FinForge, a pipeline that generates semi-synthetic benchmarks for financial tasks. The paper was accepted at the AAAI 2026 Workshop on Agentic AI in Financial Services.",
         "Contributed to the Role Steering of Language Models for Social Simulations paper at the COLM 2026 Social Simulations Workshop. I also contributed to the Data Attribution Should Guide Pretraining paper at the NeurIPS 2026 ATTRIB Workshop.",
-        "Contributing to Capabilibarav2, an HCAI Lab project on training-data attribution that traces which source documents influence a language model's outputs.",
+        "Contributed to Capabilibarav2, an HCAI Lab project on training-data attribution that traces which source documents influence a language model's outputs.",
       ],
       emphasis: [],
     },
@@ -56,6 +68,8 @@ window.PORTFOLIO_DATA = {
       date: "Jun 2023 - Apr 2025",
       title: "Member Data Scientist",
       org: "Perfios Software Solutions",
+      summary: "Table detection, row detection and document classification for financial documents.",
+      results: [{ value: "3", label: "projects" }],
       highlights: [
         "Distilled and quantized a multimodal document classifier into a small student model. Latency fell from 8s to 200ms with F1 unchanged in production-scale evaluation.",
         "Improved generalized table detection accuracy by 27.6% with semi-synthetic data curation and a systematic study of YOLOv8 variants. The gain carried through to the downstream table-structure recognition (TSR) module.",
@@ -70,11 +84,13 @@ window.PORTFOLIO_DATA = {
       date: "Apr 2026 - Present",
       title: "MS, Data Science",
       org: "International Institute of Information Technology, Hyderabad",
+      short: "IIIT Hyderabad",
     },
     {
       date: "Aug 2019 - May 2023",
       title: "B.Tech, Aerospace Engineering",
       org: "Indian Institute of Technology, Kharagpur",
+      short: "IIT Kharagpur",
     },
   ],
 
@@ -106,6 +122,7 @@ window.PORTFOLIO_DATA = {
       venue: "ATTRIB Workshop, NeurIPS 2026",
       slug: "data-attribution-should-guide-pretraining",
       title: "Data Attribution Should Guide Pretraining",
+      line: "Argues that training-data attribution should steer how pretraining data is curated.",
       authors: [
         "Glenn Matlin",
         "Chandreyi Chakraborty",
@@ -127,6 +144,7 @@ window.PORTFOLIO_DATA = {
       year: "2026",
       venue: "Social Simulations Workshop, COLM 2026",
       title: "Role Steering of Language Models for Social Simulations",
+      line: "Activation steering for role-conditioned agents, screened across 275 roles.",
       authors: [
         "Isaac Song",
         "Mohammed Rehan Parwani",
@@ -162,6 +180,7 @@ window.PORTFOLIO_DATA = {
       year: "2026",
       venue: "Agentic AI in Financial Services Workshop, AAAI 2026",
       title: "FinForge: Semi-Synthetic Financial Benchmark Generation",
+      line: "A pipeline for semi-synthetic finance benchmarks, with 5,000+ human-validated questions.",
       authors: [
         "Glenn Matlin",
         "Akhil Theerthala",
@@ -194,6 +213,8 @@ window.PORTFOLIO_DATA = {
       venue: "FinNLP Workshop, EMNLP 2025",
       title:
         "Synthesizing Behaviorally-Grounded Reasoning Chains: A Data-Generation Framework for Personal Finance LLMs",
+      short: "Synthesizing Behaviorally-Grounded Reasoning Chains",
+      line: "A data-generation framework for personal-finance LLMs.",
       authors: ["Akhil Theerthala"],
       abstract:
         "A reproducible data-centric framework that combines financial context with behavioral-finance studies to create supervision for end-to-end personal-finance advisors. Using a 19k-sample reasoning dataset, a fine-tuned Qwen-3-8B matches much larger 14-32B baselines on factuality, fluency, and personalization while reducing cost by about 80%.",
@@ -219,6 +240,8 @@ window.PORTFOLIO_DATA = {
     {
       title: "LocalXiv",
       slug: "localxiv",
+      line: "A free, open-source app for reading arXiv papers on a Mac or a Kindle.",
+      results: [{ value: "12", label: "preview releases" }],
       status: "Active",
       summary:
         "A free, open-source Mac app for reading arXiv and alphaXiv papers, with a local library, adjustable layouts, optional AI explanations, and EPUB export for Kindle.",
@@ -290,6 +313,14 @@ window.PORTFOLIO_DATA = {
     },
     {
       title: "Density vs. Diversity: VLM Curation Datasets",
+      short: "Density vs. Diversity",
+      line: "Ten questions per image or one? Two VLM training sets compared under control.",
+      results: [
+        { value: "2", label: "datasets" },
+        { value: "6", label: "fine-tuned models" },
+      ],
+      // The write-up on this site is the row's destination.
+      page: "writing/density-vs-diversity-in-data-selection/",
       kicker: "Open source · Hugging Face",
       desc: "Two synthetic spatial-reasoning training sets built from GQA images. One set has ten questions per image, and the other has one. I used them to fine-tune six Qwen3-VL models for a controlled comparison.",
       released: "2026-01",
@@ -318,6 +349,13 @@ window.PORTFOLIO_DATA = {
     {
       title: "Kuvera Personal Finance Datasets and LLMs",
       slug: "kuvera",
+      short: "Kuvera",
+      line: "Personal-finance reasoning datasets and the LLMs trained on them. The dataset work took first place in the Reasoning Dataset Creation Challenge.",
+      // The second figure is the challenge result in achievements, which the map links to.
+      results: [
+        { value: "56k+", label: "downloads" },
+        { value: "1st", label: "of 150+ teams", id: "achievement-reasoning-dataset-challenge" },
+      ],
       status: "Maintained",
       summary:
         "Open personal-finance reasoning datasets and the LLMs I fine-tuned on them. The models give advice that accounts for a person's financial situation and psychological state.",
@@ -399,6 +437,9 @@ window.PORTFOLIO_DATA = {
     },
     {
       title: "Themis Scales: Moral Dilemma Resolution",
+      short: "Themis Scales",
+      line: "Moral dilemmas, each analyzed from three ethical perspectives.",
+      results: [{ value: "567", label: "dilemmas" }],
       kicker: "Open source · AI ethics dataset",
       desc: "A seed dataset of 567 moral dilemmas, analyzed from Morality-as-Cooperation, deontological, and utilitarian perspectives. It is a proof of concept that lists its limitations and needs further validation.",
       released: "2025-04",
@@ -428,6 +469,9 @@ window.PORTFOLIO_DATA = {
     {
       title: "Social Media Signals and Crowdfunding Success",
       slug: "crowdfunding-social-signals",
+      short: "Crowdfunding signals",
+      line: "What drives engagement with crowdfunding posts. Re-audited in 2026, with the original methods retired.",
+      note: "B.Tech research",
       kicker: "Research · B.Tech project",
       desc: "My B.Tech research, which I extended after graduating, asked what drives engagement with crowdfunding posts on Facebook, and whether that engagement predicts a campaign's success. In the two models shown, the top feature can leak the outcome. The text features also had defects, so their low scores say little about text. I re-audited the study in 2026, retired those methods, and am rebuilding it on archived Kickstarter pages.",
       released: "2024-03",
@@ -679,10 +723,6 @@ window.PORTFOLIO_DATA = {
     {
       label: "Reading",
       text: "Interpretability and evaluation of LLMs and agentic systems.",
-    },
-    {
-      label: "Research",
-      text: "Training-data attribution, with Georgia Tech's HCAI Lab.",
     },
     {
       label: "Studying",
